@@ -185,3 +185,13 @@ Alpha equivalence
 * Divergence means that the reduction process never terminates or ends.
 * This matters in programming because terms that diverge don't produce an answer
   or meaningful result.
+
+
+1.11 Chapter Exercises
+----------------------
+.. include:: exercises/1.11.1_-_combinators.rst
+
+.. include:: exercises/1.11.2_-_normal_form_or_diverge.rst
+
+.. include:: exercises/1.11.3_-_beta_reduce.rst
+

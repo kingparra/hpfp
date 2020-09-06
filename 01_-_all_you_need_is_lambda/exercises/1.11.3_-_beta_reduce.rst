@@ -1,0 +1,136 @@
+1.11.3 Beta reduce
+^^^^^^^^^^^^^^^^^^
+Evaluate (that is, beta reduce) each of the following expressions to normal
+form. We strongly recommend writing out the steps on paper with a pencil or
+pen.
+
+(I show every step in case I forget how lambda cauculus works, and to make
+checking my work easier. Sorry for the painfully verbosity.)
+
+1.
+ |  (λabc.cba)zz(λwv.w)
+ |
+ |  [a:=z]
+ |  (λbc.cbz)z(λwv.w)
+ |
+ |  [b:=z]
+ |  (λc.czz)(λwv.w)
+ |
+ |  [c:=(λwv.w)]
+ |  (λwv.w)zz
+ |
+ |  [w:=z]
+ |  (λv.z)z
+ |
+ |  [v:=z]
+ |  z
+
+2.
+ |  (λxy.xyy)(λa.a)b
+ |
+ |  [x:=(λa.a)]
+ |  (λy.(λa.a)yy)b
+ |
+ |  [y:=b]
+ |  (λa.a)bb
+ |
+ |  [a:=b]
+ |  bb
+
+3.
+ |  (λy.y)(λx.xx)(λz.zq)
+ |
+ |  [y:=(λx.xx)]
+ |  (λx.xx)(λz.zq)
+ |
+ |  [x:=(λz.zq)]
+ |  (λz.zq)(λz.zq)
+ |
+ |  -- alpha equiv for bound variable
+ |  (λz.zq)(λi.iq)
+ |
+ |  [z:=(λi.iq)]
+ |  (λi.iq)q
+ |
+ |  [i:=q]
+ |  qq
+
+4.
+ |  (λz.z)(λz.zz)(λz.zy)
+ |
+ |  -- alpha equiv for the zs
+ |  (λz.z)(λa.aa)(λb.by)
+ |
+ |  [z:=(λa.aa)]
+ |  (λa.aa)(λb.by)
+ |
+ |  [a:=(λb.by)]
+ |  (λb.by)(λb.by)
+ |
+ |  -- alpha equiv, again
+ |  (λb.by)(λc.cy)
+ |
+ |  [b:=(λc.cy)]
+ |  (λc.cy)y
+ |
+ |  [c:=y]
+ |  yy
+
+5.
+ |  (λxy.xyy)(λy.y)y
+ |
+ |  -- alpha equiv for the ys
+ |  (λxa.xaa)(λb.b)y
+ |
+ |  [x:=(λb.b)]
+ |  (λa.(λb.b)aa)y
+ |
+ |  [b:=a]
+ |  (λa.aa)y
+ |
+ |  [a:=y]
+ |  yy
+
+6.
+ |  (λa.aa)(λb.ba)c
+ |
+ |  -- alpha equiv so params don't look like the free variable a
+ |  (λd.dd)(λb.ba)c
+ |
+ |  [d:=(λb
+ |
+ |  -- alpha equiv so params don't look like the free variable a
+ |  (λd.dd)(λb.ba)c
+ |
+ |  [d:=(λb.ba)]
+ |  (λb.ba)(λb.ba)c
+ |
+ |  -- alpha equiv!
+ |  (λb.ba)(λk.ka)c
+ |
+ |  [b:=(λk.ka)]
+ |  (λk.ka)ac
+ |
+ |  [k:=a]
+ |  aac
+
+7.
+ | (λxyz.xz(yz))(λx.z)(λx.a)
+ |
+ | -- alpha equiv
+ | (λher.hr(er))(λa.z)(λb.a)
+ |
+ | [h:=(λa.z)]
+ | (λer.(λa.z)r(er))(λb.a)
+ |
+ | [a:=r]
+ | (λer.z(er))(λb.a)
+ |
+ | [e:=(λb.a)]
+ | (λr.z((λb.a)r))
+ |
+ | [b:=r]
+ | (λr.z(a))
+ |
+ | -- parens no longer needed
+ | λr.za
