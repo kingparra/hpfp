@@ -19,4 +19,3 @@ Choose an answer that is equivalent to the listed lambda term.
   a.     λx.(λy.(λz.z))
   b.   **λtos.st**
   c.     λmnp.mn
-

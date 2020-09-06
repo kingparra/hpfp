@@ -164,6 +164,7 @@ Alpha equivalence
 * This formulation was first discovered by Moses Schönfinkel, then later Haskell
   Curry, and is commonly called currying.
 
+.. include:: exercises/1.6.1_-_intermission:_equivalence_exercises.rst
 
 1.7 Evaluation is simplification
 --------------------------------
