@@ -26,7 +26,7 @@ What is the lambda calculus?
   study of its characteristics."
 * In other words, that lambda calculus is able to prove whether or not an
   algorithm for a problem can eventually be computed, and reason about its
-  characteristics.
+  characteristics. (Space and time complexity.)
 * Anything that can be computed in the lambda calculus can be executed by a
   Turing machine, and vice versa. They are both "universal machines".
 
@@ -34,10 +34,11 @@ How does this apply to Haskell?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * Haskell's regular language syntax reduces to a subset of the language
   called the language kernel.
-* The language kernel reduces to the core language, which is an implementation of a
+* The language kernel reduces to the core type, which is an implementation of a
   typed lambda calculus called system fc.
-* That eventually turns into a build artifact you can run on your computer.
-* Therefore, you can say that Haskell is semantically a Lambda calculus.
+* That goes through several eventually turns into a build artifact you can
+  run on your computer.
+* Also, the evaluation strategy used by Haskell resembles the lambda calculus.
 
 
 1.2 What is functional programming?
@@ -46,11 +47,19 @@ How does this apply to Haskell?
   functions that behave like mathematical functions.
 * The essence of functional programming is that programs are a combination of
   expressions.
+* Expressions include concrete values, variables, and also functions.
 * Functions are *first-class*, which means that they can be used as values or
   passed as arguments to yet more functions.
+* Personally I'd add that, for something to be considered first-class, it should
+  also be able to be represented literally, without needing a name binding.
 * Purity in the context of functional programming languages means that the
-  language does not include any features which are not translatable to the
-  lambda calculus.
+  language does not include any features which are not translatable to lambda
+  expressions.
+
+  * Wait, isn't everything translatable to lambda expressions? Isn't saying
+    "untranslatable to lambda expressions" like saying "untranslatable to binary"
+    or "untranslatable to instructions for a Turing machine"?
+
 * Purity sometimes also is used refer to referential transparency.
 * An expression is called referentially transparent if it can be replaced with
   its corresponding fully reduced value at any point in the execution of the
@@ -63,7 +72,7 @@ How does this apply to Haskell?
   effectful things, those effects have to be represented as a value of some
   type.
 * The importance of referential transparency is that it allows the programmer
-  to reason about program execution as evaulation in a rewrite system -- which
+  to reason about program execution as evaluation in a rewrite system -- which
   is exactly what the lambda calculus is.
 
 functional vs imperative
@@ -154,6 +163,14 @@ Alpha equivalence
 
 * The syntax ``[x ∶= z]`` here is used to indicate that ``z`` will be substituted
   for all occurrences of ``x`` (here ``z`` is the function ``λy.y``).
+* Beta reduction stops when there are no longer unevaluated functions applied to
+  arguments.
+
+Free variables
+^^^^^^^^^^^^^^
+* Sometimes the body expression has variables that are not named in the head. We
+  call those variables free variables.
+* Alpha equivalence does not apply to free variables.
 
 
 1.6 Multiple arguments
@@ -165,6 +182,7 @@ Alpha equivalence
   Curry, and is commonly called currying.
 
 .. include:: exercises/1.6.1_-_intermission:_equivalence_exercises.rst
+
 
 1.7 Evaluation is simplification
 --------------------------------
