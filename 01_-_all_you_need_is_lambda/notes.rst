@@ -197,6 +197,8 @@ Free variables
 ---------------
 * A combinator is a lambda term with no free variables. These expressions serve
   only to combine the arguments they're given.
+* If a parameter exists, but is not used in the body, it may still be a
+  combinator.
 
 
 1.9 Divergence
