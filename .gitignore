@@ -1,0 +1,8 @@
+*.pdf
+.vscode
+.fslckout
+*.stack-work
+_build
+_static
+_templates
+Makefile
