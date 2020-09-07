@@ -1,0 +1,10 @@
+1.11.1 Combinators
+^^^^^^^^^^^^^^^^^^
+Determine if each of the following are combinators or not.
+
+1. **λx.xxx**
+2.   λxy.zx       -- z is free, note that y is bound, even though it's not used
+3. **λxyz.xy(zx)**
+4. **λxyz.xy(zxy)**
+5.   λxy.xy(zxy)  -- z is free
+

@@ -1,0 +1,17 @@
+1.11.2 Normal form or diverge?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Determine if each of the following can be reduced to a normal form or if they
+diverge.
+
+1.   λx.xxx
+2. **(λz.zz)(λy.yy)**
+
+ | -- this will never end
+ |
+ | [z:=(λy.yy)]
+ | (λy.yy)(λy.yy)
+ |
+ | [y:=(λy.yy)]
+ | (λy.yy)(λy.yy)
+
+3.   (λx.xxx)z
