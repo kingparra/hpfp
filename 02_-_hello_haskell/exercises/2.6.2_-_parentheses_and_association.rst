@@ -1,0 +1,45 @@
+2.6.2 Exercises: Parentheses and Association
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Read the pairs of expressions, and decide if the parenthesis change the result.
+Check your work in GHCi.
+
+1.
+
+  a. ``8 + 7 * 9``
+  b. ``(8 + 7) * 9``
+
+  They should differ, multiplication is usually performed first, but this has
+  parenthesis::
+
+    ·∾ 8 + 7 * 9
+    71
+    ·∾ (8 + 7) * 9
+    135
+
+2.
+
+  a. ``perimeter x y = (x * 2) + (y * 2)``
+  b. ``perimeter x y =  x * 2  +  y * 2``
+
+  These should be the same, since ``*`` has a higher precedence than ``+``::
+
+    ·∾ perimeter x y = (x * 2) + (y * 2)
+    ·∾ perimeter 12 8
+    40
+    ·∾ perimeter x y = x * 2 + y * 2
+    ·∾ perimeter 12 8
+    40
+
+3.
+
+  a. ``f x = x / 2 + 9``
+  b. ``f x = x / (2 + 9)``
+
+  This should differ; ``(x / 2)`` vs ``(x / (2 + 9))``::
+
+    ·∾ f x = x / 2 + 9
+    ·∾ f 3
+    10.5
+    ·∾ f x = x / (2 + 9)
+    ·∾ f 8
+    0.7272727272727273

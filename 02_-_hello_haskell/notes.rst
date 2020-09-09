@@ -5,26 +5,39 @@
 
 2.1 Hello, Haskell
 ------------------
-First, install stack by following the directions on their `website
+In order to run our code, we'll need a compiler.
+
+Install stack by following the directions on their `website
 <https://docs.haskellstack.org/en/stable/README/>`_.
 
 Stack manages the entire tool-chain that you'll typically use for a
-project. Right now we're only interested in it because it will provide
-a compiler/interpreter to our execute code with, though.
+project in an isolated way. Right now we're only interested in it
+because it will provide a way to our execute code.
+
+------------------------------------------------------------------------------------------------
 
 If you're like me, at this point you probably want to set up a small
 knowledge base of resources to learn haskell. Here are some relevant
 links:
 
 * Cheat sheet: https://cheatsheet.codeslower.com/CheatSheet.pdf
-* Haskell in one video: https://www.youtube.com/watch?v=02_H3LjqMr8
-* A survey and orientation guide of the Haskell landscape: http://dev.stephendiehl.com/hask/
-* A good video series: https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
+* Haskell in one video, a video cheat sheet: https://www.youtube.com/watch?v=02_H3LjqMr8
+* A survey and orientation guide of the Haskell landscape (tooling,
+  libraries, best practices, some basic language features):
+  http://dev.stephendiehl.com/hask/
+* An excellent video series: https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
 * The GHC manual: https://downloads.haskell.org/ghc/latest/docs/html/users_guide
 * The Haskell 2010 language report: https://www.haskell.org/onlinereport/haskell2010/
 
-I've included a bash script to download these things for you, under
-``02_-_hello_haskell/fetch_resources.bash``.
+I've included a bash script to download these things for you, in pdf
+where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
+
+**You will want to bookmark a version of hoogle https://wiki.haskell.org/Hoogle**.
+It's like a search engine for haskell libraries.
+
+The freenode IRC #haskell channel is incredibly helpful, too.
+
+------------------------------------------------------------------------------------------------
 
 
 2.2 Interacting with Haskell code
@@ -35,7 +48,8 @@ both a compiler and an interpreter.
 The compiler is known as GHC, short for Glasgow Haskell Compiler. You
 can read more on the `homepage <https://www.haskell.org/ghc/>`_ or
 peruse its `documentation <https://downloads.haskell.org/ghc/latest/
-docs/html/users_guide/>`_.
+docs/html/users_guide/>`_. The interpreter, GHCi, is also part of the
+GHC project.
 
 When working with a compiler, the steps to run your code go roughly
 like this:
@@ -44,8 +58,7 @@ like this:
 * compile that file by running ``stack ghc $file`` as a separate step,
 * and run the compiled artifact it produced from your shell like ``./progname``.
 
-(This is of course the most naive possible workflow; most of these
-steps can be automated.)
+(This is of course the most naive possible workflow; it can be more automated.)
 
 Working with an interpreter goes more like this:
 
@@ -63,17 +76,17 @@ arithmetic, to see if it's working.
   True
   ·∾ 10 ^ 2
   100
- 
+
 As an elaboration of the workflow above, ghci allows you to load
 existing files into your interactive session. To do so, type ``:load
-$filename`` inside the repl. 
+$filename`` inside the repl.
 
-You can also load a module, like ``:load module`` and ghc will search
+You can also load a module, like ``:load module`` and GHC will search
 for it in its search path. ``:load *module`` will not only load the
-modules regular top-level imports, but also things internal to it.
+declarations the module exports, but also things internal to it.
 
 Special commands that only GHCi understands start with the ``:``
-character. Here's a quick summary::
+character. Here are a few useful ones::
 
   $ stack ghci
   :load filename
@@ -88,21 +101,27 @@ character. Here's a quick summary::
   -- newer versions of GHCi don't need the "let"
   :info
   :type
-  :doc
+  :doc -- only available in newer version of ghci
   :browse
   :show bindings
   :quit
 
+For more, check the GHC documentation.
+
+--------------------------------------------------------------------------
+
 What is Prelude?
 ^^^^^^^^^^^^^^^^
-Prelude is the standard library. It is imported into all Haskell files
-by default, unless there is an explicit import statement for it, or
-the ``NoImplicitPrelude`` compiler extension is enabled, like ``stack
-ghci -XNoImplicitPrelude``.
+Prelude is the standard module. It is imported into all Haskell files
+by default, unless there is an explicit import declaration hiding it,
+or the ``NoImplicitPrelude`` compiler extension is enabled, like
+``stack ghci -XNoImplicitPrelude``.
 
 Prelude is part of the ``base`` package, which comes with GHC. The
-``base`` package includes other modules, too. You can read more 
-`here <http://dev.stephendiehl.com/hask/#base>`_.
+``base`` package includes other modules, too. You can read more `here
+<http://dev.stephendiehl.com/hask/#base>`_.
+
+--------------------------------------------------------------------------
 
 Here is a function with a type signature for your inspection::
 
@@ -128,14 +147,14 @@ Normal form
 ^^^^^^^^^^^
 We say that expressions are in *normal form* when there are no more
 evaluation steps that can be taken, or put differently, when they've
-reached an irreducable form. Reducable expressions are also called
+reached an irreducible form. Reducible expressions are also called
 *redexes*.
 
 
 2.4 Functions
 -------------
 A function is an expression that is applied to an argument and always
-returns a result. 
+returns a result.
 
 As in the lambda calculus, all functions in Haskell take one argument
 and return one result. When it seems like we're passing multiple
@@ -143,7 +162,7 @@ arguments to a function, we are actually applying a series of nested
 functions, each to one argument. This is called currying.
 
 Functions are how we factor out patterns common to expressions into
-something we can use with different inputs.
+something we can reuse with different inputs.
 
 Here's one example of a simple function definition::
 
@@ -155,9 +174,23 @@ Here's one example of a simple function definition::
 
 Capitalization matters!
 ^^^^^^^^^^^^^^^^^^^^^^^
-Identifiers are case sensitive. ``camelCase`` is the current
-convention. Underscores and single quotes are allowed in variable
-names, too.
+Unlike Ada, Nim, and windows batch, identifiers are case sensitive.
+
+``camelCase`` is the current convention for variables and functions.
+
+``PascalCase`` is used for type constructors, data constructors, and
+type class names, things you'll learn about later. This is enforced by
+the compiler.
+
+You can also use underscores and single quotes in identifiers.
+
+Adding a single quote after a variable name sometimes suggests a
+slightly altered version of it. In that circumstance, a single quote
+is read as "prime".
+
+Adding a ``_`` after the name may suggest that the output is thrown
+out. There are a few loose conventions like this, you'll learn them
+over time.
 
 
 2.5 Evaluation
@@ -178,6 +211,8 @@ Normal Form`_.
    watch?v=QBQ9_9R7o8I&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
    &index=32&t=0s
 
+.. TODO Exercises: Comprehension Check -- page 35
+
 
 2.6 Infix operators
 -------------------
@@ -195,7 +230,7 @@ default. If the name is a symbol, it is prefix by default.
 
 You can also use prefix functions as infix by surrounding them with
 backticks::
-    
+
   ·∾ 10 `div` 4
   2
   ·∾ div 10 4
@@ -207,19 +242,66 @@ parenthesis::
   ·∾ (+) 3 4
   7
 
+2.6.1 Associativity and precedence
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 You can query the fixity, associativity, and precedence of a function
 using ``:info``::
 
   ·∾ :info (+)
   class Num a where
     (+) :: a -> a -> a
-    ...
-    -- Defined in ‘GHC.Num’
   --     v-- precedence out of the range 0..9, where 9 binds most tightly
   infixl 6 +
   --   ^-- the l means left associative
 
-.. TODO 2.6.1 Exercises: Parentheses and Association -- page 39
+---------------------------------------------------------------------------
+
+Associativity is how arguments group to functions during a step in the
+evaluation process.
+
+If something is left associative, arguments are associated with the
+function to the left of them.
+
+Here's two examples where each term in the overall expression has the
+same associativity:
+
+Left associative,  ``f 1 2 3`` ≡ ``(((f 1) 2) 3)``.
+Right associative, ``1 2 3 f`` ≡ ``(1 (2 (3 f)))``.
+
+You can have expressions that contain many functions with different
+associativity and different precedence. For example::
+
+  -- (^) is right associative
+  8 + 3 ^ 12 * 3
+  -- Explicitly parenthesised, ()s show associativity, {}s show
+  -- precedence. This isnt real code.
+  (8 +) {({3 (^ 12)} *) 3 }
+  -- ^        ^      ^
+  -- left    right   left
+
+Fixity is where functions or operators are placed in relation to the
+arguments they consume.
+
+Some examples of fixity are infix, prefix, postfix, `mixfix
+<https://agda.readthedocs.io/en/v2.5.2/language/mixfix-operators.html>`_,
+`circumfix, precircumfix, and postcircumfix
+<https://docs.raku.org/language/functions#Defining_operators>`_.
+
+Arity is the number of arguments that a function consumes. A binary
+function takes two arguments. A ternary function takes three. A
+finitary function takes a finite number of arguments. An infinitary
+function takes an infinite number of arguments. A nullary function
+takes no arguments. You get the idea.
+
+Precedence determines which function is evaluated first (who gets
+first turn at consuming arguments).
+
+In Haskell precedence goes from 0-9, where 9 is the highest (evaluated
+first).
+
+---------------------------------------------------------------------------
+
+.. include:: exercises/2.6.2_-_parentheses_and_association.rst
 
 
 2.7 Declaring values
@@ -231,18 +313,124 @@ have been defined.
 On the other hand, when you enter them one by one into the repl, the
 order does matter.
 
-Troubleshooting
-^^^^^^^^^^^^^^^
-White-space is significant in Haskell, just like Python. When confused,
-add more spaces.
+Module names must begin with an uppercase letter.
 
-.. TODO 2.7.1 Exercises: Heal the Sick -- page 45
+2.7.1 Troubleshooting
+^^^^^^^^^^^^^^^^^^^^^
+White-space is significant in Haskell, just like Python.
+
+The basic rule is that subsequent lines belonging to an expression
+should be written under the beginning of that expression at the same
+level of indentation.
+
+ +---------------+---------------+
+ |   Correct     |   Incorrect   |
+ +===============+===============+
+ | ::            | ::            |
+ |               |               |
+ |   let         |   let x = 3   |
+ |     x = 3     |    y = 4      |
+ |     y = 4     |               |
+ |               |   -- or       |
+ |   -- or       |               |
+ |               |   let         |
+ |   let x = 3   |    x = 3      |
+ |       y = 4   |     y = 4     |
+ |               |               |
+ +---------------+---------------+
+
+You can read about the particulars in the 2010 language report,
+section 2.7 Layout.
+
+.. include:: exercises/2.7.2_-_heal_the_sick.rst
 
 
 2.8 Arithmetic functions in Haskell
 -----------------------------------
 
-.. TODO import the table of arithmetic functions here
+.. include:: figures/arithmetic_functions.rst
 
-The ``div`` function rounds down to negative infinity, ``quot`` rounds
-towards 0.
+The ``mod`` and ``rem`` functions keep on tripping me up.
+https://ebzzry.io/en/haskell-division/
+
+.. include:: figures/arithmetic_ghci_examples.rst
+
+
+2.8.1 Laws for quotients and remainders
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. include:: figures/laws_for_quotients_and_remainders.rst
+
+2.8.2 Using mod
+^^^^^^^^^^^^^^^
+If you're unfamiliar with modular division, you may not understand the
+useful difference between mod and rem.
+
+Modular arithmetic is a system of arithmetic for integers where
+numbers "wrap around" upon reaching a certain value, called the
+*modulus* (the second argument to ``mod``).
+
+2.8.3 Negative numbers
+^^^^^^^^^^^^^^^^^^^^^^
+Negative numbers need to be surrounded in parenthesis, like this
+``(-9)``. Otherwise the compiler may confuse the negative sign with
+the infix subtraction operator. When ``-`` is used infix, it's a
+synonym for ``subtract``.
+
+Using ``-`` to make a number negative is syntactic sugar; You can
+instead write it like this ``(negate 9)``. This is a bit of a special
+case.
+
+
+2.9 Parenthesization
+--------------------
+If you want to inspect an infix operator with ghci using the ``:info``
+command, you usually have to surround it with parenthesis, like
+``:info (^)``, for example.
+
+The ``$`` operator can be used to avoid parenthesis, sometimes. It
+will allow everything to the right of it to be evaluated first and can
+be used to delay function application.
+
+::
+
+  ·∾ (2^) $ (+2) $ 3 * 2
+  256
+
+2.9.1 Parenthesizing infix operators
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can also use parenthesis to apply only some arguments to a
+function, and leave the other parameters available for binding.
+Applying only some arguments is known as *partial application*.
+
+For example ``(2^)`` is equivalent to ``(^) 2``, or more verbosely
+``\x -> 2 ^ x``.
+
+When you do this by surrounding the function with parenthesis, this is
+sometimes known as *sectioning*.
+
+Subtraction is a special case; ``(-2) 1`` won't work, because ``-``
+has a special case that it's treated as ``negate`` withing parenthesis
+like that. ``(subtract 2) 1`` will give the desired effect.
+
+When sectioning operators, pay special attention to the associativity,
+it will change the result.
+
+
+2.10 Let and where
+------------------
+``let`` introduces an expression, so it can be used wherever you can
+have an expression, but ``where`` is a declaration, and is bound to
+the surrounding syntactic construct.
+
+.. TODO import 2.10.1 Exercises: A Head Code
+
+
+2.11 Chapter Exercises
+----------------------
+
+.. TODO import 2.11.1 Parenthesization
+
+.. TODO import 2.11.2 Equivalent expressions
+
+.. TODO import 2.11.3 More fun with functions

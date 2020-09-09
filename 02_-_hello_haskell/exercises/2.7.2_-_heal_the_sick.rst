@@ -1,0 +1,19 @@
+2.7.2 Heal the sick
+^^^^^^^^^^^^^^^^^^^
+The following code samples are broken and won’t compile. The first
+two are as you might enter into the REPL; the third is from a source
+file. Find the mistakes and fix them so that they will.
+
+1. ``area x = 3. 14 * (x * x)`` should be ``let area x = 3.14 * (x * x)``
+2. ``double x = b * 2``         should be ``let double x = x * 2``
+3. this::
+
+     x = 7
+      y = 10
+     f = x + y
+
+   should be this::
+
+     x = 7
+     y = 10
+     f = x + y
