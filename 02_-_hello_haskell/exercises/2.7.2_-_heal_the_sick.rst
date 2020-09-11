@@ -1,0 +1,30 @@
+2.7.2 Heal the sick
+^^^^^^^^^^^^^^^^^^^
+The following code samples are broken and won’t compile. The first
+two are as you might enter into the REPL; the third is from a source
+file. Find the mistakes and fix them so that they will.
+
+1. ``area x = 3. 14 * (x * x)`` should be ``let area x = 3.14 * (x * x)``
+   (Note that since GHC 8.0.1 you no longer have to preface name bindings
+   with ``let`` in ``ghci``.)
+2. ``double x = b * 2``         should be ``let double x = x * 2``
+3. This::
+
+     x = 7
+      y = 10
+     f = x + y
+
+   Won't compile, ghc will make a complaint similar to::
+
+    ~/P/h/0/exercises ❯❯❯ ghc healthesick3.hs
+    [1 of 1] Compiling Main ( healthesick3.hs, healthesick3.o )
+    healthesick3.hs:2:4: error: parse error on input ‘=’
+      |
+    2 |  y = 10
+      |    ^
+
+   ...so we should edit it to remove the extra indentation, like this::
+
+     x = 7
+     y = 10
+     f = x + y

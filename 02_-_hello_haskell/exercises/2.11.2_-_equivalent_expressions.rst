@@ -1,0 +1,37 @@
+2.11.2 Equivalent expressions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Which of the following pairs of expressions will return the same result when
+evaluated? Try to reason them out by reading the code and then enter them into
+the REPL to check your work:
+
+.. raw:: html
+
+   <script id="asciicast-UMQoiUefSKprGZDTGZUzRNgR9"
+   src="https://asciinema.org/a/UMQoiUefSKprGZDTGZUzRNgR9.js"
+   async></script>
+
+1. **equivalent** ::
+
+      1 + 1
+      2
+
+2. **equivalent** ::
+
+      10 ^ 2
+      10 + 9 * 10
+
+3. ::
+
+      400 - 37
+      (-) 37 400
+
+4. ::
+
+      100 `div` 3
+      62
+      100 / 3
+
+5. ::
+
+      2 * 5 + 18
+      2 * (5 + 18)
