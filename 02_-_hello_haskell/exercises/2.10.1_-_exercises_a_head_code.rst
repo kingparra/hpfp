@@ -1,0 +1,111 @@
+2.10.1 Exercises: A Head Code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Now for some exercises. First, determine in your head what
+the following expressions will return, then validate in the
+REPL:
+
+.. An animated terminal recording of questions 1..4. See
+   2.10.1_-_exercises_a_head_code.rst.d/aheadcode.cast for
+   a local copy that you can play with ``asciinema play``.
+.. raw:: html
+
+     <script id="asciicast-OLnV7FKS7A12gggRKHR6XJoCf"
+     src="https://asciinema.org/a/OLnV7FKS7A12gggRKHR6XJoCf.js"
+     async></script>
+
+1. These examples are prefixed with let because they are not
+   declarations, they are expressions.
+
+   ``let x = 5 in x``
+
+   This should return 5. Let's see::
+
+      ·∾ let x = 5 in x
+      5
+
+2. ``let x = 5 in x * x`` should return 25::
+
+      ·∾ let x = 5 in x * x
+      25
+
+3. ``let x = 5; y = 6 in x * y`` should return 30::
+
+      ·∾ let x = 5; y = 6 in x * y
+      30
+
+4. ``let x = 3; y = 1000 in x + 3`` should return 6::
+
+      ·∾ let x = 3; y = 1000 in x + 3
+      6
+
+Above, you entered some let expressions into your REPL to
+evaluate them. Now, we’re going to open a file and rewrite
+some let expressions using where declarations. You will have
+to give the value you’re binding a name, although the name
+can be a single letter if you like. For example::
+
+    -- this should work in GHCi
+    let x = 5; y = 6 in x * y
+
+...could be rewritten as::
+
+    -- practice.hs
+    module Mult1 where
+    -- put this in a file
+    mult1     = x * y
+      where x = 5
+            y = 6
+
+Making the equal signs line up is a stylistic choice. As
+long as things are nested in that way, the equals signs do
+not have to line up. But notice we use a name that we will
+use to refer to this value in the REPL::
+
+    Prelude> :l practice.hs
+    [1 of 1] Compiling Main
+
+The prompt changes to ``*Main`` instead of ``Prelude`` to
+indicate that you have a module called Main loaded.
+
+.. raw:: html
+
+   <script id="asciicast-BUYTSNtZ802s9gRlAv1yawaa7"
+   src="https://asciinema.org/a/BUYTSNtZ802s9gRlAv1yawaa7.js"
+   async></script>
+
+Rewrite with where clauses:
+
+1. ``let x = 3; y = 1000 in x * 3 + y``
+
+   becomes
+
+   .. include:: exercises/2.10.1_-_exercises_a_head_code.rst.d/practice.hs
+      :start-after: module Practice where
+      :end-before: two =
+      :code: haskell
+
+
+2. ``let y = 10; x = 10 * 5 + y in x * 5``
+
+   becomes
+
+   .. include:: exercises/2.10.1_-_exercises_a_head_code.rst.d/practice.hs
+      :start-after: y = 1000
+      :end-before: three =
+      :code: haskell
+
+3. ::
+
+     let x = 7
+         y = negate x
+         z = y * 10
+     in z / x + y
+
+   becomes
+
+   .. include:: exercises/2.10.1_-_exercises_a_head_code.rst.d/practice.hs
+      :start-after: x = 10 * 5 + y
+      :code: haskell
+
+Note: the filename you choose is unimportant except for the
+``.hs`` extension.

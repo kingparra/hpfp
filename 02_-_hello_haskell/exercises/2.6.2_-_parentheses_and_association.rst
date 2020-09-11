@@ -21,7 +21,7 @@ Check your work in GHCi.
   a. ``perimeter x y = (x * 2) + (y * 2)``
   b. ``perimeter x y =  x * 2  +  y * 2``
 
-  These should be the same, since ``*`` has a higher precedence than ``+``::
+  These should be the same, since ``*`` already has a higher precedence than ``+``::
 
     ·∾ perimeter x y = (x * 2) + (y * 2)
     ·∾ perimeter 12 8

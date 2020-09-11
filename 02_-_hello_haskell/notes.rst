@@ -14,30 +14,27 @@ Stack manages the entire tool-chain that you'll typically use for a
 project in an isolated way. Right now we're only interested in it
 because it will provide a way to our execute code.
 
-------------------------------------------------------------------------------------------------
+.. topic:: Setting up a knowledge base
 
-If you're like me, at this point you probably want to set up a small
-knowledge base of resources to learn haskell. Here are some relevant
-links:
+    If you're like me, at this point you probably want to set up a small
+    knowledge base of resources to learn haskell. Here are some relevant
+    links:
 
-* Cheat sheet: https://cheatsheet.codeslower.com/CheatSheet.pdf
-* Haskell in one video, a video cheat sheet: https://www.youtube.com/watch?v=02_H3LjqMr8
-* A survey and orientation guide of the Haskell landscape (tooling,
-  libraries, best practices, some basic language features):
-  http://dev.stephendiehl.com/hask/
-* An excellent video series: https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
-* The GHC manual: https://downloads.haskell.org/ghc/latest/docs/html/users_guide
-* The Haskell 2010 language report: https://www.haskell.org/onlinereport/haskell2010/
+    * `Codeslowers Haskell cheat sheet (pdf) <https://cheatsheet.codeslower.com/CheatSheet.pdf>`_
+    * `Haskell in one video, a video cheat sheet <https://www.youtube.com/watch?v=02_H3LjqMr8>`_
+    * `A survey and orientation guide of the Haskell landscape (tooling,
+      libraries, best practices, some basic language features) <http://dev.stephendiehl.com/hask/>`_
+    * `An excellent video series <https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV>`_
+    * `The GHC users guide <https://downloads.haskell.org/ghc/latest/docs/html/users_guide>`_
+    * `The Haskell 2010 language report <https://www.haskell.org/onlinereport/haskell2010/>`_
 
-I've included a bash script to download these things for you, in pdf
-where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
+    I've included a bash script to download these things for you, in pdf
+    where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
 
-**You will want to bookmark a version of hoogle https://wiki.haskell.org/Hoogle**.
-It's like a search engine for haskell libraries.
+    Hackage is like a search engine for API docs. You'll want to bookmark this.
+    https://wiki.haskell.org/Hoogle
 
-The freenode IRC #haskell channel is incredibly helpful, too.
-
-------------------------------------------------------------------------------------------------
+    The freenode IRC #haskell channel is incredibly helpful, too.
 
 
 2.2 Interacting with Haskell code
@@ -70,11 +67,11 @@ arithmetic, to see if it's working.
 
 ::
 
-  ·∾ 2 + 2
+  Prelude> 2 + 2
   4
-  ·∾ 7 < 9
+  Prelude> 7 < 9
   True
-  ·∾ 10 ^ 2
+  Prelude> 10 ^ 2
   100
 
 As an elaboration of the workflow above, ghci allows you to load
@@ -108,10 +105,9 @@ character. Here are a few useful ones::
 
 For more, check the GHC documentation.
 
---------------------------------------------------------------------------
 
-What is Prelude?
-^^^^^^^^^^^^^^^^
+2.2.2 What is Prelude?
+^^^^^^^^^^^^^^^^^^^^^^
 Prelude is the standard module. It is imported into all Haskell files
 by default, unless there is an explicit import declaration hiding it,
 or the ``NoImplicitPrelude`` compiler extension is enabled, like
@@ -120,8 +116,6 @@ or the ``NoImplicitPrelude`` compiler extension is enabled, like
 Prelude is part of the ``base`` package, which comes with GHC. The
 ``base`` package includes other modules, too. You can read more `here
 <http://dev.stephendiehl.com/hask/#base>`_.
-
---------------------------------------------------------------------------
 
 Here is a function with a type signature for your inspection::
 
@@ -143,8 +137,8 @@ themselves are one big expression made of smaller expressions.
 Declarations are top-level bindings which allow us to name
 expressions.
 
-Normal form
-^^^^^^^^^^^
+2.3.1 Normal form
+^^^^^^^^^^^^^^^^^
 We say that expressions are in *normal form* when there are no more
 evaluation steps that can be taken, or put differently, when they've
 reached an irreducible form. Reducible expressions are also called
@@ -172,8 +166,8 @@ Here's one example of a simple function definition::
   --     ^
   --   parameter
 
-Capitalization matters!
-^^^^^^^^^^^^^^^^^^^^^^^
+2.4.2 Capitalization matters!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Unlike Ada, Nim, and windows batch, identifiers are case sensitive.
 
 ``camelCase`` is the current convention for variables and functions.
@@ -273,8 +267,10 @@ associativity and different precedence. For example::
 
   -- (^) is right associative
   8 + 3 ^ 12 * 3
-  -- Explicitly parenthesised, ()s show associativity, {}s show
-  -- precedence. This isnt real code.
+
+  -- Explicitly parenthesised, ()s show
+  -- associativity, {}s show precedence.
+  --
   (8 +) {({3 (^ 12)} *) 3 }
   -- ^        ^      ^
   -- left    right   left
@@ -282,10 +278,9 @@ associativity and different precedence. For example::
 Fixity is where functions or operators are placed in relation to the
 arguments they consume.
 
-Some examples of fixity are infix, prefix, postfix, `mixfix
-<https://agda.readthedocs.io/en/v2.5.2/language/mixfix-operators.html>`_,
-`circumfix, precircumfix, and postcircumfix
-<https://docs.raku.org/language/functions#Defining_operators>`_.
+Some examples of fixity are infix, prefix, postfix, `circumfix, precircumfix,
+and postcircumfix <https://docs.raku.org/language/functions#Defining_operators>`_,
+or even `mixfix <https://agda.readthedocs.io/en/v2.5.2/language/mixfix-operators.html>`_.
 
 Arity is the number of arguments that a function consumes. A binary
 function takes two arguments. A ternary function takes three. A
@@ -353,7 +348,7 @@ section 2.7 Layout.
 The ``mod`` and ``rem`` functions keep on tripping me up.
 https://ebzzry.io/en/haskell-division/
 
-.. include:: figures/arithmetic_ghci_examples.rst
+.. .. include:: figures/arithmetic_ghci_examples.rst
 
 
 2.8.1 Laws for quotients and remainders
@@ -409,9 +404,10 @@ For example ``(2^)`` is equivalent to ``(^) 2``, or more verbosely
 When you do this by surrounding the function with parenthesis, this is
 sometimes known as *sectioning*.
 
-Subtraction is a special case; ``(-2) 1`` won't work, because ``-``
-has a special case that it's treated as ``negate`` withing parenthesis
-like that. ``(subtract 2) 1`` will give the desired effect.
+Subtraction is a special case; ``(-2) 1`` won't work, because ``-`` has a
+special case that it's treated as ``negate`` within parenthesis and
+prefacing a numeric literal. ``(subtract 2) 1`` will give the desired
+effect.
 
 When sectioning operators, pay special attention to the associativity,
 it will change the result.
@@ -423,14 +419,14 @@ it will change the result.
 have an expression, but ``where`` is a declaration, and is bound to
 the surrounding syntactic construct.
 
-.. TODO import 2.10.1 Exercises: A Head Code
+.. include:: exercises/2.10.1_-_exercises_a_head_code.rst
 
 
 2.11 Chapter Exercises
 ----------------------
 
-.. TODO import 2.11.1 Parenthesization
+.. include:: exercises/2.11.1_-_parenthesization.rst
 
-.. TODO import 2.11.2 Equivalent expressions
+.. include:: exercises/2.11.2_-_equivalent_expressions.rst
 
-.. TODO import 2.11.3 More fun with functions
+.. include:: exercises/2.11.3_-_more_fun_with_functions.rst
