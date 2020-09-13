@@ -31,7 +31,7 @@ because it will provide a way to our execute code.
     I've included a bash script to download these things for you, in pdf
     where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
 
-    Hackage is like a search engine for API docs. You'll want to bookmark this.
+    Hoogle is like a search engine for API docs. You'll want to bookmark this.
     https://wiki.haskell.org/Hoogle
 
     The freenode IRC #haskell channel is incredibly helpful, too.
