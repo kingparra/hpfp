@@ -1,0 +1,129 @@
+3.8.1 Reading syntax
+^^^^^^^^^^^^^^^^^^^^
+
+1. For the following lines of code, read the syntax carefully and decide if they
+   are written correctly. Test them in your REPL after you've decided to check
+   your work. Correct as many as you can.
+
+
+   a. Original:   ``concat [[1,2,3],[4,5,6]]``,
+
+      Prediction: This will work as intended.
+
+      Result::
+
+        ·∾ concat [[1,2,3],[4,5,6]]
+        [1,2,3,4,5,6]
+
+   b. Original:   ``++ [1,2,3] [4,5,6]``
+
+      Prediction: Since ``++`` needs parenthesis in order to be used prefix,
+      this will fail.
+
+      Result::
+
+        ·∾ ++ [1,2,3] [4,5,6]
+        <interactive>:2:1: error: parse error on input ‘++’
+
+   c. Original:  ``(++) "hello" " world"``
+
+      Prediction: This should output ``"hello world"``.
+
+      Result::
+
+          ·∾ (++) "hello" " world"
+          "hello world"
+
+   d. Original:  ``["hello" ++ " world]``
+
+      Prediction: Because this is missing a closing double quote, it will fail
+      with a parse error.
+
+      Result::
+
+        ·∾ ["hello" ++ " world]
+        <interactive>:4:21: error:
+            lexical error in string/character literal at end of input
+
+   e. Original: ``4 !! "hello"``
+
+      Prediction: Since the arguments are in the wrong order, it will result in
+      a type error.
+
+      Result::
+
+        ·∾ 4 !! "hello"
+        <interactive>:6:1: error:
+            • Non type-variable argument in the constraint: Num [a]
+              (Use FlexibleContexts to permit this)
+            • When checking the inferred type
+                it :: forall a. Num [a] => a
+
+   f. Original: ``(!!) "hello" 4``
+
+      Prediction: This should return ``'o'``.
+
+      Result::
+
+        ·∾ (!!) "hello" 4
+        'o'
+
+   g. Original: ``take "4 lovely"``
+
+      Prediction: ``take`` is missing an argument. ``4`` should be outside the
+      quotes. This will result in some kind of error.
+
+      Result::
+
+
+        ·∾ take "4 lovely"
+        <interactive>:8:6: error:
+            • No instance for (Data.String.IsString Int)
+                arising from the literal ‘"4 lovely"’
+            • In the first argument of ‘take’, namely ‘"4 lovely"’
+              In the expression: take "4 lovely"
+              In an equation for ‘it’: it = take "4 lovely"
+
+   h. Original: ``take 3 "awesome"``
+
+      Prediction: ``"awe"``
+
+      Result::
+
+        ·∾ take 3 "awesome"
+        "awe"
+
+2.  Read the code and figure out which results came from which lines of code.
+    Be sure to test them in the REPL.
+
+    a) ``concat [[1 * 6], [2 * 6], [3 * 6]]``  -->  d) ``[6,12,18]``::
+
+          ·∾ concat [[1*6],[2*6],[3*6]]
+          [6,12,18]
+
+    b) ``"rain" ++ drop 2 "elbow"``            -->  c) ``"rainbow"``::
+
+          ·∾ "rain" ++ drop 2 "elbow"
+          "rainbow"
+
+    c) ``10 * head [1, 2, 3]``                 -->  e) ``10``::
+
+          ·∾ 10 * head [1,2,3]
+          10
+
+    d) ``(take 3 "Julie") ++ (tail "yes")``    -->  a) ``"Jules"``::
+
+          ·∾ (take 3 "Julie") ++ (tail "yes")
+          "Jules"
+
+    e) ``concat [tail [1, 2, 3], tail [4, 5, 6], tail [7, 8, 9]]`` -->  b) ``[2,3,5,6,8,9]``
+
+       ::
+
+          ·∾ :{
+           ⋮ concat [ tail [1,2,3]
+           ⋮        , tail [4,5,6]
+           ⋮        , tail [7,8,9]
+           ⋮        ]
+           ⋮ :}
+          [2,3,5,6,8,9]
