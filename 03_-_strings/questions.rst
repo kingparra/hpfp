@@ -26,6 +26,11 @@ treats them literally)?
 
 * https://hackage.haskell.org/package/raw-strings-qq
 
+  ::
+
+    {-# LANGUAGE QuasiQuotes #-}
+    import Text.RawString.QQ
+    putStrLn $ "regex is" ++ [r|\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}|]
 
 Is there anything similar to a triple quoted string, or heredoc, that I can use
 to quote a block of text and indent it properly without including that extra
@@ -37,11 +42,11 @@ leading indentation in the string itself?
 
     {-# LANGUAGE QuasiQuotes #-}
     import Text.Heredoc
-    famousQuote = [str|Any dictator would admire the
-                      |uniformity and obedience of the U.S. media.
-                      |
-                      |    -- Noam Chomsky
-                      |]
+    famousQuote = 
+      [str|Any dictator would admire the
+          |uniformity and obedience of the U.S. media.
+          |  -- Noam Chomsky
+          |]
 
 
 Are unix paths represented as strings? If not, what type do they use and how
