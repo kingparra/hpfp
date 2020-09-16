@@ -11,12 +11,17 @@
 
    .. raw:: html
 
-      <script id="asciicast-2kGsByYbOsJ93sBIbjlZFvHNs"
-      src="https://asciinema.org/a/2kGsByYbOsJ93sBIbjlZFvHNs.js"
+      <script id="asciicast-hIsJgpbHxXLAQfnLs9UuXPoSt"
+      src="https://asciinema.org/a/hIsJgpbHxXLAQfnLs9UuXPoSt.js"
       async></script>
 
 2. Now take each of the above and rewrite it in a source file as a general
    function that can take different string inputs.
+
+   .. include:: exercises/3.8.2_-_building_functions.rst.d/building-functions/src/Lib.hs
+      :start-after: -- Questions 1 and 2, page 83..84
+      :end-before: -- Question 3, page 84
+      :code: haskell
 
 3. Write a function of type ``String -> Char`` that returns the third character
    in a ``String``.
