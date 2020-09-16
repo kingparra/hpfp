@@ -1,0 +1,36 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 7c412a5265f90fb2541b991e6f05509f81833f2a1aaf7b01fd93ebc8aced44e1
+
+name:           building-functions
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_building_functions
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite building-functions-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_building_functions
+  hs-source-dirs:
+      test
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , building-functions
+    , hspec
+  default-language: Haskell2010

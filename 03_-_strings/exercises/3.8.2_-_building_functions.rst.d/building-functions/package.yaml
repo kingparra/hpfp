@@ -1,0 +1,12 @@
+---
+name: building-functions
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+  exposed-modules: Lib
+tests:
+  building-functions-test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies: [building-functions, hspec, QuickCheck]
+...
