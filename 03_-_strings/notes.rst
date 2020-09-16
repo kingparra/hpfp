@@ -18,18 +18,19 @@ enclosed in double quotes. Single quotes are reserved for characters.
 When you query the type of a string in the repl, its composite nature
 becomes apparent::
 
-  Prelude> : type "Hello!"
+  Prelude> :type "Hello!"
   "Hello!" :: [Char]
 
 Sometimes you may see ``String`` in type signatures. This is really a
 type alias for ``[Char]``.
 
 Functions related to strings:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``putStr`` print a string
 * ``putStrLn`` print a string with a newline appended
 * ``show`` convert a datatype to a string representation -- not all types
   implement this function, only types that have instances of the ``Show`` type
-  class methods do. Think of this like ``__repr__`` in Python.
+  class do. Think of this like ``__repr__`` in Python.
 * ``print`` this is like ``putStrLn . show``
 
 
