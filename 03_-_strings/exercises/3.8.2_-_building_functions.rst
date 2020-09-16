@@ -1,0 +1,30 @@
+3.8.2 Building functions
+------------------------
+1. Write functions in your repl to transform these inputs to their corresponding
+   outputs using the list manipulation functions mentioned in the chapter,
+   particularly ``take`` and ``drop``. They only need to work for the particular
+   inputs provided. Do them directly in your REPL.
+
+   a. Given ``"Curry is awesome"`` return ``"Curry is awesome!"``
+   b. Given ``"Curry is awesome"`` return ``"y"``
+   c. Given ``"Curry is awesome"`` return ``"awesome!"``
+
+   .. raw:: html
+
+      <script id="asciicast-2kGsByYbOsJ93sBIbjlZFvHNs"
+      src="https://asciinema.org/a/2kGsByYbOsJ93sBIbjlZFvHNs.js"
+      async></script>
+
+2. Now take each of the above and rewrite it in a source file as a general
+   function that can take different string inputs.
+
+3. Write a function of type ``String -> Char`` that returns the third character
+   in a ``String``.
+
+4. ... I don't understand what this question is asking me to do.
+
+5. Write a function called ``rvrs`` that takes the string ``"Curry is awesome"``
+   and returns ``"awesome is Curry"``. You're expected only to slice and dice
+   this particular string, not write a general purpose function.
+
+6. Put ``rvrs`` in a module and run it.
