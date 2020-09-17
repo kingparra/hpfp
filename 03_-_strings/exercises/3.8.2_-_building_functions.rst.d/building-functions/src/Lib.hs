@@ -11,12 +11,12 @@ c x = drop 9 x
 thirdLetter x = x !! 2
 
 -- Question 4, page 85
--- I don't understand this question?!
+letterIndex x = "Curry is awesome" !! (x+1)
 
 -- Question 5, page 85
 -- rvrs = reverse . words . filter (not . isPunctuation)
 rvrs = awesome ++ is ++ curry
-  where 
+  where
     x = "Curry is awesome!" :: String
     curry     = take (length "Curry") x
     isAwesome = drop (length "Curry ") x

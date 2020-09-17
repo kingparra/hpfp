@@ -1,9 +1,9 @@
 3.8.2 Building functions
 ------------------------
 1. Write functions in your repl to transform these inputs to their corresponding
-   outputs using the list manipulation functions mentioned in the chapter,
-   particularly ``take`` and ``drop``. They only need to work for the particular
-   inputs provided. Do them directly in your REPL.
+   outputs using only the list processing features mentioned in the chapter
+   [#1]. Don't write a general purpose function -- these only need to work for
+   the inputs provided.
 
    a. Given ``"Curry is awesome"`` return ``"Curry is awesome!"``
    b. Given ``"Curry is awesome"`` return ``"y"``
@@ -26,10 +26,33 @@
 3. Write a function of type ``String -> Char`` that returns the third character
    in a ``String``.
 
+   .. include:: exercises/3.8.2_-_building_functions.rst.d/building-functions/src/Lib.hs
+      :start-after: -- Question 3, page 84
+      :end-before: -- Question 4, page 85
+      :code: haskell
+
 4. ... I don't understand what this question is asking me to do.
+
+   .. include:: exercises/3.8.2_-_building_functions.rst.d/building-functions/src/Lib.hs
+      :start-after: -- Question 4, page 84
+      :end-before: -- Question 5, page 85
+      :code: haskell
 
 5. Write a function called ``rvrs`` that takes the string ``"Curry is awesome"``
    and returns ``"awesome is Curry"``. You're expected only to slice and dice
-   this particular string, not write a general purpose function.
+   this particular string with ``take`` and ``drop``, not write a general
+   purpose function.
+
+   .. include:: exercises/3.8.2_-_building_functions.rst.d/building-functions/src/Lib.hs
+      :start-after: -- Question 5, page 85
+      :end-before: -- Question 6, page 85
+      :code: haskell
 
 6. Put ``rvrs`` in a module and run it.
+
+   .. include:: exercises/3.8.2_-_building_functions.rst.d/building-functions/src/Lib.hs
+      :start-after: -- Question 6, page 85
+      :code: haskell
+
+.. rubric:: Footnotes
+.. [#1] Namely ``(++)``, ``concat``, ``(:)``, ``head``, ``tail``, ``take``, ``drop``, and ``(!!)``.
