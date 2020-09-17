@@ -1,0 +1,64 @@
+3.4.1 Exercises: Scope
+^^^^^^^^^^^^^^^^^^^^^^
+1. These lines of code are from a REPL session ::
+
+      Prelude> x = 5
+      Prelude> y = 7
+      Prelude> z = x * y
+
+   Is ``y`` in scope for ``z``?
+
+   * Yes, and here's proof::
+
+      ·∾ x = 5
+      ·∾ y = 7
+      ·∾ z = x * y
+      ·∾ z
+      35
+
+2. These lines of code are from a REPL session::
+
+      Prelude> f = 3
+      Prelude> g = 6 * f + h
+
+   Is ``h`` in scope for ``g``? Go with your gut here.
+
+   * No, we haven't defined ``h`` anywhere that I can see. Proof::
+
+       ·∾ f = 3
+       ·∾ g = 6 * f + h
+       <interactive>:7:13: error: Variable not in scope: h
+
+3. This code sample is from a source file::
+
+       area d = pi * (r * r)
+       r = d / 2
+
+   Is everything we need to execute ``area`` in scope?
+
+   * Well, no. Since ``d`` isn't defined, there should be some sort of error::
+
+        ·∾ :l area.hs
+        [1 of 1] Compiling Main             ( area.hs, interpreted )
+
+        area.hs:2:5: error: Variable not in scope: d
+          |
+        2 | r = d / 2
+          |     ^
+        Failed, no modules loaded.
+
+4. This code is also from a source file::
+
+       area d = pi * (r * r)
+         where r = d / 2
+
+   Now are ``r`` and ``d`` in scope for ``area``?
+
+   * In this case, yes. This is because ``r`` is now local to the area functions
+     scope, the parameter ``d`` is visible to it::
+
+        ·∾ :l tst.hs
+        [1 of 1] Compiling Main             ( tst.hs, interpreted )
+        Ok, one module loaded.
+        ·∾ area 88
+        6082.12337734984
