@@ -1,6 +1,6 @@
 ---
 name: building-functions
-dependencies: base >= 4.7 && < 5
+dependencies: base
 library:
   source-dirs: src
   exposed-modules: Lib

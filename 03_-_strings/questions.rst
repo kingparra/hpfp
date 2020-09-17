@@ -75,3 +75,5 @@ What is QuasiQuotes?
 
 
 What is TemplateHaskell?
+
+Does Haskell have a nice templating engine like Pythons Jinja2?

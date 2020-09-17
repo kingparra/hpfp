@@ -6,8 +6,8 @@
    the inputs provided.
 
    a. Given ``"Curry is awesome"`` return ``"Curry is awesome!"``
-   b. Given ``"Curry is awesome"`` return ``"y"``
-   c. Given ``"Curry is awesome"`` return ``"awesome!"``
+   b. Given ``"Curry is awesome!"`` return ``"y"``
+   c. Given ``"Curry is awesome!"`` return ``"awesome!"``
 
    .. raw:: html
 
@@ -31,12 +31,13 @@
       :end-before: -- Question 4, page 85
       :code: haskell
 
-4. ... I don't understand what this question is asking me to do.
+4. This should return the character from ``"Curry is awesome!"`` at the
+   requested position (index + 1).
 
    .. include:: exercises/3.8.2_-_building_functions.rst.d/building-functions/src/Lib.hs
-      :start-after: -- Question 4, page 84
+      :start-after: -- Question 4, page 85
       :end-before: -- Question 5, page 85
-      :code: haskell
+      :code:
 
 5. Write a function called ``rvrs`` that takes the string ``"Curry is awesome"``
    and returns ``"awesome is Curry"``. You're expected only to slice and dice

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7c412a5265f90fb2541b991e6f05509f81833f2a1aaf7b01fd93ebc8aced44e1
+-- hash: a4df6c93fac643467d5e116f43bdd985340d4be55fedecdf953fba82a52c01ef
 
 name:           building-functions
 version:        0.0.0
@@ -18,7 +18,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      base
   default-language: Haskell2010
 
 test-suite building-functions-test
@@ -30,7 +30,7 @@ test-suite building-functions-test
       test
   build-depends:
       QuickCheck
-    , base >=4.7 && <5
+    , base
     , building-functions
     , hspec
   default-language: Haskell2010
