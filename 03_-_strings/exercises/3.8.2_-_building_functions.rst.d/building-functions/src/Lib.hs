@@ -11,7 +11,7 @@ c x = drop 9 x
 thirdLetter x = x !! 2
 
 -- Question 4, page 85
-letterIndex x = "Curry is awesome" !! (x+1)
+letterIndex x = "Curry is awesome" !! (x-1)
 
 -- Question 5, page 85
 -- rvrs = reverse . words . filter (not . isPunctuation)
