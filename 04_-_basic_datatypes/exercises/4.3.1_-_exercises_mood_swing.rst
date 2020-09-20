@@ -1,0 +1,40 @@
+4.3.1 Exercises: Mood Swing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given this datatype, answer the following questions::
+
+  data Mood = Blah | Woot deriving Show
+
+1. What is the type constructor, or name of this type?
+
+   * ``Mood``
+
+2. If the function requires a Mood value, what are the values you could possibly
+   use?
+
+   * ``Blah`` or ``Woot``
+
+3. We're writing a function called ``changeMood``, and so far it has the type
+   signature ``changeMood :: Mood -> Woot``. What's wrong with that?
+
+   * ``Woot`` is a data constructor, and not a type constructor, or type name.
+     In other words, ``Woot`` is a value, and not a type. The signature should
+     be written as ``changeMood :: Mood -> Mood``, instead.
+
+4. Fix any mistakes and complete the function::
+
+     changeMood Mood = Woot
+     changeMood    _ = Blah
+
+   * This should instead be::
+
+     changeMood Blah = Woot
+     changeMood Woot = Blah
+
+5. Enter all of the above into a source file, load it into ghci, and run it to
+   make sure you got it right.
+
+   .. raw:: html
+
+      <script id="asciicast-iOFAE9N7ABJQ5PArwCFafeY0I"
+      src="https://asciinema.org/a/iOFAE9N7ABJQ5PArwCFafeY0I.js"
+      async></script>
