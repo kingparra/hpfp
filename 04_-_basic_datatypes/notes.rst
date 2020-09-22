@@ -10,7 +10,7 @@ In this chapter, we will:
 * review types we have seen in previous chapters;
 * learn about datatypes, type constructors, and data constructors;
 * work with predefined datatypes;
-* introduce boolean functions and if-then-else expressions;
+* introduce control flow with if-then-else expressions;
 * learn more about type signatures and a bit about type classes.
 
 
@@ -295,8 +295,13 @@ length. All elements of the list must be of the same type.
 
 4.9 Chapter Exercises
 ---------------------
+For these exercises, you'll need these definitions in scope at the repl::
 
-.. TODO import:: exercises/4.9.1_-_untitled.rst
+  awesome = ["Papuchon", "curry", ":)"]
+  also = ["Quake", "The Simons"]
+  allAwesome = [awesome, also]
+
+.. include:: exercises/4.9.1_-_untitled.rst
 
 .. TODO import:: exercises/4.9.2_-_correcting_syntax.rst
 

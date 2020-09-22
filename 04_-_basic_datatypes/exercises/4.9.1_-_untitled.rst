@@ -1,0 +1,137 @@
+4.9.1 Untitled
+^^^^^^^^^^^^^^
+Here is a terminal recording where I answer all of the exercises. The answers
+below are mostly copy-pasted from that, with the exception of 9 and 10, which
+were incorrect in the recording.
+
+.. raw:: html
+
+   <script id="asciicast-zBA9cBKsET285DKIhADgLFtTz"
+   src="https://asciinema.org/a/zBA9cBKsET285DKIhADgLFtTz.js"
+   async></script>
+
+1. What do you think the type signature of ``length`` is?
+
+   * ``length :: Num b => [a] -> b`` was my guess. It turns out that it's
+     ``length :: Foldable t => t a -> Int``, instead.
+
+2. What are the results of the following expressions?
+
+    a. ``length [1,2,3,4,5]``         --> ``5``
+    b. ``length [(1,2),(2,3),(3,4)]`` --> ``3``
+    c. ``length allAwesome``          --> ``2``
+    d. ``length (concat allAwesome)`` --> ``5``
+
+3. Determine which expression of ``6 / 3`` and ``6 / length [1,2,3]`` will throw
+   an error and explain why::
+
+     ·∾ :type (/)
+     (/) :: Fractional a => a -> a -> a
+
+     ·∾ :type length
+     length :: Foldable t => t a -> Int
+
+     ·∾ 6 / 3 -- this should work
+     2.0
+
+     ·∾ 6 / length [1,2,3] -- (/) will expect a Fractional, but get an Int from length ... This should fail with a type error
+     <interactive>:24:1: error:
+         • No instance for (Fractional Int) arising from a use of ‘/’
+         • In the expression: 6 / length [1, 2, 3]
+           In an equation for ‘it’: it = 6 / length [1, 2, 3]
+ 
+      ·∾ 6 / fromIntegral (length [1,2,3])
+      2.0
+
+4. How can you fix the code from the previous question using a different
+   division function/operator? ::
+
+     ·∾ 6 `div` length [1,2,3] -- div operates on Integrals instead of Fractionals, so this should work
+     2
+
+5. What is the type of the expression ``2 + 3 == 5``? What would we expect as a
+   result? ::
+
+     ·∾ -- 2 + 3 == 5 should have the type of Bool, I think
+     ·∾ :type 2 + 3 == 5
+     2 + 3 == 5 :: Bool
+
+     ·∾ 2 + 3 == 5 -- This should evaluate to True
+     True
+
+6. What are the type and expected result values of the following::
+
+     ·∾  x = 5
+     ·∾  x + 3 == 5
+
+   Here::
+
+     ·∾ x = 5
+     ·∾ :type x
+     x :: Num p => p
+
+     ·∾ :type x + 3 == 5
+     x + 3 == 5 :: Bool
+     ·∾ x + 3 == 5
+     False
+
+7. Which of the following expressions will work, and why? ::
+
+     ·∾ length allAwesome == 2 -- True
+     True
+
+     ·∾ length [1,'a',3,'b'] -- type error, lists members must be of the same type
+     <interactive>:45:9: error:
+         • No instance for (Num Char) arising from the literal ‘1’
+         • In the expression: 1
+           In the first argument of ‘length’, namely ‘[1, 'a', 3, 'b']’
+           In the expression: length [1, 'a', 3, 'b']
+
+     ·∾ length allAwesome + length awesome -- this should work
+     5
+
+     ·∾ (8 == 8) && ('b' < 'a') -- True && False => False
+     False
+
+     ·∾ -- (&&) needs Bool, but will get a number
+     ·∾ (8 == 8) && 9
+     <interactive>:48:13: error:
+         • No instance for (Num Bool) arising from the literal ‘9’
+         • In the second argument of ‘(&&)’, namely ‘9’
+           In the expression: (8 == 8) && 9
+           In an equation for ‘it’: it = (8 == 8) && 9
+
+8. Write a palindrome function, using ``reverse``::
+
+     ·∾ isPalindrome x = x == reverse x
+     ·∾ isPalindrome "racecar"
+     True
+     ·∾ isPalindrome "umbrella"
+     False
+     ·∾ isPalindrome "bob"
+     True
+     ·∾ isPalindrome [1,2,3,2,1]
+     True
+
+9. Write a function to return the absolute value of a number using
+   if-then-else::
+
+     ·∾ myAbs x = if signum x == (-1) then negate x else x
+     ·∾ myAbs 8
+     8
+     ·∾ myAbs (-8)
+     8
+     ·∾ myAbs (-20)
+     20
+     ·∾ myAbs 0
+     0
+
+10. Fill in the definition of the function ``f :: (a, b) -> (c, d) -> ((b, d),
+    (a, c))`` using ``fst`` and ``snd``::
+
+      ·∾ :{
+      ·∾ f :: (a,b) -> (c,d) -> ((b,d),(a,c))
+      ·∾ f x y = ((snd x, snd y),(fst x, fst y))
+      ·∾ :}
+      ·∾ f (1,2) (3,4)
+      ((2,4),(1,3))
