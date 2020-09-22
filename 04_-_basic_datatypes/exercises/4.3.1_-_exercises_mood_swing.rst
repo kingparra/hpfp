@@ -27,8 +27,8 @@ Given this datatype, answer the following questions::
 
    * This should instead be::
 
-     changeMood Blah = Woot
-     changeMood Woot = Blah
+       changeMood Blah = Woot
+       changeMood Woot = Blah
 
 5. Enter all of the above into a source file, load it into ghci, and run it to
    make sure you got it right.
