@@ -305,4 +305,4 @@ For these exercises, you'll need these definitions in scope at the repl::
 
 .. include:: exercises/4.9.2_-_correcting_syntax.rst
 
-.. TODO import:: exercises/4.9.3_-_match_the_function_names_to_their_types.rst
+.. include:: exercises/4.9.3_-_match_the_function_names_to_their_types.rst
