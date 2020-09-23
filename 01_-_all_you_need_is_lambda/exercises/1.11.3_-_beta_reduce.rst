@@ -97,11 +97,6 @@ checking my work easier. Sorry for the painful verbosity.)
  |  -- alpha equiv so params don't look like the free variable a
  |  (λd.dd)(λb.ba)c
  |
- |  [d:=(λb
- |
- |  -- alpha equiv so params don't look like the free variable a
- |  (λd.dd)(λb.ba)c
- |
  |  [d:=(λb.ba)]
  |  (λb.ba)(λb.ba)c
  |
