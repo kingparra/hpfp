@@ -1,0 +1,52 @@
+4.9.2 Correcting syntax
+^^^^^^^^^^^^^^^^^^^^^^^
+Correct the code and try it out on GHCi.
+
+1. We want a function that returns the length of a string + 1.
+
+   Original::
+
+     x = (+)
+     F xs = w 'x' 1
+       where w = length xs
+
+   Corrected::
+            
+     ·∾ x = (+)
+     ·∾ f l = x w 1 where w = length l
+     ·∾ f "this"
+     5
+
+     ·∾  -- or, more simply
+
+     ·∾ f s = length s + 1
+     ·∾ f "this"
+     5
+
+2. This is supposed to be the identity function, ``id``.
+
+   Original::
+
+    \X = x
+
+   Corrected::
+
+    ·∾ (\x -> x) (1,2)
+    (1,2)
+
+    ·∾ id'' x = x
+    ·∾ id'' True
+    True
+
+3. When fixed, this function will return 1 from the value ``(1,2)``.
+
+   Original::
+
+    f (a b) = A
+
+   Corrected::
+
+    ·∾ f (a,b) = a
+    ·∾ f (1,2)
+    1
+
