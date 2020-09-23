@@ -15,6 +15,8 @@ Contents
    02_-_hello_haskell/notes
    03_-_strings/notes
    03_-_strings/questions
+   04_-_basic_datatypes/notes
+   04_-_basic_datatypes/questions
 
 
 Indices and tables
