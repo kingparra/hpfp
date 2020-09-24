@@ -1,0 +1,46 @@
+4.9.3 Match the function names to their types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Which of the following types is the type of show?
+
+  a. ``show a => a -> String``
+  b. ``Show a -> a -> String``
+  c. ``Show a => a -> String`` 
+     **This one; => is for type class contraints,
+     and Show must be capatolized**::
+
+        ·∾ :type show
+        show :: Show a => a -> String
+
+2. Which of the following types is the type of (==)?
+
+  a. ``a -> a -> Bool``
+  b. ``Eq a => a -> a -> Bool`` **thisaone**::
+
+        ·∾ :type (==)
+        (==) :: Eq a => a -> a -> Bool
+
+  c. ``Eq a -> a -> a -> Bool``
+  d. ``Eq a => A -> Bool``
+
+3. Which of the following types is the type of ``fst``?
+
+  a. ``(a, b) -> a`` **this looks right**::
+
+        ·∾ :type fst
+        fst :: (a, b) -> a
+
+  b. ``b -> a``
+  c. ``(a, b) -> b``
+
+4. Which of the following types is the type of ``(+)``?
+
+   a. ``(+) :: Num a -> a -> a -> Bool``
+   b. ``(+) :: Num a => a -> a -> Bool``
+   c. ``(+) :: num a => a -> a -> a`` **This one!** ::
+
+        ·∾ :type (+)
+        (+) :: Num a => a -> a -> a
+
+   d. ``(+) :: Num a => a -> a -> a``
+   e. ``(+) :: a -> a -> a``

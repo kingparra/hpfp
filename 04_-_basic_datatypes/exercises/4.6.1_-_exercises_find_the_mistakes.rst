@@ -1,0 +1,8 @@
+4.6.1 Exercises: Find the Mistakes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. ``not True && true``            should be  ``not True && True``
+2. ``not (x = 6)``                 should be  ``not (x == 6)``
+3. ``(1 * 2) > 5``
+4. ``[Merry] > [Happy]``           should be  ``"Merry" > "Happy"``
+   , unless ``Merry`` and ``Happy`` are data constructors.
+5. ``[1, 2, 3] ++ "look at me!"``  should be  ``"123" ++ "look at me!"``
