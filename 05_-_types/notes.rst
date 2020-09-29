@@ -126,13 +126,18 @@ idea.
       check out "Type Systems" by Luca Cardelli, published by Microsoft Research.
 
 So types let us think at a higher level of abstraction, and prevent execution
-errors (such as, but not limited to, unintended memory access, or operations
-that don't make semantic sense, like adding numbers to strings).
+errors. 
+
+Execution errors include things such as, unintended memory access, or
+operations that don't make semantic sense, like adding numbers to strings.
 
 In Haskell, type-checking occurs at compile time.
 
 No type system can eliminate all possibility for error, so runtime errors and
 exceptions still exist, and testing of program is necessary.
+
+Some possible errors that well-typed programs can exhibit are listed `here
+<https://ucsd-progsys.github.io/liquidhaskell-tutorial/Tutorial_01_Introduction.html>`_.
 
 Good type systems can also enable compiler optimizations because the compiler
 can know and predict certain things about the execution of a program based on
@@ -308,7 +313,7 @@ Monomorphic
     to help you get a sense of their meaning intuitively before chasing
     down links on wikipedia.
 
-    I stolen this section from `John Chandler Burnhams detailed notes on HPFP
+    I stole this section from `John Chandler Burnhams detailed notes on HPFP
     <https://www.johnchandlerburnham.com/ projects/hpfp/05/>`_.
 
     +------------+---------------+------------+---------------+
