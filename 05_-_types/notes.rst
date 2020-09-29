@@ -1,11 +1,11 @@
 ******************
  Chapter 5: Types
 ******************
-The poem quoted on the chapter title page comes from `here
+`The Idea of Order at Key West
 <https://www.poetryfoundation.org/poems/43431/the-idea-of-order-at-key-west>`_.
 
-Now, here are some quotes about types from various external resources that I
-found interesting.
+Here are some quotes about types from various external resources that I find
+interesting.
 
 .. epigraph::
 
@@ -89,14 +89,13 @@ idea.
 
                                    . . .
 
-
    In computer memory, what is the bit-wise boolean or of a character and a
    machine operation? In Lisp, what is the effect of treating an arbitrary
    S-expression as a program? **In the λ-calculus, what is the effect of a
    conditional over a non-boolean value?** [Ed; One example of this was the
-   definition of our isZero test, Z, from Rojas' paper, which has you treat 0
-   as true.] In set theory, what is the set-union of the function successor and
-   the function predecessor?
+   definition of our isZero test, Z, from Rojas' paper, which has you treat
+   0 as true, since they have the same representation.] In set theory, what
+   is the set-union of the function successor and the function predecessor?
 
    Such questions are the unfortunate consequence of organizing untyped
    universes without going all the way to typed systems; it is then meaningful
@@ -123,18 +122,12 @@ idea.
    programs and data.
 
    -- Luca Cardelli, from "On Understanding Types, Data Abstraction, and
-      Polymorphism", from Section 1.1 "Organizing Untyped Universes". Also 
+      Polymorphism", from Section 1.1 "Organizing Untyped Universes". Also
       check out "Type Systems" by Luca Cardelli, published by Microsoft Research.
 
 So types let us think at a higher level of abstraction, and prevent execution
-errors (such as, but not limited to, unintended memory access).
-
-"Constraining the way objects may interact with other objects" inspires the
-possibility of enforcing protocols of permissible state changes by modelling the
-domain using abstract types. `Here's <http://raganwald.com/2018/02/23/forde.html>`_
-a blog post about just that. I'm probably overstating things, here; I've never
-even tried. I mean, I've only been programming for two years, and I still kind
-of suck at it. Can you tell I'm hyped, though?
+errors (such as, but not limited to, unintended memory access, or operations
+that don't make semantic sense, like adding numbers to strings).
 
 In Haskell, type-checking occurs at compile time.
 
@@ -143,7 +136,7 @@ exceptions still exist, and testing of program is necessary.
 
 Good type systems can also enable compiler optimizations because the compiler
 can know and predict certain things about the execution of a program based on
-the types. 
+the types.
 
 Furthermore, types can serve as documentation of your program.
 
@@ -153,13 +146,13 @@ you're passing the right sort of data around.
 
 5.3 How to read type signatures
 -------------------------------
-The compiler doesn't know which specific numeric types a value is
-until the type is either declared or the compiler is forced to infer
-a specific type based on the function. 
+The compiler doesn't know which specific numeric types a value is until the type
+is either declared or the compiler is forced to infer a specific type based on
+the function.
 
-Instead, it gives the numeric literal type type with the broadest
-applicability (most polymorphic) and says it's a constrained
-polymorphic ``:: Num a => a`` value.
+Instead, it gives the numeric literal type type with the broadest applicability
+(most polymorphic) and says it's a constrained polymorphic ``:: Num a => a``
+value.
 
 5.3.1 Understanding the function type
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -197,19 +190,238 @@ output to transform the parameters value.
 5.3.2 Type class constrained type variables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``Num a => a -> a`` reads "for the polymorphic type a which has an
-instance of the Num type class, a returning a" or more simply "Num
-constrained a to a". This is known as a type class constraint, or
-constraint.
+instance of the ``Num`` type class, a returning a" or more simply
+"``Num`` constrained ``a`` to ``a``". This is known as a type class
+constraint, or constraint.
 
-Typeclasses offer a standard set of functions that can be used across
+In this signature, ``a`` is still polymorphic, but constrained to types the
+implement the type class ``Num``.
+
+Type classes offer a standard set of functions that can be used across
 several concrete types.
 
 A type signature might have multiple type class constraints on one or
 more of the variables.
+
+Here's and example of what constrained type signatures can look like::
+
+  -- multiple expressions can be annotated with a type at the same time
+  (+), (-) :: Num a => a -> a -> a
+
+  -- a and b have are constrained to types that implement Num
+  :: (Num a, Num b) => a -> b -> b
+
+  -- a is constrained to types that implement both Num and Ord
+  :: (Ord a, Num a) => a -> a -> Ordering
+
+  -- ...another way to write it...
+  :: Ord a => Num a => a -> a -> Ordering
+
+The syntax used to denote multiple required type classes that resembles a tuple
+in the type class constraint (everything between the ``::`` and ``=>``) does not
+show up on the term level. It does, however show up in the kind signature. For
+example ``:kind Eq`` will return ``Eq :: * -> Constraint``.
 
 .. include:: exercises/5.3.3_-_type_matching.rst
 
 
 5.4 Currying
 ------------
+All functions in Haskell take one argument, and return one result.
+Currying refers to the nesting of multiple functions,e ac accepting
+one argument and returning one result, to allow the illusion of
+multiple parameter functions.
+
+Each arrow in a type signature represents one argument and one
+result, with the final type being the final result.
+
 .. include:: exercises/5.4.5_-_type_arguments.rst
+
+5.4.1 Partial application
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The ability to apply only some of a functions arguments is called partial
+application.
+
+5.4.2 Manual currying and uncurrying
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Uncurried functions: One function, many arguments.
+* Curried functions: Many functions, one argument apiece.
+
+You can convert the two with the ``curry`` and ``uncurry`` functions, or by
+using pattern matching, or breaking out parameters into multiple nested lambdas.
+
+::
+
+  ·∾ f x y = x+y
+  ·∾ g (x,y) = x+y
+
+  ·∾ :type uncurry f
+  uncurry f :: Num c => (c, c) -> c
+  ·∾ :type g
+  g :: Num a => (a, a) -> a
+
+  ·∾ :type curry g
+  curry g :: Num t => t -> t -> t
+  ·∾ :type f
+  f :: Num a => a -> a -> a
+
+  ·∾ g (1,2) == f 1 2
+  True
+
+5.4.3 Sectioning
+^^^^^^^^^^^^^^^^
+The term sectioning specifically refers to partial application of infix
+operators. It looks something like this::
+
+  ·∾  twoSupN = (2^)
+  ·∾  twoSupN 5
+  32
+
+  ·∾  nSupTwo = (^2)
+  ·∾  nSupTwo 5
+  25
+
+.. include:: exercises/5.4.5_-_type_arguments.rst
+
+
+5.5 Polymorphism
+----------------
+Polymorphic
+
+  poly- "many", morph "form", -ic "made of"
+
+  "made of many forms"
+
+Monomorphic
+
+  mono- "one", morph "form", -ic "made of"
+
+  "made of one form"
+
+.. topic:: Geek words, greek roots
+
+    You'll probably encounter more than a few greek words in functional
+    programming. Concepts from category theory and logic regularly come
+    up in conversation online.
+
+    Here is a small sample of some of Greek word roots you may encounter
+    to help you get a sense of their meaning intuitively before chasing
+    down links on wikipedia.
+
+    I stolen this section from `John Chandler Burnhams detailed notes on HPFP
+    <https://www.johnchandlerburnham.com/ projects/hpfp/05/>`_.
+
+    +------------+---------------+------------+---------------+
+    |   Root     |   Meaning     |   Root     |   Meaning     |
+    +============+===============+============+===============+
+    | hyle       |    matter     | isos       |    equal      |
+    +------------+---------------+------------+---------------+
+    | morphe     |     form      | ana        |       up      |
+    +------------+---------------+------------+---------------+
+    | polys      |     many      | kata       |     down      |
+    +------------+---------------+------------+---------------+
+    | monos      |      one      | epi        |     upon      |
+    +------------+---------------+------------+---------------+
+    | autos      |     self      | meta       |  beyond, with |
+    +------------+---------------+------------+---------------+
+    | endon      |       in      | para       |   beside      |
+    +------------+---------------+------------+---------------+
+    | ectos      |      out      | meter      |  measure      |
+    +------------+---------------+------------+---------------+
+
+In Haskell, polymorphism divides into two categories: *parametric polymorphism*
+and *constrained polymorphism*.
+
+Ad-hoc, or constrained, polymorphism in Haskell is implemented with type classes.
+
+Parametric polymorphism refers to type variables, or parameters, that are fully
+polymorphic. When unconstrained by a type class, their final, concrete type
+could be anything.
+
+Recall that when you see a lowercase name in a type signature, like ``a``, it is
+a polymorphic type variable.
+
+If a variable represents a set of possible values, then a type variable
+represents a set of possible types.
+
+Parametricity means that the behavior of a function with respect to the types of
+its (parametrically polymorphic) arguments is uniform.
+
+5.5.2 Polymorphic constants
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Numeric literals like ``(-10)`` and ``6.3`` are polymorphic and stay so until
+given a more specific type.
+
+5.5.3 Working around constraints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``fromIntegral`` takes an integral value and forces it to implement the
+``Num`` type class, rendering it polymorphic.
+
+This can be useful when working with functions that return a type which is too
+concrete for further use
+
+::
+
+  ·∾ 6 / length [1,2,3]
+
+  <interactive>:8:1: error:
+      • No instance for (Fractional Int) arising from a use of ‘/’
+      • In the expression: 6 / length [1, 2, 3]
+        In an equation for ‘it’: it = 6 / length [1, 2, 3]
+
+  ·∾ :type (/)
+  (/) :: Fractional a => a -> a -> a
+
+  ·∾ :type length 
+  length :: Foldable t => t a -> Int
+
+  ·∾ -- length returns an Int, which is too concrete.
+
+  ·∾ :type fromIntegral 
+  fromIntegral :: (Integral a, Num b) => a -> b
+
+  ·∾ 6 / fromIntegral (length [1,2,3])
+  2.0
+
+
+5.6 Type inference
+------------------
+Haskell's type inference is built on an extended version of the
+Damas-Hindly-Milner type system.
+
+Haskell will infer the most generally applicable (polymorphic) type that is
+still correct.
+
+Well, most of the time. The monomorphism restriction is a counter-intuitive
+rule in Haskell's type inference implementation - If you forget to provide a
+type signature, sometimes this rule will fill the free type variables with
+specific types using "type defaulting" rules.
+
+Thankfully, this is turned off by default since GHC 7.8.1. If not, you can
+use ``:set -XNoMonomorphismRestriction``.
+
+More on the `Haskell Wiki <https://wiki.haskell.org/Monomorphism_restriction>`_,
+and in the `Haskell 2010 Language Report <https://www.haskell.org/onlinereport/
+haskell2010/haskellch4.html#x10-930004.5.5>`_.
+
+
+5.7 Asserting types for declarations
+------------------------------------
+Adding type signatures to top level declarations in your code can provide
+guidance about a functions purpose. It's generally a good idea to write them.
+
+It's been mentioned that the types can express intent by renaming with type
+aliases making new names with user defined data types. This is a good intuition,
+but using type aliases in particular has some drawbacks. One of these is that
+searching API documentation by type signature with Hoogle becomes a lot harder.
+Generally the tooling isn't smart enough to resolve type aliases to their
+underlying types for searches, linting in editors, and other static analysis.
+Just use your best judgement.
+
+Lest you begin to think that type signature are somehow exclusive to top-level
+bindings, here's an example of assigning a type to a function within a where
+clause::
+
+  triple x = tripleItYo x
+    where tripleItYo :: Integer -> Integer
+          tripleItYo y = y * 3

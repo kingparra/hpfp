@@ -1,0 +1,42 @@
+5.3.3 Exercises: Type Matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Page 125.
+
+First, here is a terminal recording where I answer all the questions.
+
+.. raw:: html
+
+   <script id="asciicast-mMnvlPjYEmw3oH8PqEQ10Z6Iv"
+   src="https://asciinema.org/a/mMnvlPjYEmw3oH8PqEQ10Z6Iv.js"
+   async></script>
+
+
+1, 2. Match the functions to their type signatures:
+
+    a. ``not``      -->   c. ``_ :: Bool -> Bool``::
+
+        ·∾  :type not
+        not :: Bool -> Bool
+
+    b. ``length``   -->   d. ``_ :: [a] -> Int``::
+
+        ·∾  :type length
+        length :: Foldable t => t a -> Int
+
+    c. ``concat``   -->   b. ``_ :: [[a]] -> [a]``::
+
+        ·∾  concat [[1..10],[11..20]]
+        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+        ·∾  :type concat
+        concat :: Foldable t => t [a] -> [a]
+
+    d. ``head``     -->   a. ``_ :: [a] -> a``::
+
+        ·∾ :type head
+        head :: [a] -> a
+
+    e. ``(<)``      -->   e. ``_ :: Ord a => a -> a -> Bool``::
+
+        ·∾ :type (<)
+        (<) :: Ord a => a -> a -> Bool
