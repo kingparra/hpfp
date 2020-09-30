@@ -126,7 +126,7 @@ idea.
       check out "Type Systems" by Luca Cardelli, published by Microsoft Research.
 
 So types let us think at a higher level of abstraction, and prevent execution
-errors. 
+errors.
 
 Execution errors include things such as, unintended memory access, or
 operations that don't make semantic sense, like adding numbers to strings.
@@ -232,13 +232,15 @@ example ``:kind Eq`` will return ``Eq :: * -> Constraint``.
 
 5.4 Currying
 ------------
-All functions in Haskell take one argument, and return one result.
-Currying refers to the nesting of multiple functions,e ac accepting
-one argument and returning one result, to allow the illusion of
-multiple parameter functions.
+First off, `here's a video <https://www.youtube.com/
+watch?v=m12c99qgHBU&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=7>`_.
 
-Each arrow in a type signature represents one argument and one
-result, with the final type being the final result.
+All functions in Haskell take one argument, and return one result.  Currying
+refers to the nesting of multiple functions, each accepting one argument and
+returning one result, to allow the illusion of multiple parameter functions.
+
+Each arrow in a type signature represents one argument and one result, with the
+final type being the final result.
 
 5.4.1 Partial application
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -377,12 +379,12 @@ concrete for further use
   ·∾ :type (/)
   (/) :: Fractional a => a -> a -> a
 
-  ·∾ :type length 
+  ·∾ :type length
   length :: Foldable t => t a -> Int
 
   ·∾ -- length returns an Int, which is too concrete.
 
-  ·∾ :type fromIntegral 
+  ·∾ :type fromIntegral
   fromIntegral :: (Integral a, Num b) => a -> b
 
   ·∾ 6 / fromIntegral (length [1,2,3])
@@ -391,14 +393,24 @@ concrete for further use
 
 5.6 Type inference
 ------------------
-Haskell's type inference is built on an extended version of the
+Type inference is a compiler feature that allows it to infer types without
+requiring the programmer to write them explicitly every time.
+
+Haskells type inference is built on an extended version of the
 Damas-Hindly-Milner type system.
+
+This particular system enables *global type inference* -- where no type
+annotations are required at all.
+
+In other languages, inference may be local to function bodies (*local type
+inference*, such as in Rust), or even only inferred when you explicitly request
+it with a keyword, like ``auto`` in C++ (weird, right?).
 
 Haskell will infer the most generally applicable (polymorphic) type that is
 still correct.
 
 Well, most of the time. The monomorphism restriction is a counter-intuitive
-rule in Haskell's type inference implementation - If you forget to provide a
+rule in Haskells type inference implementation - If you forget to provide a
 type signature, sometimes this rule will fill the free type variables with
 specific types using "type defaulting" rules.
 
@@ -409,21 +421,31 @@ More on the `Haskell Wiki <https://wiki.haskell.org/Monomorphism_restriction>`_,
 and in the `Haskell 2010 Language Report <https://www.haskell.org/onlinereport/
 haskell2010/haskellch4.html#x10-930004.5.5>`_.
 
+Also, here is a `wonderful video <https://www.youtube.com/
+watch?v=bv7aenMgSkg&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=16>`_
+on type inference.
+
 
 5.7 Asserting types for declarations
 ------------------------------------
 Adding type signatures to top level declarations in your code can provide
 guidance about a functions purpose. It's generally a good idea to write them.
 
-It's been mentioned that the types can express intent by renaming with type
-aliases making new names with user defined data types. This is a good intuition,
-but using type aliases in particular has some drawbacks. One of these is that
-searching API documentation by type signature with Hoogle becomes a lot harder.
-Generally the tooling isn't smart enough to resolve type aliases to their
-underlying types for searches, linting in editors, and other static analysis.
-Just use your best judgement.
+It's been mentioned that the types can express intent by giving them more
+meaningful names. This is a good intuition, but some ways of naming types,
+such as type aliases (defined with the ``type`` keyword) and wrapper types
+(defined with ``newtype``), can lead to issues with tooling.
 
-Lest you begin to think that type signature are somehow exclusive to top-level
+One of these is that searching API documentation by type signature with Hoogle
+becomes a lot harder. Generally the tooling isn't smart enough to resolve type
+aliases to their underlying types for searches, linting in editors, and other
+static analysis. This means you have to know the name of the type aliases by
+memory to search for them -- you can't just search for ``:: String -> String``
+even though it's semantically just an alias for ``:: Name -> EmailAddr``.
+
+So, just use your best judgement.
+
+Lest you begin to think that type signatures are somehow exclusive to top-level
 bindings, here's an example of assigning a type to a function within a where
 clause::
 
