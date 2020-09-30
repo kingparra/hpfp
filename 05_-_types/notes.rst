@@ -240,8 +240,6 @@ multiple parameter functions.
 Each arrow in a type signature represents one argument and one
 result, with the final type being the final result.
 
-.. include:: exercises/5.4.5_-_type_arguments.rst
-
 5.4.1 Partial application
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 The ability to apply only some of a functions arguments is called partial
