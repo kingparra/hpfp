@@ -350,6 +350,8 @@ represents a set of possible types.
 Parametricity means that the behavior of a function with respect to the types of
 its (parametrically polymorphic) arguments is uniform.
 
+.. include:: exercises/5.5.1_-_parametricity.rst
+
 5.5.2 Polymorphic constants
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Numeric literals like ``(-10)`` and ``6.3`` are polymorphic and stay so until

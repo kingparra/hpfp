@@ -1,0 +1,30 @@
+5.5.1 Exercises: Parametricity
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. Given ``:: a -> a``, attempt to make a function that
+   does something other than return the same value. It
+   also has to terminate. This is impossible, but try::
+
+    ·∾ f :: a -> a; f = undefined
+
+    ·∾ f x = 'c'
+    ·∾ :type f
+    f :: p -> Char
+
+    ·∾ f x = f x
+    ·∾ :type f
+    f :: t1 -> t2
+    ·∾ -- hey, that almost works, but doesn't terminate
+
+2. Write both possible implementations of a function with
+   the type signature of ``a -> a -> a``.::
+
+    Prelude> :type \x -> \y -> y
+    \x -> \y -> y :: t1 -> t -> t
+
+    Prelude> :type \x -> \y -> x
+    \x -> \y -> x :: t1 -> t -> t1
+
+3. Implement ``a -> b -> b``::
+
+    Prelude> :type \a -> \b -> b
+    \a -> \b -> b :: t1 -> t -> t
