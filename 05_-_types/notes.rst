@@ -453,3 +453,9 @@ clause::
   triple x = tripleItYo x
     where tripleItYo :: Integer -> Integer
           tripleItYo y = y * 3
+
+
+5.8 Chapter Exercises
+---------------------
+
+.. include:: exercises/5.8.1_-_multiple_choice.rst
