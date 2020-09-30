@@ -425,6 +425,7 @@ Also, here is a `wonderful video <https://www.youtube.com/
 watch?v=bv7aenMgSkg&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=16>`_
 on type inference.
 
+.. include:: exercises/5.6.1_-_apply_yourself.rst
 
 5.7 Asserting types for declarations
 ------------------------------------
