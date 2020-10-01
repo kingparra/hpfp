@@ -7,7 +7,7 @@
     c) **a list whose elements are all of some type a**
     d) a list whose elements are all of different types
 
-2. A function of type [[a]] -> [a] could
+2. A function of type ``[[a]] -> [a]`` could
 
     a) **take a list of strings as an argument**
     b) transform a character into a string
