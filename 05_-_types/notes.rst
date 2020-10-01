@@ -460,6 +460,8 @@ clause::
 
 .. include:: exercises/5.8.1_-_multiple_choice.rst
 
+.. include:: exercises/5.8.2_-_determine_the_type.rst
+
 
 5.10 Follow-up resources
 ------------------------
