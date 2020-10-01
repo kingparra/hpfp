@@ -459,3 +459,64 @@ clause::
 ---------------------
 
 .. include:: exercises/5.8.1_-_multiple_choice.rst
+
+
+5.10 Follow-up resources
+------------------------
+1. Luis Damas; Robin Milner. Principle type-schemes for functional programs
+   (`pdf <http://web.cs.wpi.edu/~cs4536/c12/milner-damas_principal_types.pdf>`_)
+
+2. Christopher Strachey. Fundamental Concepts in Programming Languages (`pdf
+   <https://www.cs.cmu.edu/~crary/819-f09/Strachey67.pdf>`_)
+
+   (Popular origin of the parametric/ad-hoc polymorphism distinction.)
+
+Additionally, here are some things not from the book that I found relevant
+and interesting.
+
+4. A video by Chris Allen on how to query and interact with the type system. He
+   discusses some techniques for using existing type signatures as guidance for
+   implementing "stubbed-out" functions at the term level.
+
+   .. raw:: html
+
+      <iframe width="560" height="315"
+      src="https://www.youtube.com/embed/veu5qj3J50I" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+      picture-in-picture" allowfullscreen></iframe>
+
+5. Luca Cardelli. Type Systems. (`pdf
+   <http://lucacardelli.name/Papers/TypeSystems.pdf>`_)
+
+   This paper discusses what a type system is, some of the notation for
+   describing them formally, and has a few examples of how to determine whether
+   something is well-typed or not (using type judgements in the sequent
+   calculus).
+
+6. Luca Cardelli. On Understanding Types, Data Abstration, and Polymorphism
+   (`pdf <http://lucacardelli.name/Papers/OnUnderstanding.A4.pdf>`_)
+
+   This is really a paper on understanding subtyping in object-oriented languages
+   formally, but the first few sections have a very readable exposition of how
+   type systems arise from untyped "universes". I quoted heavily from it
+   already, but I think the entire first sections are worth a read.
+
+7. A short video on currying and partial application.
+
+   .. raw:: html
+
+      <iframe width="560" height="315"
+      src="https://www.youtube.com/embed/m12c99qgHBU" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+      gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+8. A surprisingly detailed video (maybe brutally so) on how type inference works
+   in Haskell. It goes over the algorithm for type inference detailed in the
+   Haskell language report.
+
+   .. raw:: html
+
+      <iframe width="560" height="315"
+      src="https://www.youtube.com/embed/bv7aenMgSkg" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+      picture-in-picture" allowfullscreen></iframe>
