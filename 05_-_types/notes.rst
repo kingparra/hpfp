@@ -466,6 +466,8 @@ clause::
 
 .. include:: exercises/5.8.4_-_type_variable_or_specific_type_constructor.rst
 
+.. include:: exercises/5.8.5_-_write_a_type_signature.rst
+
 
 5.10 Follow-up resources
 ------------------------

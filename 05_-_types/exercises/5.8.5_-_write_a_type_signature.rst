@@ -1,0 +1,38 @@
+5.8.5 Write a type signature
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For the following expressions, please add a type signature. You might not have
+precisely the same answer as GHCi gives (due to polymorphism, etc).
+
+1. ``functionH``::
+
+      functionH :: [a] -> a
+      functionH (x:_) = x
+
+   proof that it works::
+
+      ·∾ functionH (x:_) = x
+      ·∾ :type functionH
+      functionH :: [a] -> a
+
+2. ``functionC``::
+
+      functionC :: Ord a => a -> a -> Bool
+      functionC x y =
+        if (x > y) then True else False
+
+   Checking my answer, here::
+
+      ·∾ functionC x y = if x > y then True else False
+      ·∾ :type functionC
+      functionC :: Ord a => a -> a -> Bool
+
+3. ``functionS``::
+
+      functionS :: (a, b) -> b
+      functionS (x, y) = y
+
+   Does it blend?::
+
+      ·∾ functionS (x,y) = y
+      ·∾ :type functionS
+      functionS :: (a, b) -> b
