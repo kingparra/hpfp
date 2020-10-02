@@ -1,0 +1,24 @@
+5.8.4 Type variable or specific type constructor?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. You will be shown a type declaration, and you should categorize each type.
+   The choices are a fully polymorphic type variable, constrained polymorphic
+   type variable, or concrete type constructor.::
+
+    f :: Num a => a -> b -> Int -> Int
+    --           [0]  [1]   [2]    [3]
+
+   Here, the answer would be: constrained polymorphic (Num) ([0]), fully
+   polymorphic ([1]), and concrete ([2] and [3]).
+
+2. Categorize each component of the type signature as described in the previous
+   example, ``f :: zed -> Zed -> Blah``.
+
+    * Polymorphic, concrete, concrete.
+
+3. Categorize each component of the type signature ``f :: Enum b => a -> b -> C``.
+
+   * Polymorphic, constrained, concrete.
+
+4. Categorize each component of the type signature ``f :: f -> g -> C``.
+
+   * Polymorphic, polymorphic, concrete.
