@@ -462,6 +462,8 @@ clause::
 
 .. include:: exercises/5.8.2_-_determine_the_type.rst
 
+.. include:: exercises/5.8.3_-_does_it_compile.rst
+
 
 5.10 Follow-up resources
 ------------------------
