@@ -1,0 +1,185 @@
+5.8.6 Given a type, write the function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. raw:: html
+
+   <script id="asciicast-yAizlYWAP3lRmpTKGTWkemTJG"
+   src="https://asciinema.org/a/yAizlYWAP3lRmpTKGTWkemTJG.js"
+   async></script>
+
+1. There is only one function definition that typechecks and doesn't go into an
+   infinite loop when you run it.
+
+   Type signature::
+
+      i :: a -> a
+
+   Function::
+
+      i a = a
+
+   Proof::
+
+      ·∾ :{
+       ⋮ i :: a -> a
+       ⋮ i a = a
+       ⋮ :}
+      ·∾ :type i
+      i :: a -> a
+      ·∾ i True
+      True
+
+2. There is only one version that works.
+
+   Type signature::
+
+      c :: a -> b -> a
+
+   Function::
+
+      c a b = a
+
+   Proof::
+
+      ·∾ :{
+       ⋮ c :: a -> b -> a
+       ⋮ c a b = a
+       ⋮ :}
+      ·∾ :type c
+      c :: a -> b -> a
+      ·∾ c 1 2
+      1
+
+3. Given alpha equivalence are c'' and c (see above) the same thing?
+
+   Yes, it's the same function as ``c``.
+
+   Type signature::
+
+      c'' :: b -> a -> b
+
+   Function::
+
+      c'' b a = b
+
+   Proof::
+
+      ·∾ :{
+       ⋮ c'' :: b -> a -> b
+       ⋮ c'' b a = b
+       ⋮ :}
+      ·∾ :type c''
+      c'' :: b -> a -> b
+      ·∾ c'' 1 2
+      1
+      ·∾ c 1 2
+      1
+      ·∾ -- c and c'' are the same function, with
+      ·∾ -- different names and differently named type variables
+
+4. Only one version that works.
+
+   Type signature::
+
+      c' :: a -> b -> b
+
+   Function::
+
+      c a b = b
+
+   Proof::
+
+      ·∾ :{
+       ⋮ c' :: a -> b -> b
+       ⋮ c' a b = b
+       ⋮ :}
+      ·∾ :type c'
+      c' :: a -> b -> b
+      ·∾ c' 1 2
+      2
+
+5. There are multiple possibilities, at least two of which you've seen in
+   previous chapters.
+
+   Type signature::
+
+      r :: [a] -> [a]
+
+   Function::
+
+      r a = a
+
+   Proof::
+
+      ·∾ :{
+       ⋮ r :: [a] -> [a]
+       ⋮ r a = a
+       ⋮ :}
+      ·∾ :type r
+      r :: [a] -> [a]
+      ·∾ r [1..8]
+      [1,2,3,4,5,6,7,8]
+
+6. Only one version that will typecheck.
+
+   Type signature::
+
+      co :: (b -> c) -> (a -> b) -> a -> c
+
+   Function::
+
+      co g f a = g (f a)
+
+   Proof::
+
+      ·∾ :{
+       ⋮ co :: (b -> c) -> (a -> b) -> a -> c
+       ⋮ -- (a -> b) === f
+       ⋮ -- (b -> c) === g
+       ⋮ co g f a = g (f a)
+       ⋮ :}
+      ·∾ :type co
+      co :: (b -> c) -> (a -> b) -> a -> c
+
+7. One version will typecheck.
+
+   Type signature::
+
+      a :: (a -> c) -> a -> a
+
+   Function::
+
+      a f a = a
+
+   Proof::
+
+      ·∾ :{
+       ⋮ a :: (a -> c) -> a -> a
+       ⋮ a f a = a
+       ⋮ :}
+      ·∾ :type a
+      a :: (a -> c) -> a -> a
+      ·∾ a id 3
+      3
+
+8. One version will typecheck.
+
+   Type signature::
+
+      a' :: (a -> b) -> a -> b
+
+   Function::
+
+       a' f b = b
+
+   Proof::
+
+      ·∾ :{
+       ⋮ a' :: (a -> b) -> b -> b
+       ⋮ -- (a -> b) === f
+       ⋮ -- ...but it doesn't take any a's
+       ⋮ a' f b = b
+       ⋮ :}
+      ·∾ :type a'
+      a' :: (a -> b) -> b -> b
+      ·∾ a' succ 8
+      8

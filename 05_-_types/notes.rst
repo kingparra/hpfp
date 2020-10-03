@@ -468,6 +468,8 @@ clause::
 
 .. include:: exercises/5.8.5_-_write_a_type_signature.rst
 
+.. include:: exercises/5.8.6_-_given_a_type_write_the_function.rst
+
 
 5.10 Follow-up resources
 ------------------------
