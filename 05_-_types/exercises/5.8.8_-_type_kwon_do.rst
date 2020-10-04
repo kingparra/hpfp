@@ -1,0 +1,26 @@
+5.8.8 Type-Kwon-Do
+^^^^^^^^^^^^^^^^^^
+The focus here is on manipulating terms in order to get the
+types to fit. Your goal is to make the ???'d declaration
+pass the typechecker by modifying it alone. Not all terms
+will always be used in the intended solution for a problem.
+
+1. ``h = ???`` becomes ``h x = g (f x)``
+
+   .. include:: exercises/5.8.8_-_type_kwon_do.rst.d/One.hs
+      :code:
+
+2. ``e = ???`` becomes ``e x = w (q x)``
+
+   .. include:: exercises/5.8.8_-_type_kwon_do.rst.d/Two.hs
+      :code:
+
+3. ``xform = ???`` becomes ``xform (x, y) = (xz x, yz y)``
+
+   .. include:: exercises/5.8.8_-_type_kwon_do.rst.d/Three.hs
+      :code:
+
+4. ``munge = ???`` becomes ``munge xToY yToWz = fst (yToWz (xToY x))``
+
+   .. include:: exercises/5.8.8_-_type_kwon_do.rst.d/Four.hs
+      :code:
