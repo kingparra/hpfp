@@ -49,11 +49,11 @@ First, a terminal recording.
         ·∾ :type length [1,2,3,4] > length "TACOCAT"
         length [1,2,3,4] > length "TACOCAT" :: Bool
 
-2. Given
+2. Given::
 
-   .. include:: exercises/5.8.2_-_determine_the_type.rst.d/
-                determine-the-type/src/Two.hs
-      :code:
+      x = 5
+      y = x + 5
+      w = y * 10
 
    What is the type of w? ::
 
@@ -62,11 +62,11 @@ First, a terminal recording.
       ·∾ :type w
       w :: Num a => a
 
-3. Given
+3. Given::
 
-   .. include:: exercises/5.8.2_-_determine_the_type.rst.d/
-                determine-the-type/src/Three.hs
-      :code:
+      x = 5
+      y = x + 5
+      z y = y * 10
 
    What is the type of z? ::
 
@@ -76,21 +76,13 @@ First, a terminal recording.
       ·∾ :type z
       z :: Num a => a -> a
 
-4. Given
+4. Given::
 
-   .. include:: exercises/5.8.2_-_determine_the_type.rst.d/
-                determine-the-type/src/Four.hs
-      :code:
+      x = 5
+      y = x + 5
+      f = 4 / y
 
    What is the type of f?
-
-5. Given
-
-   .. include:: exercises/5.8.2_-_determine_the_type.rst.d/
-                determine-the-type/src/Five.hs
-      :code:
-
-   What is the type of f? ::
 
       ·∾ -- Hmm...
       ·∾ :type (/)
@@ -100,8 +92,19 @@ First, a terminal recording.
       ·∾ :type f
       f :: Fractional a => a
 
- I've also included some tests, which you can run by navigating to
- :file:`exercises/5.8.2_-_determine_the_type.rst.d/determine-the-type/` and
- running ``stack test:one``, ``stack test:two``, etc. (I'm using a somewhat
- experimental feature to perform the tests, though, so it don't count on it too
- much. I just did this to see if I could.)
+5. Given::
+
+      x = "Julie"
+      y = " <3"
+      z = "Haskell"
+      f = x ++ y ++ z
+
+   What is the type of f? ::
+
+      ·∾ -- So, f will fully reduce
+      ·∾ :type (++)
+      (++) :: [a] -> [a] -> [a]
+      ·∾ -- (++) takes lists, but since they're strings, it will specialize to String
+      ·∾ -- my guess is that f :: String
+      ·∾ :type  f
+      f :: [Char]

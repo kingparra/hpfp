@@ -462,6 +462,18 @@ clause::
 
 .. include:: exercises/5.8.2_-_determine_the_type.rst
 
+.. include:: exercises/5.8.3_-_does_it_compile.rst
+
+.. include:: exercises/5.8.4_-_type_variable_or_specific_type_constructor.rst
+
+.. include:: exercises/5.8.5_-_write_a_type_signature.rst
+
+.. include:: exercises/5.8.6_-_given_a_type_write_the_function.rst
+
+.. include:: exercises/5.8.7_-_fix_it.rst
+
+.. include:: exercises/5.8.8_-_type_kwon_do.rst
+
 
 5.10 Follow-up resources
 ------------------------
@@ -476,7 +488,7 @@ clause::
 Additionally, here are some things not from the book that I found relevant
 and interesting.
 
-4. A video by Chris Allen on how to query and interact with the type system. He
+3. A video by Chris Allen on how to query and interact with the type system. He
    discusses some techniques for using existing type signatures as guidance for
    implementing "stubbed-out" functions at the term level.
 
@@ -487,7 +499,7 @@ and interesting.
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
       picture-in-picture" allowfullscreen></iframe>
 
-5. Luca Cardelli. Type Systems. (`pdf
+4. Luca Cardelli. Type Systems. (`pdf
    <http://lucacardelli.name/Papers/TypeSystems.pdf>`_)
 
    This paper discusses what a type system is, some of the notation for
@@ -495,7 +507,7 @@ and interesting.
    something is well-typed or not (using type judgements in the sequent
    calculus).
 
-6. Luca Cardelli. On Understanding Types, Data Abstration, and Polymorphism
+5. Luca Cardelli. On Understanding Types, Data Abstration, and Polymorphism
    (`pdf <http://lucacardelli.name/Papers/OnUnderstanding.A4.pdf>`_)
 
    This is really a paper on understanding subtyping in object-oriented languages
@@ -503,7 +515,7 @@ and interesting.
    type systems arise from untyped "universes". I quoted heavily from it
    already, but I think the entire first sections are worth a read.
 
-7. A short video on currying and partial application.
+6. A short video on currying and partial application.
 
    .. raw:: html
 
@@ -512,7 +524,7 @@ and interesting.
       allow="accelerometer; autoplay; clipboard-write; encrypted-media;
       gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-8. A surprisingly detailed video (maybe brutally so) on how type inference works
+7. A surprisingly detailed video (maybe brutally so) on how type inference works
    in Haskell. It goes over the algorithm for type inference detailed in the
    Haskell language report.
 
