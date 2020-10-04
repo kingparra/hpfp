@@ -1,0 +1,76 @@
+5.8.3 Does it compile?
+^^^^^^^^^^^^^^^^^^^^^^
+.. raw:: html
+
+  <script id="asciicast-wmR4zHlkznJN6uynXNWEdDsfL"
+  src="https://asciinema.org/a/wmR4zHlkznJN6uynXNWEdDsfL.js"
+  async></script>
+
+For each set of expressions, figure out which expression, if any, causes the
+compiler to squawk at you and why. Fix it if you can.
+
+1. ::
+
+     bigNum = (^) 5 $ 10
+     wahoo = bigNum $ 10
+
+   Ok, this will fail becuase bigNum doesn't take any arguments. Also, the use
+   of ``$`` here is weird and unescessary.
+
+   Here's the error::
+
+     Prelude> wahoo = bigNum $ 10
+     <interactive>:3:1: error:
+         • Non type-variable argument in the constraint: Num (t -> t1)
+           (Use FlexibleContexts to permit this)
+         • When checking the inferred type
+             wahoo :: forall t t1. (Num (t -> t1), Num t) => t1
+
+2. ::
+
+     x = print
+     y = print "woohoo!"
+     z = x "hello world"
+
+   This is fine, right? ::
+
+     Prelude> :info print
+     print :: Show a => a -> IO ()   -- Defined in ‘System.IO’
+     Prelude> x = print
+     Prelude> y = print "woohoo!"
+     Prelude> z = x "hello world"
+     Prelude> z
+     "hello world"
+
+   Right!?
+
+3. ::
+
+     a = (+)
+     b = 5
+     c = b 10
+     d = c 200
+
+   Well, ``c`` and ``d`` won't work.::
+
+     Prelude> a = (+)
+     Prelude> b = 5
+     Prelude> c = b 10
+     <interactive>:41:1: error:
+         • Non type-variable argument in the constraint: Num (t -> t1)
+           (Use FlexibleContexts to permit this)
+         • When checking the inferred type
+             c :: forall t t1. (Num (t -> t1), Num t) => t1
+     Prelude> d = c 200
+     <interactive>:42:5: error: Variable not in scope: c :: Integer -> t
+
+4. ::
+
+     a = 12 + b
+     b = 10000 * c
+
+   There is no c here... so yeah::
+
+     Prelude> a = 12 + b; b = 10000 * c
+     <interactive>:32:25: error: Variable not in scope: c
+     Prelude>

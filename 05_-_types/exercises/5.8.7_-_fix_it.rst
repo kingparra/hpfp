@@ -1,0 +1,20 @@
+5.8.7 Fix it
+^^^^^^^^^^^^
+Won’t someone take pity on this poor broken code and fix it up? Be sure to
+check carefully for things like capitalization, parentheses, and indentation.
+
+1.
+   .. include:: exercises/5.8.7_-_fix_it.rst.d/Sing.hs
+      :start-after: -- 1
+      :end-before: -- 2
+      :code:
+
+2.
+   .. include:: exercises/5.8.7_-_fix_it.rst.d/Sing.hs
+      :start-after: -- 2
+      :code:
+
+3.
+
+   .. include:: exercises/5.8.7_-_fix_it.rst.d/Arith3Broken.hs
+      :code:

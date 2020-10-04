@@ -1,0 +1,4 @@
+module Four where
+
+munge :: (x -> y) -> (y -> (w, z)) -> x -> w
+munge = _
