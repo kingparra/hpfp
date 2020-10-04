@@ -470,6 +470,8 @@ clause::
 
 .. include:: exercises/5.8.6_-_given_a_type_write_the_function.rst
 
+.. include:: exercises/5.8.7_-_fix_it.rst
+
 .. include:: exercises/5.8.8_-_type_kwon_do.rst
 
 
