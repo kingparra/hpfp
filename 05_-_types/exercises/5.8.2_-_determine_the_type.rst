@@ -1,0 +1,110 @@
+5.8.2 Determine the type
+^^^^^^^^^^^^^^^^^^^^^^^^
+First, a terminal recording.
+
+.. raw:: html
+
+   <script id="asciicast-CQnM6QYiCilyzzDmvLlpnzQPl"
+   src="https://asciinema.org/a/CQnM6QYiCilyzzDmvLlpnzQPl.js"
+   async></script>
+
+1. All function applications return a value. Determine the value
+   returned by these function applications and the type of that
+   value.
+
+   a) ``(* 9) 6`` ::
+
+        ·∾ -- This should have type Num a => a, I think, since (*) comes from Num.
+        ·∾ :type (*)
+        (*) :: Num a => a -> a -> a
+
+   b) ``head [(0,"doge"),(1,"kitteh")]`` ::
+
+        ·∾ -- Im guessing :: Num a => (a, String)
+        ·∾ :type head [(0,"doge"),(1,"kitteh")]
+        head [(0,"doge"),(1,"kitteh")] :: Num a => (a, [Char])
+
+   c) ``head [(0 :: Integer ,"doge"),(1,"kitteh")]`` ::
+
+        ·∾ -- :: (Integer,String), I think.
+        ·∾ :type head [(0 :: Integer,"doge"),(1,"kitteh")]
+        head [(0 :: Integer,"doge"),(1,"kitteh")] :: (Integer, [Char])
+
+   d) ``if False then True else False`` ::
+
+        ·∾ -- this is a Bool
+        ·∾ :type if False then True else False
+        if False then True else False :: Bool
+
+   e) ``length [1, 2, 3, 4, 5]`` ::
+
+        ·∾ -- length returns Int, so this will be :: Int
+        ·∾ :type length [1,2,3,4,5]
+        length [1,2,3,4,5] :: Int
+
+   f) ``(length [1, 2, 3, 4]) > (length "TACOCAT")`` ::
+
+        ·∾ -- length returns Int, (>) returns Bool
+        ·∾ -- ... so I'm guessing :: Bool
+        ·∾ :type length [1,2,3,4] > length "TACOCAT"
+        length [1,2,3,4] > length "TACOCAT" :: Bool
+
+2. Given::
+
+      x = 5
+      y = x + 5
+      w = y * 10
+
+   What is the type of w? ::
+
+      ·∾ -- Since w will reduce to a value, and all functions (*) (+) come from Num
+      ·∾ -- I'm guessing w :: Num a => a
+      ·∾ :type w
+      w :: Num a => a
+
+3. Given::
+
+      x = 5
+      y = x + 5
+      z y = y * 10
+
+   What is the type of z? ::
+
+      ·∾ -- So, z needs one argument, so there will be two type variables
+      ·∾ -- ...both with a constraint of Num
+      ·∾ -- z :: Num a => a -> a is my guess
+      ·∾ :type z
+      z :: Num a => a -> a
+
+4. Given::
+
+      x = 5
+      y = x + 5
+      f = 4 / y
+
+   What is the type of f?
+
+      ·∾ -- Hmm...
+      ·∾ :type (/)
+      (/) :: Fractional a => a -> a -> a
+      ·∾ -- f will fully reduce
+      ·∾ -- I'm guessing f :: Fractional a => a
+      ·∾ :type f
+      f :: Fractional a => a
+
+5. Given::
+
+      x = "Julie"
+      y = " <3"
+      z = "Haskell"
+      f = x ++ y ++ z
+
+   What is the type of f? ::
+
+      ·∾ -- So, f will fully reduce
+      ·∾ :type (++)
+      (++) :: [a] -> [a] -> [a]
+      ·∾ -- (++) takes lists, but since they're strings, it will specialize to String
+      ·∾ -- my guess is that f :: String
+      ·∾ :type  f
+      f :: [Char]
