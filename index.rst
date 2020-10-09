@@ -17,6 +17,7 @@ Contents
    03_-_strings/questions
    04_-_basic_datatypes/notes
    04_-_basic_datatypes/questions
+   06_-_typeclasses/notes
 
 
 Indices and tables
