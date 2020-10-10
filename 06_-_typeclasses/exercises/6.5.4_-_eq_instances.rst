@@ -1,4 +1,4 @@
-6.5.1 Exercises: Eq Instances
+6.5.4 Exercises: Eq Instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 A terminal recording, because why not?
 

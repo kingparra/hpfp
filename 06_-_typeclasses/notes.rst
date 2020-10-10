@@ -14,53 +14,28 @@ In this chapter we will
 
 6.2 What are typeclasses?
 -------------------------
-.. topic:: This section sucks; The rest of the chapter is OK.
-
-    I think this sections explanation of type classes
-    completely sucks. It's too vague, (Types and type
-    classes are "in a sense" opposites? WTF is a
-    "feature"? "by cases"? "abstracted *over*"? --
-    what is a case? What does it mean to abstract 
-    "over" something?)
-
-    It also introduces an unecessary comparison to
-    interfaces. I have no idea what Java interfaces
-    are, and I just don't care, man. Type classes are
-    already a self-contained idea.
-
-    What follows is my own explanation, paraphrased and
-    rearanged from `section 4.3 of the 2010 Haskell 
-    Language Report <https://www.haskell.org/onlinereport/
-    haskell2010/haskellch4.html#x10-750004.3>`_. I also 
-    borrow heavily from `Steven Diehl's notes on type 
-    classes <http://dev.stephendiehl.com/hask/#typeclasses>`_.
-    Now you know where to explore for more.
+**Type classes provide a way to introduce overloaded
+operations.**
 
 The main idea of a type class is to define a set of
-overloaded names that work for many types.
+overloaded names that work for many types. Names can be
+either expressions, like ``minBound``, or functions, like
+``(+)``. Overloaded names have different term-level
+implementations for each type.
 
-Names can be either expressions, like ``minBound`` or
-functions, like ``(+)``.
-
-Overloaded names have different term-level implementations
-for each type belonging to that type class.
-
-**Less precisely, type classes provide a way to introduce
-overloaded operations.**
-
-In order to use a type class, you need two separate
-declarations.
+You define a type class in two parts, one part contains the
+overloaded names, and the other part supplies type-specific
+implementations of each name.
 
 Class declarations
 ^^^^^^^^^^^^^^^^^^
-The ``class`` declaration introduces a new type class. 
+The ``class`` declaration introduces a new type class.
 
 This consists of a header with the type class name, a body
-of overloadedable expression names, and type signatures for
-each name in the body. 
-
-(You can also include fixity declarations here, for names
-that represent infix functions.)
+of overloaded expression names, and associated type
+signatures for each name in the body. You can also include
+fixity declarations here, for names that represent infix
+functions.
 
 Syntactically, class declarations have the general form:
 
@@ -91,7 +66,7 @@ methods — for the specified type.
 The general form of an instance declaration is:
 
   **instance** *constraints* **=>** *Classname* *Typename*
-  *typevars* **where** **{** *class_method_declarations*
+  *typevars* **where** **{** *class_method_definitions*
   **}**
 
 Here we implement ``Num`` for the concrete types ``Int`` and
@@ -111,14 +86,19 @@ definitions (i.e. class methods) for ``(+)`` and ``negate``."
 
 Type membership
 ^^^^^^^^^^^^^^^
+If a type implements a type class, it's considered a member
+of that class. How can we tell what classes a type is a
+member of?
+
 One way to determine which classes a type belongs to is
 by looking it up on `hoogle <https://hoogle.haskell.org/>`_,
-which extracts it from the source code.
+which extracts documentation from the source code.
 
-How do you know if a type has an instance of some type class
-without using hoogle or examining the source code?
+But what if you don't have access to hoogle or the source
+code?
 
-It will show up in the output of ``:info TypeName``, like this::
+You can find membership information in the output of ``:info
+TypeName``, like this::
 
   ·∾ :info Float
   data Float = GHC.Types.F# GHC.Prim.Float# -- Defined in ‘GHC.Types’
@@ -135,17 +115,17 @@ It will show up in the output of ``:info TypeName``, like this::
   instance Read Float         -- Defined in ‘GHC.Read’
 
 Since ``Float`` has an instance defined in ``GHC.Float``, it
-is said to be a **member** of the ``Num`` type class.
+is said to be a member of the ``Num`` type class.
 
-In other words, a type is a member of a type class if it has
+More precisely, a type is a member of a type class if it has
 an ``instance`` declaration for it that defines the minimally
 required class methods listed in the ``class`` declaration.
 
 Minimally required methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Wait, there's something new here. What's a minimally
-required class method, and how can you tell which class
-methods are required?
+Wait, there's something new here. What is a minimally
+required class method? How can you tell which class methods
+are required?
 
 Look no further than ``:info TypeClassName``. (I'm showing
 the actual output for ``Num`` here, not the example version
@@ -162,11 +142,11 @@ of ``Num`` that we used above.) ::
     fromInteger :: Integer -> a
     {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
           -- Defined in ‘GHC.Num’
-  instance Num Word -- Defined in ‘GHC.Num’
-  instance Num Integer -- Defined in ‘GHC.Num’
-  instance Num Int -- Defined in ‘GHC.Num’
-  instance Num Float -- Defined in ‘GHC.Float’
-  instance Num Double -- Defined in ‘GHC.Float’
+  instance Num Word     -- Defined in ‘GHC.Num’
+  instance Num Integer  -- Defined in ‘GHC.Num’
+  instance Num Int      -- Defined in ‘GHC.Num’
+  instance Num Float    -- Defined in ‘GHC.Float’
+  instance Num Double   -- Defined in ‘GHC.Float’
 
 Syntax for specifying minimally required class methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -181,17 +161,15 @@ comments by earlier versions. You can find the `docs on
 minimal here <https://downloads.haskell.org/~ghc/latest/
 docs/html/users_guide/glasgow_exts.html#minimal-pragma>`_.
 
-Minimal pragmas include a boolean expression that
-determine which class methods require definition in
-instance declarations for membership.
+Minimal pragmas include a boolean expression that determine
+which class method definitions are required for membership.
 
-Within them the stroke ``|`` indicates a logical OR, and
-the comma ``,`` represents logical AND.
+Within these expressions the stroke ``|`` indicates a
+logical OR, and the comma ``,`` represents logical AND.
 
-So, for ``Num``, either ``(-)`` or ``negate`` are
-required, but not both. Additionally ``(+)``, ``(*)``,
-``abs``, ``signum``, and ``fromInteger`` are all
-required.
+So, for membership in ``Num``, either ``(-)`` or ``negate``
+are required, but not both. Additionally ``(+)``, ``(*)``,
+``abs``, ``signum``, and ``fromInteger`` are all required.
 
 Default class methods
 ^^^^^^^^^^^^^^^^^^^^^
@@ -223,7 +201,7 @@ What's better than not having to write class methods? Not
 having to write entire instance declarations!
 
 Many of the default classes provide generic instances that
-can be derived automatically. 
+can be derived automatically.
 
 To do this you can add a ``deriving`` clause after a
 ``data`` declaration which will generate the instances.
@@ -242,7 +220,7 @@ constructors.
 
 How about ``Ord``? There are a number of ways we could
 determine how things are ordered. The default implementation
-takes a simple approach. 
+takes a simple approach.
 
 When using a derived ``Ord`` instance, data constructors are
 considered to have a higher ordinal value the further right
@@ -259,7 +237,7 @@ cannot?
 
 Here's what ``#haskell`` had to say::
 
-  <justsomeguy> How can I determine which type classes can be derived, 
+  <justsomeguy> How can I determine which type classes can be derived,
                 and which cannot? Do I just have to know, or can I
                 query them somehow?
 
@@ -267,8 +245,8 @@ Here's what ``#haskell`` had to say::
                 report, and GHC has some extras turned on by extensions.
 
   <dsal>        justsomeguy: I often just assume I can't derive
-                classes and write them, but I've found GHC's been able 
-                to do some pretty fantastic deriving at times. There's 
+                classes and write them, but I've found GHC's been able
+                to do some pretty fantastic deriving at times. There's
                 lots of magic when you're ready for it.
 
   <dsal>        Is there a particular class you want derived?
@@ -305,13 +283,12 @@ definitely encounter these, as they're pretty common used.
 ``Eq``
 
   Things that can be compared for equality. Can be derived
-  -- data constructors are compared.
+  -- data constructor names are compared.
 
 ``Ord``
 
   Things that can be ordered. Can be derived. It inherits
-  from ``Eq``. This gives you standard the relational
-  operators.
+  from ``Eq``. This gives you the standard relational operators.
 
 ``Enum``
 
@@ -330,7 +307,8 @@ definitely encounter these, as they're pretty common used.
   Introduces the methods ``minBound`` and ``maxBound``,
   which define the minimal and maximal elements of the type.
   Can be derived -- the first and last data constructors are
-  used as bounds.
+  used as bounds. For derivation, every constructor must be
+  nullary or the type must have only one constructor.
 
 
 6.3 Back to Bool
@@ -342,7 +320,7 @@ All ``Fractional`` numbers implement ``Num``. All members of
 must be members of ``Ord``.
 
 ::
-    
+
   Num --> Fractional
 
   Eq --> Ord --> Enum
@@ -355,9 +333,10 @@ called ``Eq``.
 
 Some languages bake equality into every object in the
 language. Since some datatypes don't have a sensible notion
-of equality, Haskell doesn't. (Which languages do that? What
-are some examples of datatypes that don't have a notion of
-equality?)
+of equality, Haskell doesn't do this.
+
+(Which languages do that? What are some examples of
+datatypes that don't have a sensible notion of equality?)
 
 ``Eq`` provides these methods::
 
@@ -419,7 +398,7 @@ for all inputs.
 We should take care to avoid partial functions, since they
 can blow up at runtime.
 
-The solution? Match against an catch-all pattern, like the
+The solution? Match against a catch-all pattern, like the
 wildcard ``_``, and then write some logic to deal with
 unanticipated inputs safely. Otherwise, you may want to use
 a wrapper type to indicated the possibility of failure
@@ -428,6 +407,8 @@ type with a smaller cardinality, and define all cases.
 
 GHC flags can help, too. If we turn on ``-Wall``, we will
 get a nice error message when we're not handling all cases.
+It will even tell you which inputs your function is note
+defined for.
 
 Certain historical parts of ``Prelude`` are full of partial
 functions. What about those?
@@ -439,7 +420,7 @@ points out a few pitfalls.
 To me it seems that Haskell has bad defaults in this area.
 Personally I don't think I'll have the wherewithal to
 circumnavigate them. Using an alternative prelude kind of
-sucks, too. 
+sucks, too.
 
 Hopefully, ``hlint`` will point this stuff out. I should
 look into that more. Another option is employing some kind
@@ -466,20 +447,29 @@ base-4.14.0.0/docs/Prelude.html#t:Num>`_.
 ``signum``: for positive numbers return 1, for negative
 numbers return -1, for zero return 0.
 
-
-6.7 Integral
-------------
+6.6.1 Integral
+^^^^^^^^^^^^^^
 Integral provides ``quot``, ``rem``, ``div``, ``mod``,
 ``quotRem``, ``divMod``, ``toInteger``. `Docs on Integral
 are here <https://hackage.haskell.org/package/base-4.14.0.0/
 docs/Prelude.html#t:Integral>`_
 
-The constraint ``(Real a, Enum a) =>`` means that any type
-that implements ``Integral`` must already have instances for
-the ``Real`` and ``Enum`` type classes.
-
 Descendant type classes can't override methods of their
 ancestor type classes. Type classes respect their ancestors.
 
-.. include:: exercises/6.6.3_-_tuple_experiment.rst
+.. include:: exercises/6.6.2_-_tuple_experiment.rst
 
+6.6.3 Fractional
+^^^^^^^^^^^^^^^^
+``Fractional`` provides ``(/)``, ``recip``, and ``fromRational``.
+
+
+6.7 Type-defaulting type classes?
+---------------------------------
+In some cases, there may be no clear concrete type for a
+constrained polymorphic type variable to resolve to. The
+variable is said to be of an ambiguous type.
+
+To prevent this situation, there are two options. The user
+can explicitly annotate a type signature, or a type class
+can resolve it to a default type provided by the type class.
