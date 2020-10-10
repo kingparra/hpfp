@@ -461,7 +461,23 @@ ancestor type classes. Type classes respect their ancestors.
 
 6.6.3 Fractional
 ^^^^^^^^^^^^^^^^
-``Fractional`` provides ``(/)``, ``recip``, and ``fromRational``.
+Fractional numbers, supporting real division.
+``Fractional`` provides ``(/)``, ``recip``, and
+``fromRational``. `Docs for Fractional are here
+<https://hackage.haskell.org/package/base-4.14.0.0/
+docs/Prelude.html#t:Fractional>`_.
+
+Here's an example of how to use ``recip``::
+
+  ·∾ recip 3.4
+  0.29411764705882354
+
+  ·∾ recip (3 / 4 :: Rational)
+  4 % 3
+
+  ·∾ import Data.Ratio (%)
+  ·∾ recip (3 % 4)
+  4 % 3
 
 
 6.7 Type-defaulting type classes?
