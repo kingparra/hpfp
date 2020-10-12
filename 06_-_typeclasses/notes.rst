@@ -114,10 +114,11 @@ TypeName``, like this::
   instance Show Float         -- Defined in ‘GHC.Float’
   instance Read Float         -- Defined in ‘GHC.Read’
 
-Since ``Float`` has an instance defined in ``GHC.Float``, it
-is said to be a member of the ``Num`` type class.
+See the ``instance Num Float`` line? This says that ``Float``
+is a member of the ``Num`` type class, as witnessed by the
+instance declaration for it defined in the ``GHC.Float`` module.
 
-More precisely, a type is a member of a type class if it has
+To reiterate, a type is a member of a class if it has
 an ``instance`` declaration for it that defines the minimally
 required class methods listed in the ``class`` declaration.
 
