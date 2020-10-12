@@ -597,3 +597,10 @@ What the hell is ``showsPrec``? ::
 
   ·∾ showsPrec 8 "this" "that"
   "\"this\"that"
+
+
+6.14 Chapter Exercises
+----------------------
+
+.. include:: exercises/6.14.1_-_multiple_choice.rst
+
