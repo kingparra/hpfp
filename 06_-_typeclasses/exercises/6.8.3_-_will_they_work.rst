@@ -1,0 +1,59 @@
+6.8.3 Exercises: Will They Work?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Look at the following code examples and try to decide if
+they will work, what result they will return if they do, and
+why or why not. Be sure to test them in your repl once
+you've decided on your answer.
+
+1. Example::
+
+      max (length [1,2,3]) (length [8,9,10,11,12])
+
+   Prediction: The answer should be ``5 :: Int``.
+
+   Proof::
+          
+      ·∾ max (length [1..3]) (length [8..12])
+      5
+      ·∾ :type it
+      it :: Int
+
+2. Example::
+
+      compare (3 * 4) (3 * 5)
+
+   Prediction: Ok, the result must be an Ordering (one of LT, EQ, GT), and (3*4)
+   is less than (3*5), so the answer must be ``LT``.
+
+   Proof::
+
+      ·∾ compare (3*4) (3*5)
+      LT
+
+3. Example::
+
+      compare "Julie" True
+
+   Prediction: How can you meaningfully compare a ``String`` and a ``Bool``?
+   This must result in a type error. Let's see.
+
+   Proof::
+
+      
+      ·∾ compare "Julie" True
+      <interactive>:31:17: error:
+          • Couldn't match expected type ‘[Char]’ with actual type ‘Bool’
+          • In the second argument of ‘compare’, namely ‘True’
+            In the expression: compare "Julie" True
+            In an equation for ‘it’: it = compare "Julie" True
+
+4. Examples::
+
+      (5 + 3) > (3 + 6)
+
+   Prediction: Eight is not greater than nine -- ``False``.
+   
+   Proof::
+
+      ·∾ 5+3 > 3+6
+      False

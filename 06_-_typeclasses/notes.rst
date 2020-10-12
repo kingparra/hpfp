@@ -389,48 +389,52 @@ define an instance of ``Show`` for them.
 
 6.5.2 Partial functions
 ^^^^^^^^^^^^^^^^^^^^^^^
-A partial function is a function which doesn't terminate and
-yield a value for all given inputs.
-
-Conversely a total function terminates and is always defined
-for all inputs.
+A partial function is a function which doesn't terminate
+and yield a value for all given inputs. Conversely a total
+function terminates and is always defined for all inputs.
 
 We should take care to avoid partial functions, since they
-can blow up at runtime.
+can blow up at runtime. But it seems like it would be easy
+to overlook an input. So then, how can we ensure all our
+functions are total?
 
-The solution? Match against a catch-all pattern, like the
-wildcard ``_``, and then write some logic to deal with
-unanticipated inputs safely. Otherwise, you may want to use
-a wrapper type to indicated the possibility of failure
-explicitly, like ``Maybe``. Another possibility is to use a
-type with a smaller cardinality, and define all cases.
+One way is to match unconditionally and then write some
+logic to deal with those inputs safely. (By, say, returning
+an identity value for that type.) Otherwise, you may want to
+use a wrapper type like ``Maybe`` to indicate the possibility
+of failure explicitly. Yet another possibility is to use a
+type with a smaller cardinality, and define cases for all
+possible inputs.
 
-GHC flags can help, too. If we turn on ``-Wall``, we will
-get a nice error message when we're not handling all cases.
-It will even tell you which inputs your function is note
-defined for.
+GHC flags can help you realize when functions are partial.
+If we turn on ``-Wall``, we'll get an error message if a
+function has cases left undefined. The error will even tell
+you which inputs your function needs cases for.
 
 Certain historical parts of ``Prelude`` are full of partial
 functions. What about those?
 
-I'm not sure, really, that seems hard. `Diehl has more to say
-<http://dev.stephendiehl.com/hask/#partial-functions>`_. He
-points out a few pitfalls.
+Honestly that seems hard. `Diehl has more to say on the
+matter <http://dev.stephendiehl.com/hask/#partial-functions>`_.
 
 To me it seems that Haskell has bad defaults in this area.
-Personally I don't think I'll have the wherewithal to
-circumnavigate them. Using an alternative prelude kind of
-sucks, too.
-
-Hopefully, ``hlint`` will point this stuff out. I should
-look into that more. Another option is employing some kind
-of extension to the type system, but that strikes me as
-impractical.
+I don't think I'll have the wherewithal to avoid them. Using
+an alternative prelude kind of sucks, too. Hopefully there
+is some tooling or a language extension to deal with this.
 
 6.5.3 Sometimes we need to ask for more
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To make more operations available within out instance
-definitions, we can add a constraint.
+Sometimes, in order to write our operations, we may need to
+use functions from other type classes. To make them visible,
+you can add a constraint to the instance declaration, like
+so::
+
+  --      constraint
+  --       vvvvvvv
+  instance Eq a => Eq (Identity a) where
+    (==) (Identity v) (Identity v') = v == v'
+  --                                  ^^^^^^^
+  --                        needed for this comparison
 
 .. include:: exercises/6.5.4_-_eq_instances.rst
 
@@ -483,9 +487,113 @@ Here's an example of how to use ``recip``::
 6.7 Type-defaulting type classes?
 ---------------------------------
 In some cases, there may be no clear concrete type for a
-constrained polymorphic type variable to resolve to. The
-variable is said to be of an ambiguous type.
+constrained polymorphic type variable to resolve to. There
+may be multiple types that satisfy the class constraints.
+This type variable is said to be of an ambiguous type.
 
-To prevent this situation, there are two options. The user
-can explicitly annotate a type signature, or a type class
-can resolve it to a default type provided by the type class.
+To prevent this situation, some type classes provide a
+default type to resolve expressions to.
+
+In the expression ``1 / 2``, there are multiple types that
+could satisfy the ``Fractional`` class constraint that
+``(/)`` creates.
+
+But the result is of type ``Double``, because somewhere in
+the source code for Prelude the ``default Fractional Double``
+default declaration is provided.
+
+You can use a different concrete type that has an instance
+of ``Fractional`` by providing a type annotation::
+
+  ·∾ 1 / 2
+  0.5
+
+  ·∾ 1 / 2 :: Float
+  0.5
+
+  ·∾ 1 / 2 :: Double
+  0.5
+
+  ·∾ 1 / 2 :: Rational
+  1 % 2
+
+Here are some good defaults to be aware of::
+
+  default   Num          Integer
+  default   Real         Integer
+  default   Enum         Integer
+  default   Integral     Integer
+  default   Fractional   Double
+  default   RealFrac     Double
+  default   Floating     Double
+  default   RealFloat    Double
+
+Types can be made more specific, but not more general or
+polymorphic.
+
+
+6.8 Ord
+-------
+``Ord`` provides ``compare``, ``(<)``, ``(>=)``, ``(>)``,
+``(<=)``, ``max``, and ``min``. `Docs for Ord <https://
+hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:Ord>`_.
+
+Compare was a new one to me::
+
+  ·∾ compare 3 3
+  EQ
+
+  ·∾ compare 3 4
+  LT
+
+  ·∾ compare 3 2
+  GT
+
+Any time we ask GHCi to print a return value in our
+terminal, we are indirectly invoking ``print``.
+
+
+6.8.1 Ord instances
+^^^^^^^^^^^^^^^^^^^
+A few things to keep in mind about writing ``Ord``
+instances; It's wise to ensure that your ``Ord`` instances
+agree with your ``Eq`` instances. Also you want to define a
+sensible total order. (wtf?) You ensure this in part by
+covering all cases and not writing partial instances.
+
+.. include:: exercises/6.8.3_-_will_they_work.rst
+
+
+6.9 Enum
+--------
+``Enum`` provides ``succ``, ``pred``, ``toEnum``, ``fromEnum``,
+``enumFrom``, ``enumFromThen``, ``enumFromTo``, ``enumFromThenTo``.
+`Docs for Enum hereeeee mothafuckaaaa <https://hackage.haskell.org/
+package/base-4.14.0.0/docs/Prelude.html#t:Enum>`_.
+
+There's a ``toEnum``? ::
+
+  ·∾ toEnum 8 :: Char
+  '\b'
+
+  ·∾ fromEnum 'c'
+  99
+
+
+6.10 Show
+---------
+Show is not a serialization format. `Docs for Show
+<https://hackage.haskell.org/package/base-4.14.0.0/
+docs/Prelude.html#t:Show>`_. A minimal implementation only
+requires ``show`` or ``showsPrec``.
+
+What the hell is ``showsPrec``? ::
+
+  ·∾ :type showsPrec
+  showsPrec :: Show a => Int -> a -> ShowS
+
+  ·∾ :info ShowS
+  type ShowS = String -> String
+
+  ·∾ showsPrec 8 "this" "that"
+  "\"this\"that"
