@@ -605,3 +605,6 @@ What the hell is ``showsPrec``? ::
 
 .. include:: exercises/6.14.1_-_multiple_choice.rst
 
+.. include:: exercises/6.14.2_-_does_it_typecheck.rst
+
+.. include:: exercises/6.14.3_-_given_a_datatype_declaration_what_can_we_do.rst

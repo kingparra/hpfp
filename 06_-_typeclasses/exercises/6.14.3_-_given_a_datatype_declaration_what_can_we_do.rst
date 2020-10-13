@@ -1,0 +1,51 @@
+6.14.3 Given a datatype declaration, what can we do?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given the following datatype definitions:
+
+.. include:: exercises/6.14.3_-_given_a_datatype_declaration_what_can_we_do.rst.d/Def.hs
+   :code:
+
+Which of the following will typecheck? For the ones that
+don’t typecheck, why don’t they?
+
+1. ``phew = Papu "chases" True``
+
+   This won't type check, because it's written incorrectly. The ``Papu`` data
+   constructor requires arguments of types ``Rocks`` and ``Yeah``, but is
+   getting ``String`` and ``Bool`` arguments, instead. If I try, I get an error
+   like this::
+
+      ·∾ phew = Papu "chases" True 
+      <interactive>:2:13: error:
+          • Couldn't match expected type ‘Rocks’ with actual type ‘[Char]’
+          • In the first argument of ‘Papu’, namely ‘"chases"’
+            In the expression: Papu "chases" True
+            In an equation for ‘phew’: phew = Papu "chases" True
+      <interactive>:2:22: error:
+          • Couldn't match expected type ‘Yeah’ with actual type ‘Bool’
+          • In the second argument of ‘Papu’, namely ‘True’
+            In the expression: Papu "chases" True
+            In an equation for ‘phew’: phew = Papu "chases" True
+
+   But if I rewrite it to ``Papu (Rocks "chases") (Yeah True)`` and evaluate it,
+   it works::
+
+      ·∾ phew = Papu (Rocks "chases") (Yeah True)
+      ·∾ phew
+      Papu (Rocks "chases") (Yeah True)
+
+2. ``truth = Papu (Rocks "chomskydoz") (Yeah True)`` **This typechecks!**
+3. ``equalityForall :: Papu -> Papu -> Bool; equalityForall p p' = p == p'`` **This also typechecks!**
+4. ``comparePapus :: Papu -> Papu -> Bool; comparePapus p p' = p > p'``
+
+   This won't work since ``Papu`` (as well as ``Rocks`` and ``Yeah``) don't have
+   an instance of ``Ord``, which provides ``(>)``::
+
+      ·∾ :{
+       ⋮ comparePapus :: Papu -> Papu -> Bool
+       ⋮ comparePapus p p' = p > p'
+       ⋮ :}
+      <interactive>:5:21: error:
+          • No instance for (Ord Papu) arising from a use of ‘>’
+          • In the expression: p > p'
+            In an equation for ‘comparePapus’: comparePapus p p' = p > p'
