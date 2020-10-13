@@ -19,6 +19,7 @@ Contents
    04_-_basic_datatypes/questions
    05_-_types/notes
    05_-_types/questions
+   06_-_typeclasses/notes
 
 
 Indices and tables

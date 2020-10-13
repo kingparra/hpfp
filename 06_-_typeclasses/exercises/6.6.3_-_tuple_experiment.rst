@@ -1,0 +1,19 @@
+6.6.3 Exercises: Tuple Experiment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Look at the types given for ``quotRem`` and ``divMod``. What do you think those
+functions do? 
+
+Test your hypotheses by playing with them in the REPL. We've given you a sample
+to start with below::
+
+    Prelude> ones x = snd (divMod x 10)
+
+.. raw:: html
+
+    <script id="asciicast-GijjMK9lDc02rngH5OA5bS1uF"
+    src="https://asciinema.org/a/GijjMK9lDc02rngH5OA5bS1uF.js"
+    async></script>
+
+The answer seems to be ``divMod = (\x y -> (x `div` y, x `mod` y))``, ``quotRem
+= (\x y -> (x `quot` y, x `rem` y))``. But honestly, I already knew that from
+reading about it in chapter 4 and the hackage page for ``Integral``.

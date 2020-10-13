@@ -1,0 +1,19 @@
+6.6.2 Exercises: Tuple Experiment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Query the types of ``divMod`` and ``quotRem``. Make a guess
+as to what they do, and then test it in the repl.
+
+.. raw:: html
+
+    <script id="asciicast-qx3UhroMDhd1XdGxgbz5H9lfC"
+    src="https://asciinema.org/a/qx3UhroMDhd1XdGxgbz5H9lfC.js"
+    async></script>
+
+Here is one possible implementation::
+
+  ·∾ divMod'  = \x y -> (x `div` y, x `mod` y)
+
+  ·∾ quotRem' = \x y -> (x `quot` y, x `quot` y)
+
+I feel like I'm cheating since I've read the source code for
+these functions when taking notes for chapter 4.

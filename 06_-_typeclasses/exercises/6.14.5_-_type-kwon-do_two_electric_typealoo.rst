@@ -1,0 +1,57 @@
+6.14.5 Type-Kwon-Do Two: Electric Typealoo
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The idea with these exercises is that you’ll derive the
+implementation from the type information.
+
+1. ::
+
+    chk :: Eq b => (a -> b) -> a -> b -> Bool
+    chk f a b = (f  a) == b
+
+    --   +-----------------------------------------------------+
+    --   |                                                     |
+    --   v                                                     |
+    -- (==) :: Eq b =>                b   ->    b   ->   Bool  |
+    --                                ^    ^    ^    ^    ^    |
+    --                                |    |    |    |    |    |
+    --                        +-------+    |    |    |    |    |
+    --                       /             |    |    |    |    |
+    --                      v              v    v    v    v    |
+    -- chk :: Eq b => (a -> b)   ->   a   ->    b   ->   Bool  |
+    --                ^^^^^^^^        ^                        |
+    --                    |           |                        |
+    --                    |           |                        |
+    --                    +  +--------+                        |
+    --                   /  /                                  |
+    --                  /  /                                   |
+    --                 v  v                                    |
+    -- chk f a b =    (f  a) == b                              |
+    --                        ^                                |
+    --                        |                                |
+    --                        +--------------------------------+
+
+2. ::
+
+    arith  :: Num b => (a -> b) -> Integer -> a -> b
+    arith f i a = (f  a) + (fromInteger i)
+
+    --  +-------------------------------------------------+
+    --  |                                                 |
+    --  v                                                 |
+    -- (+)    :: Num a =>   a      ->    a     ->     a   |
+    --                      ^       ^    ^      ^     ^   |
+    --                       \      |     \      \    |   |
+    --                        \     |      +---+  \   |   |
+    --                         \    |           \  \  |   |
+    --                          v   v            v  v v   |
+    -- arith  :: Num b => (a -> b) -> Integer -> a -> b   |
+    --                     ^  ^          ^     ^          |
+    --                     |  |          |     |          |
+    --                     +  +          |     |          |
+    --                      \/           +-----------+    |
+    --                      /\                 |     |    |
+    --                     v  v                v     v    |
+    -- arith f i a =      (f  a)    +   (fromInteger i)   |
+    --                              ^                     |
+    --                              |                     |
+    --                              +---------------------+
