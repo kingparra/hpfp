@@ -12,7 +12,7 @@ Install stack by following the directions on their `website
 
 Stack manages the entire tool-chain that you'll typically use for a
 project in an isolated way. Right now we're only interested in it
-because it will provide a way to our execute code.
+because it will provide a compiler to execute our code with.
 
 .. topic:: Setting up a knowledge base
 
@@ -27,11 +27,9 @@ because it will provide a way to our execute code.
     * `An excellent video series <https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV>`_
     * `The GHC users guide <https://downloads.haskell.org/ghc/latest/docs/html/users_guide>`_
     * `The Haskell 2010 language report <https://www.haskell.org/onlinereport/haskell2010/>`_
-
-    I've included a bash script to download these things for you, in pdf
+I've included a bash script to download these things for you, in pdf
     where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
-
-    Hackage is like a search engine for API docs. You'll want to bookmark this.
+    Hoogle is like a search engine for API docs. You'll want to bookmark this.
     https://wiki.haskell.org/Hoogle
 
     The freenode IRC #haskell channel is incredibly helpful, too.

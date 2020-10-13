@@ -1,0 +1,15 @@
+6.14.4 Match the types
+^^^^^^^^^^^^^^^^^^^^^^
+Can you substitute the second type for the first? Test all your answers.
+
+The book asks me to create files for each of these, load them, and then change
+the type. That's a lot of unneeded saving and loading, though, so I decided to
+do everything in the repl, instead. If you don't want to suffer through my
+typos, I suggest you download the ``*.cast`` file, and run ``asciinema cat`` on
+it to view the entire contents at once.
+
+.. raw:: html
+
+   <script id="asciicast-hwwESpPAmjrHq7aMLP9hNC4K1"
+   src="https://asciinema.org/a/hwwESpPAmjrHq7aMLP9hNC4K1.js"
+   async></script>

@@ -1,0 +1,52 @@
+6.5.4 Exercises: Eq Instances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A terminal recording, because why not?
+
+.. raw:: html
+
+    <script id="asciicast-46bkCfvrxkyD2frA8yTRiXorc"
+    src="https://asciinema.org/a/46bkCfvrxkyD2frA8yTRiXorc.js"
+    async></script>
+
+Write the ``Eq`` instance for the datatype provided.
+
+1. ``data TisAnInteger = TisAn Integer`` (not a typo)::
+
+     instance Eq TisAnInteger where
+        TisAn a == TisAn a' = a == a'
+
+2. ``data TwoIntegers = Two Integer Integer``::
+
+     instance Eq TwoIntegers where
+        Two a a' == Two b b' = (a, a') == (b, b')
+
+3. ``data StringOrInt = TisAnInt Int | TisAString String``::
+
+     instance Eq StringOrInt where
+         TisAnInt a   == TisAnInt a'    = a == a'
+         TisAString b == TisAString b'  = b == b'
+         TisAString _ == TisAnInt _     = False
+         TisAnInt _   == TisAString _   = False
+
+4. ``data Pair a = Pair a a``::
+
+     instance (Eq a) => Eq (Pair a) where
+         (==) (Pair a a') (Pair b b') = a == b && a' == b'
+
+5. ``data Tuple a b = Tuple a b``::
+
+     instance (Eq a, Eq b) => Eq (Tuple a b) where
+         Tuple a b == Tuple a' b'  =  a == a' && b == b'
+
+6. ``data Which a = ThisOne a | ThatOne a``::
+
+    instance (Eq a) => Eq (Which a) where
+        (==) (ThisOne a) (ThatOne a') = a == a'
+
+7. ``data EitherOr a b = Hello a | Goodbye b``::
+
+    instance (Eq a, Eq b) => Eq (EitherOr a b) where
+      Hello a == Hello a' = a == a'
+      Goodbye b == Goodbye b' == b == b'
+      Hello _ == Goodbye _ = False
+      Goodbye _ == Hello _ = False
