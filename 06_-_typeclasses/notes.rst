@@ -86,18 +86,20 @@ definitions (i.e. class methods) for ``(+)`` and ``negate``."
 
 Type membership
 ^^^^^^^^^^^^^^^
-If a type implements a type class, it's considered a member
-of that class. How can we tell what classes a type is a
-member of?
+A type is a member of a type class if it has a ``instance``
+declaration which defines all minimally required methods of
+the ``class`` declaration.
 
-One way to determine which classes a type belongs to is
-by looking it up on `hoogle <https://hoogle.haskell.org/>`_,
-which extracts documentation from the source code.
+How can we query which classes a type is a member of?
+
+One way is to search for it on `hoogle
+<https://hoogle.haskell.org/>`_, which extracts
+documentation from the source code.
 
 But what if you don't have access to hoogle or the source
 code?
 
-You can find membership information in the output of ``:info
+You can find membership information from the output of ``:info
 TypeName``, like this::
 
   ·∾ :info Float
@@ -114,13 +116,9 @@ TypeName``, like this::
   instance Show Float         -- Defined in ‘GHC.Float’
   instance Read Float         -- Defined in ‘GHC.Read’
 
-See the ``instance Num Float`` line? This says that ``Float``
-is a member of the ``Num`` type class, as witnessed by the
-instance declaration for it defined in the ``GHC.Float`` module.
-
-To reiterate, a type is a member of a class if it has
-an ``instance`` declaration for it that defines the minimally
-required class methods listed in the ``class`` declaration.
+The ``instance Num Float`` line shows us that there is an
+instance for ``Num``. Because of this instance, ``Float`` is
+a member of ``Num``.
 
 Minimally required methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
