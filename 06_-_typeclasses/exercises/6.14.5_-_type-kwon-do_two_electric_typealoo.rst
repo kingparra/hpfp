@@ -3,6 +3,12 @@
 The idea with these exercises is that you’ll derive the
 implementation from the type information.
 
+.. raw:: html
+
+    <script id="asciicast-zmvoOHzhEyncSvk2GcGCKj4Xo"
+    src="https://asciinema.org/a/zmvoOHzhEyncSvk2GcGCKj4Xo.js"
+    async></script>
+
 1. ::
 
     chk :: Eq b => (a -> b) -> a -> b -> Bool
