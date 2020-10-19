@@ -233,9 +233,8 @@ to call the function again, why give it a name?
 -------------------
 Pattern matching allows you to do three things:
 
-* compare literal values against an input value;
-* access arguments or fields of an input data constructor using a pattern
-  (destructuring);
+* compare data constructors against an input;
+* access arguments or fields of a data constructor using a pattern (destructuring);
 * and bind names to successful matches (for literals or destructured arguments).
 
 Literal values
@@ -315,19 +314,16 @@ Yes. Here are the rules:
   of the same formal parameter (a property called linearity).
 * Except for the wildcard, ``_``, which you can use more than once.
 
-There is more nuance for you to explore, (like refutable vs irrefutable
-patterns, strictness, as patterns) but I'm not going to add that here. Instead,
-I refer you to `section 3.17 of the 2010 Haskell language report
+More on pattern matching
+""""""""""""""""""""""""
+There is more nuance for you to explore, but I'm not going to add that here.
+Instead, I refer you to `section 3.17 of the 2010 Haskell language report
 <https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-580003.17>`_
-so you can look up the details as you need them. Remember that programming
-languages are tools with infinite fractal universes of detail, and *doing is the
-best way to reach understanding.* In fact -- doing is the entire point!
-
-(But also, you can check my old notes, which contain the details, you masochist.)
+so you can look up the details as you need them.
 
 7.4.1 Handling all the cases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Here's something more pragmatic -- if you write your patterns in the wrong
+Here's a more pragmatic concern -- if you write your patterns in the wrong
 order, your function will fail.
 
 In the function ``isItTwo`` the wildcard is always matched, and it wont ever
@@ -358,14 +354,11 @@ patterns from most to least specific, particularly when using the wildcard.
 
 Another issue is that of non-exhaustive patterns. This is when you don't have
 patterns defined to deal with every case. (A partial function.) You patterns
-will then fail to match, and return bottom, which will throw an exception, which
+will then fail to match, and return bottom, which will throw an exception, that
 if unhandled will make your program fail.
 
-When given an input without a case, the patterns will fail to match and return
-bottom, which will cause an exception.
-
-It helps to have ``-Wall`` turned on. GHC will then warn about both of these
-situations.
+Turn on ``-Wall`` and GHC will warn you about overlapping and non-exhaustive
+patterns. (Along with a bunch of other things!)
 
 .. include:: exercises/7.4.4_-_variety_pack.rst
 
@@ -374,10 +367,6 @@ situations.
 --------------------
 Case expressions are control flow constructs that perform selection based on
 pattern matches.
-
-(One thing I like about them, and pattern matching generally, is that it's
-declarative. "The control flow follows the data flow" as the paper "FizzBuzz
-in Haskell by Embedding a Domain-Specific Language" puts it ^_^)
 
 Case expressions look like this::
 
@@ -397,12 +386,12 @@ Case expressions look like this::
     King   -> 10
     Ace    -> 1
 
-Like if expressions, all arms (*pattern* **->** *expression* pairs) of the construct must
-return the same type.
+Like if expressions all arms (*pattern* **->** *expression* pairs) of the
+construct must return the same type. (Arms of a case expression are really
+called *matches* in the language report, but I prefer the term arm, which I
+stole from rust.)
 
-Surprise! Case expressions can contain guards!
-
-::
+Surprise! Arms of a case expressions can contain guards! ::
 
   absoluteJust :: Maybe Int -> Maybe Int
   absoluteJust n = case n of
@@ -411,7 +400,9 @@ Surprise! Case expressions can contain guards!
       | n < 0     -> Just (-n)
       | otherwise -> Just n
 
-Guards are expressions that evaluate to boolean values, and can be used to
-restrict pattern matches. (These are  *bool* **->** *expression* pairs.)
-The special ``otherwise`` condition is just a renaming of ``True``, provided for
-better readability.
+Guards are select based on the output of a boolean expression, and can be used
+to restrict pattern matches. Guards cannot introduce new names to the
+environment like patterns can. Not only that, you can use the ``where`` keyword
+with case. Case expressions are pretty versatile.
+
+.. include:: exercises/7.5.1_-_case_practice.rst
