@@ -297,6 +297,9 @@ discards the rest::
 The ``_`` you see here is a wildcard -- a special name that throws away the
 result and always matches.
 
+(This kind of equation is called a pattern binding because it is a top-level
+equation in which the entire left-hand side is a pattern.)
+
 Mechanics of name binding
 """""""""""""""""""""""""
 We said that the wildcard always matches; so does that mean it's possible for a
@@ -305,7 +308,8 @@ name not to match?
 Yes. Here are the rules:
 
 * Matching can have one of three results. It may fail; it may succeed, returning
-  a binding for each variable in the pattern; or it may diverge.
+  a binding for each variable in the pattern; or it may diverge. (If a pattern
+  fails, the next pattern is checked.)
 * Pattern matching proceeds from left to right and outside to inside.
 * Patterns in any one equation are not allowed to have more than one occurrence
   of the same formal parameter (a property called linearity).
@@ -316,7 +320,7 @@ patterns, strictness, as patterns) but I'm not going to add that here. Instead,
 I refer you to `section 3.17 of the 2010 Haskell language report
 <https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-580003.17>`_
 so you can look up the details as you need them. Remember that programming
-languages are tools with infinite fractal universes of detail, and *doign is the
+languages are tools with infinite fractal universes of detail, and *doing is the
 best way to reach understanding.* In fact -- doing is the entire point!
 
 (But also, you can check my old notes, which contain the details, you masochist.)
@@ -364,3 +368,50 @@ It helps to have ``-Wall`` turned on. GHC will then warn about both of these
 situations.
 
 .. include:: exercises/7.4.4_-_variety_pack.rst
+
+
+7.5 Case expressions
+--------------------
+Case expressions are control flow constructs that perform selection based on
+pattern matches.
+
+(One thing I like about them, and pattern matching generally, is that it's
+declarative. "The control flow follows the data flow" as the paper "FizzBuzz
+in Haskell by Embedding a Domain-Specific Language" puts it ^_^)
+
+Case expressions look like this::
+
+  value :: Value -> Integer
+  value card = case card of
+    Two    -> 2
+    Three  -> 3
+    Four   -> 4
+    Five   -> 5
+    Six    -> 6
+    Seven  -> 7
+    Eight  -> 8
+    Nine   -> 9
+    Ten    -> 10
+    Jack   -> 10
+    Queen  -> 10
+    King   -> 10
+    Ace    -> 1
+
+Like if expressions, all arms (*pattern* **->** *expression* pairs) of the construct must
+return the same type.
+
+Surprise! Case expressions can contain guards!
+
+::
+
+  absoluteJust :: Maybe Int -> Maybe Int
+  absoluteJust n = case n of
+    Nothing -> Nothing
+    Just n
+      | n < 0     -> Just (-n)
+      | otherwise -> Just n
+
+Guards are expressions that evaluate to boolean values, and can be used to
+restrict pattern matches. (These are  *bool* **->** *expression* pairs.)
+The special ``otherwise`` condition is just a renaming of ``True``, provided for
+better readability.
