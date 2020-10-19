@@ -91,12 +91,12 @@ argument and return a result.
     know where to start looking.
 
 A parameter is a name that acts as a placeholder for an input within a
-function definition. An argument is a value that is applied to the
+function definition. An argument is an input value that is applied to the
 function.
 
 When you apply a function to an argument, the value of that argument
 is bound to a parameter name within the definition for that particular
-instance of that function, or that function call.
+instance of the function, or that function call.
 
 ::
 
