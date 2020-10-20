@@ -10,9 +10,9 @@ First, rewrite if-then-else expressions into case expressions.
    Rewritten::
 
      functionC x y =
-      case x > y of
-        True  -> x
-        False -> y
+       case x > y of
+         True  -> x
+         False -> y
 
    Proof it works::
 
