@@ -158,16 +158,13 @@ type signature. ::
 7.2.2 Binding variables to values
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Haskell is lexically scoped. This means that resolving the value for a named
-entity depends on the names location in source code. (This is in contrast to
-dynamic scoping, where the execution context of what previously ran determines
-what a name stands for, for example. Bash does this -- yeah, let that sink in.)
+entity depends on the names location in source code. The lexically innermost
+binding for a variable of a particular name always takes precedence. If an inner
+scope defines a name that already exists in the outer scope, it *shadows* that
+name, so the outer definition is no longer visible within that inner scope.
 
-The lexically innermost binding for a variable of a particular name always takes
-precedence.
-
-If an inner scope defines a name that already exists in the outer scope, it
-*shadows* that name, so the outer definition is no longer visible within that
-inner scope. ::
+In the example here, the parameter x is shadowed by the definition for x within
+the let expression, essentially blocking the visibility of the parameter::
 
   ·∾ :{
    ⋮ bindExp :: Integer -> String
@@ -178,9 +175,6 @@ inner scope. ::
    ⋮ :}
   ·∾ bindExp 8
   "x: 10, y: 5"
-  ·∾ -- The parameter x is shadowed by the definition for x within
-  ·∾ -- the let expression, essentially blocking the visibility of
-  ·∾ -- the parameter.
 
 In a repl session, each line shadows the next. The mechanics of this are
 conceptually similar to nested lambda expressions. ::
@@ -233,20 +227,24 @@ to call the function again, why give it a name?
 -------------------
 Pattern matching allows you to do three things:
 
-* compare data constructors against an input;
-* access arguments or fields of a data constructor using a pattern (destructuring);
-* and bind names to successful matches (for literals or destructured arguments).
+* compare data constructors against an input (matching);
+* access arguments or fields of a data constructor (destructuring);
+* and bind names to successful matches of data constructors or their
+  destructured arguments (name binding).
 
-Literal values
-^^^^^^^^^^^^^^
-A literal value can be any data constructor, like ``True``, or ``1``, or even
-compound structures like ``(1,2)``, ``Just 3``, and ``[('c',2),('d',4)]``.
+.. http://dmitrysoshnikov.com/notes/pattern-matching/
 
-Simple values
-"""""""""""""
-This function matches a pattern, but doesn't do any destructuring or name
-binding. Even literal values are patterns. It returns ``True`` if given ``1``,
-and throws an exception for anything else::
+You can think of patterns as coming in two varieties; those composed only of
+values, and those that introduce names.
+
+Value only patterns
+^^^^^^^^^^^^^^^^^^^
+Any data constructor can be matched, like ``True``, or ``1``, or even compound
+structures like ``(1,2)``, ``Just 3``, and ``[('c',2),('d',4)]``.
+
+This function matches a pattern of only values, but doesn't do any destructuring
+or name binding. Even literal values are patterns. It returns ``True`` if given
+``1``, and throws an exception for anything else::
 
   isOne 1 = True
 
@@ -257,9 +255,8 @@ In ghci::
   ·∾ isOne 8
   *** Exception: <interactive>:185:1-14: Non-exhaustive patterns in function isOne
 
-
-Destructuring compound values
-"""""""""""""""""""""""""""""
+Destructuring value only patterns
+"""""""""""""""""""""""""""""""""
 Here is a function that works on a more complicated structure. This pattern uses
 destructuring to access sub-elements, but does not bind names. It will return
 ``False`` if you give it this very particular tuple literal::
@@ -278,48 +275,64 @@ a catch-all pattern::
   ·∾ contrived ([], 'F', (8, 9.8), "bye", False)
   *** Exception: <interactive>:165:1-49: Non-exhaustive patterns in function contrived
 
-Name binding
-^^^^^^^^^^^^
+Patterns that introduce names
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Patterns look a lot like data constructors, but in place of data constructor
-parameter you can supply a name, instead. If a value (or argument) inhabits that
-parameter, it gets bound to the name you've supplied.
+parameters you can supply a name, instead. If a value (or argument) inhabits
+that parameter, it gets bound to the name you've supplied.
 
 Name binding and destructuring
 """"""""""""""""""""""""""""""
-Here is an example pattern that assigns the third element of a triple to ``a`` and
-discards the rest::
+Here is an example pattern that assigns the third element of a triple to ``a``
+and discards the rest::
 
   ·∾ (_,_,a) = (1,2,3)
   ·∾ a
   3
 
-The ``_`` you see here is a wildcard -- a special name that throws away the
-result and always matches.
+The ``_`` you see here is a wildcard -- a special name that always matches and
+throws away the result.
 
-(This kind of equation is called a pattern binding because it is a top-level
-equation in which the entire left-hand side is a pattern.)
+Mechanics of pattern matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The matching process itself occurs "top-down, left-to-right."
 
-Mechanics of name binding
-"""""""""""""""""""""""""
-We said that the wildcard always matches; so does that mean it's possible for a
-name not to match?
+Pattern matching can either fail, succeed or diverge. A successful match binds
+the formal parameters in the pattern. Divergence occurs when a value needed by
+the pattern contains an error (⊥).
 
-Yes. Here are the rules:
+Failure of a pattern anywhere in one equation results in failure of the whole
+equation, and the next equation is then tried. If all equations fail, the value
+of the function application is ⊥, and results in a run-time error.
 
-* Matching can have one of three results. It may fail; it may succeed, returning
-  a binding for each variable in the pattern; or it may diverge. (If a pattern
-  fails, the next pattern is checked.)
-* Pattern matching proceeds from left to right and outside to inside.
-* Patterns in any one equation are not allowed to have more than one occurrence
-  of the same formal parameter (a property called linearity).
-* Except for the wildcard, ``_``, which you can use more than once.
+Patterns in any one equation are not allowed to have more than one occurrence of
+the same formal parameter (a property called linearity). Except for the
+wildcard, ``_``, which you can use more than once.
 
-More on pattern matching
-""""""""""""""""""""""""
-There is more nuance for you to explore, but I'm not going to add that here.
-Instead, I refer you to `section 3.17 of the 2010 Haskell language report
-<https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-580003.17>`_
-so you can look up the details as you need them.
+Lazy patterns, refutable vs irrefutable patterns
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is one other kind of pattern allowed in Haskell. It is called a lazy
+pattern, and has the form ``~pat``. 
+
+Lazy patterns are irrefutable: matching a value ``v`` against ``~pat`` always
+succeeds, regardless of pat. If an identifier in pat is later "used" on the
+right-hand-side, and it didn't match a value, it will return bottom _|_.
+
+Refutable patterns are distinct from irrefutable ones in that they can fail to
+match.
+
+Lazy patterns are useful in contexts where infinite data structures are being
+defined recursively.
+
+Here's an equation that defines the Fibonacci sequence::
+
+  fib@(1:tfib)    = 1 : 1 : [ a+b | (a,b) <- zip fib tfib ]
+
+This kind of equation is called a pattern binding because it is a top-level
+equation in which the entire left-hand side is a pattern.
+
+The ``@`` symbol here indicates we are using an as-pattern, where everything in
+the parenthesis are captured by the name ``fib``.
 
 7.4.1 Handling all the cases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -386,12 +399,10 @@ Case expressions look like this::
     King   -> 10
     Ace    -> 1
 
-Like if expressions all arms (*pattern* **->** *expression* pairs) of the
-construct must return the same type. (Arms of a case expression are really
-called *matches* in the language report, but I prefer the term arm, which I
-stole from rust.)
+Each *pattern* **->** *expression* pair is known as a *match*, but sometimes
+I'll call these  *arms*, instead.
 
-Surprise! Arms of a case expressions can contain guards! ::
+Surprise! Matches can contain guards! ::
 
   absoluteJust :: Maybe Int -> Maybe Int
   absoluteJust n = case n of
@@ -400,9 +411,21 @@ Surprise! Arms of a case expressions can contain guards! ::
       | n < 0     -> Just (-n)
       | otherwise -> Just n
 
-Guards are select based on the output of a boolean expression, and can be used
-to restrict pattern matches. Guards cannot introduce new names to the
-environment like patterns can. Not only that, you can use the ``where`` keyword
-with case. Case expressions are pretty versatile.
+Guards are based on the output of a boolean expression, and can be used
+to restrict pattern matches.  Guards cannot introduce new names to the
+environment like patterns can.
 
 .. include:: exercises/7.5.1_-_case_practice.rst
+
+
+7.6 Higher-order functions
+--------------------------
+Higher-order functions are functions that accept functions as arguments.
+
+::
+
+  --      input function
+  --    that takes two args
+  --      vvvvvvvvvvvvv
+  flip :: (a -> b -> c) -> b -> a -> c
+  flip f x y = f y x
