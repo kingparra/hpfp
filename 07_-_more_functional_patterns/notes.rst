@@ -312,7 +312,7 @@ wildcard, ``_``, which you can use more than once.
 Lazy patterns, refutable vs irrefutable patterns
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There is one other kind of pattern allowed in Haskell. It is called a lazy
-pattern, and has the form ``~pat``. 
+pattern, and has the form ``~pat``.
 
 Lazy patterns are irrefutable: matching a value ``v`` against ``~pat`` always
 succeeds, regardless of pat. If an identifier in pat is later "used" on the
@@ -429,3 +429,5 @@ Higher-order functions are functions that accept functions as arguments.
   --      vvvvvvvvvvvvv
   flip :: (a -> b -> c) -> b -> a -> c
   flip f x y = f y x
+
+.. include:: exercises/7.6.1_-_artful_dodgy.rst
