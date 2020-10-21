@@ -334,6 +334,22 @@ equation in which the entire left-hand side is a pattern.
 The ``@`` symbol here indicates we are using an as-pattern, where everything in
 the parenthesis are captured by the name ``fib``.
 
+Where else can you use patterns?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patterns can appear in a lot of places. To be specific, patterns can be used
+with
+
+* lambda abstractions;
+* function definitions;
+* pattern bindings;
+* list comprehensions;
+* do expressions;
+* and case expressions.
+
+Ultimately, the first five of these translate into case expressions. A good
+general rule of thumb is "if you can put a case expression inside of it, it
+probably supports pattern matching itself."
+
 7.4.1 Handling all the cases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here's a more pragmatic concern -- if you write your patterns in the wrong
@@ -402,19 +418,6 @@ Case expressions look like this::
 Each *pattern* **->** *expression* pair is known as a *match*, but sometimes
 I'll call these  *arms*, instead.
 
-Surprise! Matches can contain guards! ::
-
-  absoluteJust :: Maybe Int -> Maybe Int
-  absoluteJust n = case n of
-    Nothing -> Nothing
-    Just n
-      | n < 0     -> Just (-n)
-      | otherwise -> Just n
-
-Guards are based on the output of a boolean expression, and can be used
-to restrict pattern matches.  Guards cannot introduce new names to the
-environment like patterns can.
-
 .. include:: exercises/7.5.1_-_case_practice.rst
 
 
@@ -431,3 +434,35 @@ Higher-order functions are functions that accept functions as arguments.
   flip f x y = f y x
 
 .. include:: exercises/7.6.1_-_artful_dodgy.rst
+
+
+7.7 Guards
+----------
+
+7.7.2 Writing guard blocks
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Here's what a function with a guard block looks like::
+
+  myAbs x
+    | x < 0     = (-x)
+    | otherwise = x
+
+The condition between ``|`` and ``=`` is a boolean expression. If it returns
+``True``, then the expression on the right of the ``=`` is evaluated.
+
+Guards always evaluate sequentially, so your guards should be ordered from the
+case that is most restrictive to the case that is least restrictive.
+
+Surprise! Matches in case expressions can contain guards! ::
+
+  absoluteJust :: Maybe Int -> Maybe Int
+  absoluteJust n = case n of
+    Nothing -> Nothing
+    Just n
+      | n < 0     -> Just (-n)
+      | otherwise -> Just n
+
+Note that ``otherwise`` is just an another name for ``True``, provided by
+Prelude to make guards more pleasant to read.
+
+.. include:: exercises/7.7.3_-_guard_duty.rst
