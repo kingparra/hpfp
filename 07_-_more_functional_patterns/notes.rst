@@ -391,6 +391,8 @@ patterns. (Along with a bunch of other things!)
 
 .. include:: exercises/7.4.4_-_variety_pack.rst
 
+.. TODO read the haskell report secion on pattern matching
+
 
 7.5 Case expressions
 --------------------
@@ -466,3 +468,30 @@ Note that ``otherwise`` is just an another name for ``True``, provided by
 Prelude to make guards more pleasant to read.
 
 .. include:: exercises/7.7.3_-_guard_duty.rst
+
+
+7.8 Function composition
+------------------------
+The compose operator is a type of higher-order function that allows us to
+combine function such that the result of applying one function gets passed
+to the next function as an argument.
+
+Type signature and definition::
+
+  --      left         right
+  (.) :: (b -> c) -> (a -> b) -> a -> c
+  f . g = f (g x)
+
+Usage::
+
+  ·∾ negate . sum $ [1..4]
+  -10
+
+.. TODO read from 7.8 to 7.11 .. I don't have time for this right now.
+
+
+7.11 Chapter Exercises
+----------------------
+
+.. include:: exercises/7.11.1_-_multiple_choice.rst
+
