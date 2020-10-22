@@ -481,14 +481,48 @@ Type signature and definition::
   --      left         right
   (.) :: (b -> c) -> (a -> b) -> a -> c
   f . g = f (g x)
+  infixr 9 .
+
+(Ordinary function application has a precedence of 10 out of 10.)
 
 Usage::
 
   ·∾ negate . sum $ [1..4]
   -10
 
-.. TODO read from 7.8 to 7.11 .. I don't have time for this right now.
+Parenthesis or ``$`` are needed to separate the group of composed functions and
+the argument they'll operate on.
 
+
+7.9 Pointfree style
+-------------------
+Pointfree refers to a style of composing functions without specifying their
+arguments. The "point" in "pointfree" refers to the arguments, not the
+composition operator.
+
+The idea is to put an emphasis on series of transformations by eliding temporary
+name bindings. In combination with compose, this feels reminiscent of unix shell
+pipelines (but in reverse). Use this only where it makes sense. If keeping track
+of parameter names is getting confusing, maybe that's a good candidate for
+pointfree.
+
+A simple example::
+
+  -- pointful
+  f z xs = foldr (+) z xs
+
+  -- pointfree
+  f = foldr (+)
+
+  g = negate . sum
+
+Another one::
+
+  ·∾ f = length . filter (== 'a')
+  ·∾ f "abracadabra"
+  5
+
+This style can be 
 
 7.11 Chapter Exercises
 ----------------------
