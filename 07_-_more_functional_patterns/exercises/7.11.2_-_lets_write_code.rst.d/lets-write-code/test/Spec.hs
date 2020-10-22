@@ -9,3 +9,7 @@ main = hspec $ do
       tensDigit' 180 `shouldBe` tensDigit 180
     it "c) hunsD" $ do
       hunsD 1800 `shouldBe` 8
+  describe "2" $ do
+    it "foldBool" $ do
+      foldBool 1 2 False `shouldBe` 1
+      foldBool 1 2 True `shouldBe` 2

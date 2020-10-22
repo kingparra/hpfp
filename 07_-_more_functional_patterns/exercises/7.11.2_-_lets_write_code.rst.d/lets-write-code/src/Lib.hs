@@ -16,5 +16,10 @@ hunsD x = (x `div` 100) `mod` 10
 
 
 -- 2
+{-# ANN foldBool ("HLint: ignore Use if" :: String) #-}
 foldBool :: a -> a -> Bool -> a
-foldBool = undefined
+foldBool x y b = case b of { False -> x; True -> y }
+
+-- 3
+g :: (a -> b) -> (a, c) -> (b, c)
+g aToB (a, c) = (aToB a, c)

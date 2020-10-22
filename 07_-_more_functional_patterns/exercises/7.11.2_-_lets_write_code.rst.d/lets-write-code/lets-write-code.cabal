@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: be3e59dcddaf38dd77f43b521b85fe072982282123e3d98c179e9e3e0bad8d00
+-- hash: 26a4d2b8beee2da484d59d89fe91874bc5a9a85ad54ef5798160a34d3268f6d6
 
 name:           lets-write-code
 version:        0.0.0
@@ -12,6 +12,7 @@ build-type:     Simple
 
 library
   exposed-modules:
+      Arith4
       Lib
   other-modules:
       Paths_lets_write_code
