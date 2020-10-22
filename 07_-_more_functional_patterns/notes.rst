@@ -35,7 +35,7 @@ we will:
 * learn about the mechanics of pattern matching;
 * explore case expressions and guards -- elegant control
   flow constructs that allow selection based on pattern
-  matches;
+  matches and boolean expressions;
 * nest functions, experiment with lambda expression;
 * use combinators that change the order of function
   application, like ``(.)`` and ``$``.
@@ -495,3 +495,4 @@ Usage::
 
 .. include:: exercises/7.11.1_-_multiple_choice.rst
 
+.. include:: exercises/7.11.2_-_lets_write_code.rst
