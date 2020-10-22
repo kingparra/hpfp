@@ -1,0 +1,66 @@
+7.4.4 Exercises: Variety Pack
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. raw:: html
+
+    <script id="asciicast-PxbuJtb6GebKiKzgInlMNOLBL"
+    src="https://asciinema.org/a/PxbuJtb6GebKiKzgInlMNOLBL.js"
+    async></script>
+
+1. Given the following declarations
+
+   ::
+
+      k (x, y) = x
+      k1 = k ((4-1), 10)
+      k2 = k ("three", (1 + 2))
+      k3 = k (3, True)
+
+   a. What is the type of ``k``?
+
+      I'm guessing that it should be ``:: (x,y) -> x``; The tuple constructor
+      matches term-level pretty well. Let's see if I'm right::
+
+        ·∾ :type k
+        k :: (a, b) -> a
+
+   b. What is the type of ``k2``? Is it the same type as ``k1`` or
+      ``k3``?
+
+      ``k2 :: String`` ; ``k1 :: Num a => a``; ``k3 :: Num a => a``; are my
+      guesses.  This would mean that ``k2`` has a different type than ``k1`` and
+      ``k3``. Let's see::
+
+        ·∾ :type k2
+        k2 :: [Char]
+
+   c. Of ``k1``, ``k2``, ``k3``, which will return the number ``3`` as the
+      result?
+
+      Of course ``k1`` and ``k3`` will, they both have ``3`` as their first
+      element::
+
+        ·∾ k3
+        3
+        ·∾ k1
+        3
+
+2. Fill in the definition of the following function
+
+   ::
+
+     f :: (a, b, c) -> (d, e, f) -> ((a, d), (c, f))
+     f = undefined
+
+   Sure. ``f (a,_,c) (d,_,f) = ((a,d),(c,f))``. Is that right?
+   Let's test it::
+
+      ·∾ f :: (a, b, c) -> (d, e, f) -> ((a, d), (c, f)); f = undefined
+      ·∾ f (a,_,c) (d,_,f) = ((a,d),(d,f))
+
+      ·∾ :type f
+      f :: (a1, b1, c) -> (a2, b2, b3) -> ((a1, a2), (a2, b3))
+
+      ·∾ f (1,2,3) (4,5,6)
+      ((1,4),(4,6))
+
+   It works!

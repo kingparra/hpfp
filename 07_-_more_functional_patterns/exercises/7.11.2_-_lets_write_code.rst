@@ -1,0 +1,87 @@
+7.11.2 Let's write code
+^^^^^^^^^^^^^^^^^^^^^^^
+1. The following function returns the tens digit of an integral argument.
+   ::
+
+     tensDigit :: Integral a => a -> a
+     tensDigit x = d
+       where xLast = x `div` 10
+             d     = xLast `mod` 10
+
+   a) First, rewrite it using ``divMod``.
+
+      Here you go!
+
+      .. include:: exercises/7.11.2_-_lets_write_code.rst.d/lets-write-code/src/Lib.hs
+         :code:
+         :start-line: 11
+         :end-line: 13
+
+   b) Does the ``divMod`` version have the same type as the original version?
+
+      Yes, here's the proof::
+
+        ·∾ :type tensDigit
+        tensDigit :: Integral a => a -> a
+
+        ·∾ :type tensDigit'
+        tensDigit' :: Integral a => a -> a
+
+   c) Next, let's change it so that we're getting the hundreds digit instead. You
+      could start it like this (though that may not be the only possibility)::
+
+        hunsD x = d2
+          where d = undefined
+          ...
+
+      Ok, here is my attempt
+
+      .. include:: exercises/7.11.2_-_lets_write_code.rst.d/lets-write-code/src/Lib.hs
+         :code:
+         :start-line: 14
+         :end-line: 16
+
+2. Implement the function of the type ``a -> a -> Bool -> a`` once each using a
+   case expression and once with a guard.
+
+   .. include:: exercises/7.11.2_-_lets_write_code.rst.d/lets-write-code/src/Lib.hs
+      :code:
+      :start-line: 18
+      :end-line: 22
+
+3. Fill in the definition
+
+   ::
+
+     g :: (a -> b) -> (a, c) -> (b, c)
+     g = undefined
+
+   Alright, here we go.
+
+   .. include:: exercises/7.11.2_-_lets_write_code.rst.d/lets-write-code/src/Lib.hs
+      :code:
+      :start-line: 23
+      :end-line: 25
+
+4. Write the following code into a source file. Then load it and run it in GHCi
+   to make sure you understand why the evaluation results in the answers you
+   see. ::
+
+      -- arith4.hs
+      module Arith4 where
+      -- id :: a -> a
+      -- id x = x
+      roundTrip :: (Show a, Read a) => a -> a
+      roundTrip a = read (show a)
+      main = do
+        print (roundTrip 4)
+        print (id 4)
+
+5. Next, write a pointfree version of ``roundTrip``. (n.b., This refers to the
+   function definition, not to its application in main.)
+
+   ::
+
+     roundTrip' = read . show
+
+6. I'm pretty sleep deprived and don't understand this question.
