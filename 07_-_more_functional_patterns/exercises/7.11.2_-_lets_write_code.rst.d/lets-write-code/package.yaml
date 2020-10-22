@@ -1,0 +1,12 @@
+---
+name: lets-write-code
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  lets-write-code-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [lets-write-code, hspec]
+...
