@@ -1,0 +1,307 @@
+8.6.2 Reviewing currying
+^^^^^^^^^^^^^^^^^^^^^^^^
+Given the following definitions, tell us what value results from further
+applications. ::
+
+  cattyConny :: String -> String -> String
+  cattyConny x y = x ++ " mrow " ++ y
+
+  flippy :: String -> String -> String
+  flippy = flip cattyConny
+
+  appedCatty :: String -> String
+  appedCatty = cattyConny "woops"
+
+  frappe :: String -> String
+  frappe = flippy "haha"
+
+1. What is the value of ``appedCatty "woohoo!"``? **Try to determine the answer
+   for yourself, then test in the REPL.**
+
+   Ok, desk-checking time::
+
+     appedCatty "woohoo!"
+
+     (cattyConny "woops") "woohoo!"
+
+     ((\x y -> x ++ " mrow " ++ y) "woops") "woohoo!"
+
+     (\y -> x ++ " mrow " ++ "woops") "woohoo!"
+
+     "woohoo!" ++ " mrow " ++ "woops"
+
+     "woohoo! mrow woops"
+
+   The proof::
+
+     ·∾ appedCatty "woohoo!"
+     "woops mrow woohoo!"
+
+2. ``frappe "1"``
+
+   Let me think about this::
+
+     -- Replacing frappe with its definition.
+     ((flip (\x y -> x ++ " mrow " ++ y)) "haha") "1"
+
+     -- Apply flip, which reorders the arguments.
+     ((\y x -> x ++ " mrow " ++ y) "haha") "1"
+
+     -- Apply "haha"
+     (\x -> x ++ " mrow " ++ "haha") "1"
+
+     -- Apply "1"
+     "1" ++ " mrow " ++ "haha"
+
+     -- Simplify
+     "1 mrow haha"
+
+   Time to test::
+
+     ·∾ :type frappe
+     frappe :: String -> String
+
+     ·∾ frappe "1"
+     "1 mrow haha"
+
+3. ``frappe (appedCatty "2")``
+
+   Unpacking indirection::
+
+     -- Replacing frappe and appedCatty with their definnitions.
+     flippy "haha" (cattyConny "woops" "2")
+
+     -- Replacing flippy and cattyConny with their definitions...
+     ((flip cattyConny) "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
+
+     -- Replacing the other cattyConny with its definition.
+     ((flip (\x y -> x ++ " mrow " ++ y) "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
+
+     -- Reduction~
+     ((\y x -> x ++ " mrow " ++ y) "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
+
+     (\x -> x ++ " mrow " ++ "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
+
+     ((\x y -> x ++ " mrow " ++ y) "woops" "2") ++ " mrow " ++ "haha"
+
+     ((\y -> "woops" ++ " mrow " ++ y) "2") ++ " mrow " ++ "haha"
+
+     ("woops" ++ " mrow " ++ "2") ++ " mrow " ++ "haha"
+
+     "woops mrow 2" ++ " mrow " ++ "haha"
+
+     "woops mrow 2 mrow haha"
+
+   Now to test it out. I hope I didn't do all that typing for nothing::
+
+     ·∾ frappe (appedCatty "2")
+     "woops mrow 2 mrow haha"
+
+   I should see if there is an editor plugin to replace functions with their
+   definitions.
+
+4. ``appedCatty (frappe "blue")``
+
+   I'll try to do this one in my head. It should result in ``"woops mrow blue
+   mrow haha"``? Maybe?
+
+   No, I better write it out::
+
+     -- Replace appedCatty and frappe with their definitions.
+     (cattyConny "woops") ((flippy "haha") "blue"
+
+     -- Replace cattyConny and flippy.
+     ((\x y -> x ++ " mrow " ++ y) "woops")
+     (((flip cattyConny) "haha") "blue")
+
+     -- Replace cattyConny, again.
+     ((\x y -> x ++ " mrow " ++ y) "woops")
+     (((flip (\x y -> x ++ " mrow " ++ y)) "haha") "blue")
+
+     -- Apply "woops" to leftmost function.
+     (\y -> "woops" ++ " mrow " ++ y)
+     ((((\y x -> x ++ " mrow " ++ y)) "haha") "blue")
+
+     -- Replace y with first arg
+     "woops" ++ " mrow " ++
+     ((((\y x -> x ++ " mrow " ++ y)) "haha") "blue")
+
+     -- [ y := "haha" ]
+     "woops" ++ " mrow " ++
+     ((\x -> x ++ " mrow " ++ "haha")  "blue")
+
+     -- [ x := "blue" ]
+     "woops" ++ " mrow " ++
+     ("blue" ++ " mrow " ++ "haha")
+
+     -- Simplify parenthesized expression
+     "woops" ++ " mrow " ++ "blue mrow haha"
+
+     -- Simplify
+     "woops mrow blue mrow haha"
+
+   Now to test it::
+
+     ·∾ appedCatty (frappe "blue")
+     "woops mrow blue mrow haha"
+
+5. ``cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))``
+
+   First I did it in my head, but then I thought it would be better to write it
+   out. This is gonna be a long one::
+
+     cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))
+
+     -- replace frappe
+     cattyConny ((flippy "haha") "pink") (cattyConny "green" (appedCatty "blue"))
+
+     -- replace appedCatty
+     cattyConny ((flippy "haha") "pink") (cattyConny "green" (appedCatty "blue"))
+
+     -- replace appedCatty
+     cattyConny ((flippy "haha") "pink") (cattyConny "green" ((cattyConny "woops") "blue"))
+
+     -- replace flippy
+     cattyConny (((flip cattyConny) "haha") "pink") (cattyConny "green" ((cattyConny "woops") "blue"))
+
+     -- replace cattyConny
+     (\x y -> x ++ " mrow " ++ y)
+     (
+       ((flip (\x y -> x ++ " mrow " ++ y)) "haha")
+       "pink"
+     )
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Bring in first arg to leftmost expression
+     (\y ->
+       (
+         (
+           (flip (\x y -> x ++ " mrow " ++ y))
+           "haha"
+         )
+         "pink"
+       ) ++ " mrow " ++ y
+     )
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Bring in next arg to leftmost expression
+     (
+       (
+         (flip (\x y -> x ++ " mrow " ++ y))
+         "haha"
+       )
+       "pink"
+     )
+     ++ " mrow " ++
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Apply flip
+     (
+       (
+         (\y x -> x ++ " mrow " ++ y)
+         "haha"
+       )
+       "pink"
+     )
+     ++ " mrow " ++
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Apply "haha"
+     (
+      (\x -> x ++ " mrow " ++ "haha")
+       "pink"
+     )
+     ++ " mrow " ++
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Apply "pink"
+     ("pink" ++ " mrow " ++ "haha")
+     ++ " mrow " ++
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Simplify
+     "pink mrow haha mrow " ++
+     (
+       (\x y -> x ++ " mrow " ++ y)
+       "green"
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Apply "green"
+     "pink mrow haha mrow " ++
+     (
+       (\y -> "green" ++ " mrow " ++ y)
+       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
+     )
+
+
+     -- Apply first arg
+     "pink mrow haha mrow " ++
+     ("green" ++ " mrow " ++ (((\x y -> x ++ " mrow " ++ y) "woops") "blue"))
+
+     -- Apply "woops"
+     "pink mrow haha mrow " ++
+     ("green" ++ " mrow " ++ ((\y -> "woops" ++ " mrow " ++ y) "blue"))
+
+     -- Apply "blue"
+     "pink mrow haha mrow " ++
+     ("green" ++ " mrow " ++ ("woops" ++ " mrow " ++ "blue"))
+
+     -- Simplify innermost expression
+     "pink mrow haha mrow " ++
+     ("green" ++ " mrow " ++ "woops mrow blue")
+
+     -- Simplify some more
+     "pink mrow haha mrow " ++
+     "green mrow woops mrow blue"
+
+     -- Finally, we're done.
+     "pink mrow haha mrow green mrow woops mrow blue"
+
+   Proof::
+
+     ·∾ cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))
+     "pink mrow haha mrow green mrow woops mrow blue"
+
+6. ``cattyConny (flippy "Pugs" "are") "awesome"``
+
+   Reduction, mostly in my head::
+
+     flippy "Pugs" "are" ++ " mrow awesome"
+     "are mrow Pugs mrow awesome"
+
+   Proof::
+
+     ·∾ cattyConny (flippy "Pugs" "are") "awesome"
+     "are mrow Pugs mrow awesome"

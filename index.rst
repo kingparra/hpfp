@@ -20,6 +20,7 @@ Contents
    05_-_types/notes
    05_-_types/questions
    06_-_typeclasses/notes
+   08_-_recursion/notes
 
 
 Indices and tables

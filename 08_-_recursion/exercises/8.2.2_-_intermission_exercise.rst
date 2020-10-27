@@ -1,0 +1,19 @@
+8.2.2 Intermission: Exercise
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Write out the evaluation of ``applyTimes 5 (+1) 5``
+
+First I'll provide the definition for context::
+
+  applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
+  applyTimes 0 fun arg = arg
+  applyTimes n fun arg = fun (applyTimes (n-1) fun arg)
+
+Now to show the reduction steps::
+
+  applyTimes 5 (+1) 5  =  (+1) (applyTimes (5-1) (+1) 5)
+             4 (+1) 5  =  (+1) (+1) (applyTimes (4-1) (+1) 5)
+             3 (+1) 5  =  (+1) (+1) (+1) (applyTimes (3-1) (+1) 5)
+             2 (+1) 5  =  (+1) (+1) (+1) (+1) (applyTimes (2-1) (+1) 5)
+             1 (+1) 5  =  (+1) (+1) (+1) (+1) (+1) (applyTimes (1-1) (+1) 5)
+             0 (+1) 5  =  (+1) (+1) (+1) (+1) (+1) 5
+                       =  10
