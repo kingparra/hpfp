@@ -29,8 +29,13 @@
    c) if ``x`` is a ``String`` then ``y`` must be a ``String``
    d) **all of the above**
 
-4. For the ``func`` code above, which is a valid application of ``func`` to both
+4. For the following code, which is a valid application of ``func`` to both
    of its arguments?
+
+   ::
+
+      func :: [a] -> [a] -> [a]
+      func x y = x ++ y
 
    a) ``func "Hello World"``
    b) **func "Hello" "World"**

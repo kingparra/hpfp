@@ -27,16 +27,16 @@ application.
 
 An example of how ``factorial 4`` evaluates::
 
-  factorial n = n * factorial (n - 1)
-            4   4 * factorial (4 - 1)
-            3   4 * 3 * factorial (3 - 1)
-            2   4 * 3 * 2 * factorial (2 - 1)
-            1   4 * 3 * 2 * factorial (1 - 1)
-            0   -- this triggers the base case 0 -> 1
-                4 * 3 * 2 * 1
-                -- the call stack collapses here
-                -- and the expression is reduced
-                24
+  factorial n  =  n * factorial (n - 1)
+            4  =  4 * factorial (4 - 1)
+            3  =  4 * 3 * factorial (3 - 1)
+            2  =  4 * 3 * 2 * factorial (2 - 1)
+            1  =  4 * 3 * 2 * factorial (1 - 1)
+            0  =  -- this triggers the base case 0 -> 1
+                  4 * 3 * 2 * 1
+                  -- the call stack collapses here
+                  -- and the expression is reduced
+               =  24
 
 If we didn't supply the base case ``0 -> 1``, then the recursive call would
 never stop, subtracting infinitely.

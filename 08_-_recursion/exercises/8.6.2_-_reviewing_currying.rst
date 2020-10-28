@@ -15,8 +15,8 @@ applications. ::
   frappe :: String -> String
   frappe = flippy "haha"
 
-1. What is the value of ``appedCatty "woohoo!"``? **Try to determine the answer
-   for yourself, then test in the REPL.**
+1. What is the value of ``appedCatty "woohoo!"``? Try to determine the answer
+   for yourself, then test in the REPL.
 
    Ok, desk-checking time::
 
