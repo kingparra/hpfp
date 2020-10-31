@@ -27,3 +27,6 @@
 
 3. Write a function that multiplies two integral numbers using recursive
    summation. The type should be ``:: Integral a => a -> a -> a``.
+
+   .. include:: exercises/8.6.3_-_recursion.rst.d/mult/src/Lib.hs
+      :code:
