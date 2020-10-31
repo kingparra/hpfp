@@ -101,3 +101,5 @@ I think I prefer these questions, instead...
 .. include:: exercises/8.6.2_-_reviewing_currying.rst
 
 .. include:: exercises/8.6.3_-_recursion.rst
+
+.. include:: exercises/8.6.5_-_mccarthy_91_function.rst

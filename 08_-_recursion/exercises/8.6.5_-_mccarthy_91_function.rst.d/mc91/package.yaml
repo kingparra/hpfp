@@ -1,0 +1,13 @@
+---
+name: mc91
+dependencies:
+  - base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  mc91-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [mc91, hspec]
+...
