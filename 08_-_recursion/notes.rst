@@ -102,4 +102,6 @@ I think I prefer these questions, instead...
 
 .. include:: exercises/8.6.3_-_recursion.rst
 
+.. include:: exercises/8.6.4_-_fixing_dividedby.rst
+
 .. include:: exercises/8.6.5_-_mccarthy_91_function.rst
