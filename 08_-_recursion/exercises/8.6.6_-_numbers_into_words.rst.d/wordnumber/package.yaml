@@ -3,6 +3,7 @@ name: wordnumber
 dependencies: base >= 4.7 && < 5
 library:
   source-dirs: src
+  ghc-options: [-Wall, -Werror]
 tests:
   wordnumber-test:
     main: Spec.hs

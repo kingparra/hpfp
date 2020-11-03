@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4e57c4bdcf396cfa70922013c018a881d35aa94ab1b28cbe646442590e956a0d
+-- hash: 93fa74d1f8579de9bf59a2768a22d443734ec136d2adaeee55da897a93edfae6
 
 name:           wordnumber
 version:        0.0.0
@@ -17,6 +17,7 @@ library
       Paths_wordnumber
   hs-source-dirs:
       src
+  ghc-options: -Wall -Werror
   build-depends:
       base >=4.7 && <5
   default-language: Haskell2010
