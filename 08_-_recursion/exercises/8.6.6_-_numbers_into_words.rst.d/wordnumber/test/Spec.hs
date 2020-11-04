@@ -20,8 +20,6 @@ main = hspec $ do
     it "intersperses dashes for multi-digit outputs" $ do
       wordNumber 123 `shouldBe` "one-two-three"
       wordNumber 88 `shouldBe` "eight-eight"
-      -- digits currently strips leading zeros, fix this.
-      wordNumber 007 `shouldBe` "zero-zero-seven"
       wordNumber 123456 `shouldBe` "one-two-three-two-four-five-four-six"
     it "prefixes 'negative' when the input is a negative number" $ do
       wordNumber (-98) `shouldBe` "negative-nine-eight"

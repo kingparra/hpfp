@@ -30,7 +30,7 @@ dividedBy 15 2 =
 -->   | otherwise = go (3 - 2) 2 (6 + 1)
 
     go 1 2 7
--->   | 1 < 2 = (6, 3)
+-->   | 1 < 2 = (7, 1)
       | otherwise = go (1 - 2) 2 (7 + 1)
 
-dividedBy 15 2 = (6,3)
+dividedBy 15 2 = (7,1)

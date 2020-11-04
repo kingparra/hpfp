@@ -12,3 +12,8 @@ Here is the main logic.
 
 .. include:: exercises/8.6.5_-_mccarthy_91_function.rst.d/mc91/src/Lib.hs
    :code:
+
+...and here that single test, so you don't have to type it in GHCi:
+
+.. include:: exercises/8.6.5_-_mccarthy_91_function.rst.d/mc91/test/Spec.hs
+   :code:

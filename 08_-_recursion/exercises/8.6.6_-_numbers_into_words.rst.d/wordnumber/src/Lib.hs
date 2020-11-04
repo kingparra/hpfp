@@ -12,7 +12,7 @@ digitToWord 6 = "six"
 digitToWord 7 = "seven"
 digitToWord 8 = "eight"
 digitToWord 9 = "nine"
-digitToWord _ = error "fuck"
+digitToWord _ = error "digitToWord enountered a number that is not a single digit"
 
 digits :: Int -> [Int]
 digits 0 = []
