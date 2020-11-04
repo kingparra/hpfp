@@ -19,14 +19,26 @@
    .. include:: exercises/8.6.3_-_recursion.rst.d/sum-to/src/Lib.hs
       :code:
 
+   Here is the test suite, for your perusal.
+
+   .. include:: exercises/8.6.3_-_recursion.rst.d/sum-to/test/Spec.hs
+      :code:
+
    You can test this by navigating to
    ``exercises/8.6.3_-_recursion.rst.d/sum-to`` and running ``stack test``.
 
-   I wasn't sure what to do with negative inputs, so I made the
-   function sum from ``(-1)..n``. Maybe this is wrong.
+   I wasn't sure what to do with negative inputs, so I made the function sum
+   from ``(-1)..n``. Maybe this is wrong.
 
 3. Write a function that multiplies two integral numbers using recursive
    summation. The type should be ``:: Integral a => a -> a -> a``.
 
+   Code:
+
    .. include:: exercises/8.6.3_-_recursion.rst.d/mult/src/Lib.hs
+      :code:
+
+   Test suite:
+
+   .. include:: exercises/8.6.3_-_recursion.rst.d/mult/test/Spec.hs
       :code:
