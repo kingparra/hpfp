@@ -6,7 +6,7 @@ less. Consider using the following datatype to handle division by 0 ::
 
   data DividedResult = Result Integer | DividedByZero
 
-Here is my attempt:
+Here is my attempt. It's rather messy and I don't like it, but it works.
 
 .. include:: exercises/8.6.4_-_fixing_dividedby.rst.d/dividedby/src/Lib.hs
    :code:
@@ -15,3 +15,6 @@ Here is my attempt:
 
 .. include:: exercises/8.6.4_-_fixing_dividedby.rst.d/dividedby/test/Spec.hs
    :code:
+
+Navigate to :filepath:`exercises/8.6.4_-_fixing_dividedby.rst.d/dividedby` and
+run ``stack test`` to execute the test suite.
