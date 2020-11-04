@@ -18,4 +18,4 @@ main = hspec $ do
     it "8 0 -> DividedByZero" $ do
       dividedBy' 8 0 `shouldBe` DividedByZero
     it "0 8 -> 0" $ do
-      dividedBy' 0 8 `shouldBe` 0
+      dividedBy' 0 8 `shouldBe` Result 0
