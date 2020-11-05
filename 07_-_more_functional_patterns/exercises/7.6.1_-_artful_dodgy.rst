@@ -1,0 +1,24 @@
+7.6.1 Exercises: Artful Dodgy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given the following definitions tell us what value results from further
+applications. (For bonus points, fill in the type signatures of these
+functions.)::
+
+  dodgy x y = x + y * 10
+  oneIsOne = dodgy 1
+  oneIsTwo = (flip dodgy) 2
+
+Navigate to ``exercises/7.6.1_-_artful_dodgy.rst.d/dodgy/`` and run ``stack
+test`` for proof.
+
+1. ``dodgy 1 0`` --> ``1``
+2. ``dodgy 1 1`` --> ``11``
+3. ``dodgy 2 2`` --> ``22``
+4. ``dodgy 1 2`` --> ``21``
+5. ``dodgy 2 1`` --> ``13``
+6. ``oneIsOne 1`` --> ``11``
+7. ``oneIsOne 2`` --> ``21``
+8. ``oneIsTwo 1`` --> ``21``
+9. ``oneIsTwo 2`` --> ``22``
+10. ``oneIsOne 3`` --> ``31``
+11. ``oneIsTwo 3`` --> ``23``

@@ -1,0 +1,130 @@
+7.7.3 Guard Duty
+^^^^^^^^^^^^^^^^
+**To check my answers for yourself, navigate to the guard-duty directory and run
+stack test.**
+
+1. It is probably clear to you why you wouldn't put an otherwise in your
+   top-most guard, but try it with ``avgGrade`` anyway and see what happens.
+   It’ll be more clear if you rewrite it as an otherwise match: ``| otherwise =
+   'F'``.
+
+   Ok, my altered version, named ``avgGradeUnconditional``, looks like this:
+
+     .. include:: exercises/7.7.3_-_guard_duty.rst.d/guard-duty/src/Lib.hs
+        :code:
+        :start-line: 12
+        :end-line: 20
+
+   What happens now if you pass a ``90`` as an argument? ``75``? ``60``?
+
+   Since the first case is always evaluated, you will get something like this::
+
+      ·∾ avgGradeUnconditional 90
+      'F'
+      ·∾ avgGradeUnconditional 75
+      'F'
+      ·∾ avgGradeUnconditional 60
+      'F'
+
+2. What happens if you take ``avgGrade`` as it is written and reorder the guards?
+   Does it still typecheck and work the same? Try moving ``| y >= 0.7 = 'C'``.
+
+   My altered version, named ``avgGradeReordered`` looks like this:
+
+     .. include:: exercises/7.7.3_-_guard_duty.rst.d/guard-duty/src/Lib.hs
+        :code:
+        :start-line: 23
+        :end-line: 30
+
+   Pass it the argument ``90``, which should be an ``'A'``. Does it return an
+   ``'A'``?
+
+   No, instead I get this::
+
+      ·∾ avgGradeReordered 90
+      'C'
+
+   If I want to make the cuases independent of order, I can add a minimum bound
+   to the range we're checking, like this:
+
+     .. include:: exercises/7.7.3_-_guard_duty.rst.d/guard-duty/src/Lib.hs
+        :code:
+        :start-line: 32
+        :end-line: 39
+
+3. The following function returns
+   ::
+
+     pal xs
+       | xs == reverse xs = True
+       | otherwise = False
+
+   a) ``xs`` written backwards when it's ``True``
+   b) **True when xs is a palindrome**
+   c) ``False`` when ``xs`` is a palindrome
+   d) ``False`` when ``xs`` is reversed
+
+4. What types of arguments can pal take?
+
+   Let me think about it. Pal uses ``(==)`` and ``reverse`` -- what constraints
+   do those functions add?
+
+   ::
+
+      ·∾ :type (==)
+      (==) :: Eq a => a -> a -> Bool
+      ·∾ :type reverse
+      reverse :: [a] -> [a]
+
+   ...and it returns a ``Bool``. So my guess is ``pal :: (Eq a) => [a] -> Bool``,
+   which means that it can take any ``Eq`` constrained list as an input.
+
+5. What is the type of the function pal?
+
+   I reasoned about this in the last answer, but let me check::
+
+      ·∾ :type pal
+      pal :: Eq a => [a] -> Bool
+
+6. The following function returns
+   ::
+
+     numbers x | x < 0 = -1
+               | x == 0 = 0
+               | x > 0 = 1
+
+   a) the value of its argument plus or minus 1
+   b) the negation of its argument
+   c) **an indication of whether its argument is a positive or negative number
+      or zero** (This is basically ``signum``.)
+   d) binary machine language
+
+7. What types of arguments can ``numbers`` take?
+
+   Since ``(==)`` adds a constraint for ``Eq`` and ``(>)`` adds ``Ord`` and it
+   works on numbers, the input type should be ``(Num a, Ord a) => a``, I think.
+
+8. What is the type of the function numbers?
+
+   My guess is ``numbers :: (Ord a, Num a) => a -> a`` (the ``(>)`` operator
+   adds ``Ord``). Let me check::
+
+      ·∾ :type numbers
+      numbers :: (Ord a, Num a, Num p) => a -> p
+
+   Ok, so the result type is also ``Num`` constrained, but doesn't require an
+   ``Ord`` instance.
+
+   Let me think about that. ... I'm not sure that makes sense. But if I do::
+
+     ·∾ :{
+      ⋮ numbers :: (Ord a, Num a) => a -> a
+      ⋮ numbers x | x < 0 = -1
+      ⋮           | x == 0 = 0
+      ⋮           | x > 0 = 1
+      ⋮ :}
+     ·∾ :type numbers
+     numbers :: (Ord a, Num a) => a -> a
+
+   It typechecks! This works since we're making the result type less
+   polymorphic.

@@ -1,0 +1,106 @@
+7.3.1 Grab Bag
+^^^^^^^^^^^^^^
+1. Which (two or more) of the following are equivalent?
+
+   a. ``mTh x y z = x * y * z``
+   b. ``mTh x y = \z -> x * y * z``
+   c. ``mTh x = \y -> \z -> x * y * z``
+   d. ``mTh = \x -> \y -> \z -> x * y * z``
+
+   **All of these are equivalent.** Here's proof::
+
+     ·∾ mTh x y z = x*y*z
+     ·∾ :type mTh
+     mTh :: Num a => a -> a -> a -> a
+
+     ·∾ mTh x y = \z -> x*y*z
+     ·∾ :type mTh
+     mTh :: Num a => a -> a -> a -> a
+
+     ·∾ mTh x = \y -> \z -> x*y*z
+     ·∾ :type mTh
+     mTh :: Num a => a -> a -> a -> a
+
+     ·∾ mTh = \x -> \y -> \z -> x*y*z
+     ·∾ :type mTh
+     mTh :: Num a => a -> a -> a -> a
+
+2. The type of ``mTh`` (above) is ``Num a => a -> a -> a -> a``. Which is the
+   type of ``mTh 3``?
+
+   a. ``Integer -> Integer -> Integer``
+   b. ``Num a => a -> a -> a -> a``
+   c. ``Num a => a -> a``
+   d. **Num a => a -> a -> a** ::
+
+        ·∾ :type mTh 3
+        mTh 3 :: Num a => a -> a -> a
+
+3. Next we'll practice writing anonymous lambda syntax.
+
+   a. Rewrite the ``f`` function in the ``where`` clause.
+
+      The named function::
+
+        addOneIfOdd n = case odd n of
+          True -> f n
+          False -> n
+          where f n = n + 1
+
+      Becomes::
+
+        addOneIfOdd n = case odd n of
+          True -> (\n -> n + 1) n
+          False -> n
+
+      Proof it works::
+
+        ·∾ addOneIfOdd 8
+        8
+        ·∾ addOneIfOdd 9
+        10
+
+   b. Rewrite the following to use anonymous lambda
+      syntax::
+
+        addFive x y = (if x > y then y else x) + 5
+
+      Rewritten::
+
+        (\x y -> (if x > y then y else x) + 5)
+
+      Proof it works::
+
+        ·∾ addFive x y = (if x > y then y else x) + 5
+        ·∾ addFive 4 10
+        9
+        ·∾ addFive 20 10
+        15
+
+        ·∾ (\x y -> (if x > y then y else x) + 5) 4 10
+        9
+        ·∾ (\x y -> (if x > y then y else x) + 5) 20 10
+        15
+
+   c. Rewrite the following so that it doesn't use anonymous lambda
+      syntax::
+
+        mflip f = \x -> y -> f y x
+
+      Rewritten::
+
+        mflip f x y = f y x
+
+      Proof it works::
+
+        ·∾ mflip f = \x -> \y -> f y x
+        ·∾ mflip (^) 2 5
+        25
+        ·∾ (^) 2 5
+        32
+
+        ·∾ mflip f x y = f y x
+        ·∾ mflip (^) 2 5
+        25
+        ·∾ (^) 2 5
+        32
