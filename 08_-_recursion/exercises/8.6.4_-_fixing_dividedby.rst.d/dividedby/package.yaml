@@ -1,0 +1,13 @@
+---
+name: dividedby
+dependencies:
+  - base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  dividedby-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [dividedby, hspec]
+...

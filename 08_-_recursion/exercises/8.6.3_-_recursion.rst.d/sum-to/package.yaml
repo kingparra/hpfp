@@ -1,0 +1,13 @@
+---
+name: sum-to
+description: "8.6.3 Recursion, exercise 2"
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  sum-to-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [sum-to, hspec]
+...

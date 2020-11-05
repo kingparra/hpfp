@@ -1,0 +1,34 @@
+8.6.6 Numbers into words
+^^^^^^^^^^^^^^^^^^^^^^^^
+In this example undefined is a placeholder to show you where
+you need to fill in the functions::
+
+  module WordNumber where
+
+  import Data.List (intersperse)
+
+  digitToWord :: Int -> String
+  digitToWord n = undefined
+
+  digits :: Int -> [Int]
+  digits n = undefined
+
+  wordNumber :: Int -> String
+  wordNumber n = undefined
+
+Your output should look like this in the REPL when it's working::
+
+  Prelude> wordNumber 12324546
+  "one-two-three-two-four-five-four-six"
+
+Alright, here is my attempt.
+
+.. include:: exercises/8.6.6_-_numbers_into_words.rst.d/wordnumber/src/Lib.hs
+   :code:
+
+Here is a simple test suite. Navigate to
+:file:`exercises/8.6.6_-_numbers_into_words.rst.d/wordnumber/`
+and run ``stack test`` to see the output.
+
+.. include:: exercises/8.6.6_-_numbers_into_words.rst.d/wordnumber/test/Spec.hs
+   :code:

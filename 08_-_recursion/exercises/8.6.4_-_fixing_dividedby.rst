@@ -1,0 +1,20 @@
+8.6.4 Fixing dividedBy
+^^^^^^^^^^^^^^^^^^^^^^
+Our ``dividedBy`` function wasn't quite ideal. For one thing. It was a partial
+function and doesn't return a result (bottom) when given a divisor that is 0 or
+less. Consider using the following datatype to handle division by 0 ::
+
+  data DividedResult = Result Integer | DividedByZero
+
+Here is my attempt. It's rather messy and I don't like it, but it works.
+
+.. include:: exercises/8.6.4_-_fixing_dividedby.rst.d/dividedby/src/Lib.hs
+   :code:
+
+...and a test suite...
+
+.. include:: exercises/8.6.4_-_fixing_dividedby.rst.d/dividedby/test/Spec.hs
+   :code:
+
+Navigate to :file:`exercises/8.6.4_-_fixing_dividedby.rst.d/dividedby` and
+run ``stack test`` to execute the test suite.
