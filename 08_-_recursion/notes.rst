@@ -12,6 +12,57 @@ In this chapter, we will
 * have fun with bottom.
 
 
+8.1 & ½, Some remarks about recursion
+-------------------------------------
+Recursion, at its essence, is really just a *pattern*.
+
+**If smaller self-similar instances of an overall strucutre form
+part of itself, then that structure is recursive.**
+
+As programmers, however, we're most interested in recursion as an algorithmic
+problem solving tool.
+
+Most recursive solutions are a special case of divide-and-conquer. In
+divide-and-conquer a problem is repeatedly broken down into sub-problems, which
+are then used as a black box. The result of these black box sub-problems are
+then combined to produce the final result. With recursive solutions, however,
+each sub-problem is a smaller instance of the overall problem.
+
+A recursive function is often defined as "a function that calls itself". What we
+mean by "calls itself" is that the function creates another execution instance.
+A function is a "cookie cutter" from which any number of execution instances can
+be created. While there is only on definition for a recursive function, there
+can be any number of execution instances.
+
+If the definition of a recursive function were written so that the function
+calls itself unconditionally, then every execution instance would
+unconditionally call another instance, forever. This is referred to as
+*infinite recursion*, or non-termination.
+
+So, to make our functions useful, we must supply a non-recursive component, that
+is triggered on some condition, to stop the recursive self-referencing calls.
+This component is known as the *base case*.
+
+In order to ensure that our base case is triggered, though, we must design the
+recursive case to work towards it. Each invocation (or execution instance) of
+the recursive case should either decrease the input size or simplify the
+problem in a way that brings you closer to the base case.
+
+Linear recursion occurs when methods call themselves only once.
+
+Tail recursion is a type of linear recursion where the recursive call is the
+last operation carried out int the recursive case. Therefore, they do not
+manipulate the result of the recursive call.
+
+Multiple recursion is where a method calls itself several times in some
+recursive case.
+
+Mutual recursion is when a functions call each other in a cyclical order.
+
+Nested recursion occurs when an argument of a recursive function is defined
+through another recursive call.
+
+
 8.2 Factorial!
 --------------
 Let's examine a simple factorial function::
