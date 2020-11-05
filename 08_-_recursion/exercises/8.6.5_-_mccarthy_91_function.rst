@@ -1,0 +1,19 @@
+8.6.5 McCarthy 91 function
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+The McCarthy 91 function yields :math:`x - 10` when :math:`x > 100` and
+:math:`91` otherwise.
+
+.. figure:: exercises/8.6.5_-_mccarthy_91_function.rst.d/mc91.png
+
+Name your function ``mc91``. When you run ``map mc91 [95..110]`` you should get
+``[91,91,91,91,91,91,91,92,93,94,95,96,97,98,99,100]`` in return.
+
+Here is the main logic.
+
+.. include:: exercises/8.6.5_-_mccarthy_91_function.rst.d/mc91/src/Lib.hs
+   :code:
+
+...and here that single test, so you don't have to type it in GHCi:
+
+.. include:: exercises/8.6.5_-_mccarthy_91_function.rst.d/mc91/test/Spec.hs
+   :code:
