@@ -22,6 +22,7 @@ Contents
    06_-_typeclasses/notes
    07_-_more_functional_patterns/notes
    08_-_recursion/notes
+   09_-_lists/notes
 
 
 Indices and tables
