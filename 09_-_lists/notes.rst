@@ -5,38 +5,29 @@
 
 9.1 Lists
 ---------
-The list datatype is perhaps the most used composite data structure used in
+The list datatype is perhaps the most used composite data structure in
 Haskell. If you consider the emphasis on immutability in pure functional
 languages, this begins to make sense.
 
-Lists, unlike arrays, are not contiguous entries in memory. So to change an
-element you only need to create a new linkage to the cons cell containing the
-element, rather than mutating an existing memory location. This means that lists
-derived from a common ancestor can share structure in memory.
+What if you modify an element in the middle of a list? Since the previous
+elements "next" link can't be mutated, and this restriction cascades, you
+copy the beginning of the list, and tail-share the rest.
 
-What if you're modifying an element in the middle of a list? Since the previous
-elements "next" link can't be mutated, and this restriction cascades, you copy
-the beginning of the list, and tail-share the rest.
+In contrast, modifying an array would require either mutation (which is
+illegal in pure FP), or a new deep copy of the entire array for each change.
+Doubly-linked lists would also require a deep copy of the entire structure,
+since modifications to cons cells on either side would cascade through the
+entire structure.
 
-In the platonic idea of pure FP, because of referential transparency, arrays
-cannot be mutated. This means that each modification of an array would require a
-new deep copy of the entire array for each change -- much less efficient than
-linked lists.
+So, what can you use Lists for? Lists in Haskell may represent either a finite
+collection of values or infinite series of them. Infinite series can be used to
+model streams of data; in which case they are usually generated incrementally by
+some function.
 
-(This idea comes from "An Introduction to Functional Programming through Lambda
-Calculus", by Greg Michealson, section 1.6 Data structures in functional
-languages. Also check out
-https://softwareengineering.stackexchange.com/questions/294983/why-do-haskell-and-scheme-use-singly-linked-lists)
-
-Lists in Haskell may represent either a finite collection of values or infinite
-series of them. Infinite series can be used to model streams of data; in which
-case they are usually generated incrementally by some function or pattern
-binding.
-
-Another novelty of lists is that they're often used in combination with higher
-order functions as control flow constructs. (Like ``map`` or ``fold``.) In this
-capacity they serve roughly the same purpose as generators/iterators do with
-Pythons ``for`` and ``while`` loops.
+Another novel use of lists is in combination with higher order functions that
+act as control flow constructs. (Like ``map`` or ``fold``.) In this capacity
+they serve roughly the same purpose as generators/iterators do with Pythons
+``for`` and ``while`` loops.
 
 In this chapter, we will:
 
@@ -85,14 +76,10 @@ nonstrict evaluation.
 
 .. topic:: Notes about speed
 
-   Since Haskell lists are implemented as singly-linked lists, operations that
-   rely on reordering, or accessing/changing elements at an index somewhere
-   other than the start or end of the lists are expensive.
-
    Fast operations
 
    * Prepend an element, using ``(:)``
-   * Get first element, using ``head``,
+   * Get the first element, using ``head``,
    * Remove last element, using ``tail``,
 
    Slower operations
@@ -110,7 +97,7 @@ nonstrict evaluation.
    ``zip``, ``elem``, ``sum``, ``minimum``, and ``maximum``.
 
    `GHC.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/GHC-List.html>`_
-   has notes about the time complexity of a few of these functions.
+   also has notes about the time complexity of a few of these functions.
 
    -- from `How to work on lists <https://wiki.haskell.org/How_to_work_on_lists>`_ from the Haskell Wiki
 
@@ -136,85 +123,94 @@ the type signature. For example::
 
 9.4 List's syntactic sugar
 --------------------------
-As you know, something like ``[1,2,3] ++ [4]`` is really
-shorthand for ``(1 : 2 : 3 : []) ++ (4 : [])``. It's useful
-to keep this longhand notation in mind when thinking about
-how various functions traverse a lists "spine" - the chain
+As you know, something like ``[1,2,3] ++ [4]`` is really shorthand for ``(1 : 2
+: 3 : []) ++ (4 : [])``. It's useful to keep this longhand notation in mind when
+thinking about how various functions traverse a lists "spine" - the chain
 of linked cons cells.
 
 
 9.5 Using ranges to construct lists
 -----------------------------------
 * A range of elements ``[1..10]``.
-
 * Range with a step value ``[1,2..10]``.
-
 * ``[(-1)..(-10)]`` won't work, since Haskell assumes a forward
   step; Use ``[(-1),(-2)..(-10)]`` instead.
 
-These list comprehensions are sugar for the functions from the
-``Ord`` type class such as ``enumFrom``, ``enumFromThen``,
-``enumFromTo``, and ``enumFromThenTo``.
+These list comprehensions are sugar for the functions from the ``Ord`` type
+class such as ``enumFrom``, ``enumFromThen``, ``enumFromTo``, and
+``enumFromThenTo``.
 
-Be aware that ``enumFromTo`` must have its first argument be
-lower then the second argument. Otherwise you'll get an empty
-list.
+Be aware that ``enumFromTo`` must have its first argument be lower then the
+second argument. Otherwise you'll get an empty list.
 
 .. include:: exercises/9.5.1_-_enumfromto.rst
 
+
 9.6 Extracting portions of lists
 --------------------------------
-* ``take``, ``drop``, ``splitAt``
-* ``takeWhile`` will take elements out of a list that meet our condition and
-  then stop when it meets the first element that doesn't satisfy our test.
-* ``dropWhile``
+::
+
+  take :: Int -> [a] -> [a]
+  drop :: Int -> [a] -> [a]
+  splitAt :: Int -> [a] -> ([a],[a])
+  -- Stops taking as soon as the condition is met.
+  -- Maybe it should have been named takeUntil?
+  takeWhile :: (a -> Bool) -> [a] -> [a]
+  dropWhile :: (a -> Bool) -> [a] -> [a]
+
+.. include:: exercises/9.6.1_-_thy_fearful_symmetry.rst
 
 
 9.7 List comprehensions
 -----------------------
 List comprehensions are used to create a new list by taking the members of an
-existing "source" list, known as a generator, and applying filers or transformations to it.
+existing "source" list, and applying filters or transformations to it.
 
-The syntax for this is almost identical to set-builder notation in math.
+Syntactically, list comprehensions have the general form:
 
-Have some ebnf, from the Haskell 2010 report::
+  **[** *expression* **|** *pattern* **<-** *genxpr* **,** *guard_or_let_binding* **]**
 
-  aexp ::= [ exp | qual, ..., qual ]    (list comprehension, n >= 1)
-  qual ::= pat <- exp                   (generator)
-         | let decls                    (local declaration)
-         | exp                          (boolean guard)
+Where *pattern* **<-** *genxpr* and *guard_or_let_binding* may be repeated.
 
-Less formally, it looks something like this, "[" expression "|" var "<-" list
-"," predicate "]".
+Here is a simple example::
 
-For example ``[ x^2 | x <- [1..10], x `rem` 2 == 0]``, which is read as "x to
-the power of two such that x is drawn from the list of one through ten, if the
-remainder of x divided by two is zero."
+  ·∾ [ x^2 | x <- [1..10], x `rem` 2 == 0]
+  [4,16,36,64,100]
+
+Which may be read as "x to the power of two such that x is drawn from the list
+of one through ten, if the remainder of x divided by two equals zero". What a
+mouthful.
+
+A more complex example, to show that generators can reference each other::
+
+  ·∾ [ x | xs <- [[(1,2),(3,4)],[(5,4),(3,2)]], (3,x) <- xs]
+  [4,2]
+
+If you try to draw from an empty list, you get an empty list::
+
+  ·∾ [ x | x <- []]
+  []
 
 9.7.1 Adding predicates
 ^^^^^^^^^^^^^^^^^^^^^^^
-As you can see, predicates are conditions that can limit the elements drawn
-from the generator list.
+As you can see, predicates (or guards) are conditions that can limit the
+elements drawn from the generator list. These predicates must evaluate to Bool
+values.
 
-The predicates must evaluate to Bool values.
-
-When writing a comprehension with multiple generators, the rightmost generator
-will be exhausted first, then the second rightmost, and so on.
+A note about evaluation: When writing a comprehension with multiple generators,
+the rightmost generator will be exhausted first, then the second rightmost, and
+so on.
 
 The generators don't have to have the same length or even the same type.
 
 For example::
 
-  Prelude| :{
-  Prelude| [(x, y) |
-  Prelude| x <- [1, 2, 3],
-  Prelude| y <- ['a', 'b']]
-  Prelude| :}
+  ·∾ [(x,y) | x <- [1,2,3], y <- ['a','b']]
   [(1,'a'),(1,'b'),(2,'a'),(2,'b'),(3,'a'),(3,'b')]
 
 9.7.3 List comprehensions with strings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The ``elem`` function test for membership in a list.
+You can use the ``elem`` function to test for membership in a list.
 
 
 9.8 Spines and nonstrict evaluation
@@ -222,24 +218,23 @@ The ``elem`` function test for membership in a list.
 In the case of a list, the spine is the connective structure of recursively
 nested cons cells.
 
-What the spine looks like. (Ignore the plus sign, it's just for formatting.)::
+What the spine looks like::
 
-    +   : <------+
-       / \       |
-      _   : <----+ This is the "spine"
-         / \     |
-        _   : <--+
-           / \
-          _  []
 
-You can evaluate cons cells independently of the values they contain.
+  1 : 2 : 3 : []
 
-It is also possible to evaluate part of the spine and not the rest of it.
+      : <------+
+     / \       |
+    1   : <----+ This is the "spine"
+       / \     |
+      2   : <--+
+         / \
+        3  []
 
-Meaning that it's possible to traverse a list without evaluating the
-  elements in it.
-
-Evaluation of the list proceedes down the spine. Constructing a list proceedes
+You can evaluate cons cells independently of the values they contain. It is
+also possible to evaluate part of the spine and not the rest of it. Meaning
+that it's possible to traverse a list without evaluating the elements in
+it. Evaluation of the list proceeds down the spine. Constructing a list proceeds
 up the spine.
 
 9.8.1 Using GHCi's :sprint command
@@ -249,8 +244,46 @@ are represented by ``_``. You can use this to visualize what a function is
 strict about evaluating -- just the spine, or everything, or nothing, or
 whatever.
 
+::
+
+  ·∾ blah = enumFromTo 'a' 'z'
+  ·∾ :sprint blah
+  blah = _
+  ·∾ take 1 blah
+  "a"
+  ·∾ :sprint blah
+  blah = 'a' : _
+  ·∾ take 2 blah
+  "ab"
+  ·∾ :sprint blah
+  blah = 'a' : 'b' : _
+
 In GHCi code evaluates a bit differently than when compiling a file with GHC, so
-``:sprint`` isn't always correct.
+``:sprint`` isn't always correct. For numeric values, use a concrete type, or
+you'll encounter a situation like this::
+
+  ·∾ nums = [1..10]
+  ·∾ ints = [(1 :: Int)..10]
+  ·∾ :sprint nums
+  nums = _
+  ·∾ :sprint ints
+  ints = _
+  ·∾ take 1 nums
+  [1]
+  ·∾ :sprint nums
+  nums = _
+  ·∾ take 1 ints
+  [1]
+  ·∾ :sprint ints
+  ints = 1 : _
+
+Here's an example where only the spine is evaluated::
+
+  ·∾ uf = [undefined,undefined,undefined,undefined]
+  ·∾ length uf
+  4
+  ·∾ :sprint uf
+  uf = [_,_,_,_]
 
 9.8.2 Spines are evaluated independently of values
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -258,11 +291,12 @@ In GHCi code evaluates a bit differently than when compiling a file with GHC, so
 * WHNF means that the expression is only evaluated as far as in necessary to reach a data constructor.
 * WHNF contains both the possibility that the expression is fully evaluated and the possibility that the
   expression has been evaluated to the point of arriving at a data constructor or lambda head.
-* Normal form exceeds that by requiring that all subexpression be fully evaluated.
+* Normal form exceeds that by requiring that all sub-expression be fully evaluated.
 * If no further inputs are possible, then it is still in WHNF but also in normal form (NF).
 * ``(1, 2)`` WHNF and NF. ``(1, 1+1)`` is WHNF but not NF. ``\x -> x * 10`` is
   WHNF and NF. ``(1, "Papu" ++ "chon")`` is WHNF but not NF.
 
+.. include:: exercises/9.8.3_-_bottom_madness.rst
 
 9.9 Transforming lists of values
 --------------------------------

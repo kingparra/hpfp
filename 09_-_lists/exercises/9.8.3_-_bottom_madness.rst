@@ -1,0 +1,137 @@
+9.8.3 Exercise: Bottom Madness
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Will it blow up?
+""""""""""""""""
+Will the following expressions return a value or be ⊥ ?
+
+1.  ``[x^y | x <- [1..5], y <- [2, undefined]]``
+
+    Prediction: It will blow up -- the rightmost generator is evaluated first.
+
+    Proof::
+
+      ·∾ [x^y | x <- [1..5], y <- [2,undefined]]
+      [1,*** Exception: Prelude.undefined
+      CallStack (from HasCallStack):
+        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+        undefined, called at <interactive>:22:29 in interactive:Ghci12
+
+2.  ``take 1 $ [x^y | x <- [1..5], y <- [2, undefined]]``
+
+    Prediction: It will be fine -- we're only forcing one element to be
+    evaluated from each generator list.
+
+    Proof::
+
+      ·∾ take 1 $ [x^y | x <- [1..5], y <- [2,undefined]]
+      [1]
+
+3.  ``sum [1, undefined, 3]``
+
+    Prediction: This will definitely blow up.
+
+    Proof::
+
+      ·∾ sum [1,undefined,3]
+      *** Exception: Prelude.undefined
+      CallStack (from HasCallStack):
+        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+        undefined, called at <interactive>:34:8 in interactive:Ghci13
+
+4.  ``length [1, 2, undefined]``
+
+    Prediction: Since length only needs to count the cons cells in the spine,
+    this will be fine.
+
+    Proof::
+
+      ·∾ length [1,2,undefined]
+      3
+
+5.  ``length $ [1, 2, 3] ++ undefined``
+
+    Prediction: Since ``(++)`` is evaluated first, it will hit bottom.
+
+    Proof::
+
+      ·∾ length $ [1,2,3] ++ undefined 
+      *** Exception: Prelude.undefined
+      CallStack (from HasCallStack):
+        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+        undefined, called at <interactive>:36:21 in interactive:Ghci14
+
+6.  ``take 1 $ filter even [1, 2, 3, undefined]``
+
+    Prediction: This was tricky. My first guess was that even would hit
+    undefined. Since we are only forcing the first even numbers evaluation,
+    though, it hits ``2`` and then stops evaluating before ``undefined``.
+
+    Proof::
+
+      ·∾ take 1 $ filter even [1,2,3,undefined]
+      [2]
+
+7.  ``take 1 $ filter even [1, 3, undefined]``
+
+    Prediction: There is no even number to stop evaluation on.. it will hit
+    ``undefined`` and throw an exception.
+
+    Proof::
+
+      ·∾ take 1 $ filter even [1,3,undefined]
+      *** Exception: Prelude.undefined
+      CallStack (from HasCallStack):
+        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+        undefined, called at <interactive>:45:27 in interactive:Ghci19
+
+8.  ``take 1 $ filter odd [1, 3, undefined]``
+
+    Prediction: This will stop on ``1``.
+
+    Proof::
+
+      ·∾ take 1 $ filter odd [1,3,undefined]
+      [1]
+
+9.  ``take 2 $ filter odd [1, 3, undefined]``
+
+    Prediction: ``[1,3]``
+
+    Proof::
+
+      ·∾ take 2 $ filter odd [1,3,undefined]
+      [1,3]
+
+10. ``take 3 $ filter odd [1, 3, undefined]``
+
+    Prediction: There aren't three odd numbers before undefined. It will hit
+    bottom.
+
+    Proof::
+
+      ·∾ take 3 $ filter odd [1,3,undefined]
+      [1,3*** Exception: Prelude.undefined
+      CallStack (from HasCallStack):
+        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+        undefined, called at <interactive>:48:26 in interactive:Ghci21
+
+.. Intermission: Is it in normal form?
+.. """""""""""""""""""""""""""""""""""
+.. For each expression below, determine whether it’s in:
+
+.. 1. normal form, which implies weak head normal form;
+.. 2. weak head normal form only; or,
+.. 3. neither.
+
+.. Remember that an expression cannot be in normal form or weak head normal form if
+.. the outermost part of the expression isn't a data constructor. It can't be in
+.. normal form if any part of the expression is unevaluated.
+
+.. 1. ``[1, 2, 3, 4, 5]``
+.. 2. ``1 : 2 : 3 : 4 : _``
+.. 3. ``enumFromTo 1 10``
+.. 4. ``length [1, 2, 3, 4, 5]``
+.. 5. ``sum (enumFromTo 1 10)``
+.. 6. ``['a'..'m'] ++ ['n'..'z']``
+.. 7. ``(_, 'b')``
