@@ -5,14 +5,38 @@
 
 9.1 Lists
 ---------
+The list datatype is perhaps the most used composite data structure used in
+Haskell. If you consider the emphasis on immutability in pure functional
+languages, this begins to make sense.
+
+Lists, unlike arrays, are not contiguous entries in memory. So to change an
+element you only need to create a new linkage to the cons cell containing the
+element, rather than mutating an existing memory location. This means that lists
+derived from a common ancestor can share structure in memory.
+
+What if you're modifying an element in the middle of a list? Since the previous
+elements "next" link can't be mutated, and this restriction cascades, you copy
+the beginning of the list, and tail-share the rest.
+
+In the platonic idea of pure FP, because of referential transparency, arrays
+cannot be mutated. This means that each modification of an array would require a
+new deep copy of the entire array for each change -- much less efficient than
+linked lists.
+
+(This idea comes from "An Introduction to Functional Programming through Lambda
+Calculus", by Greg Michealson, section 1.6 Data structures in functional
+languages. Also check out
+https://softwareengineering.stackexchange.com/questions/294983/why-do-haskell-and-scheme-use-singly-linked-lists)
+
 Lists in Haskell may represent either a finite collection of values or infinite
 series of them. Infinite series can be used to model streams of data; in which
 case they are usually generated incrementally by some function or pattern
 binding.
 
-One novelty of lists is that they're often used in combination with higher order
-functions as control flow constructs. In this capacity they're serve roughly the
-same purpose as generators/iterators do with Pythons for and while loops.
+Another novelty of lists is that they're often used in combination with higher
+order functions as control flow constructs. (Like ``map`` or ``fold``.) In this
+capacity they serve roughly the same purpose as generators/iterators do with
+Pythons ``for`` and ``while`` loops.
 
 In this chapter, we will:
 
@@ -69,11 +93,11 @@ nonstrict evaluation.
 
    * Prepend an element, using ``(:)``
    * Get first element, using ``head``,
-   * Remove first element, using ``tail``,
+   * Remove last element, using ``tail``,
 
    Slower operations
 
-   Any function that does something with the :math:`n`th element, or the first
+   Any function that does something with the :math:`n`'th element, or the first
    :math:`n` elements get slower as :math:`n` increases.
 
    * Taking a number of elements, starting from index :math:`n`, using ``take n xs``
@@ -81,9 +105,9 @@ nonstrict evaluation.
    * Retreiving an element at index :math:`n`, using ``xs !! n``
    * Splitting at an index, with ``splitAt n xs``
 
-   An function that needs to process the entire list get slower as the list gets
-   longer. Eg. ``length``, ``(++)``, ``last``, ``map``, ``filter``, ``zip``,
-   ``elem``, ``sum``, ``minimum``, and ``maximum``.
+   Any function that needs to process the entire list gets slower as the list
+   grows longer. Eg. ``length``, ``(++)``, ``last``, ``map``, ``filter``,
+   ``zip``, ``elem``, ``sum``, ``minimum``, and ``maximum``.
 
    `GHC.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/GHC-List.html>`_
    has notes about the time complexity of a few of these functions.
@@ -92,12 +116,9 @@ nonstrict evaluation.
 
 9.3 Pattern matching on lists
 -----------------------------
-Take care to anticipate what happens with ``[]`` when pattern
-matching on lists.
-
-Non-exhaustive matches are a failure mode that are easy to
-overlook when only interested in grabbing stuff on either side of
-the cons operator.
+Non-exhaustive matches are a failure mode that are easy to overlook when only
+interested in grabbing stuff on either side of the cons operator. Take care to
+anticipate what happens with ``[]`` when pattern matching on lists.
 
 9.3.1 Using Maybe
 ^^^^^^^^^^^^^^^^^
@@ -139,6 +160,7 @@ Be aware that ``enumFromTo`` must have its first argument be
 lower then the second argument. Otherwise you'll get an empty
 list.
 
+.. include:: exercises/9.5.1_-_enumfromto.rst
 
 9.6 Extracting portions of lists
 --------------------------------
