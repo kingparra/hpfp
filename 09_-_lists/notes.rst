@@ -5,33 +5,48 @@
 
 9.1 Lists
 ---------
-The list datatype is perhaps the most used composite data structure in
-Haskell. If you consider the emphasis on immutability in pure functional
-languages, this begins to make sense.
+Although there are many composite data types in Haskell, the list datatype is
+perhaps the most pervasively used. (Even sometimes where it doesn't make sense.)
+If we consider the implications of immutability in pure functional languages
+we may begin to understand why.
 
-What if you modify an element in the middle of a list? Since the previous
-elements "next" link can't be mutated, and this restriction cascades, you
-copy the beginning of the list, and tail-share the rest.
+What if we need to modify an element in the middle of a singly-linked list?
+Since the previous elements "next" link can't be mutated, and this restriction
+cascades, we must deep copy the beginning of the list, and can tail-share the
+rest.
 
-In contrast, modifying an array would require either mutation (which is
-illegal in pure FP), or a new deep copy of the entire array for each change.
+In contrast, modifying an array would require a new deep copy of the entire
+array for each change since mutation of substructures illegal, due to
+referential transparency. (Recall chapter 1 of Introduction to Functional
+Programming Through Lambda Calculus.)
+
 Doubly-linked lists would also require a deep copy of the entire structure,
-since modifications to cons cells on either side would cascade through the
-entire structure.
+since the requirement of mutation to change links of cons cells on either side
+of the target element would cascade through the entire structure.
 
-So, what can you use Lists for? Lists in Haskell may represent either a finite
-collection of values or infinite series of them. Infinite series can be used to
-model streams of data; in which case they are usually generated incrementally by
-some function.
+From the platonic view of a pure functional language, it is easier to share
+parts of a singly-linked list.
 
-Another novel use of lists is in combination with higher order functions that
-act as control flow constructs. (Like ``map`` or ``fold``.) In this capacity
-they serve roughly the same purpose as generators/iterators do with Pythons
-``for`` and ``while`` loops.
+In actual Haskell code, things are probably more nuanced. I don't know, really,
+I'm still only a beginner, as you can tell by these crummy notes :). Here are
+some interesting links:
+
+* https://stackoverflow.com/questions/9611904/haskell-lists-arrays-vectors-sequences/9613203#9613203
+* https://stackoverflow.com/questions/30261346/list-manipulation-performance-in-haskell
+
+So, what can we use Lists for? The most obvious use is as a representation of
+some finite collection of values. Lists also may represent an infinite series of
+values. Infinite series can be used to model streams of data; in which case they
+are usually generated incrementally by some function.
+
+Another use of lists is in combination with higher order functions that act as
+control flow constructs. (Like ``map`` or ``fold``.) In this capacity they serve
+roughly the same purpose as generators/iterators do with Pythons ``for`` and
+``while`` loops.
 
 In this chapter, we will:
 
-* explain list’s datatype and how to pattern match on lists;
+* explain list's datatype and how to pattern match on lists;
 * practice many standard library functions for operating on lists;
 * learn about the underlying representations of lists;
 * see what that representation means for their evaluation;
@@ -57,32 +72,42 @@ First off, let's look at the definition of the list type::
   --    replaced at the term level by
   --    the [] or : data constructors.
   --
-  -- Written differently this may look like...
-  --
-  --
+
+Written differently this may look like... ::
+
   data List a = Nil | Cons a (List a)
   --                            ^
   --                            |
   --                can be replaced by Nil
   --               or Cons data constructor
-  --
-  --   ... which I think makes the distinction
-  -- between data and type constructor clearer.
 
-In terms of implementation, Haskell lists have similar
-performance characteristics as singly-linked lists, although
-average case performance in some situations changes due to
-nonstrict evaluation.
+Which I think makes the distinction between data and type constructor more
+obvious.
+
+In terms of implementation, Haskell lists have similar performance
+characteristics as singly-linked lists, although average case performance in
+some situations changes due to nonstrict evaluation.
+
+Unlike many Wikipedia articles, the one on `linked-lists
+<https://en.wikipedia.org/wiki/Linked_list>`_ is fairly easy to read, and I
+recommend it to you.
 
 .. topic:: Notes about speed
 
    Fast operations
 
    * Prepend an element, using ``(:)``
-   * Get the first element, using ``head``,
-   * Remove last element, using ``tail``,
+   * Get the first element, using ``head``
+   * Remove first element, using ``tail``
 
    Slower operations
+
+   Basically, the problem is that lists don't keep an index, so the spine must
+   be traversed linearly every time you want to access an element. Another issue
+   is that nodes are stored noncontiguously, increasing the time required to
+   access individual elements, and reducing cache locality (contiguous elements
+   in memory are often prefetched). Both of these combined mean that out-of-order
+   execution is comparitively slower than arrays.
 
    Any function that does something with the :math:`n`'th element, or the first
    :math:`n` elements get slower as :math:`n` increases.
@@ -93,13 +118,27 @@ nonstrict evaluation.
    * Splitting at an index, with ``splitAt n xs``
 
    Any function that needs to process the entire list gets slower as the list
-   grows longer. Eg. ``length``, ``(++)``, ``last``, ``map``, ``filter``,
-   ``zip``, ``elem``, ``sum``, ``minimum``, and ``maximum``.
+   grows longer.
 
-   `GHC.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/GHC-List.html>`_
-   also has notes about the time complexity of a few of these functions.
+   * ``(++)``
+   * ``elem``,
+   * ``filter``
+   * ``last``
+   * ``length``
+   * ``map``
+   * ``maximum``
+   * ``minimum``
+   * ``sum``
+   * ``zip``
 
-   -- from `How to work on lists <https://wiki.haskell.org/How_to_work_on_lists>`_ from the Haskell Wiki
+   -- from `How to work on lists <https://wiki.haskell.org/How_to_work_on_lists>`_ on the Haskell Wiki
+
+
+The docs for `GHC.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/GHC-List.html>`_,
+`Data.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-List.html#v:genericIndex>`_,
+and the section of `Prelude <https://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#g:13>`
+on lists have notes about the time complexity of list processing functions in them.
+
 
 9.3 Pattern matching on lists
 -----------------------------
@@ -112,36 +151,57 @@ anticipate what happens with ``[]`` when pattern matching on lists.
 You can use maybe to make the possibility of failure explicit in
 the type signature. For example::
 
-    safeTail :: [a] -> Maybe [a]
-    safeTail [] = Nothing
-    safeTail (_:[]) = Nothing
-    safeTail (_:xs) = Just xs
+  safeTail :: [a] -> Maybe [a]
+  safeTail [] = Nothing
+  safeTail (_:[]) = Nothing
+  safeTail (_:xs) = Just xs
 
-    safeHead [] = Nothing
-    safeHead (x:_) = Just x
+  safeHead [] = Nothing
+  safeHead (x:_) = Just x
 
 
 9.4 List's syntactic sugar
 --------------------------
-As you know, something like ``[1,2,3] ++ [4]`` is really shorthand for ``(1 : 2
-: 3 : []) ++ (4 : [])``. It's useful to keep this longhand notation in mind when
-thinking about how various functions traverse a lists "spine" - the chain
-of linked cons cells.
+Regular list syntax like ``[1,2,3]`` is somewhat unique, since unlike most
+everything in Haskell it doesn't originate in a data constructor. This is an
+example of syntactic sugar, and really stands for ``(1 : 2 : 3 : [])``.  It's
+useful to keep this longhand notation in mind when thinking about how various
+functions traverse a lists "spine" - the chain of linked cons cells.
 
+The spine is the connective structure that holds the cons cells together and in
+place. As we will soon see, this structure nests the cons cells rather than
+ordering them in a right-to-left row. Because different functions may treat the
+spine and the cons cells differently, it is important to understand this
+underlying structure.
 
 9.5 Using ranges to construct lists
 -----------------------------------
-* A range of elements ``[1..10]``.
-* Range with a step value ``[1,2..10]``.
-* ``[(-1)..(-10)]`` won't work, since Haskell assumes a forward
-  step; Use ``[(-1),(-2)..(-10)]`` instead.
+Here are some examples of range syntax -- a convenient way to construct lists of
+orderable elements::
 
-These list comprehensions are sugar for the functions from the ``Ord`` type
-class such as ``enumFrom``, ``enumFromThen``, ``enumFromTo``, and
-``enumFromThenTo``.
+  ·∾ [1..10]
+  [1,2,3,4,5,6,7,8,9,10]
 
-Be aware that ``enumFromTo`` must have its first argument be lower then the
-second argument. Otherwise you'll get an empty list.
+  ·∾ -- This won't work because a forward step is assumed.
+  ·∾ [(-1)..(-10)]
+  []
+
+  ·∾ -- Step values are introduced with a comma.
+  ·∾ -- Providing an explicit negative step will make the range work.
+  ·∾ [(-1),(-2)..(-10)]
+  [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10]
+
+These list ranges are sugar for the functions from the ``Ord`` type. Here
+are those same expressions rephrased::
+
+  ·∾ enumFromTo 1 10
+  [1,2,3,4,5,6,7,8,9,10]
+
+  ·∾ enumFromTo (-1) (-10)
+  []
+
+  ·∾ enumFromThenTo (-1) (-2) (-10)
+  [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10]
 
 .. include:: exercises/9.5.1_-_enumfromto.rst
 
@@ -153,8 +213,6 @@ second argument. Otherwise you'll get an empty list.
   take :: Int -> [a] -> [a]
   drop :: Int -> [a] -> [a]
   splitAt :: Int -> [a] -> ([a],[a])
-  -- Stops taking as soon as the condition is met.
-  -- Maybe it should have been named takeUntil?
   takeWhile :: (a -> Bool) -> [a] -> [a]
   dropWhile :: (a -> Bool) -> [a] -> [a]
 
@@ -166,30 +224,37 @@ second argument. Otherwise you'll get an empty list.
 List comprehensions are used to create a new list by taking the members of an
 existing "source" list, and applying filters or transformations to it.
 
-Syntactically, list comprehensions have the general form:
-
-  **[** *expression* **|** *pattern* **<-** *genxpr* **,** *guard_or_let_binding* **]**
-
-Where *pattern* **<-** *genxpr* and *guard_or_let_binding* may be repeated.
-
-Here is a simple example::
+Here is a simple list comprehension of even numbers between 1 to 10 inclusive::
 
   ·∾ [ x^2 | x <- [1..10], x `rem` 2 == 0]
   [4,16,36,64,100]
 
-Which may be read as "x to the power of two such that x is drawn from the list
+This may be read as "x to the power of two such that x is drawn from the list
 of one through ten, if the remainder of x divided by two equals zero". What a
-mouthful.
+mouthful. Here's a visual translation guide::
 
-A more complex example, to show that generators can reference each other::
+  -- expression
+  --    |
+  --    |  read as
+  --    | "such that"
+  --    |  |
+  --    |  |  generator        guard
+  --    V  v vvvvvvvvvvv   vvvvvvvvvvvvvv
+  ·∾ [ x^2 | x <- [1..10], x `rem` 2 == 0]
+  --           ^         ^
+  --        read as       \
+  --     "is drawn from"  read as "where"
+
+Here is a more complex example, to show that generators can reference each
+other, and act as filters with an appropriate pattern::
 
   ·∾ [ x | xs <- [[(1,2),(3,4)],[(5,4),(3,2)]], (3,x) <- xs]
   [4,2]
 
-If you try to draw from an empty list, you get an empty list::
+Comprehensions can have local bindings with ``let``::
 
-  ·∾ [ x | x <- []]
-  []
+  ·∾ [x^2 | let n = 3, x <- [1..n]]
+  [1,4,9]
 
 9.7.1 Adding predicates
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -198,15 +263,49 @@ elements drawn from the generator list. These predicates must evaluate to Bool
 values.
 
 A note about evaluation: When writing a comprehension with multiple generators,
-the rightmost generator will be exhausted first, then the second rightmost, and
-so on.
+the generators will be exhausted in a depth-first manner. Also, every boolean
+guard, or predicate, will be checked.::
 
-The generators don't have to have the same length or even the same type.
+  ·∾ [x | xs <- [[(1,2),(3,4)],[(5,4),(3,2)]], (3,x) <- xs]
+  [4,2]
 
-For example::
+To me this resembles Cartesian products, or brace expansion in bash. ::
+
+  ·∾ [(x,y) | x <- ['a','b','c'], y <- [1..10]]
+  [('a',1),('a',2),('a',3),('a',4),('a',5),('a',6),('a',7),('a',8),('a',9),('a',10)
+  ,('b',1),('b',2),('b',3),('b',4),('b',5),('b',6),('b',7),('b',8),('b',9),('b',10)
+  ,('c',1),('c',2),('c',3),('c',4),('c',5),('c',6),('c',7),('c',8),('c',9),('c',10)]
+
+  ∗  echo {a,b,c}{1..10}
+  a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+
+.. From Haskell Language Report 2010
+
+.. 3.11 List Comprehensions
+
+.. Such a list comprehension returns the list of elements produced by evaluating e
+.. in the successive environments created by the nested, depth-first evaluation
+.. of the generators in the qualifier list. Binding of variables occurs according
+.. to the normal pattern matching rules (see Section 3.17), and if a match fails
+.. then that element of the list is simply skipped over. Thus:
+
+.. [ x | xs <- [ [(1,2),(3,4)], [(5,4),(3,2)] ], (3,x) <- xs ]
+
+.. yields the list [4,2].
+
+.. If a qualifier is a boolean guard, it must evaluate to True for the previous
+.. pattern match to succeed. As usual, bindings in list comprehensions can shadow
+.. those in outer scopes; for example:
+
+.. [ x | x <- x, x <- x ] = [ z | y <- x, z <- y]
+
+Generators don't have to have the same length. In this example, because of the
+tuple constructor, the generators don't need to have same type, either::
 
   ·∾ [(x,y) | x <- [1,2,3], y <- ['a','b']]
   [(1,'a'),(1,'b'),(2,'a'),(2,'b'),(3,'a'),(3,'b')]
+
+.. include:: exercises/9.7.2_-_comprehend_thy_lists.rst
 
 9.7.3 List comprehensions with strings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
