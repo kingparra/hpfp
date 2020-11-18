@@ -256,6 +256,43 @@ Comprehensions can have local bindings with ``let``::
   ·∾ [x^2 | let n = 3, x <- [1..n]]
   [1,4,9]
 
+But they must be written to the left of the generator/guard that uses it, or
+we'll get an error::
+
+  ·∾ [x^2 | x <- [1..n], let n = 3]
+  <interactive>:2:17: error: Variable not in scope: n
+
+However, all let bindings are visible to the expression before the pipe. This
+will be fine::
+
+  ·∾ [x^y | x <- [1..3], let y = 3]
+  [1,8,27]
+
+I asked on IRC about why ``let`` bindings don't have an ``in`` keyword when used
+as part of list comprehensions::
+
+  <sshine>     justsomeguy, let-expressions in list comprehensions are much like
+               let-expressions in do-notation
+  <sshine>     justsomeguy, considering list comprehensions are monadic, it's
+               not very special. but I guess you could ask why remove the "in"
+               inside do notation?
+  <justsomeguy> Yes, the missing “in” kinda threw me off.
+  <davean>     justsomeguy: its not removed specificly there
+  <davean>     justsomeguy: theres no 'in' in do notation.
+  <sshine>     justsomeguy, you can think of list comprehensions as being
+               syntax sugar for list monads. and you can extend list comprehension
+               syntax to other monads than list using -XMonadComprehensions:
+               https://gitlab.haskell.org/ghc/ghc/-/wikis/monad-comprehensions
+
+  <sshine>     > do { x <- [1..10]; let {y = 3}; return (x * y) }
+  <lambdabot>  [3,6,9,12,15,18,21,24,27,30]
+
+  <sshine>     > [ x * y | x <- [1..10], let y = 3 ] -- vs. this
+  <lambdabot>  [3,6,9,12,15,18,21,24,27,30]
+
+  (sshine takes some pains to explain some other points to me about do notation,
+   but I won't include that here. Those are in my logs. Thanks sshine :)
+
 9.7.1 Adding predicates
 ^^^^^^^^^^^^^^^^^^^^^^^
 As you can see, predicates (or guards) are conditions that can limit the
@@ -264,7 +301,7 @@ values.
 
 A note about evaluation: When writing a comprehension with multiple generators,
 the generators will be exhausted in a depth-first manner. Also, every boolean
-guard, or predicate, will be checked.::
+guard will be checked.::
 
   ·∾ [x | xs <- [[(1,2),(3,4)],[(5,4),(3,2)]], (3,x) <- xs]
   [4,2]
@@ -279,9 +316,23 @@ To me this resembles Cartesian products, or brace expansion in bash. ::
   ∗  echo {a,b,c}{1..10}
   a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
 
-.. From Haskell Language Report 2010
+.. From the 2010 Haskell Language Report
 
 .. 3.11 List Comprehensions
+
+.. aexp → [ exp | qual1 , . . . , qualn ] (list comprehension, n ≥ 1 )
+.. qual → pat <- exp                      (generator)
+..      | let decls                       (local declaration)
+..      | exp                             (boolean guard)
+
+.. A list comprehension has the form [ e | q1 , . . . , qn ], n ≥ 1 , where the qi
+.. qualifiers are either
+
+.. * generators of the form p <- e, where p is a pattern (see Section 3.17) of type
+..   t and e is an expression of type [t]
+.. * local bindings that provide new definitions for use in the generated
+..   expression e or subsequent boolean guards and generators
+.. * boolean guards, which are arbitrary expressions of type Bool.
 
 .. Such a list comprehension returns the list of elements produced by evaluating e
 .. in the successive environments created by the nested, depth-first evaluation

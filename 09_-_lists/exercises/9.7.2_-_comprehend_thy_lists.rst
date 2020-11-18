@@ -1,0 +1,93 @@
+9.7.2 Exercises: Comprehend Thy Lists
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Take a look at the following functions, figure what you think the output lists
+will be, and then run them in your repl to verify.
+
+(Navigate to ``exercises/9.7.2_-_comprehend_thy_lists.rst.d/comprehend-thy-lists/``
+and run ``stack test`` to check the answers.)
+
+1. ``[ x | x <- mySqr, x `rem` 2 == 0]``
+
+   Prediction:
+
+   It looks like we're filtering for even numbers. This should result in
+   ``[4,16,36,64,100]``, I think. For this question only, I'll write out a few
+   of the reduction steps, just to see if my mental model is right::
+
+     [ x | x <- mySqr, x `rem` 2 == 0]
+
+     [ _ | 1 <- (tail mySqr), 1 `rem` 2 == 0]
+     [ _ | 1 <- (tail mySqr), False]
+
+     [ _ | 2 <- (tail . tail $ mySqr), 2 `rem` 2 == 0]
+     [ 2 | 2 <- (tail . tail $ mySqr), True]
+
+     [ 2,_ | 3 <- (tail . tail $ mySqr), 3 `rem` 2 == 0]
+     [ 2,_ | 3 <- (tail . tail $ mySqr), False]
+
+     [ 2,_ | 4 <- (tail . tail $ mySqr), 4 `rem` 2 == 0]
+     [ 2,4 | 4 <- (tail . tail $ mySqr), True]
+
+     [ 2,4,_ | 9 <- (tail . tail $ mySqr), 9 `rem` 2 == 0]
+     [ 2,4,_ | 9 <- (tail . tail $ mySqr), False]
+
+     [ 2,4,_ | 16 <- (tail . tail $ mySqr), 16 `rem` 2 == 0]
+     [ 2,4,16 | 16 <- (tail . tail $ mySqr), True]
+
+     . . .
+
+     [2,4,16,36,64,100]
+
+   I think that the qualifiers are evaluated depth-first like this. From here on
+   I'll do this mentally, or with assistance, since it's less time consuming and
+   typing symbols hurts my hands.
+
+   Proof::
+
+     ·∾ [ x | x <- mySqr, x `rem` 2 == 0]
+     [4,16,36,64,100]
+
+2. ``[(x,y) | x <- mySqr, y <- mySqr, x < 50, y > 50]``
+
+   Prediction: This is going to be a long one, since for each element in the
+   generator ``x <- mySqr``, we check every element in ``y <- mySqr``.
+
+   First I'll get the elements for our list of ``x``'s and ``y``'s::
+
+     ·∾ xs = filter (<50) mySqr
+     ·∾ xs
+     [1,4,9,16,25,36,49]
+
+     ·∾ ys = filter (>50) mySqr
+     ·∾ ys
+     [64,81,100]
+
+   At this point I know that I want a Cartesian product to create our ``(x,y)``
+   pairs. I could write out ``(x,64),(x,81),(x,100)`` and so on for every ``x``
+   in ``[1,4,9,16,25,36,49]`` but instead I'll cheat a bit and use a
+   comprehension::
+
+     ·∾ [(x,y) | x <- xs, y <- ys]
+     [(1,64),(1,81),(1,100),(4,64),(4,81),(4,100),(9,64),(9,81),(9,100),(16,64),(16,81)
+     ,(16,100),(25,64),(25,81),(25,100),(36,64),(36,81),(36,100),(49,64),(49,81),(49,100)]
+
+   Proof::
+
+     ·∾ two
+     [(1,64),(1,81),(1,100)
+     ,(4,64),(4,81),(4,100)
+     ,(9,64),(9,81),(9,100)
+     ,(16,64),(16,81),(16,100)
+     ,(25,64),(25,81),(25,100)
+     ,(36,64),(36,81),(36,100)
+     ,(49,64),(49,81),(49,100)]
+
+3. ``take 5 [(x,y) | x <- mySqr, y <- mySqr, x < 50, y > 50``
+
+   Prediction: This is just the first five elements of the last answer
+   ``[(1,64),(1,81),(1,100),(4,64),(4,81)]``.
+
+   Proof::
+
+     ·∾ three
+     [(1,64),(1,81),(1,100),(4,64),(4,81)]
