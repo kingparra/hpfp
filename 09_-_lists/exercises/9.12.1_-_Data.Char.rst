@@ -1,0 +1,43 @@
+9.12.1 Data.Char
+^^^^^^^^^^^^^^^^
+1. Query the types of ``isUpper`` and ``toUpper``::
+
+     ·∾ :type isUpper
+     isUpper :: Char -> Bool
+
+     ·∾ :type toUpper
+     toUpper :: Char -> Char
+
+2.
+
+.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+   :code:
+   :start-after: -- Question 2
+   :end-before: -- Question 3
+
+3.
+
+.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+   :code:
+   :start-after: -- Question 3
+   :end-before: -- Question 4
+
+4.
+
+.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+   :code:
+   :start-after: -- Question 4
+   :end-before: -- Question 5
+
+5.
+
+.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+   :code:
+   :start-after: -- Question 5
+   :end-before: -- Question 6
+
+6.
+
+.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+   :code:
+   :start-after: -- Question 6

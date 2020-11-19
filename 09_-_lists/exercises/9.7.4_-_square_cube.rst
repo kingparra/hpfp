@@ -1,0 +1,33 @@
+9.7.4 Exercises: Square Cube
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given the following::
+
+  mySqr = [x^2 | x <- [1..5]]
+  myCube = [x^3 | x <- [1..5]]
+
+1. First write an expression that will make tuples of the outputs of ``mySqr``
+   and ``myCube``.
+
+   .. include:: exercises/9.7.4_-_square_cube.rst.d/square-cube/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+2. Now alter that expression so that it only uses the x and y values that are
+   less than 50.
+
+   .. include:: exercises/9.7.4_-_square_cube.rst.d/square-cube/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+3. Apply another function to that list comprehension to determine how many
+   tuples inhabit your output list.
+
+   .. include:: exercises/9.7.4_-_square_cube.rst.d/square-cube/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-line: 14
+
+   Navigate to ``exercises/9.7.4_-_square_cube.rst.d/square-cube/`` and run
+   ``stack test`` to verify.
