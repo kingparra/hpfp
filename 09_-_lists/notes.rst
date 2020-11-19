@@ -495,3 +495,9 @@ the list even if they don't force evaluation of each value.
 
     Prelude> zipWith (==) ['a'..'f'] ['a'..'m']
     [True,True,True,True,True,True]
+
+
+9.12 Chapter Exercises
+----------------------
+
+.. include:: exercises/9.12.1_-_Data.Char.rst
