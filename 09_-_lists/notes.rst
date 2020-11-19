@@ -136,15 +136,15 @@ recommend it to you.
 
 The docs for `GHC.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/GHC-List.html>`_,
 `Data.List <https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-List.html#v:genericIndex>`_,
-and the section of `Prelude <https://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#g:13>`
+and the section of `Prelude <https://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#g:13>`_
 on lists have notes about the time complexity of list processing functions in them.
 
 
 9.3 Pattern matching on lists
 -----------------------------
-Non-exhaustive matches are a failure mode that are easy to overlook when only
-interested in grabbing stuff on either side of the cons operator. Take care to
-anticipate what happens with ``[]`` when pattern matching on lists.
+Non-exhaustive matches are a failure mode that are easy to overlook when we're
+only interested in grabbing stuff on either side of the cons operator. Take care
+to anticipate what happens with ``[]`` when pattern matching on lists.
 
 9.3.1 Using Maybe
 ^^^^^^^^^^^^^^^^^
@@ -173,6 +173,7 @@ place. As we will soon see, this structure nests the cons cells rather than
 ordering them in a right-to-left row. Because different functions may treat the
 spine and the cons cells differently, it is important to understand this
 underlying structure.
+
 
 9.5 Using ranges to construct lists
 -----------------------------------
@@ -221,6 +222,41 @@ are those same expressions rephrased::
 
 9.7 List comprehensions
 -----------------------
+
+.. From the 2010 Haskell Language Report
+
+.. 3.11 List Comprehensions
+
+.. aexp → [ exp | qual1 , . . . , qualn ] (list comprehension, n ≥ 1 )
+.. qual → pat <- exp                      (generator)
+..      | let decls                       (local declaration)
+..      | exp                             (boolean guard)
+
+.. A list comprehension has the form [ e | q1 , . . . , qn ], n ≥ 1 , where the qi
+.. qualifiers are either
+
+.. * generators of the form p <- e, where p is a pattern (see Section 3.17) of type
+..   t and e is an expression of type [t]
+.. * local bindings that provide new definitions for use in the generated
+..   expression e or subsequent boolean guards and generators
+.. * boolean guards, which are arbitrary expressions of type Bool.
+
+.. Such a list comprehension returns the list of elements produced by evaluating e
+.. in the successive environments created by the nested, depth-first evaluation
+.. of the generators in the qualifier list. Binding of variables occurs according
+.. to the normal pattern matching rules (see Section 3.17), and if a match fails
+.. then that element of the list is simply skipped over. Thus:
+
+.. [ x | xs <- [ [(1,2),(3,4)], [(5,4),(3,2)] ], (3,x) <- xs ]
+
+.. yields the list [4,2].
+
+.. If a qualifier is a boolean guard, it must evaluate to True for the previous
+.. pattern match to succeed. As usual, bindings in list comprehensions can shadow
+.. those in outer scopes; for example:
+
+.. [ x | x <- x, x <- x ] = [ z | y <- x, z <- y]
+
 List comprehensions are used to create a new list by taking the members of an
 existing "source" list, and applying filters or transformations to it.
 
@@ -229,21 +265,10 @@ Here is a simple list comprehension of even numbers between 1 to 10 inclusive::
   ·∾ [ x^2 | x <- [1..10], x `rem` 2 == 0]
   [4,16,36,64,100]
 
-This may be read as "x to the power of two such that x is drawn from the list
-of one through ten, if the remainder of x divided by two equals zero". What a
-mouthful. Here's a visual translation guide::
-
-  -- expression
-  --    |
-  --    |  read as
-  --    | "such that"
-  --    |  |
-  --    |  |  generator        guard
-  --    V  v vvvvvvvvvvv   vvvvvvvvvvvvvv
-  ·∾ [ x^2 | x <- [1..10], x `rem` 2 == 0]
-  --           ^         ^
-  --        read as       \
-  --     "is drawn from"  read as "where"
+This may be read as "x to the power of two such that x is drawn from the list of
+one through ten, if the remainder of x divided by two equals zero". What a
+mouthful. The ``<-`` translates to "drawn from", and ``, guard`` roughly
+translates to "where <guard> holds true".
 
 Here is a more complex example, to show that generators can reference each
 other, and act as filters with an appropriate pattern::
@@ -316,40 +341,6 @@ To me this resembles Cartesian products, or brace expansion in bash. ::
   ∗  echo {a,b,c}{1..10}
   a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
 
-.. From the 2010 Haskell Language Report
-
-.. 3.11 List Comprehensions
-
-.. aexp → [ exp | qual1 , . . . , qualn ] (list comprehension, n ≥ 1 )
-.. qual → pat <- exp                      (generator)
-..      | let decls                       (local declaration)
-..      | exp                             (boolean guard)
-
-.. A list comprehension has the form [ e | q1 , . . . , qn ], n ≥ 1 , where the qi
-.. qualifiers are either
-
-.. * generators of the form p <- e, where p is a pattern (see Section 3.17) of type
-..   t and e is an expression of type [t]
-.. * local bindings that provide new definitions for use in the generated
-..   expression e or subsequent boolean guards and generators
-.. * boolean guards, which are arbitrary expressions of type Bool.
-
-.. Such a list comprehension returns the list of elements produced by evaluating e
-.. in the successive environments created by the nested, depth-first evaluation
-.. of the generators in the qualifier list. Binding of variables occurs according
-.. to the normal pattern matching rules (see Section 3.17), and if a match fails
-.. then that element of the list is simply skipped over. Thus:
-
-.. [ x | xs <- [ [(1,2),(3,4)], [(5,4),(3,2)] ], (3,x) <- xs ]
-
-.. yields the list [4,2].
-
-.. If a qualifier is a boolean guard, it must evaluate to True for the previous
-.. pattern match to succeed. As usual, bindings in list comprehensions can shadow
-.. those in outer scopes; for example:
-
-.. [ x | x <- x, x <- x ] = [ z | y <- x, z <- y]
-
 Generators don't have to have the same length. In this example, because of the
 tuple constructor, the generators don't need to have same type, either::
 
@@ -362,6 +353,7 @@ tuple constructor, the generators don't need to have same type, either::
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 You can use the ``elem`` function to test for membership in a list.
 
+.. include:: exercises/9.7.4_-_square_cube.rst
 
 9.8 Spines and nonstrict evaluation
 -----------------------------------
