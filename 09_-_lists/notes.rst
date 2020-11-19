@@ -357,11 +357,9 @@ You can use the ``elem`` function to test for membership in a list.
 
 9.8 Spines and nonstrict evaluation
 -----------------------------------
-In the case of a list, the spine is the connective structure of recursively
-nested cons cells.
+The spine is the connective structure of recursively nested cons cells.
 
-What the spine looks like::
-
+::
 
   1 : 2 : 3 : []
 
@@ -383,60 +381,62 @@ up the spine.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``:sprint`` prints a value without forcing its evaluation. Unevaluated subterms
 are represented by ``_``. You can use this to visualize what a function is
-strict about evaluating -- just the spine, or everything, or nothing, or
-whatever.
+strict about evaluating. Use concrete types with ``:sprint``, or type inference
+may defer evaluation.
 
-::
-
-  ·∾ blah = enumFromTo 'a' 'z'
-  ·∾ :sprint blah
-  blah = _
-  ·∾ take 1 blah
-  "a"
-  ·∾ :sprint blah
-  blah = 'a' : _
-  ·∾ take 2 blah
-  "ab"
-  ·∾ :sprint blah
-  blah = 'a' : 'b' : _
-
-In GHCi code evaluates a bit differently than when compiling a file with GHC, so
-``:sprint`` isn't always correct. For numeric values, use a concrete type, or
-you'll encounter a situation like this::
-
-  ·∾ nums = [1..10]
-  ·∾ ints = [(1 :: Int)..10]
-  ·∾ :sprint nums
-  nums = _
-  ·∾ :sprint ints
-  ints = _
-  ·∾ take 1 nums
-  [1]
-  ·∾ :sprint nums
-  nums = _
-  ·∾ take 1 ints
-  [1]
-  ·∾ :sprint ints
-  ints = 1 : _
-
-Here's an example where only the spine is evaluated::
-
-  ·∾ uf = [undefined,undefined,undefined,undefined]
-  ·∾ length uf
-  4
-  ·∾ :sprint uf
-  uf = [_,_,_,_]
+The ``length`` function is only strict in the spine. The ``seq`` function is
+strict in its first argument.
 
 9.8.2 Spines are evaluated independently of values
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* Values in Haskell get reduced to weak head normal (WHNF) form by default.
-* WHNF means that the expression is only evaluated as far as in necessary to reach a data constructor.
-* WHNF contains both the possibility that the expression is fully evaluated and the possibility that the
-  expression has been evaluated to the point of arriving at a data constructor or lambda head.
-* Normal form exceeds that by requiring that all sub-expression be fully evaluated.
-* If no further inputs are possible, then it is still in WHNF but also in normal form (NF).
-* ``(1, 2)`` WHNF and NF. ``(1, 1+1)`` is WHNF but not NF. ``\x -> x * 10`` is
-  WHNF and NF. ``(1, "Papu" ++ "chon")`` is WHNF but not NF.
+Values in Haskell get reduced to weak head normal (WHNF) form by default.
+
+NF: 
+
+  Fully evaluated. Or in terms of program execution, fully executed. All
+  sub-expressions are reduced.
+
+WHNF: 
+  
+  Evaluated as far as necessary to reach the first available data constructor,
+  or further. In contrast to NF, sub-expressions don't have to be reduced unless
+  that is needed to reach the first data constructor. WHNF is a superset of NF.
+
+Thunk:
+
+  An unevaluated sub-term, stored in memory, which may be evaluated at some
+  time. GHC uses an evaluation strategy called outermost reduction, that
+  operates on a graph of thunks. With this some optimizations like sharing
+  become possible. Sharing is where you only compute the result for identical
+  thunks for one of its occurrences, and then replace the other identical thunks
+  with that computed value.
+
+Here are some examples of expressions in NF and WHNF, to make the distinction
+clear:
+
+* ``_:_`` is WHNF for the term ``[1,2,3]``. Even though no terms are evaluated,
+  we have reached the first data constructor for out list.
+* ``(1, 2)`` is in WHNF and NF.
+* ``(1, 1+1)`` is in WHNF but not NF.
+* ``\x -> x * 10`` is in WHNF and NF.
+* ``(1, "Papu" ++ "chon")`` is in WHNF but not NF.
+
+.. https://en.wikibooks.org/wiki/Haskell/Graph_reduction
+.. WHNF https://www.youtube.com/watch?v=QBQ9_9R7o8I&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=31
+.. Strictness, Thunks and Seq https://www.youtube.com/watch?v=j19amq73-qA&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV&index=26
+
+Functions that are spine strict can force complete evaluation of the spine of
+the list even if they don't force evaluation of each value.
+
+``length`` is strict in the spine, but not the values. ::
+
+  ·∾ x :: [Int]; x = [1,undefined,3]
+  ·∾ :sprint x
+  x = _
+  ·∾ length x
+  3
+  ·∾ :sprint x
+  x = [_,_,_]
 
 .. include:: exercises/9.8.3_-_bottom_madness.rst
 
