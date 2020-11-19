@@ -1,0 +1,19 @@
+9.5.1 Exercise: EnumFromTo
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Write your own ``enumFromTo`` for the types provided. Do not use range syntax to
+do so. It should return the same results as if you did ``[start..stop]``.
+Replace the ``undefined`` with your own definition.
+
+.. include:: exercises/9.5.1_-_enumfromto.rst.d/MyEft.hs
+   :code:
+
+Here is my attempt. To check it, navigate to
+``exercises/9.5.1_-_enumfromto.rst.d/eft`` and run ``stack test``.
+
+.. include:: exercises/9.5.1_-_enumfromto.rst.d/eft/src/Lib.hs
+   :code:
+
+Here are the tests, for your perusal.
+
+.. include:: exercises/9.5.1_-_enumfromto.rst.d/eft/test/Spec.hs
+   :code:
