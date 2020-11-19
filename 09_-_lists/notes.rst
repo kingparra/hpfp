@@ -463,6 +463,7 @@ the list even if they don't force evaluation of each value.
 * Filter takes a function that returns a Bool value, maps that function over
   a list, and returns a new lists of all the values that met the condition.
 
+.. include:: exercises/9.10.1_-_filtering.rst
 
 9.11 Zipping lists
 ------------------
