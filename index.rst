@@ -23,6 +23,7 @@ Contents
    07_-_more_functional_patterns/notes
    08_-_recursion/notes
    09_-_lists/notes
+   10_-_folds/notes
 
 
 Indices and tables
