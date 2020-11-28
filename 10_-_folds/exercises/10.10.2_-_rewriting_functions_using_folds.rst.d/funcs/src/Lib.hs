@@ -41,20 +41,17 @@ myReverse = foldl' (flip (:)) []
 -- rev xs = (foldr (\x r -> r . (x:)) id xs) []
 
 -- Question 5
+myMap f = foldr (\x y -> f x : y) []
+
+-- Question 6
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter l = undefined
+
+-- Question 7
 -- squish flattens a list of lists into a list
 {-# ANN squish ("Hlint: disable Use concat" :: String) #-}
 squish :: [[a]] -> [a]
 squish = foldr (++) []
-
--- Question 6
-squishMap :: (a -> [b]) -> [a] -> [b]
-squishMap f l = squish $ map' f l
-  where map' f [] = []
-        map' f (x:xs) = f x : map' f xs
-
--- Question 7
-squishAgain :: [[a]] -> [a]
-squishAgain = squishMap id
 
 -- Question 8
 myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
@@ -67,8 +64,9 @@ myMaximumBy f l@(x:y:xs) =
     EQ -> myMaximumBy f (y:xs)
 
 -- Question 9
-myMaximum :: Ord a => [a] -> a
-myMaximum = myMaximumBy compare
-
 myMinimum :: Ord a => [a] -> a
 myMinimum = myMaximumBy (flip compare)
+
+-- Question 10
+-- myMinimumBy :: Ord a => [a] -> a
+-- myMinimumBy f = myMaximumBy f
