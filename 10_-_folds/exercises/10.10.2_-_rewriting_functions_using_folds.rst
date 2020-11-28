@@ -1,0 +1,82 @@
+10.10.2 Rewriting functions using folds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the previous chapter you wrote these functions using
+direct recursion. Rewrite them using folds.
+
+1. ``myOr``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 1
+     :end-before: -- Question 2
+
+2. ``myAny``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 2
+     :end-before: -- Question 3
+
+3. Write two versions of ``myElem``. One should use folding and the other should
+   use ``any``.
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 3
+     :end-before: -- Question 4
+
+4. ``myReverse``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 4
+     :end-before: -- Question 5
+
+5. ``myMap``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 5
+     :end-before: -- Question 6
+
+6. ``myFilter``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 6
+     :end-before: -- Question 7
+
+7. ``squish``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 7
+     :end-before: -- Question 8
+
+8. ``squishMap``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 8
+     :end-before: -- Question 9
+
+9. ``squishMap``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 9
+     :end-before: -- Question 10
+
+10. ``myMaximumBy``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 10
+     :end-before: -- Question 11
+
+11. ``myMinimumBy``
+
+  .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/funcs/src/Lib.hs
+     :code:
+     :start-after: -- Question 10
+     :end-before: -- Question 11
