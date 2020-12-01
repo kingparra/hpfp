@@ -146,6 +146,11 @@ The relationship between scans and folds are as follows::
 
 10.5.3 Unconditional spine recursion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Because ``foldl`` must evaluate its whole spine before it starts evaluating
+values in each cell, it accumulates unevaluated expressions (thunks) in memory
+as it traverses the spine of the list. This is a problem for very large lists.
+Use ``foldl'`` instead, which forces evaluation of each thunk as its
+encountered, or ``foldr`` if possible.
 
 10.8 Summary
 ------------
