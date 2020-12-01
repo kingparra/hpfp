@@ -1,0 +1,26 @@
+2. Write out the evaluation steps for ``foldl (flip (*)) 1 [1..3]``
+
+   First I'll do the entire thing in one step mentally, I've rearranged ``(flip
+   (*))`` to be on the right side, but the parenthesization is the same:
+
+     **(**\ **(**\ **(**\ (flip (*)) 1 1\ **)** (flip (*)) 2\ **)** (flip (*)) 3\ **)**
+
+   Now I'll write out each step explicitly by hand, this will take a lot of
+   horizontal space for nested function calls, so be sure to scroll:
+
+   .. include:: exercises/10.5.2_-_understanding_folds.rst.d/foldl_reduction.txt
+      :code:
+
+   Proof that it's right::
+
+     ·∾ foldl (flip (*)) 1 [1,2,3]
+     6
+
+   Proof that the final redex for ``z`` is correct::
+
+     ·∾ f x y = concat ["(","(flip (*))"," ",x," ",y,")"]
+     ·∾ foldl f "0" (map show [1,2,3])
+     "((flip (*)) ((flip (*)) ((flip (*)) 0 1) 2) 3)"
+
+   Also, `here is a website like pythontutor <http://ideas.cs.uu.nl/HEE/>`_
+   where you can copy-paste an expression and see the evaluation steps.
