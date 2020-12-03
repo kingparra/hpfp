@@ -1,0 +1,81 @@
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f z l =
+  case l of
+    []     -> z
+    (x:xs) -> foldl f (f z x) xs
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl (flip (*)) 1 [1,2,3] =
+  case [1,2,3] of
+    []     -> 1
+    (1:[2,3]) -> foldl (flip (*)) ((flip (*)) 1 1) [2,3]
+                   case [2,3] of
+                     []        -> 1
+                     (2:[3])   -> foldl (flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) [3]
+                                    case [3] of
+                                        []        -> 1
+                                        (3:[])    -> foldl (flip (*)) ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3) []
+                                                       case [] of
+                                                         []     -> 1    -- the base case matches this time, so this execution instance
+                                                                        -- returns 1, stopping the recursive calls, the 1 isn't
+                                                                        -- percolated back up the call stack, but our z argument is
+                                                                        --                                                         v
+                                                         (x:xs) -> foldl (flip (*)) ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3) 1
+
+-- Now the accumulated parameter z goes back to the parent
+-- function execution instance
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl (flip (*)) 1 [1,2,3] =
+  case [1,2,3] of
+    []     -> 1
+    (1:[2,3]) -> foldl (flip (*)) ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3) 1
+
+    -- For now let's elide the unchanged parts of the
+    -- function call, leaving us with a redex
+
+                                  ((flip (*))
+                                       ((flip (*))
+                                         ((flip (*)) 1 1)
+                                                         2)
+                                                           3)
+
+                                  -- Evaluation proceeds from the outside in...
+                                  ((flip (*))   ((flip (*)) ((flip (*)) 1 1) 2)   3)
+
+                                  3 * ((flip (*))  ((flip (*)) 1 1)  2)
+
+                                  3 * (2 * ((flip (*))  1  1))
+
+                                  3 * (2 * (1 * 1))
+
+                                  3 * (2 * 1)
+
+                                  3 * 2
+
+                                  6
+
+-- So bringing back our computed z parameter back
+-- to the parent function execution instance we end up with
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl (flip (*)) 1 [1,2,3] =
+  case [1,2,3] of
+    []        -> 1
+    (1:[2,3]) -> foldl (flip (*)) 6 [2,3]
+
+-- because of the type signature, we know that we're returning
+-- z, our second parameter, so the function name as well as the
+-- parameters f and l are discarded in from the recursive case,
+-- leaving us with
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl (flip (*)) 1 [1,2,3] =
+  case [1,2,3] of
+    []        -> 1
+    (1:[2,3]) ->                  6
+
+-- since only the recursive case matches in this parent
+-- definition, we can reduce the case expression, leaving
+-- us with
+
+foldl (flip (*)) 1 [1,2,3]  =  6
