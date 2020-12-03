@@ -58,11 +58,6 @@ First let's look at the definition of ``foldr`` ::
     6
   -}
 
-
-10.4 Fold right
----------------
-::
-
   ·∾ xs = map show [1..5]
   ·∾ y = foldr (\x y -> concat ["(",x,"+",y,")"]) "0" xs
   ·∾ y
@@ -152,24 +147,52 @@ as it traverses the spine of the list. This is a problem for very large lists.
 Use ``foldl'`` instead, which forces evaluation of each thunk as its
 encountered, or ``foldr`` if possible.
 
+
+10.6 How to write fold functions
+--------------------------------
+.. include:: exercises/10.6.1_-_database_processing.rst
+
+
+10.7 Folding and evaluation
+---------------------------
+``foldl`` always forces the spine, but ``foldr`` does not.
+
+``foldr`` and ``foldl`` can be written in terms of each other,
+but only for finite lists. ::
+
+  foldr f z xs = foldl (flip f) z (reverse xs)
+
+
 10.8 Summary
 ------------
 
-foldr
-^^^^^
-1. ``(a -> b -> b)`` ... ``b`` is the rest of the fold.
+``foldr``
+^^^^^^^^^
+1. The second ``b`` in ``(a -> b -> b)`` is the rest of the fold.
 2. Associates to the right.
-3. Works with infinite lists. ``foldr const 0 [1..]``
+3. Works with infinite lists.
 4. A good default choice.
 
-foldl
-^^^^^
-1. Self-calls (tail-call) through the list, only beginning to produce vaules
-   after reaching the end of the list.
+``foldl``
+^^^^^^^^^
+1. Self-calls (tail-call) through the list, only beginning
+   to produce values after reaching the end of the list.
 2. Associates to the left.
 3. Cannot be used with infinte lists.
-4. Nearly useless and should almost always be replaced with ``foldl'``.
+4. Nearly useless and should almost always be replaced with
+   ``foldl'``.
 
+
+10.9 Scans
+----------
+Scans are similar to folds, but they return a list containing the intermediary
+results of evaluation. Because they return lists, they aren't catamorphisms.
+
+::
+
+  scanl :: (a -> b -> a) -> a -> [b] -> [a]
+  scanl f q ls =
+    q : case ls of { [] -> []; (x:xs) -> scanl f (f q x)}
 
 10.10 Chapter Exercises
 -----------------------
