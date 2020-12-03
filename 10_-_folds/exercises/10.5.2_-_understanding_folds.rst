@@ -1,0 +1,38 @@
+10.5.2 Exercises: Understanding Folds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. ``foldr (*) 1 [1..5]`` will return the same result as which of the following:
+
+   a) ``flip (*) 1 [1..5]``
+   b) **foldl (flip (*)) 1 [1..5]**
+   c) **foldl (*) 1 [1..5]**
+
+   Proof::
+
+     ·∾ foldr (*) 1 [1..5]
+     120
+
+     ·∾ foldl (flip (*)) 1 [1..5]
+     120
+
+     ·∾ foldl (*) 1 [1..5]
+     120
+
+   This is only true because the ``(*)`` operator is mathematically associative.
+
+.. include:: exercises/10.5.2_-_understanding_folds.rst.d/2.rst
+
+3. One difference between ``foldr`` and ``foldl`` is:
+
+   a) ``foldr``, but not ``foldl``, traverses the spine of a list from right to left
+   b) ``foldr``, but not ``foldl``, always forces the rest of the fold
+   c) **foldr, but not foldl, associates to the right**
+   d) ``foldr``, but not ``foldl``, is recursive
+
+4. Folds are catamorphisms, which means they are generally used to
+
+   a) **reduce structure**
+   b) expand structure
+   c) render you catatonic
+   d) generate infinite data structures
+
+.. include:: exercises/10.5.2_-_understanding_folds.rst.d/5.rst
