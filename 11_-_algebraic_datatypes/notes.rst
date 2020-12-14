@@ -108,3 +108,18 @@ https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/compiler/type-type
 ---------------------------------
 
 .. include:: exercises/11.5.1_-_dog_types.rst
+
+
+11.6 What's a type and what's data?
+-----------------------------------
+In Haskell types are *static*, meaning that they only have semantic meaning
+during compile time, and not at runtime. (However, there are some facilities for
+introspection during runtime, check out ``Data.Typeable`` and ``Type.Reflection``.)
+
+::
+
+  type constructors  -- compile time
+         ...         -- phase separation
+  data constructors  -- runtime
+
+.. include:: exercises/11.6.1_-_vehicles.rst
