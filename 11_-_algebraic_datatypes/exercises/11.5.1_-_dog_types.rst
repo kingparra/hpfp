@@ -2,7 +2,16 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In the following example code...
 
-.. include:: exercises/dogtypes.hs
+.. include:: exercises/11.5.1_-_dog_types.rst.d/dogtypes.hs
+
+Terminal recording version first. Also see the ``*.expect`` file for a
+terse representation of the answers (this is a bit faster to read).
+
+.. raw:: html
+
+   <script id="asciicast-5vDDmkX7BbSiqJOVW4cVdJSFF"
+   src="https://asciinema.org/a/5vDDmkX7BbSiqJOVW4cVdJSFF.js"
+   async></script>
 
 1. Is ``Doggies`` a type constructor or a data constructor?
 
@@ -37,7 +46,7 @@ In the following example code...
 
 4. What is the type of ``Husky 10``?
 
-   It should be :: Num a => Doggies a, I think. Let's see::
+   It should be ``:: Num a => Doggies a``, I think. Let's see::
 
      ·∾ :type Husky 10
      Husky 10 :: Num a => Doggies a
