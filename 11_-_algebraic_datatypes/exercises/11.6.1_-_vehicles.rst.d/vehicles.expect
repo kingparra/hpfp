@@ -1,0 +1,16 @@
+#!/usr/bin/env expect
+# https://stackoverflow.com/questions/47735327/is-there-a-way-to-script-a-ghci-session
+# https://gist.github.com/Fluidbyte/6294378
+log_user 0
+spawn stack exec -- ghci -v0
+log_user 1
+
+expect "·∾ "
+send ":load vehicles/src/Lib.hs\n"
+
+# 1. What is the type of myCar?
+expect "·∾ "
+send ":type myCar\n"
+expect "myCar :: Vehicle"
+
+exit
