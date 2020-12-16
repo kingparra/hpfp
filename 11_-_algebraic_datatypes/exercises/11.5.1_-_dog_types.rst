@@ -3,6 +3,7 @@
 In the following example code...
 
 .. include:: exercises/11.5.1_-_dog_types.rst.d/dogtypes.hs
+   :code:
 
 Terminal recording version first. Also see the ``*.expect`` file for a
 terse representation of the answers (this is a bit faster to read).
