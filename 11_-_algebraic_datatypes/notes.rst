@@ -163,7 +163,6 @@ covers. In brief...
 +--------------------------------------+---------------+
 
 .. include:: exercises/11.8.1_-_cardinality.rst
-   :code:
 
 
 11.9 newtype
