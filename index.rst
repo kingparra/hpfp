@@ -23,7 +23,7 @@ Contents
    07_-_more_functional_patterns/notes
    08_-_recursion/notes
    09_-_lists/notes
-
+   11_-_algebraic_datatypes/notes
 
 Indices and tables
 ------------------
