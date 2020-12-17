@@ -306,6 +306,7 @@ A few things bothered me, so I asked about them on ``#haskell``::
   argument.
   * ski nods
 
+
 -------------------------------------------------------------------------------------
 
 .. topic:: The problem with record types
@@ -349,3 +350,7 @@ A few things bothered me, so I asked about them on ``#haskell``::
 -------------------------------------------------------------------------------------
 
 
+11.18 Chapter Exercises
+-----------------------
+
+.. include: exercises/11.18.1_-_multiple_choice.rst
