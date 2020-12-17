@@ -347,3 +347,5 @@ A few things bothered me, so I asked about them on ``#haskell``::
         } deriving (Show)
 
 -------------------------------------------------------------------------------------
+
+
