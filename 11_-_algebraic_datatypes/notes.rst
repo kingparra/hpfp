@@ -309,50 +309,97 @@ A few things bothered me, so I asked about them on ``#haskell``::
   * ski nods
 
 
--------------------------------------------------------------------------------------
 
-.. topic:: The problem with record types
+11.10 Sum types
+---------------
 
-   When you define a data constructor with record fields, the field names are
-   used to generate accessor funtions automatically. The problem is, those
-   accessor functions are not unique to the type they're defined in. If you
-   have the same field name shared by records of different types, the generated
-   accessor functions will shadow, or overwrite, each other.
+.. include:: exercises/11.10.1_-_pity_the_bool.rst
 
-   Consider::
 
-     data Record = Record { a :: String }
-     data RecordClash = RecordClash { a :: String }
+11.11 Product types
+-------------------
 
-     Compiling this file results in:
+11.11.1 Record syntax
+^^^^^^^^^^^^^^^^^^^^^
+**Records are data constructors that have named parameters.** These parameters
+are called fields. Here's how a point may be represented as a regular data
+constructor versus as a record.
 
-     record.hs:2:34:
-         Multiple declarations of `Main.a'
-         Declared at: record.hs:1:24
-                      record.hs:2:34
+::
 
-   This has been a pain point for a long time, and many approaches exist to deal
-   with it. Here is a wiki article with links to many of them:
+  data Point = Point Int Int
 
-   https://gitlab.haskell.org/ghc/ghc/-/wikis/records
+  data PointRecord = PointRecord { x :: Int, y :: Int }
 
-   The simplest possible soution is to prefix field names with the type they
-   belong to. Here's an example of what I mean::
+When you want to create a ``PointRecord`` value, you'd write it like this::
 
-      data Comment = Comment {
-            commentId           :: CommentId
-          , commentContent      :: Content
-          , commentReviewId     :: ReviewId
-          , commentSubmissionId :: SubmissionId
-          , commentConferenceId :: ConferenceId
-          , commentDate         :: ISODate
-          , commentReviewerNumber :: Int
-        } deriving (Show)
+  point = PointRecord { x = 8, y = 12 }
 
--------------------------------------------------------------------------------------
+If you write something like::
+
+  ·∾ point { y = 99 }
+  Point {x = 8, y = 99}
+
+GHCi responds with a new ``Point`` with and updated ``y`` field. This is called
+a field update.
+
+One interesting things about records in Haskell is how fields are made available
+for retrieval. Rather than writing ``point.x``, an accessor function named ``x`` is
+generated from the type declaration in the global namespace, which you can then
+use to access the field it's named after, like::
+
+  ·∾ x point
+  8
+  ·∾ y point
+  12
+
+This lack of scoping has some drawbacks. For one thing, if you have the same field
+name present in records *from different type declarations*, the generated accessor
+functions may overwrite or conflict with each other.
+
+Consider::
+
+  data Record = Record { a :: String }
+
+  data RecordClash = RecordClash { a :: String }
+
+Compiling this file results in::
+
+  record.hs:2:34:
+      Multiple declarations of `Main.a'
+      Declared at: record.hs:1:24
+                   record.hs:2:34
+
+You may have thought that haskell would automatically overload the function, and
+then dispatch the appropriate version of the accessor function based on the type
+of its argument, but surprisingly that's not what happens.
+
+The simplest possible workaround is to prefix fields with the name of the type
+they belong to. Here's an example of what I mean::
+
+  data Comment = Comment {
+        commentId           :: CommentId
+      , commentContent      :: Content
+      , commentReviewId     :: ReviewId
+      , commentSubmissionId :: SubmissionId
+      , commentConferenceId :: ConferenceId
+      , commentDate         :: ISODate
+      , commentReviewerNumber :: Int
+    } deriving (Show)
+
+Another relatively simple solutions is to use the `DisambiguateRecordFields
+<https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/disambiguate_record_fields.html>`_
+language extension. This allows the compiler to automatically choose between
+identically-named record selectors based on type if the choice is unambiguous.
+
+Other solutions exist, too. Here is a wiki article with links to a ton of them:
+https://gitlab.haskell.org/ghc/ghc/-/wikis/records. Unfortunately, some of these
+are really complicated. I think this is because they're a special case of an
+more general framework for retrieving sub-structures. -- Total overkill for just
+getting a record field, but maybe useful for other problems.
 
 
 11.18 Chapter Exercises
 -----------------------
 
-.. include: exercises/11.18.1_-_multiple_choice.rst
+.. include:: exercises/11.18.1_-_multiple_choice.rst
