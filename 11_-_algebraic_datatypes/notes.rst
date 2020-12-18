@@ -164,9 +164,11 @@ covers. In brief...
 
 .. include:: exercises/11.8.1_-_cardinality.rst
 
+.. include:: exercises/11.8.3_-_for_example.rst
 
-11.9 newtype
-------------
+
+11.9 ``newtype``
+----------------
 The ``newtype`` keyword is used to define a type that can only have a single
 unary data constructor. It's often used to rename existing types. Unlike type
 aliases with the ``type`` keyword, you can't use the underlying type in place of
