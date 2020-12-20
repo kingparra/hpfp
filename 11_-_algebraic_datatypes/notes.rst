@@ -12,10 +12,10 @@
 
 11.1 Algebraic datatypes
 ------------------------
-This chapter introduces a few new ways to declare types, including record types,
-type aliases using ``type``, and wrapper types using ``newtype``. Along the way,
-a few hints on how to calculate the number of term-level inhabitants (or
-cardinality) of a type are discussed.
+This chapter introduces a few new ways to declare types, including record
+types, type aliases using ``type``, and wrapper types using ``newtype``.
+Along the way, a few hints on how to calculate the number of term-level
+inhabitants (or cardinality) of a type are discussed.
 
 
 11.2 Data declarations review
@@ -56,18 +56,19 @@ cardinality) of a type are discussed.
 
 11.3 Data and type constructors
 -------------------------------
-Type constructors are used only at the type level. Data constructors construct
-values at the term level. Type and data constructors that take no arguments
-(like Bool, and True/False) are constants.
+Type constructors are used only at the type level. Data constructors
+construct values at the term level. Type and data constructors that take no
+arguments (like Bool, and True/False) are constants.
 
-Sometimes constructors take arguments. In those cases, it's like a function in
-at least one sense -- it must be applied to become a concrete type or value.
+Sometimes constructors take arguments. In those cases, it's like a function
+in at least one sense -- it must be applied to become a concrete type or
+value.
 
-When writing a type it's possible to create parameters for the type constructor,
-called type variables. These parameters are placeholders for potential types
-that can be used to construct the overall type.
+When writing a type it's possible to create parameters for the type
+constructor, called type variables. These parameters are placeholders for
+potential types that can be used to construct the overall type.
 
-Type variable names may in turn be used by data constructors.  However, you
+Type variable names may in turn be used by data constructors. However, you
 aren't required to use them -- they may be *phantom*, lacking a value-level
 witnesses.
 
@@ -91,22 +92,21 @@ types, like those used to create primitive types, found in ``GHC.Prim``.
   ·∾ :kind Ratio Int
   Ratio Int :: *
 
-One interesting use of kind signatures is to limit the arity of an input type
-constructor, used to create the ``f a`` and ``f b`` types in ``fmap``'s type
-signature::
+One interesting use of kind signatures is to limit the arity of an input
+type constructor, used to create the ``f a`` and ``f b`` types in
+``fmap``'s type signature::
 
   ·∾ :info fmap
   class Functor (f :: * -> *) where
     fmap :: (a -> b) -> f a -> f b
 
-There is more nuance to kinds, but I don't have time to read about it right now,
-so I'll just leave this link to the GHC wiki here.
+There is more nuance to kinds, but I don't have time to read about it right
+now, so I'll just leave this link to the GHC wiki here.
 https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/compiler/type-type
 
 
 11.5 Data constructors and values
 ---------------------------------
-
 .. include:: exercises/11.5.1_-_dog_types.rst
 
 
@@ -169,11 +169,12 @@ covers. In brief...
 
 11.9 ``newtype``
 ----------------
-The ``newtype`` keyword is used to define a type that can only have a single
-unary data constructor. It's often used to rename existing types. Unlike type
-aliases with the ``type`` keyword, you can't use the underlying type in place of
-its alias. ``newtype``'s are semantically different from the wrapped type, even
-though they share the same underlying representation.
+The ``newtype`` keyword is used to define a type that can only have a
+single unary data constructor. It's often used to rename existing types.
+Unlike type aliases with the ``type`` keyword, you can't use the underlying
+type in place of its alias. ``newtype``'s are semantically different from
+the wrapped type, even though they share the same underlying
+representation.
 
 ::
 
@@ -181,9 +182,9 @@ though they share the same underlying representation.
 
   newtype N = N Int
 
-One key contrast between a newtype and a type alias is that you can define type
-class instances for newtypes that differ from the instances for their underlying
-type. You can't do that for type synonyms.
+One key contrast between a newtype and a type alias is that you can define
+type class instances for newtypes that differ from the instances for their
+underlying type. You can't do that for type synonyms.
 
 A few things bothered me, so I asked about them on ``#haskell``::
 
@@ -309,7 +310,6 @@ A few things bothered me, so I asked about them on ``#haskell``::
   * ski nods
 
 
-
 11.10 Sum types
 ---------------
 
@@ -321,9 +321,9 @@ A few things bothered me, so I asked about them on ``#haskell``::
 
 11.11.1 Record syntax
 ^^^^^^^^^^^^^^^^^^^^^
-**Records are data constructors that have named parameters.** These parameters
-are called fields. Here's how a point may be represented as a regular data
-constructor versus as a record.
+**Records are data constructors that have named parameters.** These
+parameters are called fields. Here's how a point may be represented as a
+regular data constructor versus as a record.
 
 ::
 
@@ -340,22 +340,23 @@ If you write something like::
   ·∾ point { y = 99 }
   Point {x = 8, y = 99}
 
-GHCi responds with a new ``Point`` with and updated ``y`` field. This is called
-a field update.
+GHCi responds with a new ``Point`` with and updated ``y`` field. This is
+called a field update.
 
-One interesting things about records in Haskell is how fields are made available
-for retrieval. Rather than writing ``point.x``, an accessor function named ``x`` is
-generated from the type declaration in the global namespace, which you can then
-use to access the field it's named after, like::
+One interesting things about records in Haskell is how fields are made
+available for retrieval. Rather than writing ``point.x``, an accessor
+function named ``x`` is generated from the type declaration in the global
+namespace, which you can then use to access the field it's named after,
+like::
 
   ·∾ x point
   8
   ·∾ y point
   12
 
-This lack of scoping has some drawbacks. For one thing, if you have the same field
-name present in records *from different type declarations*, the generated accessor
-functions may overwrite or conflict with each other.
+This lack of scoping has some drawbacks. For one thing, if you have the
+same field name present in records *from different type declarations*, the
+generated accessor functions may overwrite or conflict with each other.
 
 Consider::
 
@@ -370,12 +371,13 @@ Compiling this file results in::
       Declared at: record.hs:1:24
                    record.hs:2:34
 
-You may have thought that haskell would automatically overload the function, and
-then dispatch the appropriate version of the accessor function based on the type
-of its argument, but surprisingly that's not what happens.
+You may have thought that haskell would automatically overload the
+function, and then dispatch the appropriate version of the accessor
+function based on the type of its argument, but surprisingly that's not
+what happens.
 
-The simplest possible workaround is to prefix fields with the name of the type
-they belong to. Here's an example of what I mean::
+The simplest possible workaround is to prefix fields with the name of the
+type they belong to. Here's an example of what I mean::
 
   data Comment = Comment {
         commentId           :: CommentId
@@ -389,14 +391,16 @@ they belong to. Here's an example of what I mean::
 
 Another relatively simple solutions is to use the `DisambiguateRecordFields
 <https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/disambiguate_record_fields.html>`_
-language extension. This allows the compiler to automatically choose between
-identically-named record selectors based on type if the choice is unambiguous.
+language extension. This allows the compiler to automatically choose
+between identically-named record selectors based on type if the choice is
+unambiguous.
 
-Other solutions exist, too. Here is a wiki article with links to a ton of them:
-https://gitlab.haskell.org/ghc/ghc/-/wikis/records. Unfortunately, some of these
-are really complicated. I think this is because they're a special case of an
-more general framework for retrieving sub-structures. -- Total overkill for just
-getting a record field, but maybe useful for other problems.
+Other solutions exist, too. Here is a wiki article with links to a ton of
+them: https://gitlab.haskell.org/ghc/ghc/-/wikis/records. Unfortunately,
+some of these are really complicated. I think this is because they're a
+special case of an more general framework for retrieving sub-structures. --
+Total overkill for just getting a record field, but maybe useful for other
+problems.
 
 
 11.18 Chapter Exercises
