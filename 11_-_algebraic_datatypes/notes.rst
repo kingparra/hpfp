@@ -157,7 +157,7 @@ covers. In brief...
 +--------------------------------------+---------------+
 |  data Either a b = Left a | Right b  |     a + b     |
 +--------------------------------------+---------------+
-|  data (a,b) = (a,b)                  |     a x b     |
+|  data (a,b) = (a,b)                  |     a × b     |
 +--------------------------------------+---------------+
 |  a -> b                              |     b ^ a     |
 +--------------------------------------+---------------+
@@ -185,6 +185,18 @@ representation.
 One key contrast between a newtype and a type alias is that you can define
 type class instances for newtypes that differ from the instances for their
 underlying type. You can't do that for type synonyms.
+
+On the other hand, what about the case where we want to reuse the type class
+instances of the type our newtype contains? For user-defined type classes, we
+can use a language extension called ``GeneralizedNewtypeDerinving``. Here's a
+simple example::
+
+  {-# LANGUAGE GeneralizedNewtypeDerinving #-}
+  class TooMany a where { tooMany :: a -> Bool }
+  instance TooMany Int where { TooMany n = n > 42 }
+  newtype Goats = Goats Int deriving (Eq, Show, TooMany)
+  --                     the magic happens here ^^^^^^^
+  -- The instance for (Goats Int) is derived from (TooMany Int)
 
 A few things bothered me, so I asked about them on ``#haskell``::
 
@@ -318,12 +330,22 @@ A few things bothered me, so I asked about them on ``#haskell``::
 
 11.11 Product types
 -------------------
+A product type's cardinality is the product of the cardinalities of its
+inhabitants. Any data constructor with two or more type arguments is a product.
+
++-------------------------------------------+-----------------------+
+|   Type definition                         |      Cardinality      |
++===========================================+=======================+
+| ``data (a,b) = (a,b)``                    |  :math:`a × b`        |
++-------------------------------------------+-----------------------+
+| ``data TripleOrNot = Triple a b c | Not`` |  :math:`a × b + 1`    |
++-------------------------------------------+-----------------------+
 
 11.11.1 Record syntax
 ^^^^^^^^^^^^^^^^^^^^^
-**Records are data constructors that have named parameters.** These
-parameters are called fields. Here's how a point may be represented as a
-regular data constructor versus as a record.
+**Records are data constructors that have named parameters.**
+These parameters are called fields. Here's how a point may be
+represented as a regular data constructor versus as a record.
 
 ::
 
@@ -331,7 +353,8 @@ regular data constructor versus as a record.
 
   data PointRecord = PointRecord { x :: Int, y :: Int }
 
-When you want to create a ``PointRecord`` value, you'd write it like this::
+When you want to create a ``PointRecord`` value, you'd write it
+like this::
 
   point = PointRecord { x = 8, y = 12 }
 
@@ -340,23 +363,24 @@ If you write something like::
   ·∾ point { y = 99 }
   Point {x = 8, y = 99}
 
-GHCi responds with a new ``Point`` with and updated ``y`` field. This is
-called a field update.
+GHCi responds with a new ``Point`` with and updated ``y`` field.
+This is called a field update.
 
-One interesting things about records in Haskell is how fields are made
-available for retrieval. Rather than writing ``point.x``, an accessor
-function named ``x`` is generated from the type declaration in the global
-namespace, which you can then use to access the field it's named after,
-like::
+One interesting things about records in Haskell is how fields are
+made available for retrieval. Rather than writing ``point.x``, an
+accessor function named ``x`` is generated from the type
+declaration in the global namespace, which you can then use to
+access the field it's named after, like::
 
   ·∾ x point
   8
   ·∾ y point
   12
 
-This lack of scoping has some drawbacks. For one thing, if you have the
-same field name present in records *from different type declarations*, the
-generated accessor functions may overwrite or conflict with each other.
+This lack of scoping has some drawbacks. For one thing, if you
+have the same field name present in records *from different type
+declarations*, the generated accessor functions may overwrite or
+conflict with each other.
 
 Consider::
 
@@ -371,13 +395,14 @@ Compiling this file results in::
       Declared at: record.hs:1:24
                    record.hs:2:34
 
-You may have thought that haskell would automatically overload the
-function, and then dispatch the appropriate version of the accessor
-function based on the type of its argument, but surprisingly that's not
-what happens.
+You may have thought that haskell would automatically overload
+the function, and then dispatch the appropriate version of the
+accessor function based on the type of its argument, but
+surprisingly that's not what happens.
 
-The simplest possible workaround is to prefix fields with the name of the
-type they belong to. Here's an example of what I mean::
+The simplest possible workaround is to prefix fields with the
+name of the type they belong to. Here's an example of what I
+mean::
 
   data Comment = Comment {
         commentId           :: CommentId
@@ -402,6 +427,16 @@ special case of an more general framework for retrieving sub-structures. --
 Total overkill for just getting a record field, but maybe useful for other
 problems.
 
+
+11.12 Normal form
+-----------------
+All the existing algebraic rules for products and sums apply in the type
+system, and that includes the distributive property.
+
+.. include:: figures/11.12/ItsAlgebraicDearWatson.hs
+   :start-after: -- begin fig 2
+   :end-before: -- end fig 2
+   :code:
 
 11.18 Chapter Exercises
 -----------------------
