@@ -15,4 +15,6 @@ mapTree f (Node left a right) =
   Node (mapTree f left) (f a) (mapTree f right)
 
 foldrTree :: (a -> b -> b) -> b -> BinaryTree a -> b
-foldrTree = undefined
+foldrTree _ z Leaf = z
+foldrTree f z (Node left a right) = f a (foldrTree f z' right)
+  where z' = foldrTree f z left
