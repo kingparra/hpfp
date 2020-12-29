@@ -107,6 +107,10 @@ https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/compiler/type-type
 
 11.5 Data constructors and values
 ---------------------------------
+The behavior of constructors is such that if they don't take any arguments, they
+behave like (type or value-level) constants. If they do take arguments, they act
+like (type or value-level) functions that don't *do* anything except get applied.
+
 .. include:: exercises/11.5.1_-_dog_types.rst
 
 
@@ -197,6 +201,17 @@ simple example::
   newtype Goats = Goats Int deriving (Eq, Show, TooMany)
   --                     the magic happens here ^^^^^^^
   -- The instance for (Goats Int) is derived from (TooMany Int)
+
+This section had a lot of interactive material, so I scripted it and made a
+terminal recording. Annoyingly, the error messages are displayed with a fake
+typing effect. Sorry about that. Check out the ``figures`` directory to read
+the expect script directly.
+
+.. raw:: html
+
+   <script id="asciicast-Oth8hhFIAzqdLWNpzpwJfw3aV"
+   src="https://asciinema.org/a/Oth8hhFIAzqdLWNpzpwJfw3aV.js"
+   async></script>
 
 A few things bothered me, so I asked about them on ``#haskell``::
 
@@ -437,6 +452,14 @@ system, and that includes the distributive property.
    :start-after: -- begin fig 2
    :end-before: -- end fig 2
    :code:
+
+
+11.17 Binary Tree
+-----------------
+::
+
+  data BinaryTree a =
+    Leaf | Node (BinaryTree a) a (BinaryTree a) deriving (Eq, Ord, Show)
 
 11.18 Chapter Exercises
 -----------------------
