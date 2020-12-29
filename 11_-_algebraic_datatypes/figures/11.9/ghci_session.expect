@@ -27,6 +27,22 @@ log_user 1
 set timeout -1
 
 
+# TODO Implement a human-like typing effect for all send commands.
+# See "send -h" and "echo .. | pv -qL 10". Currently I can't get this
+# to work since ghci only shows the text after Return is pressed. Is
+# it line buffered, maybe?
+#
+# set send_human {.1 .3 1 .05 2}
+#
+# I got lazy and piped the entire expect script through pv with
+#
+# $ asciinema rec --overwrite -t '11.9 Active Reading, with expect' \
+# > -c 'bash -c "expect ./ghci_session.expect | pv -qL 10"' 11.9.cast
+#
+# That means the terminal recording slowly types out error messages,
+# too. Not good.
+
+
 # figure 0
 expect "·∾ "
 send {:{
