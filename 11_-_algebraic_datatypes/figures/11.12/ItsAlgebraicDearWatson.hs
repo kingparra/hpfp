@@ -37,7 +37,7 @@ data Expr
   | Minus Expr
   | Mult Expr Expr
   | Divide Expr Expr
---
+
 -- begin fig 2
 --
 -- A stricter interpretation of normal form or "sum of products" would
