@@ -9,12 +9,13 @@ data Example1 = Example1 Int deriving (Eq, Show)
 -- product of Int and String
 data Example2 = Example2 Int String deriving (Eq, Show)
 
--- page 402
+-- page 401
 {-
  - Prelude> Exmaple0
  - Example0
  -
  - Prelude> Example1 10
+-- page 402
  - 10
  -
  - Prelude> Example1 10 == Example1 42
