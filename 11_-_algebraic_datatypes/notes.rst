@@ -14,7 +14,7 @@
 ------------------------
 This chapter introduces a few new ways to declare types, including record
 types, type aliases using ``type``, and wrapper types using ``newtype``.
-Along the way, a few hints on how to calculate the number of term-level
+Along the way, examples of how to calculate the number of term-level
 inhabitants (or cardinality) of a type are discussed.
 
 
@@ -66,7 +66,7 @@ value.
 
 When writing a type it's possible to create parameters for the type
 constructor, called type variables. These parameters are placeholders for
-potential types that can be used to construct the overall type.
+potential types that can be used to construct the overall composite type.
 
 Type variable names may in turn be used by data constructors. However, you
 aren't required to use them -- they may be *phantom*, lacking a value-level
@@ -140,7 +140,9 @@ type is, without revealing any new useful information. How frustrating.
 Algebraic datatypes in Haskell are algebraic because we can describe the
 patterns of argument structures using two basic operations: sum and product.
 With this, we can calculate the cardinality of a type -- how many term-level
-inhabitants it has.
+inhabitants it has. In some cases, using this information, we can determine how
+may different possible implementation there are of a function for a given type
+signature.
 
 
 See `this blog post <https://codewords.recurse.com/issues/three/
@@ -195,12 +197,15 @@ instances of the type our newtype contains? For user-defined type classes, we
 can use a language extension called ``GeneralizedNewtypeDerinving``. Here's a
 simple example::
 
-  {-# LANGUAGE GeneralizedNewtypeDerinving #-}
+  {-# LANGUAGE GeneralizedNewtypeDeriving #-}
   class TooMany a where { tooMany :: a -> Bool }
   instance TooMany Int where { TooMany n = n > 42 }
   newtype Goats = Goats Int deriving (Eq, Show, TooMany)
   --                     the magic happens here ^^^^^^^
   -- The instance for (Goats Int) is derived from (TooMany Int)
+
+``GeneralizedNewtypeDeriving`` is useful for cases when we want every type
+class instance to be the same except for the one we wan tot change.
 
 This section had a lot of interactive material, so I scripted it and made a
 terminal recording. Annoyingly, the error messages are displayed with a fake
@@ -336,6 +341,8 @@ A few things bothered me, so I asked about them on ``#haskell``::
   argument.
   * ski nods
 
+.. include:: exercises/11.9.1_-_logic_goats.rst
+
 
 11.10 Sum types
 ---------------
@@ -348,13 +355,13 @@ A few things bothered me, so I asked about them on ``#haskell``::
 A product type's cardinality is the product of the cardinalities of its
 inhabitants. Any data constructor with two or more type arguments is a product.
 
-+-------------------------------------------+-----------------------+
-|   Type definition                         |      Cardinality      |
-+===========================================+=======================+
-| ``data (a,b) = (a,b)``                    |  :math:`a × b`        |
-+-------------------------------------------+-----------------------+
-| ``data TripleOrNot = Triple a b c | Not`` |  :math:`a × b + 1`    |
-+-------------------------------------------+-----------------------+
++-------------------------------------------------+-------------------------+
+|   Type definition                               |      Cardinality        |
++=================================================+=========================+
+| ``data (a,b) = (a,b)``                          |  :math:`a × b`          |
++-------------------------------------------------+-------------------------+
+| ``data TripleOrNot a b c = Triple a b c | Not`` |  :math:`a × b × c + 1`  |
++-------------------------------------------------+-------------------------+
 
 11.11.1 Record syntax
 ^^^^^^^^^^^^^^^^^^^^^
@@ -443,6 +450,16 @@ Total overkill for just getting a record field, but maybe useful for other
 problems.
 
 
+
+11.13 Constructing and deconstructing values
+--------------------------------------------
+
+11.13.4 Accidental bottoms from records
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+What happens if we construct a value using record syntax but forget a field? You
+get an exception!
+
+
 11.12 Normal form
 -----------------
 All the existing algebraic rules for products and sums apply in the type
@@ -456,10 +473,17 @@ system, and that includes the distributive property.
 
 11.17 Binary Tree
 -----------------
-::
 
-  data BinaryTree a =
-    Leaf | Node (BinaryTree a) a (BinaryTree a) deriving (Eq, Ord, Show)
+11.17.1 Inserting into trees
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"Left lesser, right greater" is a common convention for arranging binary trees.
+
+11.17.3 Write ``map`` for ``BinaryTree``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+11.17.4 Write ``foldr`` for ``BinaryTree``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 11.18 Chapter Exercises
 -----------------------
