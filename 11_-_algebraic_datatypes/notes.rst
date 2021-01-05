@@ -184,7 +184,7 @@ representation.
 
 ::
 
-  newtype Age = Age [ unAge :: Int }
+  newtype Age = Age { unAge :: Int }
 
   newtype N = N Int
 
@@ -205,7 +205,7 @@ simple example::
   -- The instance for (Goats Int) is derived from (TooMany Int)
 
 ``GeneralizedNewtypeDeriving`` is useful for cases when we want every type
-class instance to be the same except for the one we wan tot change.
+class instance to be the same except for the one we want to change.
 
 This section had a lot of interactive material, so I scripted it and made a
 terminal recording. Annoyingly, the error messages are displayed with a fake
@@ -449,6 +449,17 @@ special case of an more general framework for retrieving sub-structures. --
 Total overkill for just getting a record field, but maybe useful for other
 problems.
 
+11.12 Normal form
+-----------------
+All the existing algebraic rules for products and sums apply in the type system,
+and that includes the distributive property. In this section, expressions that
+have been distributed are considered to be "more evaluated" than those that have
+not.
+
+.. include:: figures/11.12/ItsAlgebraicDearWatson.hs
+   :start-after: -- begin fig 2
+   :end-before: -- end fig 2
+   :code:
 
 
 11.13 Constructing and deconstructing values
@@ -456,19 +467,61 @@ problems.
 
 11.13.4 Accidental bottoms from records
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-What happens if we construct a value using record syntax but forget a field? You
-get an exception!
+What happens if we construct a value using record syntax but forget a field? If
+you assign it to something and don't use it, nothing. If you try to use it,
+however, you'll get an exception! (Just like any other data constructor without
+all of its parameters filled in.)
 
+::
 
-11.12 Normal form
------------------
-All the existing algebraic rules for products and sums apply in the type
-system, and that includes the distributive property.
+  ·∾ data Programmer = Programmer { lang :: String, os :: String, awesome :: Bool } deriving (Eq, Show)
+  ·∾ x = Programmer { lang="agda" }
+  <interactive>:23:5: warning: [-Wmissing-fields]
+      • Fields of ‘Programmer’ not initialised: os, awesome
+      • In the expression: Programmer {lang = "agda"}
+        In an equation for ‘x’: x = Programmer {lang = "agda"}
+  ·∾ x2 = x { os="linux" }
+  ·∾ x2
+  Programmer {lang = "agda", os = "linux", awesome = *** Exception:
+  <interactive>:23:5-30: Missing field in record construction awesome
+  ·∾ x3 = x2 {awesome=True}
+  ·∾ x3
+  Programmer {lang = "agda", os = "linux", awesome = True}
+  ·∾
+  ·∾ (1,)
+  <interactive>:29:1: error: Illegal tuple section: use TupleSections
 
-.. include:: figures/11.12/ItsAlgebraicDearWatson.hs
-   :start-after: -- begin fig 2
-   :end-before: -- end fig 2
-   :code:
+The book cautions against building up a record this way, though. "Either define
+the whole record at once or not at all." I think this is because a partial
+record is does not have the missing fields reflected in the type signature, like
+a data constructor for a product type with unsaturated parameters would. If you
+need to build up a value like this, use a product type, instead, so partial
+application is reflected in the type signature.
+
+::
+
+  --- Unsaturated fields are not reflected in the type signature
+  ·∾ :type x
+  x :: Programmer
+  ·∾ :type x2
+  x2 :: Programmer
+  ·∾ :type x3
+  x3 :: Programmer
+
+  --- But for this product type, they are
+  ·∾ type Lang = String
+  ·∾ type Os = String
+  ·∾ type Awesome = Bool
+  ·∾ data Programmer' = Programmer' Lang Os Awesome deriving (Eq, Show)
+  ·∾ y = Programmer' "haskell"
+  ·∾ :type y
+  y :: Os -> Awesome -> Programmer'
+  ·∾ y2 = y "linux"
+  ·∾ :type y2
+  y2 :: Awesome -> Programmer'
+  ·∾ y3 = y2 True
+  ·∾ :type y3
+  y3 :: Programmer'
 
 
 11.17 Binary Tree
