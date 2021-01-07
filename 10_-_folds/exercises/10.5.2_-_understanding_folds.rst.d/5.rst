@@ -1,0 +1,79 @@
+5. The following are simple folds very similar to what you've already seen,
+   but each has at least one error. Please fix them and test in your REPL.
+
+   First a terminal recording.
+
+   .. raw:: html
+
+      <script id="asciicast-2B3tTdZBGzYOmUlNUtbxQxP3V"
+       src="https://asciinema.org/a/2B3tTdZBGzYOmUlNUtbxQxP3V.js"
+       async></script>
+
+   a) ``foldr (++) ["woot", "WOOT", "woot"]``
+
+     This is missing the ``z`` parameter, ``foldr (++) "" ["woot", "WOOT",
+     "woot"]`` should work.
+
+     Proof::
+
+       ·∾ foldr (++) "" ["woot","WOOT","woot"]
+       "wootWOOTwoot"
+
+   b) ``foldr max [] "fear is the little death"``
+
+     Our input function operates on ``Char``'s, but the accumulator is a list,
+     ``foldr max (minBound :: Char) "fear is the little death"`` should fix it.
+
+     ::
+
+       ·∾ foldr max (minBound :: Char) "fear is the little death"
+       't'
+
+   c) ``foldr and True [False, True]``
+
+      Since ``and`` operates on ``[Bool]``, but receives ``Bool``, we would get a
+      type error. We probably want ``(&&)`` instead. ``foldr (&&) True [False,
+      True]`` should work.
+
+   d) This one is more subtle than the previous. Can it ever return a different
+      answer? ``foldr (||) True [False, True]``
+
+      No, we should change the ``z`` parameter to ``False``.
+
+   e) ``foldl ((++) . show) "" [1..5]``
+
+      The problem here is that only the first argument to ``((++) . show)`` is
+      rendered to a string, and ``foldl`` makes ``""`` the first argument. If we
+      change use ``foldr`` instead then ``""`` will replace the ``[]``
+      constructor at the end of the list, and it will work::
+
+        ·∾ foldr ((++) . show) "" [1..5]
+        "12345"
+
+   f) ``foldr const 'a' [1..5]``
+
+      ::
+
+        ·∾ foldl const 'a' [1..5]
+        'a'
+
+   g) ``foldr const 0 "tacos"``
+
+      ::
+
+        ·∾ foldl const 0 "tacos"
+        0
+
+   h) ``foldl (flip const) 0 "burritos"``
+
+      ::
+
+        ·∾ foldr (flip const) 0 "burritos"
+        0
+
+   i) ``foldl (flip const) 'z' [1..5]``
+
+      ::
+
+        ·∾ foldr (flip const) 'z' [1..5]
+        'z'
