@@ -1,0 +1,114 @@
+11.8.1 Exercises: Cardinality
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Try to calculate the cardinality of these types using your intuition.
+
+1. ``data PugType = PugData``
+
+   This type has a cardinality of one. One data constructor, which is a constant.
+
+2. For this one, recall the ``Bool`` is also defined with the ``|`` character
+
+   ::
+
+     data Airline = PapuAir | CatapultsR'Us | TakeYouChancesUnited
+
+   Each data constructor is a literal value. This type has a cardinality of
+   three.
+
+3. Given what we know about ``Int8``, what's the cardinality of ``Int16``?
+
+   `math`:2^16 + 1 = 65,537` possible values. We've added one here to count the
+   :math:`0` value.
+
+4. Use the repl, ``maxBound`` and ``minBound`` to examine ``Int`` and
+   ``Integer``. What can you say about the cardinality of those types?
+
+   ::
+
+     ·∾ :doc Int
+      A fixed-precision integer type with at least the range @[-2^29 .. 2^29-1]@.
+      The exact range for a given implementation can be determined by using
+      'Prelude.minBound' and 'Prelude.maxBound' from the 'Prelude.Bounded' class.
+
+     ·∾ minBound :: Int
+     -9223372036854775808
+     ·∾ maxBound :: Int
+     9223372036854775807
+
+5. What's the connection between the ``8`` in ``Int8`` and that type's
+   cardinality of 256?
+
+   The ``Int8`` type is represented by eight bits, meaning that it can represent
+   a total of ``256`` values. However, the ``Int`` type supports negative
+   numbers. So one is subtracted to count the 0 value, and then half are
+   negative, and the other half are positive.
+
+   But wait! There's a problem.
+
+   ::
+
+     ·∾ (256 - 1) / 2
+     127.5
+
+   The range can't be cleanly divided in two if we subtract one value to count
+   the :math:`0` numeral.
+
+   So, this must be a solved problem already, what is the solution?
+
+   ::
+
+      <justsomeguy> Why do I get 0 rather than 128 when I run “abs (minBound :: Int8)”?
+
+      <int-e> >     abs (minBound :: Int8)
+      <lambdabot>   -128
+
+      <xerox_>      that's not very abs
+
+      <justsomeguy> Right...
+
+      <int-e>       but expected
+
+      <int-e>       128 can't be represented, it overflows to -128
+
+      <justsomeguy> int-e: Ohh, damn, now it makes sense.
+
+      <justsomeguy> int-e: “abs $ toInteger (minBound :: Int8)” does indeed
+                    work. Also I wonder why does the negative range have 128
+                    numbers, while the positive range has only 127?
+
+      <int-e>       justsomeguy: 2s complenment, working modulo 256... note that you
+                    have 256 total bit patterns in total
+
+      * justsomeguy looks up twos complement on wikipedia ...
+
+      <int-e>       justsomeguy: so you either have ambiguity (say both a positive and
+                    a negative zero) or one of the signs gets more values than the other.
+
+      <ephemient>   for comparison, floating point picks the first option,
+                    and has both a positive and negative zero
+
+      <int-e>       justsomeguy: the reason why the negative range wins out is mostly
+                    convenience (treating the most significant bit as a sign bit while
+                    working modulo 256)
+
+      <int-e>       oh a third option would be to have invalid bit patterns that do not
+                    represent a number (which floating point also has, for different reasons)
+
+
+   In summary, the solution is to include :math:`0` on only one side of the range.
+
+   A bit of experimentation in the repl shows that ``Int8`` is divided into two
+   ranges like this::
+
+     ·∾ length [0..127]
+     128
+
+     ·∾ length [(-1),(-2)..(-127)]
+     127
+
+     ·∾ maxBound :: Int8
+     127
+     ·∾ minBound :: Int8
+     -128
+
+   Our :math:`0` sits at the beginning of the positive half of our range.
