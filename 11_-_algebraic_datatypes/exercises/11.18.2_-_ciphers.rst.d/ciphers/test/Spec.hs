@@ -15,9 +15,9 @@ main = hspec $ do
     it "can unshift by 2" $ do
       unCaesar 2 "okffng-Qwvb" `shouldBe` "middle-Outz"
   describe "vigenere" $ do
-    context "when provided with input that contains whatespace,\n\
-            \spaces should be unaltered, and case shold match the\n\
-            \plaintext" $ do
+    context "when provided with input that contains non-alphabetic\
+            \ characters those characters should remain unaltered\
+            \ and case should be preserved" $ do
       it "\"ALLY\" \"MEET AT DAWN\" ==> \"MPPR AE OYWY\"" $ do
         vigenere "ALLY" "MEET AT DAWN" `shouldBe` "MPPR AE OYWY"
       it "\"ally\" \"The quick brown fox jumps over 13 lazy dogs.\" \

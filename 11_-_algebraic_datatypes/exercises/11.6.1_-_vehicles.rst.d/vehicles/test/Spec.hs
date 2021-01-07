@@ -1,5 +1,5 @@
 import Funcs
-import Type
+import Types
 import Test.Hspec
 import Control.Exception (evaluate)
 
@@ -16,5 +16,5 @@ main = hspec $ do
     it "throws an error for planes (since they dont have manus)" $ do
       evaluate (getManu (Plane TakeYourChancesUnited)) `shouldThrow` errorCall "this function only works on cars"
   describe "getManu'" $ do
-    it "(Plane TakeYourChancesUnited) -> Nothing" $ do
-      getManu' (Plane TakeYourChancesUnited) `shouldBe` Nothing
+    it "(Plane' TakeYourChancesUnited) -> Nothing" $ do
+      getManu' (Plane' TakeYourChancesUnited) `shouldBe` Nothing

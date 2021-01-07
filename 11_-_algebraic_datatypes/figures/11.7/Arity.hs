@@ -15,7 +15,9 @@ data Example2 = Example2 Int String deriving (Eq, Show)
  - Example0
  -
  - Prelude> Example1 10
+ -
 -- page 402
+ -
  - 10
  -
  - Prelude> Example1 10 == Example1 42

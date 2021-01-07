@@ -1,0 +1,64 @@
+11.10.1 Exercises: Pity the Bool
+--------------------------------
+1. Given a datatype ``data BigSmall = Big Bool | Small Bool deriving (Eq,
+   Show)``, what is the cardinality?
+
+   ``BigSmall`` has a cardinality of 4::
+
+     data BigSmall = Big Bool | Small Bool
+                          x   +        y
+     where x and y have a cardinality of two
+     from ...  data Bool = False | True
+                             1   +  1
+     ...resulting in...
+                         [x:=2], [y:=2]
+                             2  +  2
+                                4
+
+2. Given a datatype
+
+   ::
+
+     import Data.Int
+     data NumberOrBool = Numba Int8
+                       | BoolyBool Bool
+                       deriving (Eq, Show)
+     let myNumba = Numba (-128)
+
+     -- parentheses due to syntactic
+     -- collision between (-) minus
+     -- and the negate function
+
+   What is the cardinality of ``NumberOrBool``?
+
+   It is :math:`256 + 2` or 258 possible values.
+
+   What happens if you try to create a ``Numba`` with a numeric literal greater
+   than 127?
+
+   ...and with a numeric literal smaller than (-128)?
+
+   If you choose (-128) for a value precisely, you’ll notice you get a spurious
+   warning::
+
+     Prelude> n = Numba (-128)
+     Literal 128 is out of the
+       Int8 range -128..127
+     If you are trying to write a large negative
+       literal, use NegativeLiterals
+
+   Now, since -128 is a perfectly valid ``Int8`` value you could choose to
+   ignore this. What happens is that (-128) desugars into (negate 128). The
+   compiler sees that you expect the type ``Int8``, but ``Int8``'s max boundary
+   is 127. So even though you’re negating 128, it hasn't done that step yet and
+   immediately whines about 128 being larger than 127. One way to avoid the
+   warning is the following::
+
+     Prelude> n = (-128)
+     Prelude> x = Numba n
+     Or you can use the NegativeLiterals extension as it recommends:
+     Prelude> :set -XNegativeLiterals
+     Prelude> n = Numba (-128)
+
+   Note that the negative literals extension doesn't prevent the warning if you
+   use negate.

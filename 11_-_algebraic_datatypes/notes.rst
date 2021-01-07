@@ -9,6 +9,10 @@
 .. Also check out this nice article:
 .. https://codewords.recurse.com/issues/three/algebra-and-calculus-of-algebraic-data-types
 
+*Hi stranger, the notes for this chapter are incomplete, and probably useless to
+you. I suggest you read on to the next chapter, and ignore this one. There may
+be some useful information in the section about record types, but that's about
+it.*
 
 11.1 Algebraic datatypes
 ------------------------
@@ -530,13 +534,6 @@ application is reflected in the type signature.
 11.17.1 Inserting into trees
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 "Left lesser, right greater" is a common convention for arranging binary trees.
-
-11.17.3 Write ``map`` for ``BinaryTree``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-11.17.4 Write ``foldr`` for ``BinaryTree``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 
 11.18 Chapter Exercises
 -----------------------
