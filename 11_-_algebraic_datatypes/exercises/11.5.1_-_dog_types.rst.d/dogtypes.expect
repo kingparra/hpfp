@@ -1,0 +1,59 @@
+#!/usr/bin/env expect
+log_user 0
+spawn stack exec -- ghci -v0
+log_user 1
+
+expect "·∾ "
+send ":load dogtypes.hs\n"
+
+# 1
+expect "·∾ "
+send ":info Doggies\n"
+
+# 2
+expect "·∾ "
+send ":kind Doggies\n"
+expect -exact "Doggies :: * -> *"
+
+# 3
+expect "·∾ "
+send ":kind Doggies String\n"
+expect -exact "Doggies String :: *"
+
+# 4
+expect "·∾ "
+send ":type Husky 10\n"
+expect -exact "Husky 10 :: Num a => Doggies a"
+
+# 5
+expect "·∾ "
+send ":type Husky (10 :: Integer)\n"
+expect -exact "Husky (10 :: Integer) :: Doggies Integer"
+
+# 6
+expect "·∾ "
+send ":type Mastiff \"Scooby Doo\"\n"
+expect -exact "Mastiff \"Scooby Doo\" :: Doggies \[Char\]"
+
+# 7
+expect "·∾ "
+send ":info DogueDeBordeaux\n"
+expect "data DogueDeBordeaux doge = DogueDeBordeaux doge"
+
+expect "·∾ "
+send ":type DogueDeBordeaux\n"
+expect "DogueDeBordeaux :: doge -> DogueDeBordeaux doge"
+
+expect "·∾ "
+send ":kind DogueDeBordeaux\n"
+expect -exact "DogueDeBordeaux :: * -> *"
+
+# 8
+expect "·∾ "
+send ":type DogueDeBordeaux\n"
+expect "DogueDeBordeaux :: doge -> DogueDeBordeaux doge"
+
+# 9
+expect "·∾ "
+send ":type DogueDeBordeaux \"doggie!\"\n"
+expect -exact "DogueDeBordeaux \"doggie!\" :: DogueDeBordeaux \[Char\]"

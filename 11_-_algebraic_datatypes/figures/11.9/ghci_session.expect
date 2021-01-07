@@ -1,0 +1,364 @@
+#!/usr/bin/env expect
+# I was having a hard time understanding this section without running
+# through it in ghci, but I kept on getting inturrupted during the
+# ghci session. So I numbered the paragraphs and figures, then wrote
+# this script. (Figures start from f0, paragraphs start from 1.)
+#
+# The process is that I would stop where it asks questions and insert
+# an "interact" there, then experiment in the repl. Once I knew what the
+# output should be, I scripted it. This made it a bit easier to stop and
+# resume, since the terminal output was there to remind me of the last
+# step. I also didn't have to deal with typos anymore, and ghci scrollback
+# was helpful for regaining context. (I could have used a file, but I kept
+# on losing track of what code corresponded to the question I was reading.)
+#
+# Do I have ADHD, or was that section just hard to read? Sometimes I have to
+# wonder.
+#
+# Run this in a 137x19 terminal window for best effect.
+# $ alacritty -d 137 19
+
+
+# Start ghci without logging anything to the screen
+log_user 0
+# -v0 supresses the startup message
+spawn stack exec -- ghci -v0
+log_user 1
+set timeout -1
+
+
+# TODO Implement a human-like typing effect for all send commands.
+# See "send -h" and "echo .. | pv -qL 10". Currently I can't get this
+# to work since ghci only shows the text after Return is pressed. Is
+# it line buffered, maybe?
+#
+# set send_human {.1 .3 1 .05 2}
+#
+# I got lazy and piped the entire expect script through pv with
+#
+# $ asciinema rec --overwrite -t '11.9 Active Reading, with expect' \
+# > -c 'bash -c "expect ./ghci_session.expect | pv -qL 10"' 11.9.cast
+#
+# That means the terminal recording slowly types out error messages,
+# too. Not good.
+
+
+# figure 0
+expect "·∾ "
+send {:{
+tooManyGoats :: Int -> Bool
+tooManyGoats n = n > 42
+:}
+}
+
+
+# paragraph 4
+send_user "\n--- What we if mixed up the Int value of cows where we meant goats?\n"
+expect "·∾ "
+send "numCows = 88\n"
+expect "·∾ "
+send "tooManyGoats numCows\n"
+expect "True\r"
+send_user -- "--- ..seems that it will accept the argument, oops...\n"
+
+
+# figure 1
+expect "·∾ "
+send {:{
+newtype Goats =
+  Goats Int deriving (Eq, Show)
+
+newtype Cows =
+  Cows Int deriving (Eq, Show)
+:}
+}
+
+
+# figure 2
+expect "·∾ "
+send {:{
+tooManyGoats :: Goats -> Bool
+tooManyGoats (Goats n) = n > 42
+:}
+}
+
+
+# figure 3
+expect "·∾ "
+send "tooManyGoats (Goats 43)\n"
+expect "True\r"
+expect "·∾ "
+send "tooManyGoats (Cows 43)\n"
+# How do I quote this beastie?
+#
+# expect {
+#
+# <interactive>:19:15: error:
+#     • Couldn't match expected type ‘Goats’ with actual type ‘Cows’
+#     • In the first argument of ‘tooManyGoats’, namely ‘(Cows 43)’
+#       In the expression: tooManyGoats (Cows 43)
+#       In an equation for ‘it’: it = tooManyGoats (Cows 43)
+# }
+
+
+# figure 4
+expect "·∾ "
+send {:{
+class TooMany a where
+  tooMany :: a -> Bool
+
+instance TooMany Int where
+  tooMany n = n > 42
+:}
+}
+
+
+# figure 5
+expect "·∾ "
+send "tooMany (42 :: Int)\n"
+expect "False\r"
+
+
+# paragraph 10
+send_user -- {
+--- Take a moment to play around with this. Try
+--- leaving off the type declaration and giving
+--- it different arguments.
+}
+send_user -- {
+-- First I'll leave off the type declaration...
+}
+expect "·∾ "
+send "tooMany 42\n"
+# Simply unquotable :(
+#
+# expect {
+#
+# <interactive>:28:1: error:
+#     • Ambiguous type variable ‘a0’ arising from a use of ‘tooMany’
+#       prevents the constraint ‘(TooMany a0)’ from being solved.
+#       Probable fix: use a type annotation to specify what ‘a0’ should be.
+#       These potential instance exist:
+#         instance [safe] TooMany Int -- Defined at <interactive>:24:10
+#     • In the expression: tooMany 42
+#       In an equation for ‘it’: it = tooMany 42
+#
+# <interactive>:28:9: error:
+#     • Ambiguous type variable ‘a0’ arising from the literal ‘42’
+#       prevents the constraint ‘(Num a0)’ from being solved.
+#       Probable fix: use a type annotation to specify what ‘a0’ should be.
+#       These potential instances exist:
+#         instance Num Integer -- Defined in ‘GHC.Num’
+#         instance Num Double -- Defined in ‘GHC.Float’
+#         instance Num Float -- Defined in ‘GHC.Float’
+#         ...plus two others
+#         ...plus one instance involving out-of-scope types
+#         (use -fprint-potential-instances to see them all)
+#     • In the first argument of ‘tooMany’, namely ‘42’
+#       In the expression: tooMany 42
+#       In an equation for ‘it’: it = tooMany 42
+# }
+expect "·∾ "
+send_user -- {
+--- Whoa, that was one long error mesage. Seems GHC
+--- can't figure out which type 42 should be! Maybe
+--- it's the answer to everything?}
+send "\n"
+send_user -- {
+--- Ok, now I'll try giving it a concrete type that doesn't have an instance.
+}
+expect "·∾ "
+send "tooMany (88 :: Float)\n"
+# expect {
+# <interactive>:30:1: error:
+#     • No instance for (TooMany Float) arising from a use of ‘tooMany’
+#     • In the expression: tooMany (88 :: Float)
+#       In an equation for ‘it’: it = tooMany (88 :: Float)
+# }
+expect "·∾ "
+send_user -- {
+--- A different value, but with the correct type.
+}
+send "tooMany (88 :: Int)\n"
+expect "True\r"
+
+
+# figure 6
+expect "·∾ "
+send {:{
+newtype Goats = Goats Int deriving Show
+
+instance TooMany Goats where
+  tooMany (Goats n) = n > 43
+:}
+}
+
+
+# paragraph 12
+expect "·∾ "
+send_user -- {
+--- Try passing different arguments to this. Does
+--- it behave differently than the Int instance
+--- above?
+--- Do you still need to explicitly assign a type
+--- to your numeric literals?
+--- What is the type of tooMany?
+}
+send "\n"
+expect "·∾ "
+send "tooMany (43 :: Int)\n"
+expect "True\r"
+expect "·∾ "
+send "tooMany (Goats 43)\n"
+expect "False\r"
+expect "·∾ "
+send "tooMany (Goats 44)\n"
+expect "True\r"
+expect "·∾ "
+send ":type tooMany\n"
+expect "tooMany :: TooMany a => a -> Bool\r"
+
+
+# paragraph 13
+expect "·∾ "
+send_user -- {
+--- Here we were able to make the Goats newtype have an instance
+--- of TooMany which had different behavior than the type Int
+--- which it contains. We can't do this if it's a type synonym.
+--- Don't belive us? Try it.
+}
+send "\n"
+expect "·∾ "
+send "type GoatsAlias = Int\n"
+expect "·∾ "
+send {:{
+instance TooMany GoatsAlias where
+  tooMany n = n > 99
+:}
+}
+# expect -- {
+# <interactive>:46:10: error:
+#     • Illegal instance declaration for ‘TooMany GoatsAlias’
+#         (All instance types must be of the form (T t1 ... tn)
+#          where T is not a synonym.
+#          Use TypeSynonymInstances if you want to disable this.)
+#     • In the instance declaration for ‘TooMany GoatsAlias’
+# }
+expect "·∾ "
+send_user -- {
+--- Interesting, right? More here:
+--- https://ghc.readthedocs.io/en/latest/glasgow_exts.html#extension-TypeSynonymInstances
+}
+send "\n"
+
+
+# paragraph 14
+expect "·∾ "
+send_user -- {
+--- On the other hand, what about the case where we want to reuse
+--- the type class instances of the type our newtype wraps?
+}
+send "\n"
+
+
+# paragraph 15
+expect "·∾ "
+send_user -- {
+--- The pragme GeneralizedNewtypeDeriving can be used to tell
+--- the compiler to allow our newtype to rely on the instances
+--- for the type it wraps.
+}
+send "\n"
+
+
+# paragraph 16
+expect "·∾ "
+send_user -- {
+--- First let's take the case of what we must do without generalized newtype deriving:
+}
+send "\n"
+
+
+# figure 7, page 410
+expect "·∾ "
+send {:{
+class TooMany a where
+  tooMany :: a -> Bool
+
+instance TooMany Int where
+  tooMany n = n > 42
+
+newtype Goats =
+  Goats Int deriving (Eq, Show)
+
+instance TooMany Goats where
+  tooMany (Goats n) = tooMany n
+:}
+}
+
+
+# paragraph 17
+expect "·∾ "
+send_user -- {
+--- The Goats instance wil do the same thing as the Int instance,
+--- but we still have to define it separately.
+}
+send "\n"
+
+
+# paragraph 18
+expect "·∾ "
+send_user -- {
+--- You can test this yourself to see that they'll return the same answers.
+}
+send "\n"
+expect "·∾ "
+send "tooMany (42 :: Int)\n"
+expect "False\r"
+expect "·∾ "
+send "tooMany (Goats 42)\n"
+expect "False\r"
+expect "·∾ "
+send "tooMany (Goats 43)\n"
+expect "True\r"
+expect "·∾ "
+send "tooMany (43 :: Int)\n"
+expect "True\r"
+
+
+# figure 8
+expect "·∾ "
+send ":m\n"
+expect "·∾ "
+send ":set -XGeneralizedNewtypeDeriving\n"
+expect "·∾ "
+send {:{
+class TooMany a where
+  tooMany :: a -> Bool
+
+instance TooMany Int where
+  tooMany n = n > 42
+
+newtype Goats =
+  Goats Int deriving (Eq, Show, TooMany)
+--      ^^^                     ^^^^^^^
+:}
+}
+
+
+# paragraph 19
+expect "·∾ "
+send_user -- {
+--- Now we don't have to define an instance of TooMany for Goats that's
+--- identical to the Int instance. We can reuse the instance that we already
+--- have.
+}
+send "\n"
+expect "·∾ "
+send "tooMany (Goats 42)\n"
+expect "False\r"
+expect "·∾ "
+send "tooMany (Goats 43)\n"
+expect "True\r"
+
+exit

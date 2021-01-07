@@ -1,0 +1,12 @@
+---
+name: logicgoats
+dependencies: base >= 4.7 && < 5
+ghc-options: [-XFlexibleInstances, -XGeneralizedNewtypeDeriving]
+library:
+  source-dirs: src
+tests:
+  logicgoats-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [logicgoats, hspec]

@@ -1,0 +1,58 @@
+11.8.3 Exercises: Cardinality
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Follow your intuition based on what you've seen in the chapter so far and try to
+calculate the cardinality of these datatypes.
+
+1. ``data PugType = PugData``
+
+   This has a cardinality of 1, since there is only one constant value
+   ``PugData``. (Nullary data constructors like ``True`` are constants.)
+
+2. ``data Airline = PapuAir | CatapultsR'Us | TakeYouChancesUnited``
+
+   There are three values, so the cardinality is 3.
+
+3. Given what you know about ``Int8``, what's the cardinality of ``Int16``?
+
+   With sixteen bits we get :math:`2^16` or :math:`65,536` possible values.
+   Proof::
+
+     ·∾ minBound :: Int16
+     -32768
+
+     ·∾ maxBound :: Int16
+     32767
+     ·∾ -- Add one to count the zero.
+
+     ·∾ 32768 * 2
+     65536
+
+     ·∾ 2^16
+     65536
+
+4. Use the repl and ``maxBound`` and ``minBound`` to examine ``Int`` and
+   ``Integer``. What can you say about the cardinality of those types?
+
+   ::
+
+     ·∾ (minBound :: Int, maxBound :: Int)
+     (-9223372036854775808,9223372036854775807)
+
+     ·∾ (minBound :: Integer, maxBound :: Integer)
+     <interactive>:13:2: error:
+         • No instance for (Bounded Integer)
+             arising from a use of ‘minBound’
+         • In the expression: minBound :: Integer
+           In the expression: (minBound :: Integer, maxBound :: Integer)
+           In an equation for ‘it’:
+               it = (minBound :: Integer, maxBound :: Integer)
+
+   ``Int`` has a large range -- from :math:`-2^29 .. 2^29-1`. ``Integer`` has an
+   infinite number of term-level inhabitants.
+
+5. Extra credit (impress your friends!): What's the connection between the 8 in
+   ``Int8`` and that type's cardinality of 256?
+
+   As I mentioned earlier, the number after ``Int`` is how many bits are
+   available to represent possible values. So each ``Int{n}`` type has
+   :math:`2^n` possible numbers.

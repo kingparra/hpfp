@@ -1,0 +1,13 @@
+-- 11.8 What makes these datatypes algebraic?
+--
+-- page 404
+--
+-- Prelude> import Data.Int
+-- Prelude Data.Int> minBound :: Int8
+-- -128
+-- Prelude Data.Int> maxBound :: Int8
+-- 127
+--
+-- page 405
+-- 11.8.2 Simple datatypes with nullary data constructors
+data Example = MakeExample deriving Show
