@@ -43,8 +43,21 @@ mkPerson' (Left badName) (Left badAge) = Left (badName ++ badAge)
 mkPerson' (Left badName) _ = Left badName
 mkPerson' _ (Left badAge) = Left badAge
 
+
 main = hspec $ do
   -- page 467
   describe "nameOkay" $ do
     it "\"42\" ==> Right \"42\"" $ do
       nameOkay "42" `shouldBe` Right "42"
+  -- page 469
+  describe "mkPerson" $ do
+    it "\"\" (-1) ==> Left [NameEmpty,AgeTooLow]" $ do
+      mkPerson "" (-1) `shouldBe` Left [NameEmpty,AgeTooLow]
+  -- That's more like it. Now we can tell the user what was incorrect in one
+  -- go without them having to round-trip each mistake! Later in the book
+  -- we'll be able to replace mkPerson and mkPerson' with the following:
+  --
+  -- mkPerson :: Name -> Age -> Validation [PersonInvalid] Person
+  -- mkPerson name age = liftA2 Person (nameOkay name) (ageOkay age)
+  --
+  -- !!
