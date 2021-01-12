@@ -13,6 +13,7 @@ about higher-kindness and anamorphisms.
 .. https://blog.thomasheartman.com/posts/haskells-maybe-and-either-types/
 .. http://dev.stephendiehl.com/hask/#algebraic-datatypes Control-F for "smart constructors". He has a decent example here.
 .. https://www.schoolofhaskell.com/school/starting-with-haskell/basics-of-haskell/10_Error_Handling
+.. https://leanpub.com/finding-success-in-haskell
 
 
 12.2 How I learned to stop worrying and love Nothing
@@ -67,8 +68,37 @@ and ``b``, ``Left`` and ``Right`` may each wrap different types::
 
   data Either a b = Left a | Right b
 
-Treating ``Left`` as a failure state has a few motivations. One is how different
-type class instances have chosen to implement behaviour for ``Left``.  For
-example, ``Functor`` will not map over the left type argument.
+Treating ``Left`` as a failure state has a few motivations, but it's mostly just
+a convention. One reason to adhere to this convention is how pre-defined type
+class instances have chosen to implement behaviour for ``Left``.  For example,
+``Functor`` will not map over the left type argument.
+
+Around this section, the book has an example where ``mkPerson`` is incrementally
+modified so that it uses ``Either`` to return an indication of possible failure
+modes for constructing a ``Person``. You can view these in the
+``figures/13.{2,3}`` directories.
+
+.. TODO Create a terminal recording where I interact with the figures,
+..      and do the "try it" sections. (Those are mostly captured by an
+..      expect script right now, and the figures have test cases, so I
+..      have something to start with.)
 
 
+12.4 Kinds, a thousand stars in your types
+------------------------------------------
+In this section there are many detail about kinds. There are also two long ghci
+sessions where you inspect kind signatures. I haven't included this in my notes
+because I can't answer the following questions:
+
+* Why is this important?
+* How is this relevant to getting shit done?
+* Why should I care?
+
+Without that, this seems like useless trivia, and I'm pretty sure I'll forget
+it. That's OK, though, I can look it up when I need to. Search engines exist.
+
+
+12.5 Chapter Exercises
+----------------------
+
+.. include:: exercises/12.5.1_-_determine_the_kinds.rst

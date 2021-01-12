@@ -33,9 +33,8 @@ nameOkay name = case name /= "" of
   True -> Right name
   False -> Left [NameEmpty]
 
--- Now we can use of type alias ValidatePerson in a new mkPerson implementation
-mkPerson name age =
-  mkPerson' (nameOkay name) (ageOkay age)
+-- Now we can use our type alias ValidatePerson in a new mkPerson implementation
+mkPerson name age = mkPerson' (nameOkay name) (ageOkay age)
 
 mkPerson' :: ValidatePerson Name -> ValidatePerson Age -> ValidatePerson Person
 mkPerson' (Right nameOkay) (Right ageOkay) = Right (Person nameOkay ageOkay)
