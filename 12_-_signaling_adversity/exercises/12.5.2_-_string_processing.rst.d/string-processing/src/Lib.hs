@@ -1,6 +1,6 @@
 module Lib where
 import Data.Function ((&))
-import Data.List (intercalate, words)
+import Data.List (intercalate, words, elemIndices)
 
 
 -- Question 1
@@ -18,15 +18,24 @@ replaceThe s =
   map (\(Just x) -> x) &
   intercalate " "
 
--- With Data.Text I could write  replaceThe s = replace "the" "a" s  instead,
--- but that feels like cheating.
+-- With Data.Text I could write ``replaceThe s = replace "the" "a" s``
+-- instead, but that feels like cheating.
 
 
 -- Question 2
-countTheBeforeVowel :: String -> Integer
-countTheBeforeVowel = undefined
+vowels = "aeiou"
+
+--countTheBeforeVowel :: String -> Integer
+countTheBeforeVowel s =
+  let
+    idxOfThe = elemIndices "the" (init (words s))
+  in
+    map (\x -> (words s) !! (x+1)) idxOfThe &
+    filter (\x -> (head x) `elem` "aeiou") &
+    length &
+    toInteger
 
 
 -- Question 3
 countVowels :: String -> Integer
-countVowels = undefined
+countVowels s = filter (\x -> x `elem` "aeiou") s & length & toInteger

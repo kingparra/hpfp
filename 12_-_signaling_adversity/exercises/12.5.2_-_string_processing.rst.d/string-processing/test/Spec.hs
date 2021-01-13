@@ -21,9 +21,11 @@ main = hspec $ do
         countTheBeforeVowel "the cow" `shouldBe` 0
       it "\"the evil cow\" ==> 1" $ do
         countTheBeforeVowel "the evil cow" `shouldBe` 1
+      it "\"the evil the other cow\" ==> 1" $ do
+        countTheBeforeVowel "the evil the other cow" `shouldBe` 2
   describe "Question 3" $ do
     context "countVowels" $ do
       it "\"the cow\" ==> 2" $ do
         countVowels "the cow" `shouldBe` 2
-      it "\"Mikolajczak\" ==> 2" $ do
+      it "\"Mikolajczak\" ==> 4" $ do
         countVowels "Mikolajczak" `shouldBe` 4
