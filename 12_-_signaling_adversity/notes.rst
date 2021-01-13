@@ -102,3 +102,6 @@ it. That's OK, though, I can look it up when I need to. Search engines exist.
 ----------------------
 
 .. include:: exercises/12.5.1_-_determine_the_kinds.rst
+
+.. include:: exercises/12.5.2_-_string_processing.rst
+

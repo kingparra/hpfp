@@ -23,14 +23,12 @@ replaceThe s =
 
 
 -- Question 2
-vowels = "aeiou"
-
---countTheBeforeVowel :: String -> Integer
+countTheBeforeVowel :: String -> Integer
 countTheBeforeVowel s =
   let
-    idxOfThe = elemIndices "the" (init (words s))
+    idxOfThes = elemIndices "the" (init (words s))
   in
-    map (\x -> (words s) !! (x+1)) idxOfThe &
+    map (\x -> (words s) !! (x+1)) idxOfThes &
     filter (\x -> (head x) `elem` "aeiou") &
     length &
     toInteger
