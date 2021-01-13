@@ -6,8 +6,8 @@
 12.1 Signaling adversity
 ------------------------
 This chapter is all about dealing with failure conditions using datatypes like
-Maybe and Either, and how to expose functions that filter invalid input that
-still typechecks while constructing datatypes. It also has some things to say
+Maybe and Either, and how to expose functions that guard against invalid input
+that will typecheck when constructing datatypes. It also has some things to say
 about higher-kindness and anamorphisms.
 
 .. https://blog.thomasheartman.com/posts/haskells-maybe-and-either-types/
@@ -23,8 +23,7 @@ used to express that something can be in one of two states: defined or
 undefined. Another way to think of this is that the result is partial; that is,
 not defined for all values of arguments. To get around this, we use ``Maybe`` to
 return eithther a constructor that *wraps* the result type, or the ``Nothing``
-data constructor, which acts as an explicit signal of failure to return sensible
-result.
+data constructor, which acts as an explicit signal of failure.
 
 So, what does it look like? ::
 
@@ -46,10 +45,9 @@ Let's consider a ``Person`` type that keeps track of two things, a name and age.
   data Person = Person Name Age deriving Show
 
 There are a few problems here. One is that we could construct a ``Person`` with
-an empty string for a name, or make a person who is negative years old. This is
-no problem to fix with ``Maybe``, though. Instead, we'll create a *smart
-constructor*, a function to construct values of type ``Person``, that will
-filter out invalid inputs for us.
+an empty string for a name, or make a person who is negative years old. We'll
+create a *smart constructor*, a function to construct values of type ``Person``,
+that will filter out invalid inputs for us.
 
 ::
 
@@ -78,11 +76,6 @@ modified so that it uses ``Either`` to return an indication of possible failure
 modes for constructing a ``Person``. You can view these in the
 ``figures/13.{2,3}`` directories.
 
-.. TODO Create a terminal recording where I interact with the figures,
-..      and do the "try it" sections. (Those are mostly captured by an
-..      expect script right now, and the figures have test cases, so I
-..      have something to start with.)
-
 
 12.4 Kinds, a thousand stars in your types
 ------------------------------------------
@@ -94,8 +87,8 @@ because I can't answer the following questions:
 * How is this relevant to getting shit done?
 * Why should I care?
 
-Without that, this seems like useless trivia, and I'm pretty sure I'll forget
-it. That's OK, though, I can look it up when I need to. Search engines exist.
+Without that, this seems like useless trivia, and I'm pretty sure I'll forget it
+all. That's OK, though, I can look it up when I need to. Search engines exist.
 
 
 12.5 Chapter Exercises
