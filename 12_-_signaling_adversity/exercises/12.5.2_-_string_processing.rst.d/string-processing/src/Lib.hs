@@ -26,12 +26,18 @@ replaceThe s =
 countTheBeforeVowel :: String -> Integer
 countTheBeforeVowel s =
   let
-    idxOfThes = elemIndices "the" (init (words s))
+    idxOfThes = if length (words s) > 1
+                then Just $ elemIndices "the" (init (words s))
+                else Nothing
   in
-    map (\x -> (words s) !! (x+1)) idxOfThes &
-    filter (\x -> (head x) `elem` "aeiou") &
-    length &
-    toInteger
+    if idxOfThes == Nothing
+    then
+      0
+    else
+      map (\x -> (words s) !! (x+1)) ((\(Just x) -> x) idxOfThes) &
+      filter (\x -> (head x) `elem` "aeiou") &
+      length &
+      toInteger
 
 
 -- Question 3
