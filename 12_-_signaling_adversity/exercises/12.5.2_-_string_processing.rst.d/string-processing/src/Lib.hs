@@ -2,6 +2,7 @@ module Lib where
 import Data.Function ((&))
 import Data.List (intercalate, words)
 
+
 -- Question 1
 
 -- helper function
@@ -19,3 +20,13 @@ replaceThe s =
 
 -- With Data.Text I could write  replaceThe s = replace "the" "a" s  instead,
 -- but that feels like cheating.
+
+
+-- Question 2
+countTheBeforeVowel :: String -> Integer
+countTheBeforeVowel = undefined
+
+
+-- Question 3
+countVowels :: String -> Integer
+countVowels = undefined
