@@ -154,4 +154,3 @@ Write the following functions. This may take some time.
    .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
       :code:
       :start-after: -- Question 6
-      :end-before: -- Question 7
