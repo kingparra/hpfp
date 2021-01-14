@@ -1,6 +1,7 @@
 ---
 name: small-library-for-maybe
 dependencies: base >= 4.7 && < 5
+ghc-options: -Wall -Wno-type-defaults
 library:
   source-dirs: src
 tests:

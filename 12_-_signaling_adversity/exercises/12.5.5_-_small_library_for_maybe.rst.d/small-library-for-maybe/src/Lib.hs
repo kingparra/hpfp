@@ -11,7 +11,7 @@ isNothing = not . isJust
 
 
 -- Question 2
--- mayybee :: b -> (a -> b) -> Maybe a -> b
+mayybee :: b -> (a -> b) -> Maybe a -> b
 mayybee b f m = case m of
   Just a   ->  f a
   Nothing  ->  b
@@ -19,22 +19,32 @@ mayybee b f m = case m of
 
 -- Question 3
 fromMaybe :: a -> Maybe a -> a
-fromMaybe = undefined
+-- fromMaybe i Nothing = i
+-- fromMaybe _ (Just x) = x
+fromMaybe i m = mayybee i id m
 
 
 -- Question 4
 listToMaybe :: [a] -> Maybe a
-listToMaybe = undefined
+listToMaybe (x:_) = Just x
+listToMaybe [] = Nothing
 
 maybeToList :: Maybe a -> [a]
-maybeToList = undefined
+maybeToList m = case m of
+  Just x   ->  [x]
+  Nothing  ->   []
 
 
 -- Question 5
 catMaybes :: [Maybe a] -> [a]
-catMaybes = undefined
+catMaybes ((Just a):xs)  =  a : catMaybes xs
+catMaybes  (Nothing:xs)  =      catMaybes xs
+catMaybes            []  =                []
 
 
 -- Question 6
 flipMaybe :: [Maybe a] -> Maybe [a]
-flipMaybe = undefined
+flipMaybe l =
+  if all isJust l
+  then Just (catMaybes l)
+  else Nothing
