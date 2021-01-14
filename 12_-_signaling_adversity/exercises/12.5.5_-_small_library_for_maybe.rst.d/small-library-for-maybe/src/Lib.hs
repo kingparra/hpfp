@@ -3,15 +3,18 @@ module Lib where
 
 -- Question 1
 isJust :: Maybe a -> Bool
-isJust = undefined
+isJust (Just _) = True
+isJust Nothing  = False
 
 isNothing :: Maybe a -> Bool
-isNothing = undefined
+isNothing = not . isJust
 
 
 -- Question 2
-mayybee :: b -> (a -> b) -> Maybe a -> b
-mayybee = undefined
+-- mayybee :: b -> (a -> b) -> Maybe a -> b
+mayybee b f m = case m of
+  Just a   ->  f a
+  Nothing  ->  b
 
 
 -- Question 3
