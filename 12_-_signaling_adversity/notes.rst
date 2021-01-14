@@ -99,3 +99,5 @@ all. That's OK, though, I can look it up when I need to. Search engines exist.
 .. include:: exercises/12.5.2_-_string_processing.rst
 
 .. include:: exercises/12.5.3_validate_the_word.rst
+
+.. include:: exercises/12.5.4_-_its_only_natural.rst

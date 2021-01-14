@@ -22,7 +22,6 @@ First, the datatype::
   data Nat = Zero | Succ Nat
     deriving (Eq, Show)
 
-
 Here is a stub for ``natToInteger``::
 
   natToInteger :: Nat -> Integer
@@ -57,3 +56,8 @@ Example output::
 
   ·∾  integerToNat (-1)
   Nothing
+
+Ok, here is my attempt.
+
+.. include:: exercises/12.5.4_-_its_only_natural.rst.d/its-only-natural/src/Lib.hs
+   :code:
