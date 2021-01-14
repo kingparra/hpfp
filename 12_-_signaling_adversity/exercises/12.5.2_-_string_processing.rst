@@ -13,14 +13,14 @@
 
    Example GHCi session of the above functions::
 
-     -- >>> notThe "the"
-     -- Nothing
+     ·∾  notThe "the"
+     Nothing
 
-     -- >>> notThe "blahtheblah"
-     -- Just "blahtheblah"
+     ·∾  notThe "blahtheblah"
+     Just "blahtheblah"
 
-     -- >>> notThe "woot"
-     -- Just "woot"
+     ·∾  notThe "woot"
+     Just "woot"
 
    The main function::
 
@@ -29,8 +29,8 @@
 
    A simple example of its use::
 
-     -- >>> replaceThe "the cow loves us"
-     -- "a cow loves us"
+     ·∾  replaceThe "the cow loves us"
+     "a cow loves us"
 
    Ok, are you ready? Bear witness to the abomination that I've created!
 
@@ -38,7 +38,6 @@
       :code:
       :start-after: -- Question 1
       :end-before: -- Question 2
-
 
 2. Write a recursive function that takes a string, breaks it
    into words, and counts the number of instances of "the" followed
@@ -51,11 +50,11 @@
 
    Simple demonstration of its use::
 
-     -- >>> countTheBeforeVowel "the cow"
-     -- 0
+     ·∾  countTheBeforeVowel "the cow"
+     0
 
-     -- >>> countTheBeforeVowel "the evil cow"
-     -- 1
+     ·∾  countTheBeforeVowel "the evil cow"
+     1
 
    I can't believe you've done this!
 
@@ -79,11 +78,11 @@
 
    Example use::
 
-     -- >>> countVowels "the cow"
-     -- 2
+     ·∾  countVowels "the cow"
+     2
 
-     -- >>> countVowels "Mikolajczak"
-     -- 4
+     ·∾  countVowels "Mikolajczak"
+     4
 
    General Kenobi ...
 
