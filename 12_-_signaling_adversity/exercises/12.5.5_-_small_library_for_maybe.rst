@@ -4,7 +4,11 @@ Write the following functions. This may take some time.
 
 1. Simple boolean checks for Maybe values.
 
-   ::
+   Function stub::
+
+     isJust :: Maybe a -> Bool
+
+   GHCi session::
 
      ·∾  isJust (Just 1)
      True
@@ -12,7 +16,11 @@ Write the following functions. This may take some time.
      ·∾  isJust Nothing
      False
 
-     isJust :: Maybe a -> Bool
+   Function stub::
+
+     isNothing :: Maybe a -> Bool
+
+   GHCi session::
 
      ·∾  isNothing (Just 1)
      False
@@ -20,12 +28,21 @@ Write the following functions. This may take some time.
      ·∾  isNothing Nothing
      True
 
-     isNothing :: Maybe a -> Bool
+   Here is my attempt:
+
+   .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
 
 2. The following is the Maybe catamorphism. You can turn a Maybe value into
    anything else with this.
 
-   ::
+   Function stub::
+
+     mayybee :: b -> (a -> b) -> Maybe a -> b
+
+   Examples of its use::
 
      ·∾  mayybee 0 (+1) Nothing
      0
@@ -33,11 +50,21 @@ Write the following functions. This may take some time.
      ·∾  mayybee 0 (+1) (Just 1)
      2
 
-     mayybee :: b -> (a -> b) -> Maybe a -> b
+   Here is my attempt:
+
+   .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
 
 3. In case you just want to provide a fallback value.
 
-   ::
+   Function stub::
+
+     -- Try writing it in terms of the maybe catamorphism
+     fromMaybe :: a -> Maybe a -> a
+
+   Example usage::
 
      ·∾  fromMaybe 0 Nothing
      0
@@ -45,12 +72,20 @@ Write the following functions. This may take some time.
      ·∾  fromMaybe 0 (Just 1)
      1
 
-     fromMaybe :: a -> Maybe a -> a
-     -- Try writing it in terms of the maybe catamorphism
+   Here is my attempt:
+
+   .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
 
 4. Converting between List and Maybe.
 
-   ::
+   Stub::
+
+     listToMaybe :: [a] -> Maybe a
+
+   Usage::
 
      ·∾  listToMaybe [1, 2, 3]
      Just 1
@@ -58,7 +93,11 @@ Write the following functions. This may take some time.
      ·∾  listToMaybe []
      Nothing
 
-     listToMaybe :: [a] -> Maybe a
+   Stub::
+
+     maybeToList :: Maybe a -> [a]
+
+   Usage of ``maybeToList``::
 
      ·∾  maybeToList (Just 1)
      [1]
@@ -66,11 +105,20 @@ Write the following functions. This may take some time.
      ·∾  maybeToList Nothing
      []
 
-     maybeToList :: Maybe a -> [a]
+   Here is my attempt:
+
+   .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
 
 5. For when we want to drop the Nothing values from our list.
 
-   ::
+   Stub::
+
+     catMaybes :: [Maybe a] -> [a]
+
+   Usage::
 
      ·∾  catMaybes [Just 1, Nothing, Just 2]
      [1, 2]
@@ -80,16 +128,30 @@ Write the following functions. This may take some time.
      ·∾  catMaybes xs
      []
 
-     catMaybes :: [Maybe a] -> [a]
+   Here is my attempt:
+
+   .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
+      :code:
+      :start-after: -- Question 5
+      :end-before: -- Question 6
 
 6. You'll see this called "sequence" later.
 
-   ::
+   Stub::
 
      flipMaybe :: [Maybe a] -> Maybe [a]
+
+   Usage::
 
      ·∾  flipMaybe [Just 1, Just 2, Just 3]
      Just [1, 2, 3]
 
      ·∾  flipMaybe [Just 1, Nothing, Just 3]
      Nothing
+
+   Here is my attempt:
+
+   .. include:: exercises/12.5.5_-_small_library_for_maybe.rst.d/small-library-for-maybe/src/Lib.hs
+      :code:
+      :start-after: -- Question 6
+      :end-before: -- Question 7
