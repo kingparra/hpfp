@@ -1,26 +1,49 @@
 12.5.9 Write your own iterate and unfoldr
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-1. Write the function ``myIterate`` using direct recursion. Compare the behavior
-   with the built-in iterate to gauge correctness. Do not look at the source or
-   any examples of iterate so that you are forced to do this yourself.
+1. Write the function ``myIterate`` using direct
+   recursion. Compare the behavior with the
+   built-in iterate to gauge correctness. Do not
+   look at the source or any examples of iterate
+   so that you are forced to do this yourself.
 
    ::
 
      myIterate :: (a -> a) -> a -> [a]
      myIterate = undefined
 
-2. Write the function ``myUnfoldr`` using direct recursion. Compare with the
-   built-in ``unfoldr`` to check your implementation. Again, don't look at
-   implementations of ``unfoldr`` so that you figure it out yourself.
+   Here's my attempt:
+
+   .. include:: exercises/12.5.9_-_write_your_own_iterate_and_unfoldr.rst.d/write-your-own-iterate-and-unfoldr/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+
+2. Write the function ``myUnfoldr`` using direct
+   recursion. Compare with the built-in
+   ``unfoldr`` to check your implementation.
+   Again, don't look at implementations of
+   ``unfoldr`` so that you figure it out yourself.
 
    ::
 
      myUnfoldr :: (b -> Maybe (a, b)) -> b -> [a]
      myUnfoldr = undefined
 
-3. Rewrite ``myIterate`` into ``betterIterate`` using ``myUnfoldr``. A hint — we
-   used ``unfoldr`` to produce the same results as iterate earlier.  Do this
-   with different functions and see if you can abstract the structure out.
+   Here's my attempt:
+
+   .. include:: exercises/12.5.9_-_write_your_own_iterate_and_unfoldr.rst.d/write-your-own-iterate-and-unfoldr/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+
+3. Rewrite ``myIterate`` into ``betterIterate``
+   using ``myUnfoldr``. A hint — we used
+   ``unfoldr`` to produce the same results as
+   iterate earlier.  Do this with different
+   functions and see if you can abstract the
+   structure out.
 
    ::
 
@@ -29,7 +52,8 @@
      betterIterate :: (a -> a) -> a -> [a]
      betterIterate f x = myUnfoldr ...?
 
-   Remember, your ``betterIterate`` should have the same results as iterate.
+   Remember, your ``betterIterate`` should have
+   the same results as iterate.
 
    ::
 
@@ -38,3 +62,9 @@
 
      ·∾ take 10 $ betterIterate (+1) 0
      [0,1,2,3,4,5,6,7,8,9]
+
+   Here's my attempt:
+
+   .. include:: exercises/12.5.9_-_write_your_own_iterate_and_unfoldr.rst.d/write-your-own-iterate-and-unfoldr/src/Lib.hs
+      :code:
+      :start-after: -- Question 3

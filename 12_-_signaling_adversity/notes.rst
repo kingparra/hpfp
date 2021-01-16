@@ -109,3 +109,5 @@ all. That's OK, though, I can look it up when I need to. Search engines exist.
 .. include:: exercises/12.5.7_-_unfolds.rst
 
 .. include:: exercises/12.5.8_-_why_bother.rst
+
+.. include:: exercises/12.5.9_-_write_your_own_iterate_and_unfoldr.rst
