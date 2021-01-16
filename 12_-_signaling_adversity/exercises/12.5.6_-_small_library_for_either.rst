@@ -1,14 +1,23 @@
 12.5.6 Small library for Either
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Write each of the following functions. If more than one possible unique function
-exists for the type, use common sense to determine what it should do.
+Write each of the following functions. If more than one
+possible unique function exists for the type, use common
+sense to determine what it should do.
 
-1. Try to eventually arrive at a solution that uses ``foldr``, even if earlier
-   versions don't use ``foldr``.
+1. Try to eventually arrive at a solution that uses
+   ``foldr``, even if earlier versions don't use
+   ``foldr``.
 
    ::
 
      lefts' :: [Either a b] -> [a]
+
+   Here is my attempt:
+
+   .. include:: exercises/12.5.6_-_small_library_for_either.rst.d/small-library-for-either/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
 
 2. Same as the last one. Use ``foldr`` eventually.
 
@@ -16,9 +25,30 @@ exists for the type, use common sense to determine what it should do.
 
      rights' :: [Either a b] -> [b]
 
+   Here is my attempt:
+
+   .. include:: exercises/12.5.6_-_small_library_for_either.rst.d/small-library-for-either/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
 3. ``partitionEithers' :: [Either a b] -> ([a], [b])``
 
+   Here is my attempt:
+
+   .. include:: exercises/12.5.6_-_small_library_for_either.rst.d/small-library-for-either/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+
 4. ``eitherMaybe' :: (b -> c) -> Either a b -> Maybe c``
+
+   Here is my attempt:
+
+   .. include:: exercises/12.5.6_-_small_library_for_either.rst.d/small-library-for-either/src/Lib.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
 
 5. This is a general catamorphism for ``Either`` values.
 
@@ -26,12 +56,28 @@ exists for the type, use common sense to determine what it should do.
 
      either' :: (a -> c) -> (b -> c) -> Either a b -> c
 
-6. Same as before, but use the ``either'`` function you just wrote.
+   Here is my attempt:
+
+   .. include:: exercises/12.5.6_-_small_library_for_either.rst.d/small-library-for-either/src/Lib.hs
+      :code:
+      :start-after: -- Question 5
+      :end-before: -- Question 6
+
+6. Same as before, but use the ``either'`` function you
+   just wrote.
 
    ::
 
      eitherMaybe'' :: (b -> c) -> Either a b -> Maybe c
 
-Most of the functions you just saw are in the ``Prelude``, ``Data.Maybe``, or
-``Data.Either`` but you should strive to write them yourself without looking at
-existing implementations. You will deprive yourself if you cheat.
+   Here is my attempt:
+
+   .. include:: exercises/12.5.6_-_small_library_for_either.rst.d/small-library-for-either/src/Lib.hs
+      :code:
+      :start-after: -- Question 6
+
+Most of the functions you just saw are in the
+``Prelude``, ``Data.Maybe``, or ``Data.Either`` but you
+should strive to write them yourself without looking at
+existing implementations. You will deprive yourself if
+you cheat.

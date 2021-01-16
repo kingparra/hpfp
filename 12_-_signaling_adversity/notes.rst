@@ -103,3 +103,5 @@ all. That's OK, though, I can look it up when I need to. Search engines exist.
 .. include:: exercises/12.5.4_-_its_only_natural.rst
 
 .. include:: exercises/12.5.5_-_small_library_for_maybe.rst
+
+.. include:: exercises/12.5.6_-_small_library_for_either.rst
