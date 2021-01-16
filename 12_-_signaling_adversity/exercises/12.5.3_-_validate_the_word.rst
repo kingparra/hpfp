@@ -16,5 +16,5 @@ input isn't a word (that is, a valid input to your dataset)::
 
 Ok, here's your function. Have fun.
 
-.. include:: exercises/12.5.3_validate_the_word.rst.d/validate-the-word/src/Lib.hs
+.. include:: exercises/12.5.3_-_validate_the_word.rst.d/validate-the-word/src/Lib.hs
    :code:
