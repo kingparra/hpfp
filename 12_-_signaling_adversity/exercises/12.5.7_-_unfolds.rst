@@ -1,17 +1,20 @@
 12.5.7 Unfolds
 ^^^^^^^^^^^^^^
-While the idea of catamorphisms is still relatively fresh in our minds, let's
-turn our attention to their dual: anamorphisms. If folds, or catamorphisms, let
-us break data structures down, then unfolds let us build them up. There are, as
-with folds, a few different ways to unfold a data structure. We can use them to
-create finite and infinite data structures alike.
+While the idea of catamorphisms is still relatively fresh
+in our minds, let's turn our attention to their dual:
+*anamorphisms*. If folds, or catamorphisms, let us break
+data structures down, then unfolds let us build them up.
+There are, as with folds, a few different ways to unfold
+a data structure. We can use them to create finite and
+infinite data structures alike.
 
 ``iterate`` is like a limited unfold that never ends::
 
   ·∾ :t iterate
   iterate :: (a -> a) -> a -> [a]
 
-Because it never ends, we must use take to get a finite list::
+Because it never ends, we must use take to get a finite
+list::
 
   ·∾ take 10 $ iterate (+1) 0
   [0,1,2,3,4,5,6,7,8,9]
@@ -25,3 +28,18 @@ Using ``unfoldr`` to do the same thing as iterate::
 
   ·∾ take 10 $ unfoldr (\b -> Just (b, b+1)) 0
   [0,1,2,3,4,5,6,7,8,9]
+
+Alright, here is my attempt.
+
+For ``iterate``:
+
+.. include:: exercises/12.5.7_-_unfolds.rst.d/unfolds/src/Lib.hs
+   :code:
+   :start-after: -- Question 1
+   :end-before: -- Question 2
+
+...and ``unfoldr``:
+
+.. include:: exercises/12.5.7_-_unfolds.rst.d/unfolds/src/Lib.hs
+   :code:
+   :start-after: -- Question 2
