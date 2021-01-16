@@ -107,3 +107,5 @@ all. That's OK, though, I can look it up when I need to. Search engines exist.
 .. include:: exercises/12.5.6_-_small_library_for_either.rst
 
 .. include:: exercises/12.5.7_-_unfolds.rst
+
+.. include:: exercises/12.5.8_-_why_bother.rst
