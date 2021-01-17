@@ -1,0 +1,12 @@
+---
+name: finally-something-other-than-a-list
+dependencies: base >= 4.7 && < 5
+ghc-options: -Wall -Wno-type-defaults
+library:
+  source-dirs: src
+tests:
+  finally-something-other-than-a-list-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [finally-something-other-than-a-list, hspec]

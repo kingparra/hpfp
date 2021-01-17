@@ -1,9 +1,11 @@
 12.5.10 Finally something other than a list!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Given the ``BinaryTree`` from last chapter, complete the following exercises.
-Here's that datatype again::
+Given the ``BinaryTree`` from last chapter,
+complete the following exercises. Here's that
+datatype again::
 
-  data BinaryTree a = Leaf | Node (BinaryTree a) a (BinaryTree a)
+  data BinaryTree a =
+    Leaf | Node (BinaryTree a) a (BinaryTree a)
     deriving (Eq, Ord, Show)
 
 1. Write unfold for ``BinaryTree``.
@@ -12,41 +14,66 @@ Here's that datatype again::
 
      unfold :: (a -> Maybe (a,b,a)) -> a -> BinaryTree b
      unfold = undefined
+  
+   Ok, here is my attempt:
+
+   .. include:: exercises/12.5.10_-_finally_something_other_than_a_list.rst.d/finally-something-other-than-a-list/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
 
 2. Make a tree builder.
 
-   Using the unfold function you've made for ``BinaryTree``, write the
-   following function::
+   Using the unfold function you've made for
+   ``BinaryTree``, write the following function::
 
      treeBuild :: Integer -> BinaryTree Integer
      treeBuild n = undefined
 
-   You should be producing results that look like the following::
+   You should be producing results that look like
+   the following::
 
-     Prelude> treeBuild 0
+     ·∾  treeBuild 0
      Leaf
-     Prelude> treeBuild 1
+
+     ·∾  treeBuild 1
      Node Leaf 0 Leaf
-     Prelude> treeBuild 2
+
+     ·∾  treeBuild 2
      Node (Node Leaf 1 Leaf)
-     0
-     (Node Leaf 1 Leaf)
-     Prelude> treeBuild 3
-     Node (Node (Node Leaf 2 1 (Node Leaf 2 0 (Node
-       (Node Leaf 2 1 (Node Leaf 2 Leaf) Leaf)) Leaf) Leaf))
+          0
+          (Node Leaf 1 Leaf)
+
+     ·∾  treeBuild 3
+     Node (Node (Node Leaf 2 Leaf)
+                1
+                (Node Leaf 2 Leaf))
+          0
+          (Node (Node Leaf 2 Leaf)
+                1
+                (Node Leaf 2 Leaf))
+
 
    Or in a slightly different representation::
 
-         0
+     +
+           0
+      
+           0
+          / \
+         1   1
+      
+           0
+          / \
+         1   1
+        / \  /\
+       2  2 2  2
 
-         0
-        / \
-       1   1
+  
+   Ok, here is my attempt:
 
-         0
-        / \
-       1   1
-      / \  /\
-     2  2 2  2
+   .. include:: exercises/12.5.10_-_finally_something_other_than_a_list.rst.d/finally-something-other-than-a-list/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
 
    Good work.
