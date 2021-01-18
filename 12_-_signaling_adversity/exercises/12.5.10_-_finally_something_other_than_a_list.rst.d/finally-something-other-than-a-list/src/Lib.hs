@@ -31,12 +31,12 @@ flattenTree (Node left a right) = [a] ++ (flattenTree left) ++ (flattenTree righ
 
 -- To make interacting with ghci easier
 testTree =  Node (Node (Node Leaf 2 Leaf)
-                  1
-                  (Node Leaf 2 Leaf))
-            0
-            (Node (Node Leaf 2 Leaf)
-                  1
-                  (Node Leaf 2 Leaf))
+                       1
+                       (Node Leaf 2 Leaf))
+                 0
+                 (Node (Node Leaf 2 Leaf)
+                       1
+                       (Node Leaf 2 Leaf))
 
 
 -- From 11.17.4 Write foldr for BinaryTree, page 452
