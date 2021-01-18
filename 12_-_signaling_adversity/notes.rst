@@ -10,11 +10,6 @@ Maybe and Either, and how to expose functions that guard against invalid input
 that will typecheck when constructing datatypes. It also has some things to say
 about higher-kindness and anamorphisms.
 
-.. https://blog.thomasheartman.com/posts/haskells-maybe-and-either-types/
-.. http://dev.stephendiehl.com/hask/#algebraic-datatypes Control-F for "smart constructors". He has a decent example here.
-.. https://www.schoolofhaskell.com/school/starting-with-haskell/basics-of-haskell/10_Error_Handling
-.. https://leanpub.com/finding-success-in-haskell
-
 
 12.2 How I learned to stop worrying and love Nothing
 ----------------------------------------------------
@@ -113,3 +108,21 @@ all. That's OK, though, I can look it up when I need to. Search engines exist.
 .. include:: exercises/12.5.9_-_write_your_own_iterate_and_unfoldr.rst
 
 .. include:: exercises/12.5.10_-_finally_something_other_than_a_list.rst
+
+
+12.6 Follow-up resources
+------------------------
+1. Julie Moronuki and Chris Martin wrote a book called `Finding Success and
+   Failure <https://leanpub.com/finding-success-in-haskell>`_. Over the course
+   of the book you build an input validation program. It makes extensive use of
+   ``Maybe``, ``Either``, and smart constructors. My impressions is that this
+   book starts where the chapter leaves off, though I haven't read it yet.
+2. Thomas Heartman has notes about this chapter on his `blog, here
+   <https://blog.thomasheartman.com/posts/haskells-maybe-and-either-types/>`_.
+3. Stephen Diehl has a good example of smart constructors in his `section about
+   algebraic datatypes <http://dev.stephendiehl.com/hask/#algebraic-datatypes>`_.
+   Control-F for "smart constructors".
+4. Bartoz wrote `an article about error handling <https://www.schoolofhaskell.com/
+   school/starting-with-haskell/basics-of-haskell/10_Error_Handling>`_.
+5. ``Data.Either`` and ``Data.Maybe`` contain convenience functions for their
+   respective types.
