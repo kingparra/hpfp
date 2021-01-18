@@ -25,6 +25,7 @@ Contents
    09_-_lists/notes
    10_-_folds/notes
    11_-_algebraic_datatypes/notes
+   12_-_signaling_adversity/notes
 
 Indices and tables
 ------------------

@@ -1,0 +1,52 @@
+12.5.8 Why bother?
+^^^^^^^^^^^^^^^^^^
+We bother with this **[Ed: by "this", the author probably
+means defining convenience functions such as those found
+in** ``Data.Either`` **and** ``Data.Maybe`` **like**
+``lefts`` **and** ``fromMaybe`` **]** for the same reason we
+abstracted direct recursion into folds, such as with
+``sum``, ``product``, and ``concat``.
+
+::
+
+  import Data.List
+
+  mehSum :: Num a => [a] -> a
+  mehSum xs = go 0 xs
+    where go :: Num a => a -> [a] -> a
+          go n [] = n
+          go n (x:xs) = (go (n+x) xs)
+
+  niceSum :: Num a => [a] -> a
+  niceSum = foldl' (+) 0
+
+  mehProduct :: Num a => [a] -> a
+  mehProduct xs = go 1 xs
+    where go :: Num a => a -> [a] -> a
+          go n [] = n
+          go n (x:xs) = (go (n*x) xs)
+
+  niceProduct :: Num a => [a] -> a
+  niceProduct = foldl' (*) 1
+
+Remember the redundant structure when we looked at folds?
+
+::
+
+  mehConcat :: [[a]] -> [a]
+  mehConcat xs = go [] xs
+    where go :: [a] -> [[a]] -> [a]
+          go xs' [] = xs'
+          go xs' (x:xs) = (go (xs' ++ x) xs)
+
+  niceConcat :: [[a]] -> [a]
+  niceConcat = foldr (++) []
+
+This may have given you a mild headache, but you may also
+see that this same principle of abstracting out common
+patterns and giving them names applies as well to unfolds as
+it does to folds.
+
+**Ok, I've read the code, experimented with it, and think I
+understand the point. Is there anything else I should do
+with this?**
