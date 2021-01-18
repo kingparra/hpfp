@@ -1,0 +1,132 @@
+·∾ :kind Int
+Int :: *
+·∾ 
+·∾ :kind Bool
+Bool :: *
+·∾ 
+·∾ :kind Char
+Char :: *
+·∾ 
+·∾ data Example a = Blah | Woot
+·∾ :kind Example 
+Example :: * -> *
+·∾ 
+·∾ :kind (,)
+(,) :: * -> * -> *
+·∾ 
+·∾ :kind (Int,Int)
+(Int,Int) :: *
+·∾ 
+·∾ :kind Maybe
+Maybe :: * -> *
+·∾ :kind Maybe Int
+Maybe Int :: *
+·∾ 
+·∾ :kind Either
+Either :: * -> * -> *
+·∾ :kind Either Int
+Either Int :: * -> *
+·∾ :kind Either Int String
+Either Int String :: *
+·∾ 
+·∾ data Identity a = Identity a
+·∾ :kind Identity 
+Identity :: * -> *
+·∾ 
+·∾ -- data Maybe a = Nothing | Just a
+·∾ :kind Maybe
+Maybe :: * -> *
+·∾ 
+·∾ :kind Maybe Int
+Maybe Int :: *
+·∾ :kind Maybe Bool
+Maybe Bool :: *
+·∾ 
+·∾ :kind Int
+Int :: *
+·∾ :kind Bool
+Bool :: *
+·∾ 
+·∾ :kind Maybe Maybe
+
+<interactive>:1:7: error:
+    • Expecting one more argument to ‘Maybe’
+      Expected a type, but ‘Maybe’ has kind ‘* -> *’
+    • In the first argument of ‘Maybe’, namely ‘Maybe’
+      In the type ‘Maybe Maybe’
+·∾ :kind Maybe Char
+Maybe Char :: *
+·∾ :kind Maybe (Maybe Char)
+Maybe (Maybe Char) :: *
+·∾ 
+·∾ :kind Maybe Example
+
+<interactive>:1:7: error:
+    • Expecting one more argument to ‘Example’
+      Expected a type, but ‘Example’ has kind ‘* -> *’
+    • In the first argument of ‘Maybe’, namely ‘Example’
+      In the type ‘Maybe Example’
+·∾ :kind Maybe (Example Int)
+Maybe (Example Int) :: *
+·∾ :type Just (Woot n)
+
+<interactive>:1:12: error: Variable not in scope: n
+·∾ -- I forgot to redefine Example
+·∾ data Example a = Blah | Woot a
+·∾ :type Just (Woot n)
+
+<interactive>:1:12: error: Variable not in scope: n
+·∾ n = (8 :: Int)
+·∾ :type Just (Woot n)
+Just (Woot n) :: Maybe (Example Int)
+·∾ 
+·∾ :kind []
+[] :: * -> *
+·∾ :kind [] Int
+[] Int :: *
+·∾ :kind [Int]
+[Int] :: *
+·∾ 
+·∾ :kind Maybe []
+
+<interactive>:1:7: error:
+    • Expecting one more argument to ‘[]’
+      Expected a type, but ‘[]’ has kind ‘* -> *’
+    • In the first argument of ‘Maybe’, namely ‘[]’
+      In the type ‘Maybe []’
+·∾ :kind Maybe [Bool]
+Maybe [Bool] :: *
+·∾ 
+·∾ :{
+ ⋮ safeTail :: [a] -> Maybe [a]
+ ⋮ safeTail [] = Nothing
+ ⋮ safeTail (_:[]) = Nothing
+ ⋮ safeTail (_:xs) = Just xs
+ ⋮ :}
+·∾ 
+·∾ safeTail "julie"
+Just "ulie"
+·∾ :type safeTail "julie"
+safeTail "julie" :: Maybe [Char]
+·∾ 
+·∾ safeTail [1..10]
+Just [2,3,4,5,6,7,8,9,10]
+·∾ :type safeTail [1..10]
+safeTail [1..10] :: (Num a, Enum a) => Maybe [a]
+·∾ :type safeTail [1..10 :: Int]
+safeTail [1..10 :: Int] :: Maybe [Int]
+·∾ 
+·∾ data Trivial = Trivial
+·∾ data Unary a = Unary a
+·∾ data TwoArgs a b = TwoArgs a b
+·∾ data ThreeArgs a b c = ThreeArgs a b c
+·∾ 
+·∾ :kind Trivial 
+Trivial :: *
+·∾ :kind Unary 
+Unary :: * -> *
+·∾ :kind TwoArgs 
+TwoArgs :: * -> * -> *
+·∾ :kind ThreeArgs 
+ThreeArgs :: * -> * -> * -> *
+·∾ 

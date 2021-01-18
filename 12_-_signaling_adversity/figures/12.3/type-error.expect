@@ -1,0 +1,41 @@
+#!/usr/bin/env expect
+# This covers some of the interactive questions in 12.3, silghtly after the
+# ageOkay and nameOkay functions are introduced on page 467.
+log_user 0
+spawn stack exec -- ghci -v0
+log_user 1
+
+expect "·∾ "
+send ":load figures/12.3/MkPersonV3.hs\n"
+
+expect "·∾ "
+send -- "-- If you try to put an integer in for the name \n"
+expect "·∾ "
+send -- "-- as an argument to nameOkay then you'll get a type error.\n"
+
+expect "·∾ "
+send "nameOkay 42\n"
+# expect -- {
+# <interactive>:4:10: error:
+#     • No instance for (Num Name) arising from the literal ‘42’
+#     • In the first argument of ‘nameOkay’, namely ‘42’
+#       In the expression: nameOkay 42
+#       In an equation for ‘it’: it = nameOkay 42
+# }
+expect "·∾ "
+send -- "-- You'll get a similar result if you try to feed a string to ageOk.\n"
+expect "·∾ "
+send {ageOkay "42"
+}
+# expect {
+# <interactive>:9:9: error:
+#     • Couldn't match type ‘[Char]’ with ‘Integer’
+#       Expected type: Age
+#         Actual type: [Char]
+#     • In the first argument of ‘ageOkay’, namely ‘"42"’
+#       In the expression: ageOkay "42"
+#       In an equation for ‘it’: it = ageOkay "42"
+# }
+expect "·∾ "
+
+exit

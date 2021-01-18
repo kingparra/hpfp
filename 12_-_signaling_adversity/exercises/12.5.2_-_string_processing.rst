@@ -1,0 +1,91 @@
+12.5.2 String processing
+^^^^^^^^^^^^^^^^^^^^^^^^
+1. Write a recursive function named ``replaceThe`` which takes a
+   string, breaks it into words, and replaces each instance of
+   "the" with "a". It's intended only to replace exactly the word
+   "the".
+
+   ``notThe`` is a suggested helper function for accomplishing
+   this::
+
+     notThe :: String -> Maybe String
+     notThe = undefined
+
+   Example GHCi session of the above functions::
+
+     ·∾  notThe "the"
+     Nothing
+
+     ·∾  notThe "blahtheblah"
+     Just "blahtheblah"
+
+     ·∾  notThe "woot"
+     Just "woot"
+
+   The main function::
+
+     replaceThe :: String -> String
+     replaceThe = undefined
+
+   A simple example of its use::
+
+     ·∾  replaceThe "the cow loves us"
+     "a cow loves us"
+
+   Ok, are you ready? Bear witness to the abomination that I've created!
+
+   .. include:: exercises/12.5.2_-_string_processing.rst.d/string-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+2. Write a recursive function that takes a string, breaks it
+   into words, and counts the number of instances of "the" followed
+   by a vowel-initial word.
+
+   A stub of the function declaration::
+
+     countTheBeforeVowel :: String -> Integer
+     countTheBeforeVowel = undefined
+
+   Simple demonstration of its use::
+
+     ·∾  countTheBeforeVowel "the cow"
+     0
+
+     ·∾  countTheBeforeVowel "the evil cow"
+     1
+
+   I can't believe you've done this!
+
+   .. include:: exercises/12.5.2_-_string_processing.rst.d/string-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+3. Return the number of letters that are vowels in a word. Hint:
+   it's helpful to break this into steps. Add any helper functions
+   necessary to achieve your objectives.
+
+   a) Test for ``vowelhood``
+   b) Return the vowels of a string
+   c) Count the number of elements returned
+
+   Function stub::
+
+     countVowels :: String -> Integer
+     countVowels = undefined
+
+   Example use::
+
+     ·∾  countVowels "the cow"
+     2
+
+     ·∾  countVowels "Mikolajczak"
+     4
+
+   General Kenobi ...
+
+   .. include:: exercises/12.5.2_-_string_processing.rst.d/string-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 3

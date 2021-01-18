@@ -1,0 +1,9 @@
+12.5.1 Determine the kinds
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. Given ``id :: a -> a``, what is the kind of ``a``?
+
+   Since ``a`` must be a concrete type, it's ``*``.
+
+2. Given ``r :: a -> f a``, what are the kinds of ``a`` and ``f``?
+
+   The type variable ``a`` is ``*``, and ``f`` is ``* -> *``.
