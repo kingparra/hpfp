@@ -1,13 +1,13 @@
 name:                hello
 version:             0.1.0.0
-synopsis:            Simple project template from stack
+synopsis:            My awesome hello world package.
 description:         Please see README.md
-homepage:            https://github.com/bitemyapp/hello#readme
+homepage:            https://github.com/kingparra/hpfp/blob/ch13-hello/13_-_building_projects/projects/hello/README.md
 license:             BSD3
 license-file:        LICENSE
-author:              Your Name Here
-maintainer:          example@email.com
-copyright:           2016, Your Name Here
+author:              Chris King-Parra
+maintainer:          chris@kingparra.work
+copyright:           2021, Chris King-Parra
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
