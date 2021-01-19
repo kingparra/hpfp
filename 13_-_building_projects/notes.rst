@@ -20,7 +20,7 @@ In this chapter, we'll cover:
   * building a small interactive game.
 
 In order to stay organized, I'll try to track keep the
-projects in their own branch off of Ch13, and then merge
+projects in their own branch off of ``Ch13``, and then merge
 them back when I'm done. I'll attempt to note the section
 and page number for each commit in the footer of the commit
 message.
@@ -110,35 +110,35 @@ that are in scope. ``:module +|- *mod1 ... *modn``
 
 Examples of import syntax, from the 2010 language report 5.3.4
 
-  +--------------------------------------+------------------------------------+
-  |    Import declaration                |      Names brought into scope      |
-  +======================================+====================================+
-  |  ``import A``                        |    ``x``, ``y``, ``A.x``, ``A.y``  |
-  +--------------------------------------+------------------------------------+
-  |  ``import A ()``                     |              nothing               |
-  +--------------------------------------+------------------------------------+
-  |  ``import A (x)``                    |    ``x``, ``A.x``                  |
-  +--------------------------------------+------------------------------------+
-  |  ``import qualified A``              |    ``A.x``, ``A.y``                |
-  +--------------------------------------+------------------------------------+
-  |  ``import qualified A ()``           |              nothing               |
-  +--------------------------------------+------------------------------------+
-  |  ``import qualified A (x)``          |    ``A.x``                         |
-  +--------------------------------------+------------------------------------+
-  |  ``import A hiding ()``              |    ``x``, ``y``, ``A.x``, ``A.y``  |
-  +--------------------------------------+------------------------------------+
-  |  ``import A hiding (x)``             |    ``y``, ``A.y``                  |
-  +--------------------------------------+------------------------------------+
-  |  ``import qualified A hiding ()``    |    ``A.x``, ``A.y``                |
-  +--------------------------------------+------------------------------------+
-  |  ``import qualified A hiding (x)``   |    ``A.y``                         |
-  +--------------------------------------+------------------------------------+
-  |  ``import A as B``                   |    ``x``, ``y``, ``B.x``, ``B.y``  |
-  +--------------------------------------+------------------------------------+
-  |  ``import A as B (x)``               |    ``x``, ``B.x``                  |
-  +--------------------------------------+------------------------------------+
-  |  ``import qualified A as B``         |    ``B.x``, ``B.y``                |
-  +--------------------------------------+------------------------------------+
++--------------------------------------+------------------------------------+
+|    Import declaration                |      Names brought into scope      |
++======================================+====================================+
+|  ``import A``                        |    ``x``, ``y``, ``A.x``, ``A.y``  |
++--------------------------------------+------------------------------------+
+|  ``import A ()``                     |              nothing               |
++--------------------------------------+------------------------------------+
+|  ``import A (x)``                    |    ``x``, ``A.x``                  |
++--------------------------------------+------------------------------------+
+|  ``import qualified A``              |    ``A.x``, ``A.y``                |
++--------------------------------------+------------------------------------+
+|  ``import qualified A ()``           |              nothing               |
++--------------------------------------+------------------------------------+
+|  ``import qualified A (x)``          |    ``A.x``                         |
++--------------------------------------+------------------------------------+
+|  ``import A hiding ()``              |    ``x``, ``y``, ``A.x``, ``A.y``  |
++--------------------------------------+------------------------------------+
+|  ``import A hiding (x)``             |    ``y``, ``A.y``                  |
++--------------------------------------+------------------------------------+
+|  ``import qualified A hiding ()``    |    ``A.x``, ``A.y``                |
++--------------------------------------+------------------------------------+
+|  ``import qualified A hiding (x)``   |    ``A.y``                         |
++--------------------------------------+------------------------------------+
+|  ``import A as B``                   |    ``x``, ``y``, ``B.x``, ``B.y``  |
++--------------------------------------+------------------------------------+
+|  ``import A as B (x)``               |    ``x``, ``B.x``                  |
++--------------------------------------+------------------------------------+
+|  ``import qualified A as B``         |    ``B.x``, ``B.y``                |
++--------------------------------------+------------------------------------+
 
 If you replace the keyword ``import`` with ``module`` and
 the phrase "brought into scope" with "made available for
@@ -149,46 +149,61 @@ export lists. Every module exports all of its instance
 declarations and every import brings all instance
 declarations into scope.
 
-But how do multi-level imports work?
+But how do multi-level imports work? Well, it's really all
+one namespace, but a module may choose to re-export another
+module.
 
+::
 
-Also what paths does GHC search when looking for a module name?
+  module Queue ( module Stack, enqueue, dequeue ) where
+    import Stack
+    . . .
 
-  * GHC will either search the location specified with the ``-i`` option, or it
-    will search the current directory, and then search ``$GHC_PACKAGE_PATH`` for
-    files containing package databases, and finally ``$PATH``.
-  * If ``$GHC_PACKAGE_PATH`` does not end in a ``:``, it overrides ``$PATH``.
+Also what paths does GHC search when looking for a module
+name?
+
+  * GHC will either search the location specified with the
+    ``-i`` option, or it will search the current directory,
+    and then search ``$GHC_PACKAGE_PATH`` for files
+    containing package databases, and finally ``$PATH``.
+  * If ``$GHC_PACKAGE_PATH`` does not end in a ``:``, it
+    overrides ``$PATH``.
+  * This is one reason that it's a bad idea to have the
+    ``:`` character in your project directory names. Stack
+    will become confused.
 
 * ::
 
     justsomeguy  Does the syntax "import Data.List.NonEmpty (NonEmpty(..))" import
                  all the functions related to the NonEmpty datatype? What does the
                  "(..)" part mean?
+
     merijn       justsomeguy: The constructors
+
     merijn       justsomeguy: So for example "import Data.Maybe (Maybe)" imports
                  *only* the type, Maybe, but not the constructors Just/Nothing
+
     merijn       justsomeguy: You can use "import Data.Maybe (Maybe(Nothing,Just))"
                  or any subset you like (both for exports and imports) (..) is just
                  short hand for "all of them"
 
 
-13.9 Hangman game
------------------
+13.9 to 13.13
+-------------
+Since my Linux distro doesn't come with a words file,
+though, here is some shell to download one. This should get
+you started on the first three paragraphs of section 13.9.
+
 ::
 
-  stack new hangman simple
-  cd hangman
-  url="https://gist.githubusercontent.com/wchargin/8927565/raw/d9783627c731268fb2935a731a618aa8e95cf465/words"
-  curl "$url" | LC_COLLATE=C grep -E '^[a-z]+$' > data/dict.txt
-  tree --dirsfirst
-  # Edit hangman.cabal and add the "random" and "split" packages to "build-depends:".
+  $ stack new hangman simple && cd hangman && mkdir data
 
+  $ url='https://gist.githubusercontent.com/\
+  wchargin/8927565/raw/d9783627c731268fb29\
+  35a731a618aa8e95cf465/words'
 
-13.10 Step One: Importing modules
----------------------------------
-* This section has you type in imports for Main and explains what the imported
-  functions do.
+  $ curl "$url" | LC_COLLATE=C grep -E '^[a-z]+$' > data/dict.txt
 
+As before, further notes on this project are omitted in
+favor of a git history on the ``ch13-hangman`` branch.
 
-13.11 Step Two: Generating a word list
---------------------------------------
