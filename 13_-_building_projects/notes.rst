@@ -42,28 +42,42 @@ the section and page number for each commit in the footer of the commit message.
    like npm install. stack install is like make install. stack install copies
    executables into a global location by design.
 
-* Cabal is a package manager.
-* Stack, in contrast, manages projects, which may be comprised of multiple packages (or a just one).
-* Stack is like a unified interface to all the tools necessary to manage a project.
+Cabal is a package manager. Stack, in contrast, manages
+projects, which may be comprised of multiple packages (or a
+just one).
 
-  * Basically, stack is like poetry or cargo or npm or poetry or...
-  * Stacks primary purpose is to enable reproducible builds, which means that
-    building the project will work the same way today that it does five years
-    from now.
-  * Making builds reproducible requires keeping the project state and toolchain
-    isolated from the global state of the system.
-  * Stack can do things like create a directory structure according to some
-    predefined project template, run tests, build code, set up docker containers
-    as build environments, and run performance analysis tools.
-  * You can find Stacks documentation here https://docs.haskellstack.org.
+Stack is like a unified interface to all the tools necessary
+to manage a project.
 
-* On the back-end, Stack uses Cabal to do package management.
-* Hackage is the Haskell communities main repository for packages published with Cabal.
-* Stackage is the package repository that Stack uses by default.
-* Stackage curates generations of packages from Hackage into *snapshots* which
-  are then tested to ensure its constituent packages work together.
-* The snapshot used for your project is recorded by stack in ``stack.yaml`` and
-  future package manager operations resolve against that snapshot.
+  * Basically, stack is like poetry or cargo or npm or
+    poetry or...
+  * Stacks primary purpose is to enable reproducible builds,
+    which means that building the project will work the same
+    way today that it does five years from now.
+  * Making builds reproducible requires keeping the project
+    state and toolchain isolated from the global state of
+    the system.
+  * Stack can do things like create a directory structure
+    according to some predefined project template, run
+    tests, build code, set up docker containers as build
+    environments, and run performance analysis tools.
+  * You can find Stacks documentation here
+    https://docs.haskellstack.org.
+
+On the back-end, Stack uses Cabal to do package management.
+The packages you use are stored in repositories.
+
+Hackage is the Haskell communities main repository for
+packages published with Cabal.
+
+Stackage is the package repository that Stack uses by
+default. Stackage curates generations of packages from
+Hackage into *snapshots* which are then tested to ensure its
+constituent packages work together.
+
+The snapshot used for your project is recorded by stack in
+``stack.yaml`` and future package manager operations resolve
+against that snapshot.
 
 
 13.3 Working with a basic project
