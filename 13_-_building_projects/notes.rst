@@ -5,6 +5,11 @@
 
 13.1 Modules
 ------------
+In this chapter we're building a small interactive hangman-style game. The
+chapter's primary focus is not so much on code but on how to set up a project.
+There are a few times we ask you to implement part of the hangman game yourself,
+but much of the code is already written for you.
+
 In this chapter, we'll cover:
 
   * writing Haskell programs with modules;
@@ -13,11 +18,9 @@ In this chapter, we'll cover:
   * conventions around project organization;
   * building a small interactive game.
 
-In order to stay organized, I'll try to track keep
-the projects in their own branch off of Ch13, and
-then merge them back when I'm done. I'll attempt
-to note the section and page number for each
-commit in the footer of the commit message.
+In order to stay organized, I'll try to track keep the projects in their own
+branch off of Ch13, and then merge them back when I'm done. I'll attempt to note
+the section and page number for each commit in the footer of the commit message.
 
 
 13.2 Making packages with Stack
@@ -142,7 +145,7 @@ Exposing modules
   exports work.
 * Instance declarations are not explicitly named in import or export lists.
   Every module exports all of its instance declarations and every import brings
-  all instance declarations into scope. 
+  all instance declarations into scope.
 * But how do multi-level imports work?
 * Also what paths does GHC search when looking for a module name?
 
@@ -234,4 +237,3 @@ Adding a prompt
 
 13.11 Step Two: Generating a word list
 --------------------------------------
-
