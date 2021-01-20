@@ -122,3 +122,16 @@ handleGuess puzzle guess = do
     (False,_) -> do
       putStrLn "This character wasn't in the word, try again."
       return (fillInCharacter puzzle guess)
+
+
+-- Stops the game after 7 guesses, regardless of
+-- whether they're correct, even if the 7th guess
+-- is the final letter to the word. Oops. This
+-- function needs some improvement.
+gameOver :: Puzzle -> IO ()
+gameOver (Puzzle word _ guessed) =
+  if (length guessed) > 7
+  then do
+    putStrLn ("You lose!\nThe word was: " ++ word)
+    exitSuccess
+  else return ()
