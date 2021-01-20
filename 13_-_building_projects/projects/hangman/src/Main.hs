@@ -37,3 +37,9 @@ gameWords = do
   where gameLength w =
           let l = length (w :: String)
           in l >= minWordLength && l < maxWordLength
+
+
+randomWord :: WordList -> IO String
+randomWord wl = do
+  randomIndex <- randomRIO (0, (length wl) - 1)
+  return $ wl !! randomIndex
