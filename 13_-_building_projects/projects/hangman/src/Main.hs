@@ -6,11 +6,15 @@ import Data.Maybe (isJust)
 import Data.List (intersperse)
 import System.Exit (exitSuccess)
 import System.Random (randomRIO)
+import System.IO (hSetBuffering, stdout, BufferMode(..))
 
 
 main :: IO ()
 main = do
-  putStrLn "hello world"
+  hSetBuffering stdout NoBuffering
+  word <- randomWord'
+  let puzzle = freshPuzzle (fmap toLower word)
+  runGame puzzle
 
 
 type WordList = [String]
@@ -142,3 +146,16 @@ gameWin (Puzzle _ discovered _) =
   if all isJust discovered
   then do { putStrLn "You win!"; exitSuccess }
   else return ()
+
+
+runGame :: Puzzle -> IO ()
+runGame puzzle =
+  forever $ do
+    gameOver puzzle
+    gameWin puzzle
+    putStrLn ("Current puzzle is " ++ show puzzle)
+    putStr "Guess a lettter: "
+    guess <- getLine
+    case guess of
+      [c] -> handleGuess puzzle c >>= runGame
+      _   -> putStrLn "You guess must be a single character"
