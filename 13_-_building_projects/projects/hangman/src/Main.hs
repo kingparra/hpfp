@@ -63,3 +63,14 @@ data Puzzle =
   --
   --  3. All the letters we've guessed so far, both correct
   --     and incorrect.
+
+
+renderPuzzleChar :: Maybe Char -> Char
+renderPuzzleChar Nothing  = '_'
+renderPuzzleChar (Just c) = c
+
+
+instance Show Puzzle where
+  show (Puzzle _ discovered guessed) =
+    (intersperse ' ' $ fmap renderPuzzleChar discovered)
+    ++ " Guessed so far: " ++ guessed
