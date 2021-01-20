@@ -79,8 +79,8 @@ packages published with Cabal.
 
 Stackage is the package repository that Stack uses by
 default. Stackage curates generations of packages from
-Hackage into *snapshots* which are then tested to ensure its
-constituent packages work together.
+Hackage into *snapshots* which are then tested to ensure
+its constituent packages work together.
 
 The snapshot used for your project is recorded by stack in
 ``stack.yaml`` and future package manager operations resolve
@@ -155,7 +155,11 @@ module.
 
 ::
 
-  module Queue ( module Stack, enqueue, dequeue ) where
+  module Queue 
+    ( module Stack -- <== notice the "module" keyword, here
+    , enqueue
+    , dequeue 
+    ) where
     import Stack
     . . .
 
@@ -172,27 +176,32 @@ name?
     ``:`` character in your project directory names. Stack
     will become confused.
 
-* ::
+I saw some unfamiliar syntax, so I asked about it on IRC::
 
-    justsomeguy  Does the syntax "import Data.List.NonEmpty (NonEmpty(..))" import
-                 all the functions related to the NonEmpty datatype? What does the
-                 "(..)" part mean?
+    justsomeguy  Does the syntax "import Data.List.NonEmpty
+                 (NonEmpty(..))" import all the functions
+                 related to the NonEmpty datatype? What does
+                 the "(..)" part mean?
 
     merijn       justsomeguy: The constructors
 
-    merijn       justsomeguy: So for example "import Data.Maybe (Maybe)" imports
-                 *only* the type, Maybe, but not the constructors Just/Nothing
+    merijn       justsomeguy: So for example "import Data.Maybe
+                 (Maybe)" imports *only* the type, Maybe, but
+                 not the constructors Just/Nothing
 
-    merijn       justsomeguy: You can use "import Data.Maybe (Maybe(Nothing,Just))"
-                 or any subset you like (both for exports and imports) (..) is just
+    merijn       justsomeguy: You can use "import Data.Maybe
+                 (Maybe(Nothing,Just))" or any subset you like
+                 (both for exports and imports) (..) is just
                  short hand for "all of them"
+
+Thanks merijn!
 
 
 13.9 to 13.13
 -------------
-Since my Linux distro doesn't come with a words file,
-though, here is some shell to download one. This should get
-you started on the first three paragraphs of section 13.9.
+Since my Linux distro doesn't come with a words file, here
+is some shell to download one. This should get you started
+on the first three paragraphs of section 13.9.
 
 ::
 
@@ -204,6 +213,5 @@ you started on the first three paragraphs of section 13.9.
 
   $ curl "$url" | LC_COLLATE=C grep -E '^[a-z]+$' > data/dict.txt
 
-As before, further notes on this project are omitted in
-favor of a git history on the ``ch13-hangman`` branch.
-
+Further notes on this project are omitted in favor of git
+history of the ``ch13-hangman`` branch.
