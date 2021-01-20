@@ -94,6 +94,12 @@ Instead of making notes for this, I've created a branch,
 ``13-hello``, that has detailed commit messages that you
 can peruse with ``git reflog ch13-hello``.
 
+You can view a summary of them `in pull request 38
+<https://github.com/kingparra/hpfp/pull/38>, here`_. Click
+on the "..." icon to expand the commit messages. Clicking on
+the hash number of any commit, such as ``5831d73``, will
+bring you to a diff of the contents.
+
 
 13.6 More on importing modules
 ------------------------------
@@ -155,10 +161,10 @@ module.
 
 ::
 
-  module Queue 
+  module Queue
     ( module Stack -- <== notice the "module" keyword, here
     , enqueue
-    , dequeue 
+    , dequeue
     ) where
     import Stack
     . . .
@@ -214,4 +220,6 @@ on the first three paragraphs of section 13.9.
   $ curl "$url" | LC_COLLATE=C grep -E '^[a-z]+$' > data/dict.txt
 
 Further notes on this project are omitted in favor of git
-history of the ``ch13-hangman`` branch.
+history of the ``ch13-hangman`` branch. You can view a
+summary of them `in pull request 39
+<https://github.com/kingparra/hpfp/pull/39>, here`_.
