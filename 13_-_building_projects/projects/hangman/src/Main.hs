@@ -20,3 +20,11 @@ allWords :: IO WordList
 allWords = do
   dict <- readFile "data/dict.txt"
   return (lines dict)
+
+
+minWordLength :: Int
+minWordLength = 5
+
+
+maxWordLength :: Int
+maxWordLength = 9
