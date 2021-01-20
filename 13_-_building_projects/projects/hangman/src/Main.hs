@@ -82,3 +82,7 @@ freshPuzzle word = Puzzle word [Nothing | _ <- word] []
 
 charInWord :: Puzzle -> Char -> Bool
 charInWord (Puzzle word _ _) c = c `elem` word
+
+
+alreadyGuessed :: Puzzle -> Char -> Bool
+alreadyGuessed (Puzzle _ _ guessed) c = c `elem` guessed
