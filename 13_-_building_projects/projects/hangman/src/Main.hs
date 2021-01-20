@@ -78,3 +78,7 @@ instance Show Puzzle where
 
 freshPuzzle :: String -> Puzzle
 freshPuzzle word = Puzzle word [Nothing | _ <- word] []
+
+
+charInWord :: Puzzle -> Char -> Bool
+charInWord (Puzzle word _ _) c = c `elem` word
