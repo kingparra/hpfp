@@ -107,3 +107,18 @@ fillInCharacter (Puzzle word discovered guessed) c =
       if c == targetCh
       then Just targetCh
       else discoveredMaybeCh
+
+
+handleGuess :: Puzzle -> Char -> IO Puzzle
+handleGuess puzzle guess = do
+  putStrLn ("Your guess was: " ++ [guess])
+  case (charInWord puzzle guess, alreadyGuessed puzzle guess) of
+    (_, True) -> do
+      putStrLn "You already guessed that character, pick something else!"
+      return puzzle
+    (True,_) -> do
+      putStrLn "This character was in the word, filling in the word accordingly"
+      return (fillInCharacter puzzle guess)
+    (False,_) -> do
+      putStrLn "This character wasn't in the word, try again."
+      return (fillInCharacter puzzle guess)
