@@ -28,3 +28,12 @@ minWordLength = 5
 
 maxWordLength :: Int
 maxWordLength = 9
+
+
+gameWords :: IO WordList
+gameWords = do
+  aw <- allWords
+  return (filter gameLength aw)
+  where gameLength w =
+          let l = length (w :: String)
+          in l >= minWordLength && l < maxWordLength
