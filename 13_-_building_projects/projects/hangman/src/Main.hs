@@ -135,3 +135,10 @@ gameOver (Puzzle word _ guessed) =
     putStrLn ("You lose!\nThe word was: " ++ word)
     exitSuccess
   else return ()
+
+
+gameWin :: Puzzle -> IO ()
+gameWin (Puzzle _ discovered _) =
+  if all isJust discovered
+  then do { putStrLn "You win!"; exitSuccess }
+  else return ()
