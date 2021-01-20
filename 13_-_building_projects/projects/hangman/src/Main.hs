@@ -47,3 +47,19 @@ randomWord wl = do
 
 randomWord' :: IO String
 randomWord' = gameWords >>= randomWord
+
+
+data Puzzle =
+  Puzzle String [Maybe Char] [Char]
+  --     word   discovered   guessed
+  --      [1]        [2]      [3]
+  --
+  --  1. The word we're trying to guess.
+  --
+  --  2. Placeholder for all letters in word. Letters we've
+  --     discovered by guessing correctly are represented as
+  --     Just c, and undiscovered letters are represented as
+  --     Nothing.
+  --
+  --  3. All the letters we've guessed so far, both correct
+  --     and incorrect.
