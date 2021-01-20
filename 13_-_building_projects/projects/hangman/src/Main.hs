@@ -86,3 +86,24 @@ charInWord (Puzzle word _ _) c = c `elem` word
 
 alreadyGuessed :: Puzzle -> Char -> Bool
 alreadyGuessed (Puzzle _ _ guessed) c = c `elem` guessed
+
+
+fillInCharacter :: Puzzle -> Char -> Puzzle
+fillInCharacter (Puzzle word discovered guessed) c =
+  -- Always add the guessed character to our list of gusses in Puzzle.
+  --                          vvvvvvvvvvvvv
+  Puzzle word newlyDiscovered (c : guessed)
+  where
+    newlyDiscovered = zipWith (zipper c) word discovered
+    -- Compare the character c with the current character
+    -- from the word, named targetCh, and the current
+    -- character from the already discovered characters,
+    -- named discoveredMaybeCh. If it matches the character
+    -- from the target word, we return it wrapped in Just.
+    -- Otherwise we return the already discovered Maybe
+    -- Char.
+    zipper :: Char -> Char -> Maybe Char -> Maybe Char
+    zipper c targetCh discoveredMaybeCh =
+      if c == targetCh
+      then Just targetCh
+      else discoveredMaybeCh
