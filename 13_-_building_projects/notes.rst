@@ -223,3 +223,20 @@ Further notes on this project are omitted in favor of git
 history of the ``ch13-hangman`` branch. You can view a
 summary of them `in pull request 39
 <https://github.com/kingparra/hpfp/pull/39>, here`_.
+
+
+13.14 Chapter exercises
+-----------------------
+
+.. include:: exercises/13.14.1_-_hangman_game_logic.rst
+
+.. include:: exercises/13.14.2_-_modifying_code.rst
+
+
+13.15 Follow-up resources
+-------------------------
+1. Stack https://github.com/commercialhaskell/stack
+2. How I Start: Haskell http://bitemyapp.com/posts/2014-11-18-how-i-start-haskell.html
+3. Cabal FAQ https://www.haskell.org/cabal/FAQ.html
+4. Cabal user's guide https://www.haskell.org/cabal/users-guide/
+5. A Gentle Introduction to Haskell, Modules chapter.  https://www.haskell.org/tutorial/modules.html
