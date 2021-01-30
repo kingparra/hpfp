@@ -1,52 +1,130 @@
 *********************
  Chapter 14: Testing
 *********************
+"Program testing can be used to show the presence of bugs,
+but never to show their absence!" ~ Edsger W. Dijkstra
+
+"Beware of bugs in the above code; I have only proved it
+correct, not tried it." ~ Donald Knuth
 
 
-This chapter is a little different. Rather than incorporate
-my notes of the chapter here, the idea is to improve the
-``hangman`` project from last chapter.
+14.1 Testing
+------------
+Although Haskell emphasizes program correctness by
+construction[1], no amount of inductive reasoning is as
+convincing to stakeholders as exercising your code for its
+intended usage.
 
-Features to implement for ``hangman``:
+[1]: To get a sense of what I mean, see "Program = Proof",
+by Samuel Mimram.
 
-* Move all functions out of IO other than ``Main.main``.
-* Add a test suite using ``hspec`` and ``QuickCheck``.
-* Write a "Player" AI who can solve puzzles.
-* Add tests for that, too.
+Worse yet, without constant communication with the customer
+and empirical testing, you may find that you've created a
+perfectly consistent formal model of something that doesn't
+perform tasks the customer intended you to automate.
 
-As for the AI, Hyiltiz has this to say:
+Automated tests are a limited form of empirical testing --
+executable sanity checks -- and an indispensable tool for
+working programmers.
 
-  For the ideas of implementing hangman "bots" (these are
-  also called game AI, algorithmic actor, ideal actor if the
-  algorithm is the theoretically optimal etc.), here are a
-  few things to try:
+Really, we need all three -- constant communication with the
+customer, empirical testing, and proofs of correctness
+(using the type system, model checkers, etc).
 
-  * stupid/stuck AI: always guesses A;
-  * blind AI: randomly guesses one out of 26 letters;
-  * blind AI with memory: randomly guesses one out of the
-    remaining letters that wasn't guessed before;
-  * deterministic English AI: picks based on the probability
-    of character frequency in English in order;
-  * stochastic English AI:picks based on the probability of
-    character frequency in English in order with memory;
-  * English AI with memory: similar to the above but doesn't
-    guess what's already been guessed;
-  * Omniscient/Ideal AI: has access to the dictionary,
-    starts as "deterministic English AI with memory" but
-    filters the dictionary based on previous guesses and
-    other game state, then computes most likely character
-    across all alternatives then guesses that character.
+This chapter will cover:
 
-  No need to try them all, but definitely start with the
-  simplest and maybe try if you can do the ideal one in the
-  end.
+* the whats and whys of testing;
+* using the testing libraries ``Hspec`` and ``QuickCheck``;
+* a bit of fun with Morse code.
 
-Along the way, I hope to add a greater variety of tests. As
-I progress through my refactoring I'll be reading:
 
-* `What I Wish I Knews When Learning Haskell, Testing <http://dev.stephendiehl.com/hask/#testing>`_;
-* the `QuickCheck Documentation <http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html>`_;
-* and the `HSpec Documentation <https://hspec.github.io/>`_.
+14.2 A quick tour of testing for the uninitiated
+------------------------------------------------
+It's possible to write well-typed code that doesn't perform
+as expected, and runtime errors can still occur. That's
+where testing comes in.
 
-See the ``projects`` folder and associated git history of
-this branch for more information.
+In general, tests allow you to state an expectation and then
+verify that the result of an operation meets that
+expectation. The allow you to verify that you code will do
+what you want when executed.
+
+Unit testing test the smallest atomic units of software
+independently of one another.
+
+One limitation to unit (and spec) testing is that they test
+atomic units of code independently, so they don't verify
+that all the pieces work together properly.
+
+Property testing is a different beast. In property testing
+inputs are generated randomly by functions provided by
+``QuickCheck``, and checked against a test function, known
+as a property, to see if it holds.
+
+``QuickCheck`` relies on your functions type signature to
+know what kinds of input to generate. The default setting is
+for 100 inputs to be generated, giving you 100 results.
+``QuickCheck`` is cleverly written to be as thorough as
+possible and will usually check the most common edge cases
+(for example empty lists and the ``maxBound`` and
+``minBound`` of the types in question).
+
+If the function being tested fails any of these tests, we
+know the function doesn't have the specified property. On
+the other hand, you can't be positive that it will never
+fail because the data are randomly generated.
+
+Property testing is useful for determining that you've met
+the minimum requirements to satisfy laws, such as the laws
+of monads or basic associativity.
+
+
+14.3 Conventional testing
+-------------------------
+First, let's set up a project that we'll put our tests into.
+
+::
+
+  $ mkdir addition && cd addition
+
+  $ cat > addition.cabal << EOF
+  name: addition
+  version: 0.1.0.0
+  author: Chicken Little
+  maintainer: sky@isfalling.org
+  category: Text
+  build-type: Simple
+  cabal-version: >=1.10
+
+  library
+    exposed-modules: Addition
+    ghc-options: -Wall -fwarn-tabs
+    build-depends: base >= 4.7 && <5, hspec
+    hs-source-dirs: .
+    default-language: Haskell2010
+
+  EOF
+
+  $ stack init
+
+  $ stack build
+
+Now that we've made the project skeleton, and stack can
+build it, we'll enter ghci, and then test that the functions
+from ``Addition`` are in scope.
+
+::
+
+  $ stack ghci
+
+
+  $ stack ghci
+  Configuring GHCi with the following packages: addition
+  GHCi, version 8.10.3: https://www.haskell.org/ghc/  :? for help
+  Loaded GHCi configuration from /home/chris/.ghci
+  [1 of 1] Compiling Addition   ( Addition.hs, interpreted )
+  Ok, one module loaded.
+  Loaded GHCi configuration from
+  /tmp/haskell-stack-ghci/1506c361/ ghci-script
+  ·∾ sayHello 
+  hello!
