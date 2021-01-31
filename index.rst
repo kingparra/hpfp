@@ -26,6 +26,8 @@ Contents
    10_-_folds/notes
    11_-_algebraic_datatypes/notes
    12_-_signaling_adversity/notes
+   13_-_building_projects/notes
+   14_-_testing/notes
 
 Indices and tables
 ------------------

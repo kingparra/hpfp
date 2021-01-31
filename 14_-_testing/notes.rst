@@ -117,14 +117,34 @@ from ``Addition`` are in scope.
 
   $ stack ghci
 
-
-  $ stack ghci
   Configuring GHCi with the following packages: addition
-  GHCi, version 8.10.3: https://www.haskell.org/ghc/  :? for help
+  GHCi, version 8.10.3: https://www.haskell.org/ghc/ :? for help
   Loaded GHCi configuration from /home/chris/.ghci
   [1 of 1] Compiling Addition   ( Addition.hs, interpreted )
   Ok, one module loaded.
   Loaded GHCi configuration from
   /tmp/haskell-stack-ghci/1506c361/ ghci-script
-  ·∾ sayHello 
+
+  ·∾ sayHello
   hello!
+
+14.3.1 Truth according to ``Hspec``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This section has you add ``import Test.Hspec`` to your
+``Addition`` module, and explains some possible ways things
+may go wrong. This includes forgetting to add the ``hspec``
+package to ``build-depends`` in our cabal file, or putting
+the import declaration in the wrong place in our file (which
+results in a syntax error).
+
+14.3.2 Our first ``Hspec`` test
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. include:: projects/addition/Addition.hs
+   :code:
+
+.. include:: exercises/14.3.3_-_intermission_short_exercise.rst
+
+
+14.4 Enter QuickCheck
+---------------------
+
