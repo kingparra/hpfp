@@ -147,4 +147,21 @@ results in a syntax error).
 
 14.4 Enter QuickCheck
 ---------------------
+Add ``QuickCheck`` to ``build-depends``, and then add this
+test to your ``Addition.hs`` file.
 
+::
+
+  it "x+1 is always greater than x" $ do
+    property (\x -> x+1 > (x :: Int))
+
+14.4.1 Arbitrary instances
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+``QuickCheck`` relies on a type class called ``Arbitrary``
+and a newtype called ``Gen`` to generate its random data.
+
+Why would I need to know how QuickCheck generates it's
+random data in the first place? I know almost nothing about
+QuickCheck at this point, and you're launching into a
+discussion of its mechanics already? You've really lost me
+here. I think I'm going to read a tutorial online, instead.
