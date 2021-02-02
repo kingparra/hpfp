@@ -31,11 +31,13 @@ Really, we need all three -- constant communication with the
 customer, empirical testing, and proofs of correctness
 (using the type system, model checkers, etc).
 
-This chapter will cover:
-
-* the whats and whys of testing;
-* using the testing libraries ``Hspec`` and ``QuickCheck``;
-* a bit of fun with Morse code.
+This chapter of the book is pretty narrowly focused on
+covering how to use two packages, ``hspec`` and
+``QuickCheck``, to write tests in Haskell. However, since
+I'm new to testing in general, I've tried to incorporate
+some introductory exposition. There is also a long example
+program at the end of the chapter that demonstrates using
+these libraries to test a Morse code translator.
 
 
 14.2 A quick tour of testing for the uninitiated
