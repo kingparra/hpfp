@@ -40,30 +40,73 @@ This chapter will cover:
 
 14.2 A quick tour of testing for the uninitiated
 ------------------------------------------------
-It's possible to write well-typed code that doesn't perform
-as expected, and runtime errors can still occur. That's
-where testing comes in.
+Whenever you load your code into GHCi to play with a
+function you wrote, you're testing your code; you're just
+doing it manually.
 
-In general, tests allow you to state an expectation and then
-verify that the result of an operation meets that
-expectation. The allow you to verify that you code will do
-what you want when executed.
+In general, automated tests allow you to state an
+expectation and then verify that the result of an operation
+meets that expectation. Just like experimenting in the REPL,
+tests allow you to verify that you code will do what you
+want when executed.
 
-Unit testing test the smallest atomic units of software
-independently of one another.
+There are multiple categories of automated tests,
+categorized roughly by what they are intended to test.
 
-One limitation to unit (and spec) testing is that they test
-atomic units of code independently, so they don't verify
-that all the pieces work together properly.
+If you look up "software testing basics" with a search
+engine, you may find yourself looking at an overwhelming
+listicle of over a thousand terms for arbitrary
+categorizations of kinds of tests or testing methodologies.
 
-Property testing is a different beast. In property testing
-inputs are generated randomly by functions provided by
-``QuickCheck``, and checked against a test function, known
-as a property, to see if it holds.
+Essentially, though, tests are just code, and the
+categorization doesn't matter. Simply keep in mind the end
+goal -- you want to prove that your software works.
 
-``QuickCheck`` relies on your functions type signature to
+To do that you'll want to test that the intent of the
+program matches the tasks it can perform. You should also
+test that the entire program works. Along the way, you'll
+probably have to test individual components of your program
+to make sure they work, too.
+
+The last of these is called *unit testing*. Unit tests
+exercise the smallest atomic units of software independently
+of one another to make sure they work in isolation. In a
+unit test, usually you write the function applied to a
+particular input, and test that it produces a particular
+expected output. Hspec is the tool we'll use in this chapter
+to write unit tests.
+
+As a beginner writing his own code, this is the first type
+of test I've encountered. Perhaps if I were to contribute to
+someone else's project, I'd have encounter an end-to-end
+test first.
+
+Another useful tool that Haskell programmers use is called
+property testing. The general idea is to generate random
+inputs that are checked against a test function, known as a
+property, to see if it holds.
+
+Here is a sample of a property test, to show what I mean::
+
+  import Test.QuickCheck
+
+  prop_reverseReverse :: Eq a => [a] -> Bool
+  prop_reverseReverse xs = reverse (reverse xs) == xs
+
+  main = quickCheck prop_reverseReverse
+
+When ``main`` is run, ``prop_reverseReverse`` will be fed
+random inputs of type ``Eq a => [a]`` to see if our
+condition still returns ``True``.
+
+If unit testing is essentially automating manual tests, then
+property testing is automating unit tests.
+
+``QuickCheck`` is the package the provides property testing
+in Haskell. It relies on your functions type signature to
 know what kinds of input to generate. The default setting is
 for 100 inputs to be generated, giving you 100 results.
+
 ``QuickCheck`` is cleverly written to be as thorough as
 possible and will usually check the most common edge cases
 (for example empty lists and the ``maxBound`` and
@@ -74,9 +117,18 @@ know the function doesn't have the specified property. On
 the other hand, you can't be positive that it will never
 fail because the data are randomly generated.
 
-Property testing is useful for determining that you've met
-the minimum requirements to satisfy laws, such as the laws
-of monads or basic associativity.
+Property testing is useful for getting a strong indication
+that you've met the minimum requirements to satisfy laws,
+such as the laws of monads or basic associativity.
+
+.. topic:: Other testing tools
+
+   Hspec and QuickCheck are only the tip of the testing
+   iceberg. Check out ``SmallCheck``, a library for testing
+   *every* possible input of a given type, and ``Tasty``, a
+   unit testing framework that integrates multiple other
+   tools. `Diehl has a brief description of some of these
+   here <http://dev.stephendiehl.com/hask/#testing>`_.
 
 
 14.3 Conventional testing
@@ -130,15 +182,19 @@ from ``Addition`` are in scope.
 
 14.3.1 Truth according to ``Hspec``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This section has you add ``import Test.Hspec`` to your
-``Addition`` module, and explains some possible ways things
-may go wrong. This includes forgetting to add the ``hspec``
-package to ``build-depends`` in our cabal file, or putting
-the import declaration in the wrong place in our file (which
-results in a syntax error).
+Let's experiment with writing unit tests with Hspec.
+
+To do so, we'll need to make the package available to our
+project.  Add the ``hspec`` package to ``build-depends`` in
+your cabal file.
+
+Now we must bring it into scope. Import the module
+``Test.Hspec`` in ``Addition.hs`` so we can use it.
 
 14.3.2 Our first ``Hspec`` test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Here is a simple example of a unit test using Hspec:
+
 .. include:: projects/addition/Addition.hs
    :code:
 
@@ -147,21 +203,119 @@ results in a syntax error).
 
 14.4 Enter QuickCheck
 ---------------------
-Add ``QuickCheck`` to ``build-depends``, and then add this
-test to your ``Addition.hs`` file.
+There are two ways to run a QuickCheck test described in
+this book.
 
-::
+The first is by using Hspec in combination with QuickCheck,
+like this::
 
-  it "x+1 is always greater than x" $ do
-    property (\x -> x+1 > (x :: Int))
+  import Test.Hspec
+  import Test.QuickCheck
+
+  main :: IO ()
+  main = hspec $ do
+    describe "Addition" $ do
+      it "x + 1 is always greater than x" $ do
+        property $ \x -> x + 1 > (x :: Int)
+
+Another way to run QuickCheck tests is to use the facilities
+provided by the ``Test.QuickCheck`` module, like this::
+
+  import Test.QuickCheck
+
+  preprocess s = filter isAlpha (map toLower s)
+
+  isPalindrome :: String -> Bool
+  isPalindrome s = (preprocess s) == reverse (preprocess s)
+
+  prop_punctuationInvariant text =
+    preprocess text == preprocess noPuncText
+    where noPuncText = filter (not . isPunctuation) text
+
+  main = quickCheck prop_punctuationInvariant
+
 
 14.4.1 Arbitrary instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-``QuickCheck`` relies on a type class called ``Arbitrary``
-and a newtype called ``Gen`` to generate its random data.
+The tricky part of QuickCheck is generating the input values
+to test on. All types that QuickCheck can automatically test
+must be an instance of the type class ``Arbitrary``.
 
-Why would I need to know how QuickCheck generates it's
-random data in the first place? I know almost nothing about
-QuickCheck at this point, and you're launching into a
-discussion of its mechanics already? You've really lost me
-here. I think I'm going to read a tutorial online, instead.
+The bad news is that only a few base types are instances of
+``Arbitrary``. The good news is that you can install package
+that greatly extends the types covered by QuickCheck, named
+``quickcheck-instances``.
+
+If you want to write an instance of ``Arbitrary`` for your
+own custom type, the chapter touches on that. But it's way
+over my head to be honest.
+
+One thing that may be useful is knowing how to print sample
+values of some type that QuickCheck can generate.
+
+We can use the ``sample`` function for this, in combination
+with an overloaded expression from the ``Arbitrary`` type
+class named ``arbitrary``::
+
+  ·∾ sample (arbitrary :: Gen Int)
+  0
+  2
+  -4
+  5
+  2
+  3
+  -10
+  -1
+  3
+  12
+  -2
+
+  ·∾ sample (arbitrary :: Gen Double)
+  0.0
+  0.6341225463105274
+  -0.5399666722390497
+  3.6986851136506376
+  4.927328536143319
+  -0.34216302388027836
+  4.401389073625471
+  5.706335581327833
+  14.466727278626447
+  -0.5275031627254437
+  -8.811337993125159
+
+As you can see, the ``sample`` function has produced some
+random sample data of the types we've specified (``Gen Int``
+and ``Gen Double`` respectively). The ``sample`` function is
+what has introduced randomness here, ``arbitrary`` by itself
+is not random.
+
+Knowing what you do about referential transparency, you may
+be wondering how these functions produce random data. After
+all, the definition of a pure function is that it always
+produces the same results given the same input.
+
+The answer is apparent if you examine the type signature of
+``sample``::
+
+  ·∾ :type sample
+  sample :: Show a => Gen a -> IO ()
+
+It turns out, ``sample`` is not a pure function, but an IO
+action. It needs to be, so it can ingest a source of
+randomness.
+
+In this section, a few other means of generating sample data
+are demonstrated. This includes the ``elements``,
+``frequency``, and ``choose`` functions.
+
+At this point, though, it's not clear to me how I may use
+them in my own programs, though, or why it's being
+discussed.
+
+
+14.5 Morse code
+---------------
+.. TODO Pick this up tomorrow!
+
+14.5.1 The Main event
+^^^^^^^^^^^^^^^^^^^^^
