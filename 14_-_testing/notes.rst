@@ -32,12 +32,22 @@ customer, empirical testing, and proofs of correctness
 (using the type system, model checkers, etc).
 
 This chapter of the book is pretty narrowly focused on
-covering how to use two packages, ``hspec`` and
-``QuickCheck``, to write tests in Haskell. However, since
-I'm new to testing in general, I've tried to incorporate
-some introductory exposition. There is also a long example
-program at the end of the chapter that demonstrates using
-these libraries to test a Morse code translator.
+covering how to use Hspec and QuickCheck to write tests in
+Haskell. There is also a long example program at the end of
+the chapter that demonstrates using these libraries to test
+a Morse code translator.
+
+Since I'm new to testing, I've tried to include exposition
+on basic concepts to fill in the gaps. Mostly this takes the
+form of paraphrases from different articles on the web.
+
+I'm assuming one day I'll look back at these notes and shake
+my head in disapproval at how wrong I've gotten everything;
+But for now I view this extra commentary as a useful dialog
+with myself to explore the topic of testing.
+
+If you found these notes from a web search, don't take them
+too seriously. I'm only a beginner.
 
 
 14.2 A quick tour of testing for the uninitiated

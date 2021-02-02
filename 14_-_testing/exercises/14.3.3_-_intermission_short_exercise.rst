@@ -13,12 +13,12 @@ then write ``hspec`` tests for it.
 
 Ok partner, I quickly rewrote ``mult``. Here's what it looks like:
 
-.. include: exercises/14.3.3_-_intermission_short_exercise.rst.d/mult/src/Lib.hs
+.. include:: exercises/14.3.3_-_intermission_short_exercise.rst.d/mult/src/Lib.hs
    :code:
 
 ...and here is the associated test suite:
 
-.. include: exercises/14.3.3_-_intermission_short_exercise.rst.d/mult/test/Spec.hs
+.. include:: exercises/14.3.3_-_intermission_short_exercise.rst.d/mult/test/Spec.hs
    :code:
 
 You can run this by navigating to ``exercises/
