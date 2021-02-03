@@ -7,6 +7,13 @@ but never to show their absence!" ~ Edsger W. Dijkstra
 "Beware of bugs in the above code; I have only proved it
 correct, not tried it." ~ Donald Knuth
 
+.. https://begriffs.com/posts/2017-01-14-design-use-quickcheck.html
+.. https://www.researchgate.net/publication/2449938_QuickCheck_A_Lightweight_Tool_for_Random_Testing_of_Haskell_Programs
+.. https://github.com/nick8325/quickcheck
+.. https://dl.acm.org/doi/10.1145/3241625.2976017 (QuickFuzz paper)
+.. Hypothesis, a testing library for Python that is heavily
+   inspired by QuickCheck: https://hypothesis.works/articles/what-is-hypothesis/
+.. https://begriffs.com/posts/2017-01-14-design-use-quickcheck.html
 
 14.1 Testing
 ------------
@@ -192,8 +199,8 @@ from ``Addition`` are in scope.
   ·∾ sayHello
   hello!
 
-14.3.1 Truth according to ``Hspec``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14.3.1 Truth according to Hspec
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Let's experiment with writing unit tests with Hspec.
 
 To do so, we'll need to make the package available to our
@@ -203,8 +210,8 @@ your cabal file.
 Now we must bring it into scope. Import the module
 ``Test.Hspec`` in ``Addition.hs`` so we can use it.
 
-14.3.2 Our first ``Hspec`` test
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14.3.2 Our first Hspec test
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Here is a simple example of a unit test using Hspec:
 
 .. include:: projects/addition/Addition.hs
@@ -246,6 +253,50 @@ provided by the ``Test.QuickCheck`` module, like this::
 
   main = quickCheck prop_punctuationInvariant
 
+Qualifying test with a precondition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+QuickCheck also provides something called **conditional
+properties**. Using the ``(==>)`` function we can filter out
+inputs from being tested based on some precondition.
+
+This has the general form *condition* **==>** *property*.
+
+Here is a simple example of its use::
+
+  import Test.QuickCheck
+
+  qsort :: [Int] -> [Int]
+  qsort []     = []
+  qsort (x:xs) = qsort lhs ++ [x] ++ qsort rhs
+      where lhs = filter  (< x) xs
+            rhs = filter (>= x) xs
+
+  prop_maximum ::  [Int] -> Property
+  prop_maximum xs = not (null xs) ==>
+                    last (qsort xs) == maximum xs
+
+
+  main :: IO ()
+  main = quickCheck prop_maximum
+
+In this function, only values of type ``[Int]`` that are not
+empty lists (null) are permitted as inputs for our test.
+
+Specifying an test input generator explicitly
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Properties may take the general form:
+
+  **forAll** *generator* **$** **\\**\ *pattern* **->** *property*
+
+For example::
+
+  prop_Insert2 x = forAll orderedList $ \xs -> ordered (insert x xs)
+    where types = x::Int
+
+The first argument of ``forAll`` is a test data generator;
+by supplying a custom generator, instead of using the
+default generator for that type, it is possible to control
+the distribution of test data.
 
 14.4.1 Arbitrary instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -320,9 +371,8 @@ In this section, a few other means of generating sample data
 are demonstrated. This includes the ``elements``,
 ``frequency``, and ``choose`` functions.
 
-At this point, though, it's not clear to me how I may use
-them in my own programs, though, or why it's being
-discussed.
+At this point, it's not clear to me how I may use them in my
+own programs, or why it's being discussed.
 
 
 14.5 Morse code
