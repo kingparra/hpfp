@@ -15,6 +15,7 @@ correct, not tried it." ~ Donald Knuth
    inspired by QuickCheck: https://hypothesis.works/articles/what-is-hypothesis/
 .. https://begriffs.com/posts/2017-01-14-design-use-quickcheck.html
 
+
 14.1 Testing
 ------------
 Although Haskell emphasizes program correctness by
@@ -368,16 +369,36 @@ action. It needs to be, so it can ingest a source of
 randomness.
 
 In this section, a few other means of generating sample data
-are demonstrated. This includes the ``elements``,
+are demonstrated.  This includes the ``elements``,
 ``frequency``, and ``choose`` functions.
+
+A short summary::
+
+  ·∾ :type sample
+  sample :: Show a => Gen a -> IO ()
+ 
+  ·∾ :type sample'
+  sample' :: Gen a -> IO [a]
+
+  ·∾ :type choose
+  choose :: Random a => (a, a) -> Gen a
+
+  ·∾ :type elements
+  elements :: [a] -> Gen a
+
+  ·∾ :type frequency
+  frequency :: [(Int, Gen a)] -> Gen a
 
 At this point, it's not clear to me how I may use them in my
 own programs, or why it's being discussed.
 
-
 14.5 Morse code
 ---------------
-.. TODO Pick this up tomorrow!
+In the interest of playing with testing, we'll work through
+an example project where we translate text to and from Morse
+code.
 
-14.5.1 The Main event
-^^^^^^^^^^^^^^^^^^^^^
+.. include:: projects/morse/morse_project_setup.bash
+   :code:
+
+
