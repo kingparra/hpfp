@@ -122,7 +122,7 @@ condition still returns ``True``.
 If unit testing is essentially automating manual tests, then
 property testing is automating unit tests.
 
-``QuickCheck`` is the package the provides property testing
+``QuickCheck`` is the package that provides property testing
 in Haskell. It relies on your functions type signature to
 know what kinds of input to generate. The default setting is
 for 100 inputs to be generated, giving you 100 results.
@@ -149,6 +149,8 @@ such as the laws of monads or basic associativity.
    unit testing framework that integrates multiple other
    tools. `Diehl has a brief description of some of these
    here <http://dev.stephendiehl.com/hask/#testing>`_.
+   Another intersting library to look at is `hedgehog
+   <https://github.com/hedgehogqa/haskell-hedgehog>`_.
 
 
 14.3 Conventional testing
@@ -376,7 +378,7 @@ A short summary::
 
   ·∾ :type sample
   sample :: Show a => Gen a -> IO ()
- 
+
   ·∾ :type sample'
   sample' :: Gen a -> IO [a]
 
@@ -398,7 +400,74 @@ In the interest of playing with testing, we'll work through
 an example project where we translate text to and from Morse
 code.
 
-.. include:: projects/morse/morse_project_setup.bash
-   :code:
+Peruse the ``projects/morse`` directory to view what I've
+copied from the book there.
 
 
+14.6 Arbitrary instances
+------------------------
+
+14.6.1 Babby's First Arbitrary
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+  ·∾ import Test.QuickCheck
+  ·∾ data Trivial = Trivial deriving (Eq, Show)
+  ·∾ trivialGen = return Trivial :: Gen Trivial
+  ·∾ instance Arbitrary Trivial where { arbitrary = trivialGen }
+  ·∾ :{
+   ⋮ main :: IO ()
+   ⋮ main = sample trivialGen
+   ⋮ :}
+  ·∾
+  ·∾ main
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  Trivial
+  ·∾
+
+14.6.2 Identity Crisis
+^^^^^^^^^^^^^^^^^^^^^^
+::
+
+  ·∾ data Identity a = Identity a deriving (Eq, Show)
+  ·∾ :{
+   ⋮ identityGen :: Arbitrary a => Gen (Identity a)
+   ⋮ identityGen = do
+   ⋮   a <- arbitrary
+   ⋮   return (Identity a)
+   ⋮
+   ⋮ instance Arbitrary a => Arbitrary (Identity a) where
+   ⋮   arbitrary = identityGen
+   ⋮
+   ⋮ identityGenInt :: Gen (Identity Int)
+   ⋮ identityGenInt = identityGen
+   ⋮ :}
+  ·∾
+  ·∾ sample identityGenInt
+  Identity 0
+  Identity (-2)
+  Identity 4
+  Identity 2
+  Identity (-5)
+  Identity 5
+  Identity (-5)
+  Identity (-7)
+  Identity (-14)
+  Identity 8
+  Identity (-12)
+  ·∾
+
+
+14.7 Chapter Exercises
+----------------------
+
+.. include:: exercises/14.7.2_-_using_quickcheck.rst
