@@ -27,6 +27,7 @@ Contents
    11_-_algebraic_datatypes/notes
    12_-_signaling_adversity/notes
    13_-_building_projects/notes
+   15_-_monoid_semigroup/notes
 
 Indices and tables
 ------------------
