@@ -244,30 +244,20 @@ https://apfelmus.nfshost.com/articles/monoid-fingertree.html
 Algebras are defined by their laws and are used principally
 for their laws. Laws make up what algebras are.
 
-::
+Here are the laws for ``Monoid``
 
-  -- mempty is []
-  -- mappend is (++)
+Right identity::
 
-  -- left identity
-  Prelude> mappend mempty [1, 2, 3]
-  [1,2,3]
+    x <> mempty = x
 
-  -- right identity
-  Prelude> mappend [1, 2, 3] mempty
+Left identity::
 
-  -- associativity
-  Prelude> [1] <> ([2] <> [3])
-  [1,2,3]
-  Prelude> ([1] <> [2]) <> [3]
-  [1,2,3]
+    mempty <> x = x
 
-  -- mconcat ~ foldr mappend mempty
-  Prelude> mconcat [[1], [2], [3]]
-  [1,2,3]
-  Prelude> foldr mappend mempty [[1], [2], [3]]
-  [1,2,3]
-  Prelude> concat [[1], [2], [3]]
-  [1,2,3]
+Associativity::
 
+    x <> (y <> z) = (x <> y) <> z  -- (Semigroup law)
 
+Concatenation::
+
+    mconcat = foldr (<>) mempty
