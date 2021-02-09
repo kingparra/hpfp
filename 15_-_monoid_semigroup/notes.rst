@@ -7,8 +7,7 @@
 ---------------------------
 One of the finer points of the Haskell community has been
 its propensity for recognizing abstract pattern in code
-which have well-defined, lawful representations in
-mathematics.
+which have well-defined, lawful representations in mathematics.
 
 A word frequently used to describe these abstractions is
 *algebra*, by which we mean one or more operations and the
@@ -28,7 +27,7 @@ This chapter will include:
 15.2 What we talk about when we talk about algebras
 ---------------------------------------------------
 An algebra refers to some operations and the set they
-operate over.
+operate over. These operations must adhere to laws.
 
 .. What does "operate over" mean?
 
@@ -234,3 +233,41 @@ Monoids are also useful because they provide a common
 interface. This way we don't have to remember a bunch of
 operations for combining things that are unique to each
 type.
+
+Here is a more concrete example usage of monoids that is
+currently way beyond my comprehension:
+https://apfelmus.nfshost.com/articles/monoid-fingertree.html
+
+
+15.8 Laws
+---------
+Algebras are defined by their laws and are used principally
+for their laws. Laws make up what algebras are.
+
+::
+
+  -- mempty is []
+  -- mappend is (++)
+
+  -- left identity
+  Prelude> mappend mempty [1, 2, 3]
+  [1,2,3]
+
+  -- right identity
+  Prelude> mappend [1, 2, 3] mempty
+
+  -- associativity
+  Prelude> [1] <> ([2] <> [3])
+  [1,2,3]
+  Prelude> ([1] <> [2]) <> [3]
+  [1,2,3]
+
+  -- mconcat ~ foldr mappend mempty
+  Prelude> mconcat [[1], [2], [3]]
+  [1,2,3]
+  Prelude> foldr mappend mempty [[1], [2], [3]]
+  [1,2,3]
+  Prelude> concat [[1], [2], [3]]
+  [1,2,3]
+
+
