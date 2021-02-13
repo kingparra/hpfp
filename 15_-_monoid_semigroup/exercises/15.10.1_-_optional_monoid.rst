@@ -1,0 +1,37 @@
+15.10.1 Exercise: Optional Monoid
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Write the Monoid instance for our Maybe type renamed to Optional.  ::
+
+  data Optional a
+    = Nada
+    | Only a
+    deriving (Eq, Show)
+
+  instance Monoid a => Monoid (Optional a) where
+    mempty = undefined
+    mappend = undefined
+
+Expected output::
+
+  Prelude> Only (Sum 1) `mappend` Only (Sum 1)
+  Only (Sum {getSum = 2})
+
+  Prelude> Only (Product 4) `mappend` Only (Product 2)
+  Only (Product {getProduct = 8})
+
+  Prelude> Only (Sum 1) `mappend` Nada
+  Only (Sum {getSum = 1})
+
+  Prelude> Only [1] `mappend` Nada
+  Only [1]
+
+  Prelude> Nada `mappend` Only (Sum 1)
+  Only (Sum {getSum = 1})
+
+Ok, here is my attempt:
+
+.. include:: exercises/15.10.1_-_optional_monoid.rst.d/optional-monoid/src/Lib.hs
+   :code:
+
+Browse to the project directory and run ``stack test`` to
+verify it works.

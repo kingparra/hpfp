@@ -170,7 +170,10 @@ of::
   mconcat = foldr mappend mempty
 
 The ``mappend`` class method has an infix synonym, spelled
-``(<>)``, which is inherited from the ``Semigroup`` typeclass.
+``(<>)``, which is inherited from the ``Semigroup``
+typeclass.  Because of this, you don't have to define
+``mappend`` if the type already has an instance of
+``Semigroup``, it is automatically derived.
 
 For your perusal, `here is a link <https://hackage.haskell.org/
 package/base-4.14.1.0/docs/src/GHC.Base.html#Monoid>`_ to the
@@ -220,6 +223,13 @@ Here's an example of their use::
   ·∾ mappend (Sum 4.5) (Sum 3.4)
   Sum {getSum = 7.9}
 
+Newtype declarations are used rather than data declarations
+because it constrains the constructor to a single argument,
+signals intent, and can still be used to define unique
+instance declarations against (like data declarations, but
+unlike type aliases). Additionally, newtypes don't have any
+overhead.
+
 
 15.7 Why bother?
 ----------------
@@ -238,26 +248,92 @@ Here is a more concrete example usage of monoids that is
 currently way beyond my comprehension:
 https://apfelmus.nfshost.com/articles/monoid-fingertree.html
 
+.. https://boris-marinov.github.io/category-theory-illustrated/03_monoid/
+
 
 15.8 Laws
 ---------
 Algebras are defined by their laws and are used principally
-for their laws. Laws make up what algebras are.
+for their laws. Laws make up what algebras are. Laws
+primarily exists to make it easier to reuse components by
+making how they can be combined predictable. Who wouldn't
+want that?
 
-Here are the laws for ``Monoid``
+Here are the laws for ``Monoid``. Remember that ``(<>)`` is
+a synonym for ``mappend``.
 
-Right identity::
+* **Right identity**: ``x <> mempty = x``
+* **Left identity**: ``mempty <> x = x``
+* **Associativity**: ``x <> (y <> z) = (x <> y) <> z`` (Semigroup law)
+* **Concatenation**: ``mconcat = foldr (<>) mempty``
 
-    x <> mempty = x
 
-Left identity::
+15.9 Different instances, same representation
+---------------------------------------------
+.. The name ``mappend`` may evoke imagery of hanging
+.. something onto an existing structure[1], but
+.. often ``mappend`` combines values in a completely
+.. different way.
 
-    mempty <> x = x
+.. In the case of the ``Product`` newtype for numbers,
+.. ``mappend`` is multiplication -- an operation that
+.. does not preserve structure or order.
 
-Associativity::
+.. In my opinion, the class method should be named something
+.. reflective of its general nature, such as "unite" or
+.. "fuse" or "meld" or "merge" rather than ``mappend``.
 
-    x <> (y <> z) = (x <> y) <> z  -- (Semigroup law)
+.. [1]: (Fun fact: The "pend" in "append" comes from the Latin
+.. pendere "to hang, cause to hang". An early, now obsolete,
+.. meaning of "append" used in the 1640s was "to hang on,
+.. attach as a pendant".)
+A few types support multiple monoidal operations, which
+are implemented as instances on a newtype named after
+the operation.
 
-Concatenation::
+``All`` and ``Any`` are the newtypes for ``Bool``'s
+monoids::
 
-    mconcat = foldr (<>) mempty
+  ·∾ import Data.Monoid
+
+  -- newtype All = All { getAll :: Bool }
+  ·∾ All True <> All True
+  All {getAll = True}
+  ·∾ All True <> All False
+  All {getAll = False}
+
+  -- newtype Any = Any {getAny :: Bool}
+  ·∾ Any True <> Any False
+  Any {getAny = True}
+  ·∾ Any False <> Any False
+  Any {getAny = False}
+
+``First`` and ``Last`` are from ``Data.Monoid`` are newtypes
+for ``Maybe`` values.  There are replacements in ``Data.Semigroup``
+for both ``First`` and ``Last``, so their use is discouraged by
+the documentation.
+
+``First`` returns the leftmost non-nothing value::
+
+  -- newtype First a = First {getFirst :: Maybe a}
+  ·∾  getFirst $ First (Just "hello") <> First Nothing <> First (Just "world")
+  Just "hello"
+  ·∾  getFirst $ First (Just 1) <> First (Just 2)
+  Just 1
+
+``Last`` returns the rightmost non-nothing value::
+
+  ·∾  getLast (Last (Just "hello") <> Last Nothing <> Last (Just "world"))
+  Just "world"
+
+
+.. 15.10 Reusing algebras by asking for algebras
+.. ---------------------------------------------
+.. What the hell is this section talking about? Is the
+.. author just overexplaining something simple, again, or am
+.. I missing something?
+..
+.. We will now be concerned not with choosing one value out
+   of a set of values, but of combining the a values
+   contained withing the Maybe a type.
+.. .. include:: exercises/15.10.1_-_optional_monoid.rst
