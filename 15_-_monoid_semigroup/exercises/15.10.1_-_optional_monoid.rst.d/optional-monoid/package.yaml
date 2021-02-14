@@ -1,8 +1,7 @@
 ---
 name: optional-monoid
 dependencies: base >= 4.7 && < 5
-library:
-  source-dirs: src
+library: {source-dirs: src}
 tests:
   optional-monoid-test:
     main: Spec.hs

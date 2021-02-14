@@ -308,10 +308,10 @@ monoids::
   ·∾ Any False <> Any False
   Any {getAny = False}
 
-``First`` and ``Last`` are from ``Data.Monoid`` are newtypes
-for ``Maybe`` values.  There are replacements in ``Data.Semigroup``
-for both ``First`` and ``Last``, so their use is discouraged by
-the documentation.
+``First`` and ``Last`` are from ``Data.Monoid`` are
+newtypes for ``Maybe`` values.  There are replacements
+in ``Data.Semigroup`` for both ``First`` and ``Last``,
+so their use is discouraged by the documentation.
 
 ``First`` returns the leftmost non-nothing value::
 
@@ -327,13 +327,13 @@ the documentation.
   Just "world"
 
 
-.. 15.10 Reusing algebras by asking for algebras
-.. ---------------------------------------------
-.. What the hell is this section talking about? Is the
-.. author just overexplaining something simple, again, or am
-.. I missing something?
-..
-.. We will now be concerned not with choosing one value out
-   of a set of values, but of combining the a values
-   contained withing the Maybe a type.
-.. .. include:: exercises/15.10.1_-_optional_monoid.rst
+15.10 Reusing algebras by asking for algebras
+---------------------------------------------
+We can leverage existing types with instances of Monoid
+to write composite types. This has the advantage of
+making ``mappend`` easier to write, since the wrapped
+component types already have well defined behaviour for
+how to combine them using ``mappend``.
+
+.. include:: exercises/15.10.1_-_optional_monoid.rst
+
