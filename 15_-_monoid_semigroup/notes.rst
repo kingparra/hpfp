@@ -135,6 +135,7 @@ Operation
 
 Identity
 
+
   An "empty" value that when combined with any other value
   produces that other value.
 
@@ -149,6 +150,11 @@ Identity
   color, and mixing any color with the exact opposite of
   that color (a color with opposite RGB and opacity values)
   results in clear.
+
+  .. An identity is a value with a special relationship
+  .. with an operation: it turns the operation into the
+  .. identity function. There are no identities without
+  .. operations.
 
 Monoid is the typeclass that generalizes these laws across
 types.
@@ -337,3 +343,56 @@ how to combine them using ``mappend``.
 
 .. include:: exercises/15.10.1_-_optional_monoid.rst
 
+.. $ # -ity "condition or quality of being ____"
+.. $ # plectere (latin) "to weave, braid, twine, entwine", from PIE pl
+.. ek-to- "to plait"
+.. $ # plait - A braid of material (such as hair or straw).
+
+15.10.4 The problem of orphan instances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An orphan instance is when an instance is defined for a
+datatype and typeclass, but not in the same module as
+either the declaration of the typeclass or the datatype.
+
+This can lead to situations where there are multiple
+conflicting instances for the typeclass/type pair. Even if
+you haven't imported conflicting instances, if they exist
+at all it is no longer safe to assume you know what class
+methods will do anymore.
+
+Avoid this; It's bad juju, and GHC will warn you when it
+happens. If you don't own the typeclass or the datatype,
+and you need an instance, create it against a newtype of
+the type, instead.
+
+There are a few solutions for addressing orphan instances:
+
+1. You defined the type but not the typeclass? Put the
+   instance in the same module as the type so that the
+   type cannot be imported without its instances.
+
+2. You defined the typeclass but not the type? Put the
+   instance in the same module as the typeclass definition
+   so that the typeclass cannot be imported without its
+   instances.
+
+3. Neither the type nor the typeclass are yours? Define
+   your own newtype wrapping the original type and now
+   you've got a type that "belongs" to you for which you
+   can rightly define typeclass instances. There are means
+   of making this less annoying which we’ll discuss later.
+
+
+15.11 Madness
+-------------
+Using a lightly edited example from the Wikipedia article
+on Mad Libs:
+
+| "*exclamation*! he said *adverb* as he
+| jumped into his car *noun* and drove
+| off with his *adjective* wife"
+
+We can make this into a function, like the following:
+
+.. include:: figures/15.11/Madness.hs
+   :code:
