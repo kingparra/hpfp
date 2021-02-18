@@ -1,7 +1,7 @@
 module Lib where
 import Test.QuickCheck
 
-
+-- Question 1
 data Trivial = Trivial deriving (Eq, Show)
 
 
@@ -15,11 +15,4 @@ instance Monoid Trivial where
 
 
 instance Arbitrary Trivial where
-  -- What does Arbitrary do again?
-  -- What about Gen?
-  -- Why is there a "return" in the sample
-  -- code here, and what does it do?
-  arbitrary = oneof [return Trivial]
-
-newtype Gen = Gen Trivial
-
+  arbitrary = return Trivial :: Gen Trivial

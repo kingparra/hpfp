@@ -29,7 +29,7 @@ yourself by this point.
      instance Arbitrary Trivial where
        arbitrary = return Trivial
 
-     semigroupAssoc :: (Eq m, Semigroup m) 
+     semigroupAssoc :: (Eq m, Semigroup m)
                     => m -> m -> m -> Bool
      semigroupAssoc a b c =
        a <> (b <> c) == (a <> b) <> c
@@ -38,6 +38,22 @@ yourself by this point.
 
      main :: IO ()
      main = quickCheck (semigroupAssoc :: TrivAssoc)
+
+   Ok, I've restructured things a bit, but here is an
+   implementation of ``arbitrary`` for ``Trivial``, as well
+   as instance of ``Monoid`` for ``Trivial``.
+
+   .. include:: exercises/15.15.1_-_semigroup_exercises.rst.d/semigroup-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+   Here are the tests, moved to a separate module:
+
+   .. include:: exercises/15.15.1_-_semigroup_exercises.rst.d/semigroup-exercises/test/Spec.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
 
 2. ``newtype Identity a = Identity a``
 3. ``data Two a b = Two a b``

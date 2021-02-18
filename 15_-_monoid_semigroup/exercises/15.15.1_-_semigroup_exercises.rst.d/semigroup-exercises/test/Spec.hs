@@ -6,6 +6,7 @@ import Lib
 
 main :: IO ()
 main = hspec $ do
+  -- Question 1
   describe "Trivial" $ do
     context "Semigroup laws" $ do
       prop "(<>) is associative"
