@@ -29,11 +29,11 @@ This chapter will include:
 An algebra refers to some operations and the set they
 operate over. These operations must adhere to laws.
 
-.. What does "operate over" mean?
+.. topic:: What does "operate over" mean?
 
-.. https://en.wikipedia.org/wiki/Closure_(mathematics)
+   https://en.wikipedia.org/wiki/Closure_(mathematics)
 
-.. In mathematics, a set is **closed* under an opereration
+   In mathematics, a set is *closed* under an opereration
    if performing that operation on members of the set always
    produces a member of that seflsame set.
 
@@ -54,20 +54,6 @@ operate over. These operations must adhere to laws.
    product operator obeying several axioms, including an axiom
    that the product of any two elements of the group is again
    a element.
-
-.. justsomeguy   Sometime I see the phrase "algebra" used to describe typeclasses,
-..               and I'm a little confused by it. Does an algebra mean a single
-..               operation and the set it operates on, or a collection of
-..               operations and the set they operate on? Also, do algebras need to
-..               conform to laws (or properties), or is that not a requirement to
-..               call something an algebra?
-..           *   justsomeguy tried reading about it on wikipedia but the math jargon only confused him more.
-..         pjb   justsomeguy: https://en.wikipedia.org/wiki/Algebra_(disambiguation)#Mathematical_structures
-..         pjb   justsomeguy: the number of operation will depend on the type of
-..               algebra on you type of values.
-..         pjb   justsomeguy: of course, you're not limitd to the structure that
-..               have been defined so far by mathematicians. Basically any set of
-..               operation on your types can be defined as AN algebra…
 
 In Haskell, these algebras can be implemented with
 typeclasses; the typeclasses define the operations.
@@ -135,26 +121,27 @@ Operation
 
 Identity
 
+  An "empty" value that when combined with any other
+  value produces that other value.
 
-  An "empty" value that when combined with any other value
-  produces that other value.
+  An identity is a value with a special relationship
+  with an operation: it turns the operation into the
+  identity function. There are no identities without
+  operations.
 
-  One example of this is the number :math:`0` for addition,
-  since :math:`0+x` is always :math:`x`, and :math:`x+(-x) = 0`.
+  One example of this is the number :math:`0` for
+  addition, since :math:`0+x` is always :math:`x`, and
+  :math:`x+(-x) = 0`.
 
   For multiplication, the identity value is :math:`1`,
-  since :math:`1*x` is always :math:`x`, and :math:`x*(x/x) = x*1`.
+  since :math:`1*x` is always :math:`x`, and
+  :math:`x*(x/x) = x*1`.
 
   When mixing colors in Photoshop, clear is the identity
   color since mixing any color with clear results in that
   color, and mixing any color with the exact opposite of
-  that color (a color with opposite RGB and opacity values)
-  results in clear.
-
-  .. An identity is a value with a special relationship
-  .. with an operation: it turns the operation into the
-  .. identity function. There are no identities without
-  .. operations.
+  that color (a color with opposite RGB and opacity
+  values) results in clear.
 
 Monoid is the typeclass that generalizes these laws across
 types.
@@ -189,11 +176,11 @@ defined in ``Data.Monoid``.)
 
 15.6 What Integer doesn't have a Monoid
 ---------------------------------------
-Some types can be viewed as a monoid in more than one way.
-For example, both addition and multiplication are monoids
-for numbers. In these cases we often define newtypes to
-wrap those values and make them instances of ``Monoid``,
-instead.
+Some types can be viewed as a monoid in more than one
+way. For example, both addition and multiplication are
+monoids for numbers. In these cases we often define
+newtypes to wrap those values and make them instances
+of ``Monoid``, instead.
 
 For numeric types, the newtypes ``Sum`` and ``Product``
 are defined in ``Data.Monoid``.
@@ -293,6 +280,7 @@ a synonym for ``mappend``.
 .. pendere "to hang, cause to hang". An early, now obsolete,
 .. meaning of "append" used in the 1640s was "to hang on,
 .. attach as a pendant".)
+
 A few types support multiple monoidal operations, which
 are implemented as instances on a newtype named after
 the operation.
@@ -343,22 +331,21 @@ how to combine them using ``mappend``.
 
 .. include:: exercises/15.10.1_-_optional_monoid.rst
 
-.. $ # -ity "condition or quality of being ____"
-.. $ # plectere (latin) "to weave, braid, twine, entwine", from PIE pl
-.. ek-to- "to plait"
-.. $ # plait - A braid of material (such as hair or straw).
+.. -ity "condition or quality of being ____"
+.. plectere (latin) "to weave, braid, twine, entwine", from PIE plek-to- "to plait"
+.. plait - A braid of material (such as hair or straw).
 
 15.10.4 The problem of orphan instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 An orphan instance is when an instance is defined for a
 datatype and typeclass, but not in the same module as
-either the declaration of the typeclass or the datatype.
+either the typeclass or datatype declaration.
 
 This can lead to situations where there are multiple
-conflicting instances for the typeclass/type pair. Even if
-you haven't imported conflicting instances, if they exist
-at all it is no longer safe to assume you know what class
-methods will do anymore.
+conflicting instances for the typeclass/type pair. Even
+if you haven't imported conflicting instances, if they
+exist at all it is no longer safe to assume you know what
+class methods will do anymore.
 
 Avoid this; It's bad juju, and GHC will warn you when it
 happens. If you don't own the typeclass or the datatype,
@@ -396,3 +383,84 @@ We can make this into a function, like the following:
 
 .. include:: figures/15.11/Madness.hs
    :code:
+
+
+15.12 Better living through QuickCheck
+--------------------------------------
+::
+
+  import Data.Monoid
+  import Test.QuickCheck
+
+  monoidAssoc :: (Eq m, Monoid m) => m -> m -> m -> Bool
+  monoidAssoc a b c =
+    a <> (b <> c) == (a <> b) <> c
+
+  main = quickCheck
+    (monoidAssoc :: String -> String -> String -> Bool)
+
+
+15.13 Semigroup
+---------------
+A semigroup is a binary associative operation. Unlike
+monoid, it does not require an identity value.
+
+::
+
+  class Semigroup a where
+    (<>) :: a -> a -> a
+
+...and we're left with one law, associativity::
+
+  (a <> b) <> c == a <> (b <> c)
+
+15.13.2 NonEmpty, a useful datatype
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+One useful datatype that can't have a ``Monoid`` instance
+but does have a ``Semigroup`` instance is the ``NonEmpty``
+list type. It is a list datatype that can never be an empty
+list.
+
+::
+
+  data NonEmpty a  =  a :| [a]
+
+There is no empty list to serve as an identity for any
+operation over a ``NonEmpty`` list, yet there is still a
+binary associative operation: two ``NonEmpty`` lists can
+still be concatenated.
+
+::
+
+  ·∾ (1 :| [2,3]) <> (4 :| [5,6])
+  1 :| [2,3,4,5,6]
+  ·∾ :info (<>)
+  class Semigroup a where
+    (<>) :: a -> a -> a
+    ...
+          -- Defined in ‘GHC.Base’
+  infixr 6 <>
+  ·∾ :info (:|)
+  data NonEmpty a = a :| [a]      -- Defined in ‘GHC.Base’
+  infixr 5 :|
+
+You can read more about it `here, on hoogle <https://
+hackage.haskell.org/package/base-4.14.1.0/docs/
+Data-List-NonEmpty.html>`_.
+
+
+15.14 Strength can be weakness
+------------------------------
+The *strength* of an algebra usually refers to the number
+of operations it provides. Making an algebra stronger may
+in turn require enforcing more laws, which means that fewer
+types can have legal instances of it. Generally, it is
+better to have multiple smaller algebras than one larger
+one. Some types defy uniform generalization, but have
+efficient machine-level representations.
+
+
+15.15 Chapter exercises
+-----------------------
+
+.. include:: exercises/15.15.1_-_semigroup_exercises.rst
