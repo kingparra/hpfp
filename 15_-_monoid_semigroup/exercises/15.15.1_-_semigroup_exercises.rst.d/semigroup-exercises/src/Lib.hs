@@ -19,7 +19,7 @@ instance Arbitrary Trivial where
   -- What about Gen?
   -- Why is there a "return" in the sample
   -- code here, and what does it do?
-  arbitrary = Gen Trivial
+  arbitrary = oneof [return Trivial]
 
 newtype Gen = Gen Trivial
 
