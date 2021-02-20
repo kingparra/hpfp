@@ -24,12 +24,13 @@ instance Semigroup a => Semigroup (Identity a) where
   (<>) (Identity x) (Identity y) = Identity (x <> y)
 
 instance Arbitrary a => Arbitrary (Identity a) where
+  --
   -- arbitrary :: Arbitrary a => Gen (Identity a)
+  --
   -- arbitrary        = return $ Identity arbitrary
   -- Gen (Identity a) = Gen    ( Identity    ?     )
   -- .....................................   a
   -- ..................................... Gen a
-  -- Arbitrary a => (Identity a) -> 
   arbitrary = do
     x <- arbitrary
     return (Identity x)
@@ -38,5 +39,11 @@ instance Arbitrary a => Arbitrary (Identity a) where
 -- Question 3
 data Two a b = Two a b deriving (Eq, Show)
 
-instance (Monoid a, Monoid b) => Semigroup (Two a b) where
-  (<>) (Two x y) (Two a b) = Two (x `mappend` a) (y `mappend` b)
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
+  arbitrary = do
+    x <- arbitrary
+    y <- arbitrary
+    return (Two x y)
+
+instance (Semigroup a, Semigroup b) => Semigroup (Two a b) where
+  (<>) (Two a b) (Two x y) = Two (a <> x) (b <> y)

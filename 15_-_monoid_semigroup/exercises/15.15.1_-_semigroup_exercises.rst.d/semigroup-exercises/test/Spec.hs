@@ -1,8 +1,7 @@
 import Test.Hspec (hspec,describe,context,it,shouldBe)
 import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck
-import Data.Semigroup
-import Data.Monoid
+import Data.Monoid (Sum, mappend)
 import Lib
 
 
@@ -10,8 +9,8 @@ main :: IO ()
 main = hspec $ do
   -- Question 1
   describe "Trivial" $ do
-    context "Monoid laws" $ do
-      prop "(<>) is associative (semigroup law)"
+    context "Semigroup laws" $ do
+      prop "(<>) is associative"
         ((\a b c -> a <> (b <> c) == (a <> b) <> c)
          :: Trivial 
          -> Trivial 
