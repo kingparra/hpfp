@@ -1,6 +1,6 @@
 15.15.1 Semigroup exercises
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Given a datatype, implement the ``Semigroup`` instance. Add
+**Given a datatype, implement the Semigroup instance.** Add
 ``Semigroup`` constraints to type variables where needed.
 Use the ``Semigroup`` class from the ``semigroups`` library
 (or from ``base`` if you are on GHC 8) or write your own.
@@ -55,7 +55,26 @@ yourself by this point.
       :start-after: -- Question 1
       :end-before: -- Question 2
 
+   .. This one was confusing, since I didn't know how
+   .. to write a QuickCheck generator. Working through
+   .. it with Hyiltiz's help was really beneficial.
+
 2. ``newtype Identity a = Identity a``
+
+   Ok, here is an instance:
+
+   .. include:: exercises/15.15.1_-_semigroup_exercises.rst.d/semigroup-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+   and here is the test:
+
+   .. include:: exercises/15.15.1_-_semigroup_exercises.rst.d/semigroup-exercises/test/Spec.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
 3. ``data Two a b = Two a b``
 
    **Hint** Ask for another Semigroup instance.

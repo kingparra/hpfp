@@ -414,6 +414,43 @@ monoid, it does not require an identity value.
 
   (a <> b) <> c == a <> (b <> c)
 
+Although it's not mentioned in the book, there are a
+few more class methods::
+
+  ·∾ :info Semigroup
+  type Semigroup :: * -> Constraint
+
+  class Semigroup a where
+    (<>)    :: a -> a -> a
+    sconcat :: NonEmpty a -> a
+    stimes  :: Integral b => b -> a -> a
+    {-# MINIMAL (<>) #-}
+
+  ·∾ :doc sconcat
+  Reduce a non-empty list with '<>' The default
+  definition should be sufficient, but this can be
+  overridden for efficiency.
+
+  >>> import Data.List.NonEmpty
+  >>> sconcat $ "Hello" :| [" ", "Haskell", "!"]
+  "Hello Haskell!"
+
+  ·∾ :doc stimes
+  Repeat a value @n@ times.
+
+  Given that this works on a 'Semigroup' it is allowed
+  to fail if you request 0 or fewer repetitions, and
+  the default definition will do so.
+
+  By making this a member of the class, idempotent
+  semigroups and monoids can upgrade this to execute
+  in \(\mathcal{O}(1)\) by picking @stimes =
+  'Data.Semigroup.stimesIdempotent'@ or @stimes =
+  'stimesIdempotentMonoid'@ respectively.
+
+  >>> stimes 4 [1]
+  [1,1,1,1]
+
 15.13.2 NonEmpty, a useful datatype
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 One useful datatype that can't have a ``Monoid`` instance
