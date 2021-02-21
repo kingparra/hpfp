@@ -12,9 +12,9 @@ main = hspec $ do
     context "Semigroup laws" $ do
       prop "(<>) is associative"
         ((\a b c -> a <> (b <> c) == (a <> b) <> c)
-         :: Trivial 
-         -> Trivial 
-         -> Trivial 
+         :: Trivial
+         -> Trivial
+         -> Trivial
          -> Bool)
       it "mempty exists for Trivial, and is Trivial" $ do
         (mempty :: Trivial) `shouldBe` Trivial
@@ -23,9 +23,9 @@ main = hspec $ do
     context "Semigroup laws" $ do
       prop "(<>) is associative"
         ((\a b c -> a <> (b <> c) == (a <> b) <> c)
-         :: Identity (Sum Int) 
-         -> Identity (Sum Int) 
-         -> Identity (Sum Int) 
+         :: Identity (Sum Int)
+         -> Identity (Sum Int)
+         -> Identity (Sum Int)
          -> Bool)
   -- Question 3
   describe "Two a b" $ do
@@ -36,3 +36,20 @@ main = hspec $ do
          -> Two (Sum Int) (Sum Int)
          -> Two (Sum Int) (Sum Int)
          -> Bool)
+  -- Question 4
+  describe "Three a b c" $ do
+    context "Semigroup laws" $ do
+      prop "(<>) is associative for Three"
+        ((\a b c -> a <> (b <> c) == (a <> b) <> c)
+         :: Three (Sum Int) (Sum Int) (Sum Int)
+         -> Three (Sum Int) (Sum Int) (Sum Int)
+         -> Three (Sum Int) (Sum Int) (Sum Int)
+         -> Bool)
+  -- I'm skipping Q5
+  -- Question 6
+  {- For some reason I'm getting hairy type errors from this test -}
+  -- describe "BoolConj" $ do
+  --   context "True && True is True" $ do
+  --     (BoolConj True) <> (BoolConj True) `shouldBe` (BoolConj True)
+  --   context "True && False is True" $ do
+  --     (BoolConj True) <> (BoolConj False) `shouldBe` (BoolConj False)

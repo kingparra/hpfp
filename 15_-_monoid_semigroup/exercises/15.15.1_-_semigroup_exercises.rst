@@ -79,8 +79,20 @@ yourself by this point.
 
    **Hint** Ask for another Semigroup instance.
 
+   .. include:: exercises/15.15.1_-_semigroup_exercises.rst.d/semigroup-exercises/test/Spec.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+
 4. ``data Three a b c = Three a b c``
-5. ``data Four a b c d = Four a b c d``
+
+   .. include:: exercises/15.15.1_-_semigroup_exercises.rst.d/semigroup-exercises/test/Spec.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
+
+.. I'm skipping this one:  5. ``data Four a b c d = Four a b c d``
+
 6. ``newtype BoolConj = BoolConj Bool``
 
    What it should do::

@@ -47,3 +47,35 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
 
 instance (Semigroup a, Semigroup b) => Semigroup (Two a b) where
   (<>) (Two a b) (Two x y) = Two (a <> x) (b <> y)
+
+
+-- Question 4
+data Three a b c = Three a b c deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c) =>
+  Arbitrary (Three a b c) where
+  arbitrary = do
+    x <- arbitrary
+    y <- arbitrary
+    z <- arbitrary
+    return (Three x y z)
+
+instance (Semigroup a, Semigroup b, Semigroup c) =>
+  Semigroup (Three a b c) where
+  (<>) (Three a b c) (Three x y z) =
+    Three (a <> x) (b <> y) (c <> z)
+
+
+-- I'm skipping Q5
+
+
+-- Question 6
+newtype BoolConj = BoolConj Bool deriving (Eq, Show)
+
+instance Arbitrary BoolConj where
+  arbitrary = do
+    x <- arbitrary :: Gen Bool
+    return (BoolConj x)
+
+instance Semigroup BoolConj where
+  (<>) (BoolConj x) (BoolConj y) = (BoolConj (x && y))
