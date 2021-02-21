@@ -29,6 +29,7 @@ Contents
    13_-_building_projects/notes
    14_-_testing/notes
    14_-_testing/questions
+   15_-_monoid_semigroup/notes
 
 
 Indices and tables
