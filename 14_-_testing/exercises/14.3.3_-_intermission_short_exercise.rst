@@ -1,0 +1,31 @@
+14.3.3 Intermission: Short Exercise
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the chapter exercises at the end of recursion, you were
+given this exercise:
+
+  Write a function that multiplies two numbers using
+  recursive summation. The type should be ``(Eq a, Num a) =>
+  a -> a -> a`` although, depending on how you do it, you
+  might also consider adding an ``Ord`` constraint.
+
+If you still have your answer, great! If not, rewrite it and
+then write ``hspec`` tests for it.
+
+Ok partner, I quickly rewrote ``mult``. Here's what it looks like:
+
+.. include:: exercises/14.3.3_-_intermission_short_exercise.rst.d/mult/src/Lib.hs
+   :code:
+
+...and here is the associated test suite:
+
+.. include:: exercises/14.3.3_-_intermission_short_exercise.rst.d/mult/test/Spec.hs
+   :code:
+
+You can run this by navigating to ``exercises/
+14.3.3_-_intermission_short_exercise.rst.d/mult``
+and running ``stack test``.
+
+The above examples demonstrate the basics of writing
+individual tests to test particular values. If you'd like to
+see a more developed example, you could refer to Chris's
+library, `Bloodhound <https://github.com/bitemyapp/bloodhound>`_.
