@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#stack new morse
+
+cat > morse.cabal << EOF
+name: morse
+version: 0.1.0.0
+build-type: Simple
+cabal-version: >=1.10
+
+library
+  hs-source-dirs: src
+  exposed-modules: Morse
+  ghc-options: -Wall -fwarn-tabs
+  build-depends: base >=4.7 && <5
+               , containers
+               , QuickCheck
+  default-language: Haskell2010
+
+executable morse
+  hs-source-dirs: src
+  main-is: Main.hs
+  ghc-options: -Wall -fwarn-tabs
+  build-depends: base >=4.7 && <5
+               , containers
+               , morse
+               , QuickCheck
+  default-language: Haskell2010
+
+test-suite tests
+  hs-source-dirs: tests
+  main-is: tests.hs
+  type: exitcode-stdio-1.0
+  ghc-options: -Wall -fno-warn-orphans
+  build-depends: base >=4.7 && <5
+               , containers
+               , morse
+               , QuickCheck
+  default-language: Haskell2010
+EOF
+
+
+cat > src/Morse.hs << EOF
+module Morse
+  ( Morse
+  , charToMorse
+  , morseToChar
+  , stringToMorse
+  , letterToMorse
+  , morseToLetter
+  ) where
+
+import qualified Data.Map as M
+
+type Morse = String
+EOF
+
+stack init
