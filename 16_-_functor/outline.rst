@@ -1,5 +1,5 @@
 *********************
- Chapter 16: Functor
+ Chapter 16 Outline
 *********************
 
 * 16.1 Functor -- page 622
