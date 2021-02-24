@@ -1,9 +1,10 @@
 16.17.2 Constructor shuffle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Rearrange the arguments to the type constructor of the
-datatype so the Functor instance works.
+Rearrange the arguments to the type constructor
+of the datatype so the Functor instance works.
 
-1. ::
+1.
+   ::
 
      data Sum a b = First a | Second b
 
@@ -11,13 +12,28 @@ datatype so the Functor instance works.
        fmap f (First a)  =  First (f a)
        fmap f (Second b) =  Second b
 
-2. ::
+   It compiles!
+
+   .. include:: exercises/16.17.2_-_constructor_shuffle.rst.d/constructor-shuffle/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+2.
+   ::
 
      data Company a b c = DeepBlue a c | Something b
 
      instance Functor (Company e e') where
        fmap f (Something b)  =  Something (f b)
        fmap _ (DeepBlue a c) =  DeepBlue a c
+
+   I don't know why this works, but it does.
+
+   .. include:: exercises/16.17.2_-_constructor_shuffle.rst.d/constructor-shuffle/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
 
 3.
    ::
@@ -36,3 +52,10 @@ datatype so the Functor instance works.
 
      ·∾ fmap (+1) (R 1 2 3)
      R 1 3 3
+
+   .. include:: exercises/16.17.2_-_constructor_shuffle.rst.d/constructor-shuffle/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+
+   .. include:: exercises/16.17.2_-_constructor-shuffle.rst.d/constructor_shuffle/test/Spec.hs
+      :code:

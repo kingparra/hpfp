@@ -1,0 +1,10 @@
+---
+name: write-the-instance
+dependencies: base >= 4.7 && < 5
+library: {source-dirs: src}
+tests:
+  write-the-instance-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [write-the-instance, hspec, QuickCheck]

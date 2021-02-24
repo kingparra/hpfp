@@ -8,34 +8,40 @@ https://wiki.haskell.org/Typeclassopedia#Functor
 
    **What the hell is a functor?**
 
-   It's a typeclass that lets you map over shit! Sometimes this
-   shit is a data structure, such as a list or tree, and
-   sometimes the shit is a computational context, like the data
-   constructor of a wrapper type such as ``Just`` or ``Either``
-   or ``IO``.
+   It's an algebra that lets you map over shit! Sometimes
+   this is a data structure, like a list or tree, and
+   sometimes this is computational context, such as
+   ``Just`` or ``Either`` or ``IO``.
 
    In Haskell there is no way to enforce the laws of a type
-   classes algebra. (Instead we rely on programmer discipline
-   and test cases.) So ``Functor`` is simply a type class and
-   what it actually does depends on the implementation of the
-   instance declaration for the type in question.
+   classes algebra. (Instead we rely on programmer
+   discipline.) So ``Functor`` is simply a type class and
+   what it actually does depends on the implementation of
+   the instance declaration for the type in question.
 
    One example of a somewhat counterintuitive ``Functor``
-   instance is the one for tuples, which maps over the second
-   element, but not the first. Apparently, there is a
-   tradition of treating tuples like name:value pairs, so the
-   instance follow that tradition by not touching the first
-   element.
+   instance is the one for pairs, which alters the second
+   element of the tuple, but not the first. Apparently,
+   there is a tradition of treating tuples as name:value
+   pairs, and the instance follows that tradition by not
+   touching the first element.
 
-   For example::
+   Unlike some other algebras, it can be proven that each
+   type has at most one functor. (Via the free theorem of
+   the type of fmap, whatever the hell that means.)
+
+   GHC can even derive ``Functor`` for you, if you turn on
+   the ``DeriveFunctor`` language pragma.
+
+   **Examples**
+
+   ::
 
      >>> fmap (+1) [1..4]
      [2,3,4,5]
 
      >>> fmap (+1) (Just 8)
      Just 9
-
-   More examples::
 
      >>> fmap show (Just 1)  --  (a   -> b)      -> f a       -> f b
      Just "1"                --  (Int -> String) -> Maybe Int -> Maybe String
@@ -49,32 +55,17 @@ https://wiki.haskell.org/Typeclassopedia#Functor
      >>> fmap show []        --  (a   -> b)      -> f a       -> f b
      []                      --  (Int -> String) -> [Int]     -> [String]
 
-
-   **Description**
-
-   A type f is a Functor if it provides a function
-   fmap which, given any types a and b lets you apply
-   any function from (a -> b) to turn an f a into an
-   f b, preserving the structure of f.
-
-
    **Laws**
 
-   * Identity:    ``fmap id == id``
-   * Composition: ``fmap (f . g) == fmap f . fmap g``
+   * Identity:    ``fmap id`` :math:`=` ``id``
+   * Composition: ``fmap (f . g)`` :math:`=` ``fmap f . fmap g``
    * Structure preservation
-
-   Note, that the second law follows from the free
-   theorem of the type fmap and the first law, so you
-   need only check that the former condition holds.
-
 
    **Class methods**
 
    * ``fmap :: (a -> b) -> f a -> f b``
    * ``(<$) :: a -> f b -> f a``
    * ``{-# MINIMAL fmap #-}``
-
 
    **Instances**
 
@@ -85,30 +76,21 @@ https://wiki.haskell.org/Typeclassopedia#Functor
    * ``((->) r)``
    * ``((,) a)``
 
-   **Where is it from?**
+   **Where is it defined?**
 
-   base and Data.Functor
-
-
-.. epigraph::
-
-   Lifting is the "cheat mode" of type tetris.
-
-   -- Michael Neale
-
-What is lifting, you ask?  https://wiki.haskell.org/Lifting
-
+   * ``Prelude``
+   * ``Data.Functor``
+   * ``Control.Monad``
 
 
 16.1 Functor
 ------------
-In the 1930s the logician Rudolf Carnap coined the term
-functor to describe grammatical function words that act as
-logical operations over sentences or phrases.
+In the 1930s logician Rudolf Carnap coined the phrase
+functor to describe grammatical function words that
+act as logical operations over sentences or phrases.
 
-Functors are combinators: they take a phrase as input and
-return that phrase without some logical operation applied
-to the whole.
+Understanding ``Functor`` and ``Applicative`` is important
+to a deep understanding of ``Monad``.
 
 This chapter will include:
 
@@ -129,24 +111,27 @@ This chapter will include:
   --           a concrete type
   --            vvvvvvvvvvvvv
   class Functor (f :: * -> *) where
-
-    -- The only essential class method, fmap
-    --
-    --             takes an a
-    --            inside   some
-    --             container f
-    --                  v
+  --
+  --                             may be a differnt
+  --               takes an a   value than a
+  --              inside some      /
+  --               container f    /
+  --                    v        v
     fmap :: (a -> b) -> f a -> f b
-    --      ^^^^^^^^           ^
-    --     function to         |
-    --   perform  on the   the enclosing type
-    --    enclosed type  constructor can *change*
-    --                    into any other tycon
-    --                    that has an instance
-    --                    of the Functor class.
-
-    -- This operator is essentially ``fmap . const``.
-    --
-    (<$) :: a -> f b -> f a
-
+  --        ^^^^^^^^           ^
+  --       function to         |
+  --     perform  on the   this is the smae f!
+  --      enclosed type
+  --
+    (<$) :: a -> f b -> f a -- Essentially ``fmap . const``
     {-# MINIMAL fmap #-}
+
+
+16.17 Chapter Exercises
+-----------------------
+
+.. include:: exercises/16.17.1_-_valid_functor.rst
+
+.. include:: exercises/16.17.2_-_constructor_shuffle.rst
+
+.. include:: exercises/16.17.3_-_write_the_instance.rst

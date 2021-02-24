@@ -4,9 +4,9 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: de66c4a2f9c6123a66dc6bb57cb8cdb1ae61293b52e4e80bff82a78a1607dc26
+-- hash: 515ec7d69f22e517ac3a6f5ae48eb6b4bbc8c98ec4da5d91ea8cc95efc61e19e
 
-name:           functor-instances
+name:           write-the-instance
 version:        0.0.0
 build-type:     Simple
 
@@ -14,24 +14,24 @@ library
   exposed-modules:
       Lib
   other-modules:
-      Paths_functor_instances
+      Paths_write_the_instance
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
   default-language: Haskell2010
 
-test-suite functor-instances-test
+test-suite write-the-instance-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_functor_instances
+      Paths_write_the_instance
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck
     , base >=4.7 && <5
-    , functor-instances
     , hspec
+    , write-the-instance
   default-language: Haskell2010

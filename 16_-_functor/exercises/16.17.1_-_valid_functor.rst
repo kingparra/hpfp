@@ -111,7 +111,7 @@ datatype provided.
 
      ·∾ import GHC.Arr
      ·∾ data D = D (Array Word Word) Int Int deriving (Eq, Show)
-   
+
      ·∾ :kind D
      D :: *
 
