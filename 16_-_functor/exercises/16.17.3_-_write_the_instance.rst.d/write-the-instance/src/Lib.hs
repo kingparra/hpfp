@@ -13,8 +13,34 @@ instance Functor (Quant a) where
 -- Question 2
 data K a b = K a
 
+{- justsomeguy
+     Is it impossible to define an instance of Functor
+     for the type ''data K a b = K a''?
+
+     I keep on getting type errors if I try something
+     like ''instance Functor (K a) where { fmap f (K a) =
+     K (f a) }''.
+
+   koz_
+     justsomeguy: That's just Const. So it is very
+     possible.
+
+     The problem you're having is that 'f' has a
+     different type to what you're thinking. It's
+     not a -> c, it's _b_ -> c.
+
+     In Const, the second type parameter is phantom.
+     So you can change it to whatever whenever.
+
+     So you just ignore the function and rebuild the
+     Const with the same value 'inside' it always had.
+
+     You can think of 'Const a b' as 'an a pretending to
+     be a b'.  So we can have it pretend to be a c, and
+     you only pass the function so fmap is happy.
+-}
 instance Functor (K a) where
-  fmap f (K a) = K (f _)
+  fmap _ (K a) = K a 
 
 
 -- -- Question 3

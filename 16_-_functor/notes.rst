@@ -85,9 +85,9 @@ https://wiki.haskell.org/Typeclassopedia#Functor
 
 16.1 Functor
 ------------
-In the 1930s logician Rudolf Carnap coined the phrase
-functor to describe grammatical function words that
-act as logical operations over sentences or phrases.
+Rudolf Carnap, a logician in the 1930s, coined the term
+functor to describe grammatical function words that operate
+over sentences or phrases.
 
 Understanding ``Functor`` and ``Applicative`` is important
 to a deep understanding of ``Monad``.
@@ -125,6 +125,18 @@ This chapter will include:
   --
     (<$) :: a -> f b -> f a -- Essentially ``fmap . const``
     {-# MINIMAL fmap #-}
+
+
+16.4 Let's talk about f baby
+----------------------------
+
+16.4.5 A shining star for you to see what your f can truly be
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Notice a similarity between ``$`` and ``<$>`` (infix
+``fmap``)::
+
+  (<$>) :: Functor f => (a -> b) -> f a -> f b
+    $   ::              (a -> b) ->   a ->   b
 
 
 16.17 Chapter Exercises

@@ -1,0 +1,14 @@
+16.14.2 Exercises: Be Kind
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given a type signature, determine the kinds
+of each type variable:
+
+1. What's the kind of a in ``a -> a``?
+2. What are the kinds of ``b`` and ``T``?
+   (The ``T`` is capitalized on purpose!)
+
+   ::
+
+     a -> b a -> T (b a)
+
+3. What's the kind of ``c`` in ``c a b -> c b a``?
