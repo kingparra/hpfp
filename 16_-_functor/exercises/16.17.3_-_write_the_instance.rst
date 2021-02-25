@@ -2,15 +2,30 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Write ``Functor`` instances for the following datatype.
 
-1. ::
+1. 
+   ::
 
      data Quant a b = Finance | Desk a | Bloor b
+
+   Alright, here is the first instance:
+
+   .. include:: exercises/16.17.3_-_write_the_instance.rst.d/write-the-instance/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
 
 2. No, it's not interesting by itself.
 
    ::
 
      data K a b = K a
+
+   I still learned something:
+
+   .. include:: exercises/16.17.3_-_write_the_instance.rst.d/write-the-instance/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
 
 3. ::
 

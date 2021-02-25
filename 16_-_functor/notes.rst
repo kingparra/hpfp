@@ -13,8 +13,8 @@ https://wiki.haskell.org/Typeclassopedia#Functor
    sometimes this is computational context, such as
    ``Just`` or ``Either`` or ``IO``.
 
-   In Haskell there is no way to enforce the laws of a type
-   classes algebra. (Instead we rely on programmer
+   In Haskell there is no way to enforce the laws of a
+   type classes algebra. (Instead we rely on programmer
    discipline.) So ``Functor`` is simply a type class and
    what it actually does depends on the implementation of
    the instance declaration for the type in question.
@@ -25,6 +25,15 @@ https://wiki.haskell.org/Typeclassopedia#Functor
    there is a tradition of treating tuples as name:value
    pairs, and the instance follows that tradition by not
    touching the first element.
+
+   This is also a consequence of functors *kind constraint*
+   of ``(f :: * -> *)``, which means that any type
+   constructor that can be an instance of ``Functor`` must
+   take exactly one argument. This, again, is an
+   implementation detail. Conceptually, n-ary functors
+   exist. To define them in the general case for any number
+   of arguments and type constructors in Haskell would
+   require dependent types, though.
 
    Unlike some other algebras, it can be proven that each
    type has at most one functor. (Via the free theorem of

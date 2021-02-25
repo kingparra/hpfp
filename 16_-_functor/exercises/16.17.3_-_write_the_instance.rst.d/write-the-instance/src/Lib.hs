@@ -7,21 +7,23 @@ data Quant a b = Finance | Desk a | Bloor b
 
 instance Functor (Quant a) where
   fmap f Finance   = Finance
-  fmap f (Desk a)  = Finance -- Does this destroy structure?
+  fmap f (Desk a)  = Desk a
   fmap f (Bloor b) = Bloor (f b)
+
 
 -- Question 2
 data K a b = K a
-
 {- justsomeguy
+ 
      Is it impossible to define an instance of Functor
      for the type ''data K a b = K a''?
 
      I keep on getting type errors if I try something
-     like ''instance Functor (K a) where { fmap f (K a) =
-     K (f a) }''.
+     like ''instance Functor (K a) where { fmap f (K
+     a) = K (f a) }''.
 
    koz_
+
      justsomeguy: That's just Const. So it is very
      possible.
 
@@ -35,23 +37,21 @@ data K a b = K a
      So you just ignore the function and rebuild the
      Const with the same value 'inside' it always had.
 
-     You can think of 'Const a b' as 'an a pretending to
-     be a b'.  So we can have it pretend to be a c, and
-     you only pass the function so fmap is happy.
--}
+     You can think of 'Const a b' as 'an a pretending
+     to be a b'.  So we can have it pretend to be a
+     c, and you only pass the function so fmap is happy.  -}
 instance Functor (K a) where
   fmap _ (K a) = K a 
 
 
--- -- Question 3
--- newtype Flip f a b = Flip (f b a) deriving (Eq, Show)
+-- Question 3
+newtype Flip f a b = Flip (f b a) deriving (Eq, Show)
 
--- newtype K' a b = K' a
+newtype K' a b = K' a
 
--- -- This should remind you of an instance
--- -- you've written before.
+-- This should remind you of an instance you've written before.
 -- instance Functor (Flip K' a) where
---  fmap = undefined
+--   fmap = undefined
 
 
 -- -- Question 4
