@@ -1,6 +1,7 @@
 module Lib where
 
 
+
 -- Question 1
 data Quant a b = Finance | Desk a | Bloor b
   deriving (Eq, Show)
@@ -9,6 +10,7 @@ instance Functor (Quant a) where
   fmap f Finance   = Finance
   fmap f (Desk a)  = Desk a
   fmap f (Bloor b) = Bloor (f b)
+
 
 
 -- Question 2
@@ -41,10 +43,25 @@ data K a b = K a
 --   to be a b'.  So we can have it pretend to be a
 --   c, and you only pass the function so fmap is happy.
 --
--- The key here is that instance declarations operate on
--- the outermost (or rightmost) type argument first. This
--- is due to the outermost reduction strategy that
--- Haskell employes.
+-- So the question becomes, why does f take a "b" as
+-- input rather than an "a"?
+--
+-- It turns out that instance declarations operate on the
+-- outermost (or rightmost) type argument first. This is
+-- due to the outermost reduction strategy that Haskell
+-- employes.
+--
+-- More here:
+--
+--   https://www.youtube.com/watch?v=QBQ9_9R7o8I
+--   &list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
+--   &index=31
+--
+-- One property of the church-rosser theorem is:
+--
+-- If there is some reduction strategy that terminates,
+-- the outermost reduction strategy will *always* terminate.
+--
 instance Functor (K a) where
   fmap f (K a) = K a
 -- (K a) b
@@ -53,6 +70,7 @@ instance Functor (K a) where
 -- K :: a -> K a b
 -- Prelude> :kind K
 -- K :: * -> * -> *
+
 
 
 -- Question 3
@@ -74,6 +92,7 @@ newtype K' a b = K' a
 --  fmap f (Flip (K' b)) = Flip (K' (f b))
 
 
+
 -- Question 4
 data EvilGoateeConst a b = GoatyConst b deriving (Show)
 -- You thought you'd escaped the goats
@@ -83,25 +102,36 @@ instance Functor (EvilGoateeConst b) where
   fmap f (GoatyConst b) = GoatyConst (f b)
 
 
--- -- Question 5
--- data LiftItOut f a = LiftItOut (f a)
+
+-- Question 5
+data LiftItOut f a = LiftItOut (f a)
+
+-- This compiles, but does it make sense?
+instance Functor a => Functor (LiftItOut a) where
+  fmap f (LiftItOut g) = LiftItOut (fmap f g)
+
 
 
 -- -- Question 6
 -- data Parrapa f g a = DaWrappa (f a) (g a)
 
 
+
 -- -- Question 7
 -- data IgnoreOne f g a b =
 --  IgnoringSomething (f a) (g b)
+
+
 
 -- -- Question 8
 -- data Notorious g o a t =
 --  Notorious (g o) (g a) (g t)
 
 
+
 -- -- Question 9
 -- data List a = Nil | Cons a (List a)
+
 
 
 -- Question 10
@@ -127,6 +157,7 @@ instance Functor (GoatLord) where
   fmap f (OneGoat a) = OneGoat (f a)
   fmap f (MoreGoats a b c) =
    (MoreGoats (fmap f a) (fmap f b) (fmap f c))
+
 
 
 -- Question 11
