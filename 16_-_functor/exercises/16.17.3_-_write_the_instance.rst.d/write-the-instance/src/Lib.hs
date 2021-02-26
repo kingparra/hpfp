@@ -112,21 +112,31 @@ instance Functor a => Functor (LiftItOut a) where
 
 
 
--- -- Question 6
--- data Parrapa f g a = DaWrappa (f a) (g a)
+-- Question 6
+data Parrapa f g a = DaWrappa (f a) (g a) deriving (Show,Eq)
+-- f and g are type constructors that wrap their argument, a
+-- Show is needed for viewing in ghci, Eq is needed for the test case
+
+instance (Functor g, Functor h) => Functor (Parrapa g h) where
+  fmap f (DaWrappa g h) = DaWrappa (fmap f g) (fmap f h)
 
 
 
--- -- Question 7
--- data IgnoreOne f g a b =
---  IgnoringSomething (f a) (g b)
+-- Question 7
+data IgnoreOne f g a b = IgnoringSomething (f a) (g b)
+
+instance (Functor f, Functor g) => Functor (IgnoreOne f g b) where
+  fmap f (IgnoringSomething x y) =
+    IgnoringSomething x (fmap f y)
 
 
 
--- -- Question 8
--- data Notorious g o a t =
---  Notorious (g o) (g a) (g t)
+-- Question 8
+data Notorious g o a t =
+  Notorious (g o) (g a) (g t)
 
+instance Functor (Notorious g o t) where
+  fmap = undefined
 
 
 -- -- Question 9

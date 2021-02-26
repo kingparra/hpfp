@@ -1,12 +1,11 @@
 import Test.Hspec
 import Test.QuickCheck
+import Data.Monoid (Sum(..))
 import Lib
 
--- main :: IO ()
--- main = hspec $ do
---   -- Question 1
---   describe "More b a" $ do
---     it "f applies to the first and third args of L" $ do
---       fmap (+1) (L 1 2 3) `shouldBe` (L 2 2 4)
---     it "f applies f to the second arg of R" $ do
---       fmap (+1) (R 1 2 3) `shouldBe` (R 1 3 3)
+main :: IO ()
+main = hspec $ do
+  describe "Question 6" $ do
+    it "Can fmap into wrapper tycons" $ do
+      fmap (+ (3 :: Int)) (DaWrappa (Sum 8) (Sum 12)) `shouldBe`
+        (DaWrappa (Sum {getSum = 11}) (Sum {getSum = 15}))
