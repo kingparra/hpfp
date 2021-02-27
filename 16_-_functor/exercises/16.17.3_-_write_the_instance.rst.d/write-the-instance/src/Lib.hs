@@ -132,11 +132,10 @@ instance (Functor f, Functor g) => Functor (IgnoreOne f g b) where
 
 
 -- Question 8
-data Notorious g o a t =
-  Notorious (g o) (g a) (g t)
+data Notorious g o a t = Notorious (g o) (g a) (g t) deriving (Eq, Show)
 
-instance Functor (Notorious g o t) where
-  fmap = undefined
+instance Functor g => Functor (Notorious g o t) where
+  fmap f (Notorious x y z) = Notorious x y (fmap f z)
 
 
 -- -- Question 9
