@@ -1,35 +1,39 @@
 -- 16.3 There's a whole lot of fmap goin' round
--- page 625, after paragraph 2 on that page
+-- page 630, after the second paragraph on that page
 
 
--- "We can see how the type of fmap specializes to
--- different types here:"
+{-# ANN Identity ("Hlint: Ignore: Use newtype instead of data") #-}
+{-# ANN Identity ("Hlint: Ignore: Use newtype instead of data") #-}
 
--- Where do these types come from? They aren't defined
--- earlier in this chapter.
+
+data Identity a =
+  Identity a deriving (Eq, Show)
+
+
+data Constant a b =
+  Constant b deriving (Eq, Show)
+
+
 type E e = Either e
 type C e = Constant e
 type I   = Identity
 
-{--  Functor f =>
-fmap :: (a -> b) ->      f a ->      f b
-     :: (a -> b) ->     [] a ->     [] b
-     :: (a -> b) ->  Maybe a ->  Maybe b
-     :: (a -> b) ->    E e a ->    E e b
-     :: (a -> b) ->   (e,) a ->   (e,) b
-     :: (a -> b) ->      I a ->      I b
-     :: (a -> b) ->    C e a ->    C e b
--}
 
+{- "We can see how the type of ⍘fmap⍘ 
+   specializes to different types here"
+  
+   fmap :: Functor f
+        =>  (a -> b)   ->      f a    ->      f b
 
-{-
--- "If you are using GHC 8 or newer, you can also see
--- this for yourself in your REPL by doing this:"
-
-:set -XTypeApplications
-:type fmap @Maybe
-:type fmap @(Either _)
-
--- What is TypeApplications, what does it do, and how do
--- I use it?
--}
+   fmap ::  (a -> b)   ->     [] a    ->     [] b
+  
+   fmap ::  (a -> b)   ->  Maybe a    ->  Maybe b
+  
+   fmap ::  (a -> b)   ->    E e a    ->    E e b
+  
+   fmap ::  (a -> b)   ->   (e,) a    ->   (e,) b
+  
+   fmap ::  (a -> b)   ->      I a    ->      I b
+  
+   fmap ::  (a -> b)   ->    C e a    ->    C e b
+ -}
