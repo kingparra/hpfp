@@ -8,10 +8,10 @@ https://wiki.haskell.org/Typeclassopedia#Functor
 
    **What the hell is a functor?**
 
-   It's an algebra that lets you map over shit! Sometimes
-   this is a data structure, like a list or tree, and
-   sometimes this is computational context, such as
-   ``Just`` or ``Either`` or ``IO``.
+   It's an algebra that lets you map over things!
+   Sometimes this is a data structure, like a list or
+   tree, and sometimes this is computational context,
+   such as ``Just`` or ``Either`` or ``IO``.
 
    In Haskell there is no way to enforce the laws of a
    type classes algebra. (Instead we rely on programmer
@@ -112,32 +112,18 @@ This chapter will include:
 
 16.2 What's a functor?
 ----------------------
-::
-
-  --       input type constructor
-  --         must take one type
-  --         argument to become
-  --           a concrete type
-  --            vvvvvvvvvvvvv
-  class Functor (f :: * -> *) where
-  --
-  --                             may be a differnt
-  --               takes an a   value than a
-  --              inside some      /
-  --               container f    /
-  --                    v        v
-    fmap :: (a -> b) -> f a -> f b
-  --        ^^^^^^^^           ^
-  --       function to         |
-  --     perform  on the   this is the smae f!
-  --      enclosed type
-  --
-    (<$) :: a -> f b -> f a -- Essentially ``fmap . const``
-    {-# MINIMAL fmap #-}
-
+A functor is a way to apply a function to the inhabitants
+of some structure that we don't want to alter.
 
 16.4 Let's talk about f baby
 ----------------------------
+.. The book says "Other means of implementing [Functor] are
+.. possible [rather than using type classes], but this is
+.. the most convenient way to do so." What *are* those other
+.. methods?
+
+.. include:: figures/16.2/SomeFunctor.hs
+   :code:
 
 16.4.5 A shining star for you to see what your f can truly be
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
