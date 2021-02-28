@@ -138,9 +138,12 @@ instance Functor g => Functor (Notorious g o t) where
   fmap f (Notorious x y z) = Notorious x y (fmap f z)
 
 
--- -- Question 9
--- data List a = Nil | Cons a (List a)
+-- Question 9
+data List a = Nil | Cons a (List a) deriving (Eq, Show)
 
+instance Functor List where
+  fmap f Nil = Nil
+  fmap f (Cons a l) = Cons (f a) (fmap f l)
 
 
 -- Question 10
@@ -151,15 +154,6 @@ data GoatLord a
                (GoatLord a)
                (GoatLord a)
 -- A VERITABLE HYDRA OF GOATS
-
-{-
-            *
-        /   |    \
-   NoGoat   *    (OneGoad "Larry")
-          / | \
-        No  *  O "Page"
-           ...
--}
 
 instance Functor (GoatLord) where
   fmap f (NoGoat) = NoGoat
