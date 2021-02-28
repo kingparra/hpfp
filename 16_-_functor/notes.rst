@@ -115,8 +115,6 @@ This chapter will include:
 A functor is a way to apply a function to the inhabitants
 of some structure that we don't want to alter.
 
-16.4 Let's talk about f baby
-----------------------------
 .. The book says "Other means of implementing [Functor] are
 .. possible [rather than using type classes], but this is
 .. the most convenient way to do so." What *are* those other
@@ -124,6 +122,36 @@ of some structure that we don't want to alter.
 
 .. include:: figures/16.2/SomeFunctor.hs
    :code:
+
+
+16.4 Let's talk about f baby
+----------------------------
+We know that the ``f`` in our ``Functor`` definition must
+be kind ``* -> *`` for a couple of reasons, which we will
+first describe and then demonstrate:
+
+1. Each argument (and result) in the type signature must
+   be fully applied. Each argument must have the kind
+   ``*``.
+2. The type ``f`` was applied to a single argument in two
+   different places, ``f a`` and ``f b``. Since ``f a``
+   and ``f b`` must each have the kind ``*``, ``f`` by
+   itself must be kind ``* -> *``.
+
+16.4.1 Shining star come into view
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**Every argument to the type constructor of ``->`` must
+be of kind ``*``.** ::
+
+  ·∾ :kind (->)
+  (->) :: * -> * -> *
+
+Given this knowledge, we can know something about
+``Functor`` from the type of ``fmap``::
+
+  class Functor f where
+      fmap      :: (a -> b)  ->  f a  ->  f b
+  --  has kind:       *           *        *
 
 16.4.5 A shining star for you to see what your f can truly be
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
