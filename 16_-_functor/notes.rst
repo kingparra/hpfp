@@ -140,18 +140,27 @@ first describe and then demonstrate:
 
 16.4.1 Shining star come into view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-**Every argument to the type constructor of ``->`` must
-be of kind ``*``.** ::
+Every argument to the type constructor of ``->``
+must be of kind ``*``::
 
   ·∾ :kind (->)
   (->) :: * -> * -> *
+
+In other words; Each argument and result of every
+function must be a *type constant* (or concrete type),
+rather than a type constructor awaiting arguments.
 
 Given this knowledge, we can know something about
 ``Functor`` from the type of ``fmap``::
 
   class Functor f where
       fmap      :: (a -> b)  ->  f a  ->  f b
-  --  has kind:       *           *        *
+      --              *           *        *
+
+Remember that type variables are scoped to the type class
+declaration that introduced them. The ``f`` in ``class
+Functor (f :: * -> *) where { ... }`` is the same ``f``
+within the type signature of everything withing braces.
 
 16.4.5 A shining star for you to see what your f can truly be
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
