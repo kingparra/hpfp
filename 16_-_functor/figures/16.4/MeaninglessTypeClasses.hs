@@ -64,7 +64,7 @@ class Biffy where
 -- next couple of examples.
 
 -- Remember that the name of the variable
--- before the where in s atypeclass definition
+-- before the where in a type class definition
 -- binds the occurences of that name throughout
 -- the definition.
 
