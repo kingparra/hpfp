@@ -275,3 +275,64 @@ functions over a plurality of values.
   ·∾ ([(+1),(*2)] <*> [2,4]) == [3,5,4,8] &&
        [(+1)2,(+1)4,(*2)2,(*2)4] == [3,5,4,8]
   True
+
+  ·∾ (,) <$> [1,2] <*> [3,4]
+  [(1,3),(1,4),(2,3),(2,4)]
+
+  ·∾ import Control.Applicative
+
+  ·∾ liftA2 (+) [1,2] [3,5]
+  [4,6,5,7]
+
+  ·∾ max <$> [1,2] <*> [1,4]
+  [1,4,2,4]
+
+  ·∾ liftA2 max [1,2] [1,4]
+  [1,4,2,4]
+
+If you're familiar with Cartesian products, this probably
+looks a lot like one, but with functions.
+
+More examples! ::
+
+  ·∾ :load figures/17.5/LookupTables.hs
+  [1 of 1] Compiling LookupTables     ( figures/17.5/LookupTables.hs, interpreted )
+  Ok, one module loaded.
+
+  ·∾ f 3
+  Just "hello"
+
+  ·∾ g 8
+  Just "chris"
+
+  ·∾ (++) <$> f 3 <*> g 7
+  Just "hellosup?"
+
+  ·∾ (+) <$> h 5 <*> m 1
+  Just 9007
+
+  ·∾ (+) <$> h 5 <*> m 6
+  Nothing
+
+  ·∾ liftA2 (++) (g 9) (f 4)
+  Just "alohajulie"
+
+  ·∾ liftA2 (^) (h 5) (m 4)
+  Just 60466176
+
+  ·∾ liftA2 (*) (h 5) (m 4)
+  Just 60
+
+  ·∾ liftA2 (*) (h 1) (m 1)
+  Nothing
+
+  ·∾ -- Your applicative context can also sometimes be IO:
+  ·∾ (++) <$> getLine <*> getLine
+  one
+  two
+  "onetwo"
+
+  ·∾ (,) <$> getLine <*> getLine
+  one
+  two
+  ("one","two")
