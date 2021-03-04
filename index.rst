@@ -30,6 +30,7 @@ Contents
    14_-_testing/notes
    14_-_testing/questions
    15_-_monoid_semigroup/notes
+   17_-_applicative/notes
 
 
 Indices and tables
