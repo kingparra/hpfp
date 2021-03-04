@@ -5,16 +5,24 @@
 In the following exercises you will need to use
 these terms to make the expressions typecheck.
 
-1. ``pure``
-2. ``(<$>)``
-3. ``(<*>``
+1. ``pure  :: Applicative f =>            a -> f a``
+2. ``(<$>) :: Functor f     =>     (a -> b) -> f a -> f b``
+3. ``(<*>) :: Applicative f =>   f (a -> b) -> f a -> f b``
 
 Make the following expressions typecheck:
 
-1. ::
+1.
+   ::
 
      added :: Maybe Integer
      added = (+3) (lookup 3 $ zip [1,2,3] [4,5,6])
+
+   Alright, here is the first one:
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
 
 2. ::
 
@@ -26,6 +34,13 @@ Make the following expressions typecheck:
 
      tupled :: Maybe (Integer, Integer)
      tupled = (,) y z
+
+   Now it typechecks!
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
 
 3. ::
 
@@ -42,3 +57,12 @@ Make the following expressions typecheck:
 
      maxed :: Maybe Int
      maxed = max' x y
+
+
+   This should work:
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+

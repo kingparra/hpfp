@@ -336,3 +336,5 @@ More examples! ::
   one
   two
   ("one","two")
+
+.. include:: exercises/17.5.3_-_lookups.rst
