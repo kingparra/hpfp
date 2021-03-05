@@ -8,7 +8,8 @@
 * 17.4 Applicative functor are monoidal functors
 
   * 17.4.1 Show me the monoids
-  * 17.4.2 Maybe Monoid and Applicative
+  * 17.4.2 Tuple Monoid and Applicative side by side
+  * 17.4.3 Maybe Monoid and Applicative
 
 * 17.5 Applicative in use
 
