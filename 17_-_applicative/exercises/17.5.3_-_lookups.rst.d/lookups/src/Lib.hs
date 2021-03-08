@@ -48,5 +48,4 @@ b = lookup 2 (zip as bs)
 
 summed :: Maybe Integer
 summed =
-  -- look at the tupled function for inspiration!
   sum <$> (pure (,) <*> a <*> b)

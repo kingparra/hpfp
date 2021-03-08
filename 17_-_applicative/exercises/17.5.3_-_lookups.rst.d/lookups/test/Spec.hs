@@ -16,3 +16,7 @@ main = hspec $ do
   describe "Question 3" $ do
     it "maxed has type Maybe Int" $ do
       (show (typeOf maxed)) `shouldBe` "Maybe Int"
+
+  describe "Question 4" $ do
+    it "summed :: Maybe Integer" $ do
+      (show (typeOf summed)) `shouldBe` "Maybe Integer"
