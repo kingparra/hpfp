@@ -1,5 +1,7 @@
 module LookupTables where
 import Control.Applicative
+-- 17.5.2 What's the List applicative do?
+-- page 694
 
 
 f x = lookup x [ (3, "hello")
