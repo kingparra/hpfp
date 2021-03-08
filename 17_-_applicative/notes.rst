@@ -84,9 +84,9 @@ The two core operations of ``Applicative`` are
 context.
 
 The ``<*>`` operator is described as "sequential
-application". It applies monoids contained in one
-functor to the contents of another functor (as seen
-above).
+application" (or sometimes "apply" or just "ap").
+It applies monoids contained in one functor to
+the contents of another functor (as seen above).
 
 Along with these core functions, the
 ``Control.Applicative`` module provides some other
@@ -175,8 +175,11 @@ First let us notice something::
   (<$>) ::   (a -> b) -> f a -> f b
   (<*>) :: f (a -> b) -> f a -> f b
 
-In the type signature above, ``mappend`` is our function
-from ``(a -> b)``.
+In the type signature above, ``mappend`` is our
+function from ``(a -> b)``. Each operator lifts
+a bit more.  ``<$>`` lifts the output into a
+functorial context, and ``<*>`` additionally
+has its input function within a functor.
 
 ::
 
@@ -239,12 +242,12 @@ No explanation for you. What about *this*? ::
 Squint if you can't see it::
 
   instance (Monoid a, Monoid b) => Monoid (a,b) where
-    mempty                  = (mempty, mempty)
-    (a,b) `mappend` (a',b') = (a `mappend` a', b `mappend` b')
+    mempty                   =          (mempty, mempty)
+    (a,b) `mappend` (a',b')  =  (a `mappend` a', b `mappend` b')
 
   instance Monoid a => Applicative ((,) a) where
-    pure x          = (mempty, x)
-    (u,f) <*> (v,x) = (u `mappend` v, f x)
+    pure x                   =          (mempty, x)
+    (u,f) <*> (v,x)          =   (u `mappend` v, f x)
 
 17.4.3 Maybe Monoid and Applicative
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -259,82 +262,76 @@ behaves.
 
 17.5 Applicative in use
 -----------------------
+This section provides usage examples of several
+instances of ``Applicative``.
 
 17.5.1 List Applicative
 ^^^^^^^^^^^^^^^^^^^^^^^
-With the list applicative, we are mapping a plurality of
-functions over a plurality of values.
+Let's start by specializing the types:
 
-::
+.. include:: figures/17.5/ap_type_specialzation.txt
+   :code:
+
+17.5.2 What's the List applicative do?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Previously  with list ``Functor``, we were
+mapping a single function over a plurality of
+values::
+
+  ·∾ fmap (2^) [1,2,3]
+  [2,4,8]
+
+With the list applicative, we are mapping a
+plurality of functions over a plurality of
+values. ::
 
   ·∾ [(+1),(*2)] <*> [2,4]
   [3,5,4,8]
 
-  ·∾ -- [(+1),(*2)] <*> [2,4]  ≡  [3,5,4,8]  ≡  [(+1)2,(+1)4,(*2)2,(*2)4]
+Now what happened with that expression we
+tested? Something like this:
 
-  ·∾ ([(+1),(*2)] <*> [2,4]) == [3,5,4,8] &&
-       [(+1)2,(+1)4,(*2)2,(*2)4] == [3,5,4,8]
-  True
+  ``[(+1),(*2)] <*> [2,4]`` ≡>
 
-  ·∾ (,) <$> [1,2] <*> [3,4]
-  [(1,3),(1,4),(2,3),(2,4)]
+  ``[(+1)2,(+1)4,(*2)2,(*2)4]`` ≡>
+
+  ``[3,5,4,8]``
+
+Apply maps each function value from the first
+list over the second list, applies the
+operation, and returns one list.
+
+The ``liftA2`` function gives us another way to
+write this, too::
 
   ·∾ import Control.Applicative
 
   ·∾ liftA2 (+) [1,2] [3,5]
   [4,6,5,7]
 
-  ·∾ max <$> [1,2] <*> [1,4]
-  [1,4,2,4]
+If you're familiar with Cartesian products,
+this probably looks a lot like one, but with
+functions.
 
-  ·∾ liftA2 max [1,2] [1,4]
-  [1,4,2,4]
+There are a *ton* of examples in this section
+that aren't included inline in my notes here.
+It felt inappropriate to put every single one
+here, since the first few already illustrate
+the point.
 
-If you're familiar with Cartesian products, this probably
-looks a lot like one, but with functions.
+So, here is a terminal recording of me typing
+all of them out, to serve as proof (to myself)
+that I actually did try them. It's long and
+messy, so I don't recommend you watch it.
 
-More examples! ::
+.. raw:: html
 
-  ·∾ :load figures/17.5/LookupTables.hs
-  [1 of 1] Compiling LookupTables     ( figures/17.5/LookupTables.hs, interpreted )
-  Ok, one module loaded.
+   <script id="asciicast-naiYf2OqT1qpDAjchpjRYPbIG"
+   src="https://asciinema.org/a/naiYf2OqT1qpDAjchpjRYPbIG.js"
+   async></script>
 
-  ·∾ f 3
-  Just "hello"
-
-  ·∾ g 8
-  Just "chris"
-
-  ·∾ (++) <$> f 3 <*> g 7
-  Just "hellosup?"
-
-  ·∾ (+) <$> h 5 <*> m 1
-  Just 9007
-
-  ·∾ (+) <$> h 5 <*> m 6
-  Nothing
-
-  ·∾ liftA2 (++) (g 9) (f 4)
-  Just "alohajulie"
-
-  ·∾ liftA2 (^) (h 5) (m 4)
-  Just 60466176
-
-  ·∾ liftA2 (*) (h 5) (m 4)
-  Just 60
-
-  ·∾ liftA2 (*) (h 1) (m 1)
-  Nothing
-
-  ·∾ -- Your applicative context can also sometimes be IO:
-  ·∾ (++) <$> getLine <*> getLine
-  one
-  two
-  "onetwo"
-
-  ·∾ (,) <$> getLine <*> getLine
-  one
-  two
-  ("one","two")
+Instead, you'll find a more nicely formatted
+version of those ghci examples in the figures
+directory.
 
 .. include:: exercises/17.5.3_-_lookups.rst
