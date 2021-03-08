@@ -33,3 +33,20 @@ max' = max
 
 maxed :: Maybe Int
 maxed = pure max' <*> x' <*> y'
+
+
+
+-- Question 4
+as = [1,2,3]
+bs = [4,5,6]
+
+a :: Maybe Integer
+a = lookup 3 (zip as bs)
+
+b :: Maybe Integer
+b = lookup 2 (zip as bs)
+
+summed :: Maybe Integer
+summed =
+  -- look at the tupled function for inspiration!
+  sum <$> (pure (,) <*> a <*> b)
