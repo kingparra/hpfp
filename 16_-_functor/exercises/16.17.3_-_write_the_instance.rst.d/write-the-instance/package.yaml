@@ -1,7 +1,8 @@
 ---
 name: write-the-instance
-dependencies: base >= 4.7 && < 5
-library: {source-dirs: src}
+dependencies: [base >= 4.7 && < 5, QuickCheck]
+library:
+  source-dirs: src
 tests:
   write-the-instance-test:
     main: Spec.hs

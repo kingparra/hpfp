@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 515ec7d69f22e517ac3a6f5ae48eb6b4bbc8c98ec4da5d91ea8cc95efc61e19e
+-- hash: 2822f37d174e6faa2229596736c2611555bb786d8e1cff70f1064298d4fc5b27
 
 name:           write-the-instance
 version:        0.0.0
@@ -18,7 +18,8 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      QuickCheck
+    , base >=4.7 && <5
   default-language: Haskell2010
 
 test-suite write-the-instance-test
