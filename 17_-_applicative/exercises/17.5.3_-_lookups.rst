@@ -24,7 +24,8 @@ Make the following expressions typecheck:
       :start-after: -- Question 1
       :end-before: -- Question 2
 
-2. ::
+2.
+   ::
 
      y :: Maybe Integer
      y =  lookup 3 $ zip [1,2,3] [4,5,6]
@@ -42,7 +43,8 @@ Make the following expressions typecheck:
       :start-after: -- Question 2
       :end-before: -- Question 3
 
-3. ::
+3.
+   ::
 
      import Data.List (elemIndex)
 
@@ -66,3 +68,23 @@ Make the following expressions typecheck:
       :start-after: -- Question 3
       :end-before: -- Question 4
 
+4.
+   ::
+
+     as = [1,2,3]
+     bs = [4,5,6]
+
+     a :: Maybe Integer
+     a = lookup 3 (zip as bs)
+
+     b :: Maybe Integer
+     b = lookup 2 (zip as bs)
+
+     summed :: Maybe Integer
+     summed = sum $ (,) a b
+
+   This should work:
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 4

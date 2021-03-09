@@ -1,0 +1,31 @@
+17.9.2 Write Applicative instances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Write instances for the following datatypes.
+Confused? Write out what the type should be. Use the
+checkers library to validate the instances.
+
+1. ::
+
+     data Pair a = Pair a a deriving Show
+
+2. This should look familiar.
+
+   ::
+
+     data Two a b = Two a b
+
+3. ::
+
+     data Three a b c = Three a b c
+
+4. ::
+
+     data Three' a b = Three' a b b
+
+5. ::
+
+     data Four a b c d = Four a b c d
+
+6. ::
+
+     data Four' a b = Four' a a a b
