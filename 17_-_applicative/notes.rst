@@ -2,54 +2,6 @@
  Chapter 17: Applicative
 *************************
 
-.. topic:: Summary
-
-   **First, some examples**
-
-   ::
-
-     -- Recall that <$> is infix fmap
-
-     ·∾ (,) <$> [1,2] <*> [3,4]
-     [(1,3),(1,4),(2,3),(2,4)]
-
-     -- This time (,) is contained in a list
-
-     ·∾ [(,)] <*> [1,2] <*> [3,4]
-     [(1,3),(1,4),(2,3),(2,4)]
-
-     ·∾ (Just (++)) <*> (Just "hello ") <*> (Just "there")
-     Just "hello there"
-
-     ·∾ import Control.Applicative (liftA2)
-
-     ·∾ liftA2 (,) [1,2] [3,4]
-     [(1,3),(1,4),(2,3),(2,4)]
-
-   **Class methods**
-
-   Applicative has two essential class methods, ``(<*>)``
-   (pronounced "apply"), and ``pure``.
-
-   **Laws**
-
-   * **Identity**:      ``pure id <*> v`` :math:`=` ``v``
-   * **Composition**:   ``pure (.) <*> u <*> v <*> w`` :math:`=` ``u <*> (v <*> w)``
-   * **Homomorphism**:  ``pure f <*> pure x`` :math:`=` ``pure (f x)``
-   * **Interchange**:   ``u <*> pure y`` :math:`=` ``pure ($ y) <*> u``
-
-   **Where is it defined?**
-
-   ``Applicative`` is defined in the ``base``
-   package. It's exported by ``Prelude`` and
-   ``Control.Applicative`` (which has a few extra
-   utility functions).
-
-   * `Docs for Control.Applicative
-     <https://hackage.haskell.org/
-     package/base-4.10.1.0/docs/
-     Control-Applicative.html
-     #t:Applicative>`_
 
 17.1 Applicative
 ----------------
@@ -291,10 +243,8 @@ values. ::
 Now what happened with that expression we
 tested? Something like this:
 
-  ``[(+1),(*2)] <*> [2,4]`` ≡>
-
-  ``[(+1)2,(+1)4,(*2)2,(*2)4]`` ≡>
-
+  ``[(+1),(*2)] <*> [2,4]`` ≡
+  ``[(+1)2,(+1)4,(*2)2,(*2)4]`` ≡
   ``[3,5,4,8]``
 
 Apply maps each function value from the first
@@ -315,10 +265,6 @@ functions.
 
 There are a *ton* of examples in this section
 that aren't included inline in my notes here.
-It felt inappropriate to put every single one
-here, since the first few already illustrate
-the point.
-
 So, here is a terminal recording of me typing
 all of them out, to serve as proof (to myself)
 that I actually did try them. It's long and
@@ -335,3 +281,99 @@ version of those ghci examples in the figures
 directory.
 
 .. include:: exercises/17.5.3_-_lookups.rst
+
+17.5.4 Identity
+^^^^^^^^^^^^^^^
+The ``Identity`` type here is a way to introduce
+structure without changing the semantics of what
+we're doing.
+
+Specializing the types
+~~~~~~~~~~~~~~~~~~~~~~
+Here is what the type will look like when our
+structure is Identity
+
+.. include:: figures/17.5/identity_type_specialization.txt
+   :code:
+
+
+17.6 Applicative laws
+---------------------
+After examining the law, try each expression in the REPL.
+
+Identity
+^^^^^^^^
+``id`` embedded in an applicative applied to a value
+results in that value::
+
+  pure id <*> v   =   v
+
+.. raw:: html
+
+   <script id="asciicast-i7MQ5QlIsrRMBPN0ZFIwRFeqU"
+   src="https://asciinema.org/a/i7MQ5QlIsrRMBPN0ZFIwRFeqU.js"
+   async></script>
+
+Composition
+^^^^^^^^^^^
+The result of composing our functions first and then
+applying them should be the same as the result of
+applying our functions first and then composing them.
+
+::
+
+  pure (.) <*> u <*> v <*> w   =   u <*> (v <*> w)
+
+This law is meant to ensure that there are no
+surprises resulting from composing our function
+applications.
+
+.. raw:: html
+
+   <script id="asciicast-jmnP4ed4axuSSiGG2nEcq67zq"
+   src="https://asciinema.org/a/jmnP4ed4axuSSiGG2nEcq67zq.js"
+   async></script>
+
+Homomorphism
+^^^^^^^^^^^^
+A *homomorphism* is a structure-preserving map
+between two structures. ::
+
+  pure f <*> pure x   =   pure (f x)
+
+The general idea is that applying the function
+doesn't change the structure around the value.
+
+.. raw:: html
+
+   <script id="asciicast-VChlf3N4j9OfH4owmVgiT2yBv"
+   src="https://asciinema.org/a/VChlf3N4j9OfH4owmVgiT2yBv.js"
+   async></script>
+
+Interchange
+^^^^^^^^^^^
+Here is a rephrasing of the interchange law without
+``($)`` that I find easier to read::
+
+  a <*> pure v  =  pure (\f -> f v) <*> a
+
+In this phrasing,
+
+* ``a`` is an applicative with a function in it, and
+* ``v`` is an applicative with a value in it.
+
+.. raw:: html
+
+   <script id="asciicast-zbXZL86vYjErVxS83SEHjxRHM"
+   src="https://asciinema.org/a/zbXZL86vYjErVxS83SEHjxRHM.js"
+   async></script>
+
+
+17.9 Chapter Exercises
+----------------------
+
+.. include:: exercises/17.9.1_-_specialize_the_types.rst
+
+.. include:: exercises/17.9.2_-_write_applicative_instances.rst
+
+.. include:: exercises/17.9.3_-_combinations.rst
