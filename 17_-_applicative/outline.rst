@@ -22,18 +22,19 @@
     * 3
     * 4
 
-  * 17.5.4 Identity
+  * 17.5.4 Identity -- page 703
 
     * Specializing the types
+    * Exercise: Identity Instance -- page 704
 
-  * 17.5.5 Constant
+  * 17.5.5 Constant -- page 705
 
     * Specializing the types
+    * Exercise: Constant Instance -- page 706
 
-  * 17.5.6 Exercise: Constant Instance -- 699
   * 17.5.7 Maybe Applicative
 
-    * Specializing the types
+    * Specializing the types -- page 707
     * Using the Maybe Applicative
     * Breaking down that example
     * Maybe Functor and the Name constructor
