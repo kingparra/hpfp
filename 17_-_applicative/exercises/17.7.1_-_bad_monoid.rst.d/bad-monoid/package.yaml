@@ -1,0 +1,17 @@
+---
+name: bad-monoid
+
+dependencies:
+  - base >= 4.7 && < 5
+  - QuickCheck
+  - checkers
+
+library:
+  source-dirs: src
+
+tests:
+  bad-monoid-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [bad-monoid, QuickCheck, checkers]
