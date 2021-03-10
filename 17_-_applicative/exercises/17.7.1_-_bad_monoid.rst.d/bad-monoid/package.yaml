@@ -1,5 +1,6 @@
 ---
 name: bad-monoid
+description: A test suite for the Applicative type class laws.
 
 dependencies:
   - base >= 4.7 && < 5

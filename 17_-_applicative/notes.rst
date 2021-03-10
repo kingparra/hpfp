@@ -362,11 +362,26 @@ In this phrasing,
 * ``a`` is an applicative with a function in it, and
 * ``v`` is an applicative with a value in it.
 
+An applicative containing functions applied to an
+applicative of values in the same context is
+equivalent to applying that function to every member
+element of the applicative containing values.
+
 .. raw:: html
 
    <script id="asciicast-zbXZL86vYjErVxS83SEHjxRHM"
    src="https://asciinema.org/a/zbXZL86vYjErVxS83SEHjxRHM.js"
    async></script>
+
+
+17.7 You knew this was coming
+-----------------------------
+This section has you set up a project to property
+test the ``Applicative`` type class laws using a
+hackage package known as ``checkers``.
+
+Check out ``exercises/17.7.1_-_bad_monoid.rst.d/bad-monoid/``
+for more.
 
 
 17.9 Chapter Exercises

@@ -4,10 +4,11 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 271eb37a6fd85874ddfb0742eb081da1211b9800061cbed2c3f790c35addebd9
+-- hash: 307ddec8472826038f572d65f4787cf374fab070447c300a30914227d494e199
 
 name:           bad-monoid
 version:        0.0.0
+description:    A test suite for the Applicative type class laws.
 build-type:     Simple
 
 library
