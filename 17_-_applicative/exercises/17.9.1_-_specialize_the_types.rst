@@ -10,7 +10,8 @@ of the typeclass methods to more concrete
 types that have the type we told you to
 fill in.
 
-1. ::
+1.
+   ::
 
      -- Type
      []
@@ -19,7 +20,19 @@ fill in.
      pure :: a -> ? a
      (<*>) :: ? (a -> b) -> ? a -> ? b
 
-2. ::
+   This one can be solved with ghci::
+
+     ·∾ :set -XTypeApplications
+
+     ·∾ :type pure @[]
+     pure @[] :: a -> [a]
+
+     ·∾ :type (<*>) @[]
+     (<*>) @[] :: [a -> b] -> [a] -> [b]
+
+
+2.
+   ::
 
      -- Type
      IO
@@ -28,7 +41,16 @@ fill in.
      pure :: a -> ? a
      (<*>) :: ? (a -> b) -> ? a -> ? b
 
-3. ::
+   This one can also be solved directly with ghci::
+
+     ·∾ :type pure @IO
+     pure @IO :: a -> IO a
+
+     ·∾ :type (<*>) @IO
+     (<*>) @IO :: IO (a -> b) -> IO a -> IO b
+
+3.
+   ::
 
      -- Type
      (,) a
@@ -36,8 +58,8 @@ fill in.
      -- Methods
      pure :: a -> ? a
      (<*>) :: ? (a -> b) -> ? a -> ? b
-
-4. ::
+4.
+   ::
 
      -- Type
      (->) e
