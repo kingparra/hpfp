@@ -1,8 +1,9 @@
 17.9.2 Write Applicative instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Write instances for the following datatypes.
-Confused? Write out what the type should be. Use the
-checkers library to validate the instances.
+Confused? Write out what the type should be.
+Use the checkers library to validate the 
+instances.
 
 1. ::
 
