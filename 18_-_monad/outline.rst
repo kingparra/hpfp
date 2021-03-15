@@ -6,9 +6,10 @@
 * 18.2 Sorry - a monad is not a burrito
 
   * 18.2.1 Applicative m
-  * 18.2.2 The novel part of Monad
-  * 18.2.3 What Monad is not
-  * 18.2.4 Monad also lifts!
+  * 18.2.2 Core operations
+  * 18.2.3 The novel part of Monad
+  * 18.2.4 What Monad is not
+  * 18.2.5 Monad also lifts!
 
 * 18.3 Do syntax and monads
 
