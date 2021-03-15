@@ -1,0 +1,10 @@
+·∾ -- Monad's join operation is, in a sense,
+·∾ -- a generalization of concat!
+
+·∾ :set -XTypeApplications
+
+·∾ :type join @[]
+join @[] :: [[a]] -> [a]
+
+·∾ :type concat @[]
+concat @[] :: [[a]] -> [a]

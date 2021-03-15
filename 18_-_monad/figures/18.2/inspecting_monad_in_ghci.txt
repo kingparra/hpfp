@@ -1,0 +1,180 @@
+·∾ import Control.Monad
+
+·∾ :doc Monad
+
+    The Monad class defines the basic
+    operations over a monad, a concept
+    from a branch of mathematics known as
+    category theory. From the perspective
+    of a Haskell programmer, however, it
+    is best to think of a monad as an
+    abstract datatype of actions.
+
+    Haskells do expressions provide a
+    convenient syntax for writing monadic
+    expressions.
+
+    Instances of Monad should satisfy the
+    following laws:
+
+    [Left identity]
+
+              return a >>= k
+                    =
+                   k a
+
+    [Right identity]
+
+               m >>= return
+                    =
+                    m
+
+    [Associativity]
+
+         m >>= (\x -> (k x >>= h))
+                    =
+             (m >>= k) >>= h
+
+    Furthermore, the Monad and Applicative
+    operations should relate as follows:
+
+             pure   =   return
+
+             (<*>)  =   ap
+
+    The above laws imply:
+
+         fmap f xs  =  xs >>= return . f
+
+              (>>)  =  (*>)
+
+    and that pure and (<*>) satisfy the
+    applicative functor laws.
+
+    The instances of Monad for lists,
+    Data.Maybe.Maybe and System.IO.IO
+    defined in the "Prelude" satisfy
+    these laws.
+
+
+
+·∾ :info Monad
+
+    class Applicative m => Monad (m :: * -> *) where
+      (>>=)  :: m a -> (a -> m b) -> m b
+      (>>)   :: m a ->    m b     -> m b
+      return :: a   ->    m a
+      {-# MINIMAL (>>=) #-}
+
+    instance Monad (Either e) -- Defined in ‘Data.Either’
+    instance Monad []
+    instance Monad Maybe
+    instance Monad IO
+    instance Monad ((->) r)
+    instance Monoid a => Monad ((,) a)
+
+
+
+·∾ :doc (>>=)
+
+    Sequentially compose two actions, passing
+    any value produced by the first as an
+    argument to the second.
+
+·∾ :type (>>=)
+(>>=) :: Monad m => m a -> (a -> m b) -> m b
+
+·∾ :info (>>=)
+class Applicative m => Monad (m :: * -> *) where
+  (>>=) :: m a -> (a -> m b) -> m b
+  ...
+infixl 1 >>=
+
+
+
+·∾ :doc (>>)
+
+    Sequentially compose two actions,
+    discarding any value produced by the
+    first, like sequencing operators (such as
+    the semicolon) in imperative languages.
+
+·∾ :type (>>)
+(>>) :: Monad m => m a -> m b -> m b
+
+·∾ :info (>>)
+class Applicative m => Monad (m :: * -> *) where
+  ...
+  (>>) :: m a -> m b -> m b
+  ...
+infixl 1 >>
+
+
+
+·∾ :doc return
+
+    Inject a value into the monadic type.
+
+·∾ :type return
+return :: Monad m => a -> m a
+
+·∾ :info return
+class Applicative m => Monad (m :: * -> *) where
+  ...
+  return :: a -> m a
+  ...
+
+
+
+·∾ :doc join
+
+    The join function is the conventional
+    monad join operator. It is used to
+    remove one level of monadic structure,
+    projecting its bound argument into the
+    outer level.
+
+    Examples
+
+    A common use of join is to run an IO
+    computation returned from an GHC.Conc.STM
+    transaction, since GHC.Conc.STM
+    transactions cant perform IO directly.
+
+    Recall that
+
+      GHC.Conc.atomically :: STM a -> IO a
+
+    is used to run GHC.Conc.STM transactions
+    atomically. So, by specializing the
+    types of GHC.Conc.atomically and join to
+
+      GHC.Conc.atomically ::
+        STM (IO b) -> IO (IO b)
+
+      join ::
+         IO (IO b) -> IO b
+
+    we can compose them as
+
+      join . GHC.Conc.atomically ::
+        STM (IO b) -> IO b
+
+    to run a GHC.Conc.STM transaction and
+    the IO action it returns.
+
+·∾ :type join
+join :: Monad m => m (m a) -> m a
+
+
+
+·∾ -- Monad's join operation is, in a sense,
+·∾ -- a generalization of concat!
+
+·∾ :set -XTypeApplications
+
+·∾ :type join @[]
+join @[] :: [[a]] -> [a]
+
+·∾ :type concat @[]
+concat @[] :: [[a]] -> [a]
