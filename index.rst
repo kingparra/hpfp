@@ -30,6 +30,9 @@ Contents
    14_-_testing/notes
    14_-_testing/questions
    15_-_monoid_semigroup/notes
+   18_-_monad/outline
+   18_-_monad/notes
+
 
 
 Indices and tables
