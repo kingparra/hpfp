@@ -334,6 +334,14 @@ cleanest way to express ordering in a lambda
 calculus without bolting on something unpleasant
 is through nesting of expressions or lambdas.
 
+A more thorough exploration:
+
+.. raw:: html
+
+   <script id="asciicast-ZAeJbhDpDB4VPC6hNZFpvAyIl"
+   src="https://asciinema.org/a/ZAeJbhDpDB4VPC6hNZFpvAyIl.js"
+   async></script>
+
 Let's get back to desugaring ``do`` syntax
 with our now-enriched understanding of what
 monads do for us:
