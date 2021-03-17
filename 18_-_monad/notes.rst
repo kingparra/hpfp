@@ -307,8 +307,8 @@ transforming it ourselves:
 .. include:: figures/18.3/SequencingAndBinding.hs
    :code:
 
-When fmap alone isn't enough
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+18.3.1 When fmap alone isn't enough
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This won't work::
 
   ·∾ import Control.Monad
