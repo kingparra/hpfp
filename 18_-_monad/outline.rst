@@ -35,7 +35,7 @@
     * Using the Either Monad
     * Short Exercise: Either Monad -- page 768
 
-* 18.5 Monad laws
+* 18.5 Monad laws -- page 768
 
   * 18.5.1 Identity laws
   * 18.5.2 Associativity
@@ -45,16 +45,18 @@
 * 18.6 Application and composition
 * 18.7 Chapter Exercises
 
-  * 18.7.1 Write Monad instances for the following
-    types -- page 780
+  * 18.7.1 Write Monad instances for the
+    following types. Use QuickCheck to
+    validate them. -- page 780
 
     * 1
     * 2
     * 3
     * 4
 
-  * 18.7.2 Write the following functions using the
-    methods provided by Monad and Functor -- page 781
+  * 18.7.2 Write the following functions
+    using the methods provided by Monad
+    and Functor -- page 781
 
     * 1
     * 2
@@ -75,7 +77,7 @@
     http://hackage.haskell.org/package/validation
 
   * Conor McBride; Ross Paterson; Applicative
-    Programming with Eﬀects
+    Programming with Effects
     http://staff.city.ac.uk/~ross/papers/Applicative.html
 
   * Jeremy Gibbons; Bruno C. d. S. Oliveira; Essence

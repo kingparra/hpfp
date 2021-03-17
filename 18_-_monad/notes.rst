@@ -5,18 +5,12 @@
 
 18.1 Monad
 ----------
-Monads aren't essential to Haskell; Older
-versions of the language didn't have them.
-Instead, monads are a useful tool to
-construct and transform IO actions.
-
 In this chapter, we:
 
 * define Monad, its operations and laws;
 * look at several examples of monads in practice;
 * write the Monad instances for various types;
 * address some misinformation about monads.
-
 
 .. For a quick overview, check out this video:
 .. "Haskell for imperative programmers",
@@ -40,10 +34,6 @@ First let's take a look at the type class
 definition:
 
   .. include:: figures/18.2/monad_typeclass_definition.rst
-
-.. We can see from the ``MINIMAL`` pragma above
-.. that the only required class method is the
-.. operator ``(>>=)`` which is pronounced "bind".
 
 18.2.1 Applicative m
 ^^^^^^^^^^^^^^^^^^^^
@@ -125,6 +115,8 @@ Let's look at all three:
 
 .. ob-
 
+   tl;dr PIE *opi "near, against"
+
    word-forming element meaning "toward;
    against; before; near; across; down,"
    also used as an intensive,
@@ -134,8 +126,11 @@ Let's look at all three:
    upon, about; in the way of; with regard
    to, because of,"
 
-   from PIE root *epi, also *opi "near,
-   against" (see epi-).
+   from PIE root *epi,
+
+   also *opi "near, against"
+
+   (see epi-).
 
 .. topic:: Operator pronounciation guide
 
@@ -270,3 +265,90 @@ The ``Monad`` type class is generalized
 structure manipulation with some laws to
 make it sensible. Just like ``Functor`` and
 ``Applicative``. That's all there is to it.
+
+18.2.5 Monad also lifts!
+^^^^^^^^^^^^^^^^^^^^^^^^
+The monad type class also includes a set of
+``lift`` functions that are the same as the
+ones we already aw i ``Applicative``. They
+don't do anything different, but they are
+still around because some libraries used
+them before applicatives were discovered.
+
+.. raw:: html
+
+   <script id="asciicast-rrxHSW0M3cacRlq9Sut5Fm8et"
+   src="https://asciinema.org/a/rrxHSW0M3cacRlq9Sut5Fm8et.js"
+   async></script>
+
+
+18.3 Do syntax and monads
+-------------------------
+Do syntax works with any monad, not just IO.
+
+This section is going to talk about why
+``do`` is sugar and demonstrate what the
+``join`` of ``Monad`` can do for us.
+
+To begin with, let's look at some
+correspondences::
+
+  (*>) :: Applicative f => f a -> f b -> f b
+  (>>) :: Monad m =>       m a -> m b -> m b
+
+For our purposes, ``(*>)`` and ``(>>)`` are
+the same thing, sequencing functions, but
+with two different constraints.
+
+We can see what do syntax looks like after
+the compiler desugars it for us by manually
+transforming it ourselves:
+
+.. include:: figures/18.3/SequencingAndBinding.hs
+   :code:
+
+When fmap alone isn't enough
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This won't work::
+
+  ·∾ import Control.Monad
+
+  ·∾ putStrLn <$> getLine
+  Will this print?
+
+Why? Look at the type signature::
+
+  ·∾ :type putStrLn <$> getLine
+  putStrLn <$> getLine :: IO (IO ())
+
+This will fix it::
+
+  ·∾ join (putStrLn <$> getLine)
+  Will *this* print?
+  Will *this* print?
+
+**What join did here is merge the effects
+of** ``getLine`` **and** ``putStrLn`` **into
+a single IO action.** As it happens, the
+cleanest way to express ordering in a lambda
+calculus without bolting on something unpleasant
+is thorough nesting of expressions or lambdas.
+
+Let's get back to desugaring ``do`` syntax
+with our now-enriched understanding of what
+monads do for us:
+
+
+18.5 Monad laws
+---------------
+
+18.5.1 Identity laws
+^^^^^^^^^^^^^^^^^^^^
+* **Right identity**: ``m >>= return`` :math:`=` ``m``
+* **Left identity**: ``return x >>= f`` :math:`=` ``f x``
+
+18.5.2 Associativity
+^^^^^^^^^^^^^^^^^^^^
+* **Associativity**:
+
+  ``(m >>= f) >>= g`` :math:`=` ``m >>= (\x -> f x >>= g)``
