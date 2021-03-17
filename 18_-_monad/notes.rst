@@ -349,6 +349,14 @@ monads do for us:
 .. include:: figures/18.3/BindingAndSequencing.hs
    :code:
 
+**One key insight is how name binding with the
+assignment arrow like**
+``do { name <- getLine; putStrLn name }``
+**translates into bind, like** ``getLine >>= (\name ->
+putStrLn name)`` **.** When the function to be
+sequenced doesn't return a value that is later
+used, the "semicolon" translates into ``(>>)``.
+
 
 18.5 Monad laws
 ---------------
