@@ -1,5 +1,7 @@
 ·∾ import Control.Monad
 
+
+
 ·∾ :doc Monad
 
     The Monad class defines the basic
@@ -254,3 +256,56 @@ class (Functor t, Foldable t) => Traversable (t :: * -> *) where
 sequence_          ::  (Foldable t, Monad m) => t (m a) -> m ()
 Data.Functor.void  ::  Functor f => f a -> f ()
 GHC.Base.when      ::  Applicative f => Bool -> f () -> f ()
+
+
+
+·∾ import Control.Monad.Fail
+
+·∾ :doc fail
+<has no documentation>
+
+·∾ :type fail
+fail :: MonadFail m => String -> m a
+
+·∾ :info fail
+
+    class Monad m => MonadFail (m :: * -> *) where
+      fail :: String -> m a       -- Defined in ‘Control.Monad.Fail’
+
+
+
+·∾ :doc MonadFail
+
+    When a value is bound in do-notation,
+    the pattern on the left hand side of <-
+    might not match. In this case, this
+    class provides a function to recover.
+
+    A Monad without a MonadFail instance may
+    only be used in conjunction with pattern
+    that always match, such as newtypes,
+    tuples, data types with only a single
+    data constructor, and irrefutable
+    patterns (~pat).
+
+    Instances of MonadFail should satisfy
+    the following law: fails shoud be a
+    left zero for Control.Monad.>>=,
+
+    fail s >>= f  =  fail s
+
+    If your Monad is also
+    Control.Monad.MonadPlus, a popular
+    definition is
+
+    fail _ = mzero
+
+·∾ :info MonadFail
+
+    class Monad m => MonadFail (m :: * -> *) where
+      fail :: String -> m a
+      {-# MINIMAL fail #-}       -- Defined in ‘Control.Monad.Fail’
+
+      instance MonadFail []      -- Defined in ‘Control.Monad.Fail’
+      instance MonadFail Maybe   -- Defined in ‘Control.Monad.Fail’
+      instance MonadFail IO      -- Defined in ‘Control.Monad.Fail’
