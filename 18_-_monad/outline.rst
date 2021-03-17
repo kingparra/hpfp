@@ -19,21 +19,21 @@
 
   * 18.4.1 List
 
-    * Specializing the types
-    * Example of the List Monad in use
+    * 18.4.1.1 Specializing the types
+    * 18.4.1.2 Example of the List Monad in use
 
   * 18.4.2 Maybe Monad
 
-    * Specializing the types
-    * Using the Maybe Monad
-    * Exploding a spherical cow
-    * Fail fast, like an overfunded startup
+    * 18.4.2.1 Specializing the types
+    * 18.4.2.2 Using the Maybe Monad
+    * 18.4.2.3 Exploding a spherical cow
+    * 18.4.2.4 Fail fast, like an overfunded startup
 
   * 18.4.3 Either
 
-    * Specializing the types
-    * Using the Either Monad
-    * Short Exercise: Either Monad -- page 768
+    * 18.4.3.1 Specializing the types
+    * 18.4.3.2 Using the Either Monad
+    * 18.4.3.3 Short Exercise: Either Monad -- page 768
 
 * 18.5 Monad laws -- page 768
 
