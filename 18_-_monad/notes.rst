@@ -270,7 +270,7 @@ make it sensible. Just like ``Functor`` and
 ^^^^^^^^^^^^^^^^^^^^^^^^
 The monad type class also includes a set of
 ``lift`` functions that are the same as the
-ones we already aw i ``Applicative``. They
+ones we already saw in ``Applicative``. They
 don't do anything different, but they are
 still around because some libraries used
 them before applicatives were discovered.
@@ -332,11 +332,14 @@ of** ``getLine`` **and** ``putStrLn`` **into
 a single IO action.** As it happens, the
 cleanest way to express ordering in a lambda
 calculus without bolting on something unpleasant
-is thorough nesting of expressions or lambdas.
+is through nesting of expressions or lambdas.
 
 Let's get back to desugaring ``do`` syntax
 with our now-enriched understanding of what
 monads do for us:
+
+.. include:: figures/18.3/BindingAndSequencing.hs
+   :code:
 
 
 18.5 Monad laws
