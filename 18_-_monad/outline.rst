@@ -6,21 +6,69 @@
 * 18.2 Sorry - a monad is not a burrito
 
   * 18.2.1 Applicative m
+
+    (It's possible to write class methods of
+    applicative and functor only in terms of
+    Monad.)
+
   * 18.2.2 Core operations
+
+    (The main class methods provided by
+    Monad: ``(>>=)``, ``(>>)``, ``pure``.)
+
   * 18.2.3 The novel part of Monad
+
+    (How join reduces structure, like a
+    generalized form of ``concat``. This is
+    something that Functor and Applicative
+    can't do.)
+
   * 18.2.4 What Monad is not
+
+    (Monads are not: Impure, an eDSL, a
+    value, or about strictness. Monad is
+    only about structure manipulation.)
+
   * 18.2.5 Monad also lifts!
+
+    (Monad has ``liftA`` functions, like
+    applicative does.)
 
 * 18.3 Do syntax and monads
 
-  * 18.3.1 When fmap alone isn't enough
+  * 18.3.1 When ``fmap`` alone isn't enough
+
+    (An example of using join to concatenate
+    a two-dimensional monadic context.
+
+    Shortly followed by a code snippet that
+    desugars do blocks into their using
+    ``(>>)`` and ``(>>=)``.
+
+    I feel like this should be two
+    subsections rather than one.)
 
 * 18.4 Examples of Monad in use
+
+  (Examples of various instances of Monad,
+  and how they behave for their respective
+  types.)
 
   * 18.4.1 List
 
     * 18.4.1.1 Specializing the types
+
+      (Why do these sub-sub-sections exist?
+      There is a single line of information
+      here that can easily be omitted.)
+
     * 18.4.1.2 Example of the List Monad in use
+
+      (The ``x <- xs`` within a do block
+      binds individual elements from the
+      input list ``xs``. The nested structure
+      of monadic contexts before flattening
+      with join is apparent.)
 
   * 18.4.2 Maybe Monad
 
@@ -45,18 +93,14 @@
 * 18.6 Application and composition
 * 18.7 Chapter Exercises
 
-  * 18.7.1 Write Monad instances for the
-    following types. Use QuickCheck to
-    validate them. -- page 780
+  * 18.7.1 Write the instances -- page 780
 
     * 1
     * 2
     * 3
     * 4
 
-  * 18.7.2 Write the following functions
-    using the methods provided by Monad
-    and Functor -- page 781
+  * 18.7.2 Write the functions -- page 781
 
     * 1
     * 2
