@@ -87,51 +87,6 @@ Let's look at all three:
 
 (Notice something?)
 
-.. opposite (adj.)
-
-   late 14c., "placed or situated on the
-   other side of (something),"
-
-   from Old French opposite, oposite
-   "opposite, contrary" (13c.),
-
-   from Latin oppositus "standing against,
-   opposed, opposite," past participle of
-   opponere "set against,"
-
-   **from assimilated form of ob "in front
-   of, in the way of" (see ob-) + ponere "to
-   put, set, place" (see position (n.)).**
-
-   The meaning "contrary in character, of a
-   totally different nature" is from 1570s.
-   As a noun from late 14c., "the opposite
-   side of" (a place, the body, etc.), "an
-   opposite position or condition." From
-   early 15c. as "that which is opposite in
-   character or quality;" also "an
-   opponent." As a preposition from 1758. As
-   an adverb from 1817. Related: Oppositely.
-
-.. ob-
-
-   tl;dr PIE *opi "near, against"
-
-   word-forming element meaning "toward;
-   against; before; near; across; down,"
-   also used as an intensive,
-
-   from Latin ob (prep.) "in the direction
-   of, in front of, before; toward, to, at,
-   upon, about; in the way of; with regard
-   to, because of,"
-
-   from PIE root *epi,
-
-   also *opi "near, against"
-
-   (see epi-).
-
 .. topic:: Operator pronounciation guide
 
    * ``(>>=)`` is pronounced as "bind"
