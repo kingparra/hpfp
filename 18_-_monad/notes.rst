@@ -312,6 +312,55 @@ a value that is later used, the "semicolon"
 translates into ``(>>)``.
 
 
+18.4 Examples of Monad use
+--------------------------
+What we need now is to see how monads work
+in code, with ``Monad``'s other than IO.
+
+18.4.1 List
+^^^^^^^^^^^
+
+18.4.1.1 Specializing the types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+  (>>=) :: Monad m =>
+             m  a -> (a ->  m b)  ->  m b
+  (>>=) ::  [ ] a -> (a -> [ ] b) -> [ ] b
+
+  -- or more syntactically common
+  (>>=) :: [a] -> (a -> [b]) -> [b]
+
+  -- same as pure
+  return :: Monad m => a -> m a
+  return :: a -> [ ] a
+  return :: a -> [a]
+
+18.4.1.2 Example of the List Monad in use
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+  twiceWhenEven :: [Integer] -> [Integer]
+  twiceWhenEven xs = do
+    x <- xs
+    if even x
+    then [x*x, x*x]
+    else [x*x]
+
+The ``x <- xs`` line binds individual
+values out of the list input, like a
+list comprehension, giving us an ``a``.
+The if-then-else is our ``a -> m b``.
+
+::
+
+  ·∾ :load figures/18.4/TwiceWhenEven.hs
+  [1 of 1] Compiling TwiceWhenEven
+  ( figures/18.4/TwiceWhenEven.hs, interpreted )
+  Ok, one module loaded.
+
+  ·∾ twiceWhenEven [1,2,8,5]
+  [1,4,4,64,64,25]
 
 
 18.5 Monad laws
