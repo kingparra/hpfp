@@ -286,8 +286,7 @@ This will fix it::
 of** ``getLine`` **and** ``putStrLn`` **into
 a single IO action.** As it happens, the
 cleanest way to express ordering in a lambda
-calculus without bolting on something unpleasant
-is through nesting of expressions or lambdas.
+calculus is through nesting expressions.
 
 A more thorough exploration:
 
@@ -305,12 +304,14 @@ monads do for us:
    :code:
 
 **One key insight is how name binding with the
-assignment arrow like**
-``do { name <- getLine; putStrLn name }``
-**translates into bind, like** ``getLine >>= (\name ->
-putStrLn name)`` **.** When the function to be
-sequenced doesn't return a value that is later
-used, the "semicolon" translates into ``(>>)``.
+assignment arrow like** ``do { name <- getLine;
+putStrLn name }`` **translates into bind, like**
+``getLine >>= (\name -> putStrLn name)`` **.**
+When the function to be sequenced doesn't return
+a value that is later used, the "semicolon"
+translates into ``(>>)``.
+
+
 
 
 18.5 Monad laws
