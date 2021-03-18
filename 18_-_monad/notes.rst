@@ -322,19 +322,8 @@ in code, with ``Monad``'s other than IO.
 
 18.4.1.1 Specializing the types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-::
-
-  (>>=) :: Monad m =>
-             m  a -> (a ->  m b)  ->  m b
-  (>>=) ::  [ ] a -> (a -> [ ] b) -> [ ] b
-
-  -- or more syntactically common
-  (>>=) :: [a] -> (a -> [b]) -> [b]
-
-  -- same as pure
-  return :: Monad m => a -> m a
-  return :: a -> [ ] a
-  return :: a -> [a]
+.. include:: figures/18.4/specializing_monad_to_list.hs
+   :code:
 
 18.4.1.2 Example of the List Monad in use
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -361,6 +350,14 @@ The if-then-else is our ``a -> m b``.
 
   ·∾ twiceWhenEven [1,2,8,5]
   [1,4,4,64,64,25]
+
+18.4.2 Maybe Monad
+^^^^^^^^^^^^^^^^^^
+
+18.4.2.1 Specializing the types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: figures/18.4/specializing_monad_to_maybe.hs
+   :code:
 
 
 18.5 Monad laws
