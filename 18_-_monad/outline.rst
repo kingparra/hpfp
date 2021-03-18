@@ -57,11 +57,6 @@
   * 18.4.1 List
 
     * 18.4.1.1 Specializing the types
-
-      (Why do these sub-sub-sections exist?
-      There is a single line of information
-      here that can easily be omitted.)
-
     * 18.4.1.2 Example of the List Monad in use
 
       (The ``x <- xs`` within a do block
