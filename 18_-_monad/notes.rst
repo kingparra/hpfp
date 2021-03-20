@@ -175,10 +175,10 @@ structure is something we've not seen in
 to flatten those two layers of structure
 into one is what makes ``Monad`` special.
 
-By putting that ``join`` function together with
-``fmap``, we can create bind.
+**By putting that** ``join`` **function together with**
+``fmap``, **we can create bind.**
 
-So how do we get bind?
+**So how do we get bind?**
 
 ::
 
@@ -197,6 +197,55 @@ So how do we get bind?
   join :: Monad m => m (m a) -> m a
 
   ·∾ -- a ~ m a
+
+.. topic:: Deriving join from bind
+
+   What if we go the other way: from ``(>>=)``
+   to ``join``?
+
+   Let's start with the type signature for
+   ``(>>=)``, and then substitute in what we
+   need to get there::
+
+     -- Here is our starting point, bind.
+     --
+     (>>=) :: Monad m =>     m a -> (a -> m b) -> m b
+     --
+     -- ...and here is the destination, join.
+     --
+     join :: Monad m =>  m (m a) -> m a
+     --
+     -- First off, the input type isn't specific enough,
+     -- so let's specialize a into (m b).
+     --
+     (>>=) :: Monad m => m (m b) -> (m b -> m b) -> m b
+     --
+     -- At this point, we almost have the type signature
+     -- for join!
+     --
+     (>>=) :: Monad m => m (m b) -> (m b -> m b) ->  m b
+     join  :: Monad m => m (m b)         ->          m b
+     --                  ^^^^^^                      ^^^
+     --
+     -- The final input and output are already correct.
+     -- But we have to eliminate the function in the middle.
+     --
+     (>>=) :: Monad m => m (m a) -> (m a -> m b) ->  m b
+     join  :: Monad m => m (m a)         ->          m a
+     --                              ^^^^^^^^^^
+     -- What function fits this hole? ... id!
+
+     ·∾ :{
+      ⋮ join' :: Monad m => m (m a) -> m a
+      ⋮ join' x = x >>= id
+      ⋮ :}
+     ·∾
+
+     ·∾ join' ["one "," two"," and three!"]
+     "one two and three!"
+
+     ·∾ join ["one "," two"," and three!"]
+     "one two and three!"
 
 18.2.4 What Monad is not
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -358,6 +407,11 @@ The if-then-else is our ``a -> m b``.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. include:: figures/18.4/specializing_monad_to_maybe.hs
    :code:
+
+18.4.2.2 Using the Maybe Monad
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 
 18.5 Monad laws
