@@ -1,4 +1,3 @@
--- type M = Maybe
 -- m ~ Maybe
 (>>=) :: Monad m =>     m a -> (a ->     m b) -> m b
 (>>=) ::            Maybe a -> (a -> Maybe b) -> Maybe b

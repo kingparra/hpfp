@@ -10,8 +10,8 @@ twiceWhenEven xs = do
   then [x*x, x*x]
   else [x*x]
 
--- Maybe duplicateAndSquareWhenEven is a
--- better name for this function.
+-- Maybe filterEvensThenDuplicateAndSquareThem
+-- is a better name for this function.
 twiceWhenEven' :: [Integer] -> [Integer]
 twiceWhenEven' xs = do
   x <- xs
