@@ -410,8 +410,71 @@ The if-then-else is our ``a -> m b``.
 
 18.4.2.2 Using the Maybe Monad
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Whenever you interact with something within
+the** ``Maybe`` **monad, there is a potential
+for the value to be** ``Nothing``\ **.** Using
+the Maybe Monads do notation, each subsequent
+action in the do block depends on the previous
+action not being ``Nothing`` to continue
+evaluating the ``Just`` value.
+
+The files ``figures/18.4/MaybeMonadV{1,2,3}.hs``
+demonstrate a few ways of writing this. But
+here are snippets of the changed function
+between all three versions of the module, for
+convenience::
+
+  module MaybeMonadV1 where
+    . . .
+  mkSphericalCow :: String -> Int -> Int -> Maybe Cow
+  mkSphericalCow name' age' weight' =
+    case noEmpty name' of
+      Nothing -> Nothing
+      Just nammy ->
+        case noNegative age' of
+          Nothing -> Nothing
+          Just agey ->
+            case noNegative weight' of
+              Nothing -> Nothing
+              Just weighty -> weightCheck
+                (Cow nammy agey weighty)
+    . . .
 
 
+  module MaybeMonadV2 where
+    . . .
+  -- With do syntax things are much more concise.
+  mkSphericalCow' :: String -> Int -> Int -> Maybe Cow
+  mkSphericalCow' name' age' weight' = do
+    nammy   <- noEmpty name'
+    agey    <- noNegative age'
+    weighty <- noNegative weight'
+    weightCheck (Cow nammy agey weighty)
+    . . .
+
+
+  module MaybeMonadV3 where
+    . . .
+  -- Here it is, rewritten to use (>>=), just because.
+  mkSphericalCow'' :: String -> Int -> Int -> Maybe Cow
+  mkSphericalCow'' name' age' weight' =
+    noEmpty name' >>=
+    \nammy ->
+      noNegative age' >>=
+      \agey ->
+        noNegative weight' >>=
+        \weighty ->
+          weightCheck (Cow nammy agey weighty)
+
+Here's a terminal recording of me interacting
+with those functions. Spoiler alert: they do
+the same thing.
+
+.. raw:: html
+
+   <script id="asciicast-LPfj7n9kelcJqpfo35eTBQDOV"
+   src="https://asciinema.org/a/LPfj7n9kelcJqpfo35eTBQDOV.js"
+   async></script>
 
 
 18.5 Monad laws
