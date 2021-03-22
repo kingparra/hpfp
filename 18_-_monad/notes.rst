@@ -476,6 +476,36 @@ the same thing.
    src="https://asciinema.org/a/LPfj7n9kelcJqpfo35eTBQDOV.js"
    async></script>
 
+At this point, you may have noticed a
+similarity between how the Maybe monad behaves
+and how Maybe works with applicative. Can we
+use ``Applicative``, instead of ``Monad``?
+
+Well, if your do syntax looks like this::
+
+  doSomething = do
+    a <- f
+    b <- g
+    c <- h
+    pure (a, b, c)
+
+Then you can rewrite it using ``Applicative``.
+
+On the other hand, if you have something like
+this::
+
+  doSomething' = do
+    a <- f n
+    b <- g a
+    c <- h b
+    pure (a, b, c)
+
+You're going to need a ``Monad`` because ``g``
+and ``h`` are producing monadic structure
+based on values that can only be obtained by
+depending on values generated from monadic
+structure.
+
 
 18.5 Monad laws
 ---------------
