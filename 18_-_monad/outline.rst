@@ -69,6 +69,14 @@
 
     * 18.4.2.1 Specializing the types
     * 18.4.2.2 Using the Maybe Monad
+
+      (Examples of sequencing monadic actions
+      using Maybe. First with case expressions,
+      then with a do block, and finally with
+      bind and lambdas. If any action in the
+      do block evaluates to ``Nothing``, the
+      entire do block also becomes ``Nothing``.)
+
     * 18.4.2.3 Exploding a spherical cow
     * 18.4.2.4 Fail fast, like an overfunded startup
 
