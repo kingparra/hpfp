@@ -410,13 +410,14 @@ The if-then-else is our ``a -> m b``.
 
 18.4.2.2 Using the Maybe Monad
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**Whenever you interact with something within
-the** ``Maybe`` **monad, there is a potential
-for the value to be** ``Nothing``\ **.** Using
-the Maybe Monads do notation, each subsequent
-action in the do block depends on the previous
-action not being ``Nothing`` to continue
-evaluating the ``Just`` value.
+Whenever you interact with something within
+the ``Maybe`` monad, there is a potential for
+the value to be ``Nothing``. **Using the Maybe
+Monads do notation, each subsequent line (or
+action) in the do block depends on the
+previous action not being** ``Nothing`` **to
+continue evaluating the** ``Just`` **value on
+the next line.**
 
 The files ``figures/18.4/MaybeMonadV{1,2,3}.hs``
 demonstrate a few ways of writing this. But
@@ -506,6 +507,36 @@ based on values that can only be obtained by
 depending on values generated from monadic
 structure.
 
+The long and short of it:
+
+* With the ``Maybe`` ``Applicative`` each
+  ``Maybe`` computation fails or succeeds
+  independently of each other. You're lifting
+  functions that are also ``Just`` or
+  ``Nothing`` over ``Maybe`` values.
+* With the ``Maybe`` ``Monad``, computations
+  contributing to the final result can choose
+  to return ``Nothing`` based on previous
+  computations.
+
+18.4.2.3 Exploding a spherical cow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This section details the evaluation steps of
+the function call to ``mkSphericalCow``. I'm
+skipping this.
+
+
+18.4.3 Either
+^^^^^^^^^^^^^
+
+18.4.3.1 Specializing the types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. include:: exercises/18.4/specializing_monad_to_either.hs
+   :code:
+
+.. TODO
+   * 18.4.3.2 Using the Either Monad
+   * 18.4.3.3 Short Exercise: Either Monad -- page 768
 
 18.5 Monad laws
 ---------------
