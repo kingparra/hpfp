@@ -11,7 +11,7 @@ instance Functor (Sum b) where
 
 instance Applicative (Sum b) where
   pure = Second
-  (<*>) a f = undefined
+  a <*> f = undefined
 
 
 instance Monad (Sum b) where
