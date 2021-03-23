@@ -81,7 +81,15 @@
       do blocks represent nested structure.)
 
     * 18.4.2.3 Exploding a spherical cow
+
+      (This section details the evaluation
+      process of a call to ``mkSphericalCow''``)
+
     * 18.4.2.4 Fail fast, like an overfunded startup
+
+      (...and this section shows a somewhat
+      elided version of the evaluation process
+      for a case that produces ``Nothing``.)
 
   * 18.4.3 Either
 
