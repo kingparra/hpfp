@@ -95,6 +95,15 @@
 
     * 18.4.3.1 Specializing the types
     * 18.4.3.2 Using the Either Monad
+
+      (Notice that ``Either`` always
+      short-circuits on the first failure
+      condition.
+      
+      Also, whoa, what is ``Validation`` again?
+      I definitely overlooked that in the last
+      chapter.)
+
     * 18.4.3.3 Short Exercise: Either Monad -- page 768
 
 * 18.5 Monad laws -- page 768

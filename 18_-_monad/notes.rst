@@ -386,9 +386,10 @@ in code, with ``Monad``'s other than IO.
     else [x*x]
 
 The ``x <- xs`` line binds individual
-values out of the list input, like a
-list comprehension, giving us an ``a``.
-The if-then-else is our ``a -> m b``.
+values out of the list input, like a list
+comprehension, giving us an ``a`` for use
+with ``(>>=)``. The if-then-else is our
+``(a -> m b)``.
 
 ::
 
@@ -514,17 +515,10 @@ The long and short of it:
   independently of each other. You're lifting
   functions that are also ``Just`` or
   ``Nothing`` over ``Maybe`` values.
-* With the ``Maybe`` ``Monad``, computations
-  contributing to the final result can choose
-  to return ``Nothing`` based on previous
-  computations.
-
-18.4.2.3 Exploding a spherical cow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This section details the evaluation steps of
-the function call to ``mkSphericalCow``. I'm
-skipping this.
-
+* **With the** ``Maybe`` ``Monad``,
+  **computations contributing to the final
+  result can choose to return** ``Nothing``
+  **based on previous computations.**
 
 18.4.3 Either
 ^^^^^^^^^^^^^
@@ -534,9 +528,24 @@ skipping this.
 .. include:: exercises/18.4/specializing_monad_to_either.hs
    :code:
 
-.. TODO
-   * 18.4.3.2 Using the Either Monad
-   * 18.4.3.3 Short Exercise: Either Monad -- page 768
+Why do we keep on doing this? To remind you
+that the types always show you the way, once
+you've figured them out.
+
+18.4.3.2 Using the Either Monad
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As you can see, ``Either`` always short-circuits
+on the first thing to have failed. It must, because
+in the monad later values can depend on previous ones.
+
+.. raw:: html
+
+   <script id="asciicast-yBFOhd4PYby56ljpIkynEGqKt"
+   src="https://asciinema.org/a/yBFOhd4PYby56ljpIkynEGqKt.js"
+   async></script>
+
+.. include:: exercises/18.4.3.3_-_either_monad.rst
+
 
 18.5 Monad laws
 ---------------
