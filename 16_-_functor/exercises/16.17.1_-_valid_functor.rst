@@ -1,0 +1,119 @@
+16.17.1 Valid Functor
+^^^^^^^^^^^^^^^^^^^^^
+Determine if a valid functor can be written for the
+datatype provided.
+
+1. ``data Bool = False | True``
+
+   Ok, this type doesn't contain anything, and the entire
+   point of functor is to map over the contents of some
+   structure (or context), so intuitively it doesn't make
+   sense for functor to work for this type.
+
+   Accordingly, at the implementation level, the kind of
+   ``Bool`` is ``Bool :: *``, which doesn't meet
+   ``Functor``'s kind constraint of ``(f :: * -> *)``.
+
+   So we can't write a lawful instance for this type.
+   But, for all I know, maybe GHC can't really enforce
+   the kind signature. I know it can't enforce laws. What
+   will happen if I try?
+
+   This::
+
+    ·∾ :{
+     ⋮ instance Functor Bool where
+     ⋮   fmap f l = not l
+     ⋮ :}
+
+    <interactive>:3:18: error:
+        • Expected kind ‘* -> *’, but ‘Bool’ has kind ‘*’
+        • In the first argument of ‘Functor’, namely ‘Bool’
+          In the instance declaration for ‘Functor Bool’
+
+   Good. Sane error messages are nice :^).
+
+2. ``data BoolAndSomethingElse a = False' a | True' a``
+
+   Alright! This type constructor takes an argument, and
+   has a structure, so it makes sense to write a functor
+   for it. The fact that the data constructors have the
+   words true and false in them is completely irrelevant
+   -- they may as well be named ``A`` and ``B``.
+
+   Let me give this a shot::
+
+     ·∾ data BoolAndSomethingElse a = False' a | True' a deriving (Eq, Show)
+
+     ·∾ :{
+      ⋮ instance Functor BoolAndSomethingElse where
+      ⋮   fmap f (False' a) = False' (f a)
+      ⋮   fmap f (True' a)  = True' (f a)
+      ⋮ :}
+     ·∾
+
+     ·∾ fmap (*3) (True' 20)
+     True' 60
+
+     ·∾ fmap (++"?") (False' "what")
+     False' "what?"
+
+3. ``data BoolAndMaybeSomethingElse a = Falsish | Truish a``
+
+   Alright, this one looks similar to ``Maybe``::
+
+     ·∾ data BoolAndMaybeSomethingElse a = Falsish | Truish a deriving (Eq, Show)
+
+     ·∾ :{
+      ⋮ instance Functor BoolAndMaybeSomethingElse where
+      ⋮   fmap f (Truish a) = Truish (f a)
+      ⋮   fmap f Falsish = Falsish
+      ⋮ :}
+     ·∾
+
+     ·∾ fmap (++ "in a bottle") (Truish "a message")
+     Truish "a messagein a bottle"
+
+4. Use the kinds to guide you on this one, don't get too
+   hung up on the details.
+
+   ::
+
+     newtype Mu f = InF { outF :: f (Mu f) }
+
+   This... doesn't seem right...::
+
+     ·∾ newtype Mu f = InF { outF :: f (Mu f) }
+
+     ·∾ :kind Mu
+     Mu :: (* -> *) -> *
+
+     ·∾ :kind Functor
+     Functor :: (* -> *) -> Constraint
+
+   I don't think it's possible to define an instance for
+   this datatype, but I'll revisit the problem after I do
+   some more reading in the chapter.
+
+5. Again, follow the kinds and ignore the unfamiliar parts
+
+   ::
+
+     import GHC.Arr
+
+     data D = D (Array Word Word) Int Int
+
+   The kind signature doesn't match, so I don't think I
+   can define an instance for it; I'll revisit this after
+   reading more, though.
+
+   ::
+
+     ·∾ import GHC.Arr
+     ·∾ data D = D (Array Word Word) Int Int deriving (Eq, Show)
+
+     ·∾ :kind D
+     D :: *
+
+     ·∾ :kind Functor
+     Functor :: (* -> *) -> Constraint

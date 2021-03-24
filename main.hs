@@ -1,0 +1,16 @@
+*.o
+*.hi
+*.chi
+*.dyn_o
+*.dyn_hi
+*.pdf
+.vscode
+.fslckout
+.cabal*
+*.stack-work
+_build
+_static
+_templates
+Makefile
+dist-*
+dist

@@ -1,0 +1,10 @@
+---
+name: constructor-shuffle
+dependencies: base >= 4.7 && < 5
+library: {source-dirs: src}
+tests:
+  constructor-shuffle-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [constructor-shuffle, hspec, QuickCheck]
