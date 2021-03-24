@@ -1,0 +1,26 @@
+-- 17.5.1 List Applicative
+-- page 690
+
+
+-- f ≡ []
+(<*>) ::   f   (a -> b)   ->  f  a  ->  f  b
+(<*>) ::  [ ]  (a -> b)   -> [ ] a  -> [ ] b
+
+-- more syntactically typical
+(<*>) ::  [(a -> b)] -> [a] -> [b]
+
+pure :: a ->  f  a
+pure :: a -> [ ] a
+
+
+-- https://gitlab.haskell.org/ghc/ghc/-/wikis/type-application
+
+-- Or, using GHCi, you can do this:
+
+·∾ :set -XTypeApplications
+
+·∾ :type (<*>) @[]
+(<*>) @[] :: [a -> b] -> [a] -> [b]
+
+·∾ :type pure @[]
+pure @[] :: a -> [a]

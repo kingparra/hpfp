@@ -1,0 +1,2 @@
+(<$>) :: Functor f     =>   (a -> b) -> f a -> f b
+(<*>) :: Applicative f => f (a -> b) -> f a -> f b

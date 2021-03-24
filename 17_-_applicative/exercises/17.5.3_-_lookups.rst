@@ -1,0 +1,90 @@
+17.5.3 Exercises: Lookups
+^^^^^^^^^^^^^^^^^^^^^^^^^
+.. page 696
+
+In the following exercises you will need to use
+these terms to make the expressions typecheck.
+
+1. ``pure  :: Applicative f =>            a -> f a``
+2. ``(<$>) :: Functor f     =>     (a -> b) -> f a -> f b``
+3. ``(<*>) :: Applicative f =>   f (a -> b) -> f a -> f b``
+
+Make the following expressions typecheck:
+
+1.
+   ::
+
+     added :: Maybe Integer
+     added = (+3) (lookup 3 $ zip [1,2,3] [4,5,6])
+
+   Alright, here is the first one:
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+2.
+   ::
+
+     y :: Maybe Integer
+     y =  lookup 3 $ zip [1,2,3] [4,5,6]
+
+     z :: Maybe Integer
+     z = lookup 2 $ zip [1,2,3] [4,5,6]
+
+     tupled :: Maybe (Integer, Integer)
+     tupled = (,) y z
+
+   Now it typechecks!
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+3.
+   ::
+
+     import Data.List (elemIndex)
+
+     x :: Maybe Int
+     x = elemIndex 3 [1,2,3,4,5]
+
+     y :: Maybe Int
+     y = elemIndex 4 [1,2,3,4,5]
+
+     max' :: Int -> Int -> Int
+     max' = max
+
+     maxed :: Maybe Int
+     maxed = max' x y
+
+
+   This should work:
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+
+4.
+   ::
+
+     as = [1,2,3]
+     bs = [4,5,6]
+
+     a :: Maybe Integer
+     a = lookup 3 (zip as bs)
+
+     b :: Maybe Integer
+     b = lookup 2 (zip as bs)
+
+     summed :: Maybe Integer
+     summed = sum $ (,) a b
+
+   This should work:
+
+   .. include:: exercises/17.5.3_-_lookups.rst.d/lookups/src/Lib.hs
+      :code:
+      :start-after: -- Question 4

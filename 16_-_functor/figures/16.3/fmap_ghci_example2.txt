@@ -1,0 +1,23 @@
+-- 16.3 There's a whole lot of fmap goin' round
+-- pages 629..630, fig 2
+·∾ map (+1) (Just 1)
+
+<interactive>:6:11: error:
+    • Couldn't match expected type ‘[b]’
+                  with actual type ‘Maybe Integer’
+    • In the second argument of ‘map’, namely ‘(Just 1)’
+      In the expression: map (+ 1) (Just 1)
+      In an equation for ‘it’: it = map (+ 1) (Just 1)
+    • Relevant bindings include it :: [b] (bound at <interactive>:6:1)
+
+·∾ fmap (+1) (Just 1)
+Just 2
+
+·∾ -- With a tuple!
+·∾ fmap (10/) (4,5)
+(4,2.0)
+
+·∾ -- With Either!
+·∾ let rca = Right "Chris Allen"
+·∾ fmap (++", Esq.") rca
+Right "Chris Allen, Esq."

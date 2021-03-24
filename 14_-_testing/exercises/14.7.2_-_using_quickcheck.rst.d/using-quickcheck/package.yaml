@@ -1,0 +1,10 @@
+---
+name: using-quickcheck
+dependencies: base >= 4.7 && < 5
+library: { source-dirs: src }
+tests:
+  using-quickcheck-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [using-quickcheck, hspec, QuickCheck]

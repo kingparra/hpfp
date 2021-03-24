@@ -1,0 +1,29 @@
+16.14.2 Exercises: Be Kind
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given a type signature, determine the kinds
+of each type variable:
+
+1. What's the kind of a in ``a -> a``?
+
+   ``a`` has the kind ``*``. Anything on the
+   right or left of an arrow constructor must
+   reduce down to ``*``.
+
+2. What are the kinds of ``b`` and ``T``?
+   (The ``T`` is capitalized on purpose!)
+
+   ::
+
+     a -> b a -> T (b a)
+
+   ``b`` has kind ``* -> *``, since it takes
+   one argument. The ``T`` type constructor
+   also takes one argument, ``(b a)``, which
+   is a type ``a`` wrapped by the type
+   constructor ``b``.
+
+3. What's the kind of ``c`` in ``c a b -> c b a``?
+
+   The type constructor ``c`` has the kind ``*
+   -> * -> *``, since it takes two arguments,
+   and reduces down to ``*`` (a concrete type).
