@@ -1,0 +1,56 @@
+-- 17.5.2 What's the List applicative do?
+-- page 691
+
+-- Previously with list Functor, we were
+-- mapping a single function over a plurality of
+-- values:
+
+·∾ fmap (2^) [1,2,3]
+[2,4,8]
+
+·∾ fmap (^2) [1,2,3]
+[1,4,9]
+
+
+-- With the list applicative, we are mapping
+-- a plurality of function over a plurality of
+-- values:
+
+·∾ [(+1),(*2)] <*> [2,4]
+[3,5,4,8]
+
+-- Now what happened with that expression we tested?
+-- Something like this:
+
+·∾ x = ([(+1),(*2)] <*> [2,4]) == [3,5,4,8]
+·∾ x
+True
+
+·∾ y = [(+1)2,(+1)4,(*2)2,(*2)4] == [3,5,4,8]
+·∾ y
+True
+
+·∾ x && y
+True
+
+-- page 692
+-- Or, more visually
+
+·∾ ([(+1),(*2)] <*> [2,4]) == [3,5,4,8] && [(+1)2,(+1)4,(*2)2,(*2)4] == [3,5,4,8]
+True
+
+-- Here is another example, that shows the
+-- function application explicitly:
+
+·∾ :set -XTupleSections
+
+·∾ [(1,),(2,)] <*> [3,4]
+[(1,3),(1,4),(2,3),(2,4)]
+
+-- The liftA2 fucntion gives us another way to
+-- write this, too:
+
+·∾ import Control.Applicative
+
+·∾ liftA2 (,) [1,2] [3,4]
+[(1,3),(1,4),(2,3),(2,4)]

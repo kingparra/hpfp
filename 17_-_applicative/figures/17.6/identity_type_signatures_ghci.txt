@@ -1,0 +1,44 @@
+-- Experimenting with type signatures for the identity law of Applicative
+
+
+·∾ :type (.)
+(.) :: (b -> c) -> (a -> b) -> a -> c
+
+
+·∾ :type pure
+pure :: Applicative f
+     => a -> f a
+
+
+·∾ :type pure (.)
+pure (.) :: Applicative f
+         => f ((b -> c) -> (a -> b) -> a -> c)
+
+
+·∾ :type (<*>)
+(<*>) :: Applicative f
+      => f (a -> b) -> f a -> f b
+
+
+·∾ :type pure (.) <*> mempty
+pure (.) <*> mempty
+  :: ( Applicative f
+     , Monoid (f (b -> c))
+     )
+  => f ((a -> b) -> a -> c)
+
+
+·∾ :type (pure (.) <*>)
+(pure (.) <*>)
+  :: Applicative f
+  => f (b -> c) -> f ((a -> b) -> a -> c)
+
+
+·∾ :type mempty <*> (mempty <*> mempty)
+mempty <*> (mempty <*> mempty)
+  :: ( Applicative f
+     , Monoid (f a1)
+     , Monoid (f (a2 -> b))
+     , Monoid (f (a1 -> a2))
+     )
+  => f b

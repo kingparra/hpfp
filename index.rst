@@ -32,6 +32,7 @@ Contents
    15_-_monoid_semigroup/notes
    16_-_functor/outline
    16_-_functor/notes
+   17_-_applicative/notes
 
 
 Indices and tables

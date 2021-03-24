@@ -1,0 +1,17 @@
+-- 17.5.4 Identity
+-- Specializing the types
+-- page 704
+
+-- This type comes from the last chapter on Foldable
+data Identity a = Identity a
+
+type Id = Identity
+
+-- f ~ Identity
+-- Applicative f =>
+
+(<*>) ::  f (a -> b)  ->   f a  ->   f b
+(<*>) :: Id (a -> b)  ->  Id a  ->  Id b
+
+pure :: a ->  f a
+pure :: a -> Id a

@@ -1,0 +1,11 @@
+·∾ pure 1 :: [Int]
+[1]
+
+·∾ pure 1 :: Maybe Int
+Just 1
+
+·∾ pure 1 :: Either a Int
+Right 1
+
+·∾ pure 1 :: ([a], Int)
+([],1)
