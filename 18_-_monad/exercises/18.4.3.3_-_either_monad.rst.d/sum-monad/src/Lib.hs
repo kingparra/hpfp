@@ -10,8 +10,10 @@ instance Functor (Sum b) where
 
 
 instance Applicative (Sum b) where
+  (First a)  <*>  _   =  First a
+  _  <*>  (First a)   =  First a
+  (Second f) <*>  r   =  fmap f r
   pure = Second
-  a <*> f = undefined
 
 
 instance Monad (Sum b) where
