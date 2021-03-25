@@ -4,9 +4,9 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1e4c31a3e8afa96d04144fa38d7fe2ff4147daa539b2fa82c251a4536adb0e4a
+-- hash: eb28b2db4c31f0af7dd4d4002e3d0b886ee9aead8de900ac4e240a16a23047e9
 
-name:           sum-monad
+name:           lookups
 version:        0.0.0
 build-type:     Simple
 
@@ -14,25 +14,24 @@ library
   exposed-modules:
       Lib
   other-modules:
-      Paths_sum_monad
+      Paths_lookups
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
   default-language: Haskell2010
 
-test-suite sum-monad-test
+test-suite lookups-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_sum_monad
+      Paths_lookups
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck
     , base >=4.7 && <5
-    , checkers
     , hspec
-    , sum-monad
+    , lookups
   default-language: Haskell2010

@@ -1,0 +1,69 @@
+17.9.1 Specialize the types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Given a type that has an instance of
+``Applicative``, specialize the types of
+the methods. Test your specialization
+in the REPL.
+
+One way to do this is to bind aliases
+of the typeclass methods to more concrete
+types that have the type we told you to
+fill in.
+
+1.
+   ::
+
+     -- Type
+     []
+
+     -- Methods
+     pure :: a -> ? a
+     (<*>) :: ? (a -> b) -> ? a -> ? b
+
+   This one can be solved with ghci::
+
+     ·∾ :set -XTypeApplications
+
+     ·∾ :type pure @[]
+     pure @[] :: a -> [a]
+
+     ·∾ :type (<*>) @[]
+     (<*>) @[] :: [a -> b] -> [a] -> [b]
+
+
+2.
+   ::
+
+     -- Type
+     IO
+
+     -- Methods
+     pure :: a -> ? a
+     (<*>) :: ? (a -> b) -> ? a -> ? b
+
+   This one can also be solved directly with ghci::
+
+     ·∾ :type pure @IO
+     pure @IO :: a -> IO a
+
+     ·∾ :type (<*>) @IO
+     (<*>) @IO :: IO (a -> b) -> IO a -> IO b
+
+3.
+   ::
+
+     -- Type
+     (,) a
+
+     -- Methods
+     pure :: a -> ? a
+     (<*>) :: ? (a -> b) -> ? a -> ? b
+4.
+   ::
+
+     -- Type
+     (->) e
+
+     -- Methods
+     pure :: a -> ? a
+     (<*>) :: ? (a -> b) -> ? a -> ? b

@@ -1,0 +1,7 @@
+·∾ import Control.Applicative
+
+·∾ fmap (+1) [1,2,3]
+[2,3,4]
+
+·∾ pure (+1) <*> [1,2,3]
+[2,3,4]

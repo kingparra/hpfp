@@ -1,0 +1,123 @@
+-- 17.5.2 What's the List applicative do?
+
+
+
+-- page 693
+
+
+-- We're going to run through some more
+-- examples, to give you a little more context for
+-- when these function can become useful. The
+-- following examples will use a function called
+-- lookup that we'll briefly demonstrate:
+
+·∾ :type lookup
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+
+·∾ l = lookup 3 [(3,"hello")]
+·∾ l
+Just "hello"
+
+·∾ fmap length l
+Just 5
+
+·∾ import Data.Char
+·∾ c (x:xs) = toUpper x:xs
+
+
+
+-- page 694
+
+·∾ fmap c l
+Just "Hello"
+
+
+-- So, lookup searches inside a list of tuples
+-- for a value that matches the input and returns
+-- the paired value, and then wraps that in a
+-- Maybe context. It's worth pointing out that
+-- that Data.Map is a more appropriate data
+-- structure for these kinds of lookups.
+
+·∾ import qualified Data.Map
+
+·∾ m = Data.Map.fromList [(3,"hello")]
+
+·∾ fmap c $ Data.Map.lookup 3 m
+Just "Hello"
+
+
+
+-- page 694
+
+
+-- Now that we have values wrapped in a Maybe
+-- context, perhaps we'd like to apply some
+-- functions to them. This is where we want
+-- applicative operations.
+
+-- We'll go ahead and define some values in a
+-- source file for convenience:
+
+
+
+-- page 695
+
+
+·∾ :load LookupTables.hs
+
+-- Now we want to look things up and add them
+-- together. We'll start with some operations over
+-- these data:
+
+·∾ f 3
+Just "hello"
+
+·∾ g 8
+Just "chris"
+
+·∾ (++) <$> f 3 <*> g 7
+Just "hellosup?"
+
+·∾ (+) <$> h 5 <*> m 1
+Just 9007
+
+·∾ (+) <$> h 5 <*> m 6
+Nothing
+
+
+-- We can again do the same thing with liftA2:
+
+·∾ liftA2 (++) (g 9) (f 4)
+Just "alohajulie"
+
+·∾ liftA2 (^) (h 5) (m 4)
+Just 60466176
+
+·∾ liftA2 (*) (h 5) (m 4)
+Just 60
+
+·∾ liftA2 (*) (h 1) (m 1)
+Nothing
+
+
+-- Your applicative context can also sometimes be IO:
+
+·∾ (++) <$> getLine <*> getLine
+First string
+and a second string!
+"First string and a second string!"
+
+·∾ (,) <$> getLine <*> getLine
+First string
+and a motherfuckin second string!!
+("First string ","and a motherfuckin second string!!")
+
+-- Now try using fmap to get the length of the
+-- resulting string of the first example.
+
+·∾ s = (++) <$> getLine <*> getLine
+·∾ fmap length s
+One and a
+two!
+14

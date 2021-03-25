@@ -1,7 +1,5 @@
-import Test.Hspec
+import Test.QuickCheck
+import Test.QuickCheck.Checkers
 import Lib
 
-main = hspec $ do
-  describe "Question 1" $ do
-    it "unit test 1" $ do
-      True `shouldBe` True
+main = putStrLn "Test suite not yet implemented."
