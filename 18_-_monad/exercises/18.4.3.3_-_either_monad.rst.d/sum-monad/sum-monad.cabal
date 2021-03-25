@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1e4c31a3e8afa96d04144fa38d7fe2ff4147daa539b2fa82c251a4536adb0e4a
+-- hash: dfd0ebedef6f7da7608e51ee8d28ab241860f9daafd580c804aad0c041e35a42
 
 name:           sum-monad
 version:        0.0.0
@@ -33,6 +33,5 @@ test-suite sum-monad-test
       QuickCheck
     , base >=4.7 && <5
     , checkers
-    , hspec
     , sum-monad
   default-language: Haskell2010

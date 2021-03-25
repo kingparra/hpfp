@@ -14,11 +14,13 @@ instance Applicative (Sum b) where
   (Second f) <*>  r   =  fmap f r
   -- The condition where First is on the right
   -- would be a type error, since we can't access
-  -- the first tyvar of Either, so we don't have
+  -- the first tyvar of Either, used by the First
+  -- data constructor, so we don't have
   -- to worry about defining any logic for it.
   pure = Second
 
 
 instance Monad (Sum b) where
   return = pure
-  (>>=) = undefined
+  (Second b) >>= f  =  f b
+  (First a)  >>= _  =  (First a)
