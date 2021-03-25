@@ -11,8 +11,11 @@ instance Functor (Sum b) where
 
 instance Applicative (Sum b) where
   (First a)  <*>  _   =  First a
-  _  <*>  (First a)   =  First a
   (Second f) <*>  r   =  fmap f r
+  -- The condition where First is on the right
+  -- would be a type error, since we can't access
+  -- the first tyvar of Either, so we don't have
+  -- to worry about defining any logic for it.
   pure = Second
 
 

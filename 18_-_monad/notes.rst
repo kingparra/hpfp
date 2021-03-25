@@ -555,6 +555,10 @@ in the monad later values can depend on previous ones.
 
 18.5.1 Identity laws
 ^^^^^^^^^^^^^^^^^^^^
+Basically both of these laws are saying that
+``return`` should be neutral and not perform
+any computation.
+
 * **Right identity**: ``m >>= return`` :math:`=` ``m``
 * **Left identity**: ``return x >>= f`` :math:`=` ``f x``
 
@@ -563,3 +567,14 @@ in the monad later values can depend on previous ones.
 * **Associativity**:
 
   ``(m >>= f) >>= g`` :math:`=` ``m >>= (\x -> f x >>= g)``
+
+  Rewritten for more visual similarity::
+
+    (m >>= (\x -> g x)) >>= (\y -> h y)
+                    ≡
+     m >>= (\x -> g x >>= (\y -> h y))
+
+  ...this time, using ``Control.Monad.((>=>))``,
+  instead of the ``(>>=)`` operator:
+
+  ``(f >=> g) >=> h`` :math:`=` ``f >=> (g >=> h)``
