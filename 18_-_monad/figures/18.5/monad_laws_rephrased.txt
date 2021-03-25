@@ -1,0 +1,24 @@
+-- Left identity
+return a >>= h  ≡  h a
+
+return >=> h  ≡  h
+
+do { x' <- return x; f x' }  ≡  do { f x }
+
+
+-- Right identity
+f >>= return  ≡  f
+
+f >=> return  ≡  f
+
+do { x <- m; return x }  ≡  do { m }
+
+
+-- Associativity
+(m >>= g) >>= h  ≡  m >>= (\x -> g x >>= h)
+
+(f >=> g) >=> h  ≡  f >=> (g >=> h)
+
+do { y <- do { x <- m; f x }; g y }
+≡  do { x <- m; do { y <- f x; g y } }
+≡  do { x <- m; y <- f x; g y }
