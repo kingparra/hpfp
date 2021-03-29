@@ -544,9 +544,6 @@ in the monad later values can depend on previous ones.
    src="https://asciinema.org/a/yBFOhd4PYby56ljpIkynEGqKt.js"
    async></script>
 
-.. TODO Write the instances for 18.4.3.3 --
-..   It's just a stub right now.
-
 .. include:: exercises/18.4.3.3_-_either_monad.rst
 
 
