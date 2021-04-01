@@ -42,8 +42,8 @@
     a two-dimensional monadic context.
 
     Shortly followed by a code snippet that
-    desugars do blocks into their using
-    ``(>>)`` and ``(>>=)``.
+    desugars do blocks into their equivalents
+    using ``(>>)`` and ``(>>=)``.
 
     I feel like this should be two
     subsections rather than one.)

@@ -1,4 +1,7 @@
 module Lib where
+import Test.QuickCheck.Checkers ((=-=), EqProp(..), eq)
+import Test.QuickCheck (Arbitrary(..))
+
 
 
 
@@ -6,6 +9,9 @@ module Lib where
 data Nope a = NopeDotJpg deriving (Eq, Show)
 
 
+-- Notice that we're ommiting the type variable
+-- a in order to satisfy the kind constraint of
+-- (* -> *).
 instance Functor Nope where
   fmap f NopeDotJpg = NopeDotJpg
 
@@ -17,6 +23,15 @@ instance Applicative Nope where
 
 instance Monad Nope where
   NopeDotJpg >>= f = NopeDotJpg
+
+
+instance Arbitrary a => Arbitrary (Nope a) where
+  arbitrary = return NopeDotJpg
+
+
+instance Eq a => EqProp (Nope a) where
+  (=-=) = eq
+
 
 
 
@@ -40,6 +55,7 @@ instance Monad (PhhhbbtttEither a) where
 
 
 
+
 -- Question 3
 newtype Identity a = Identity a
   deriving (Eq, Ord, Show)
@@ -55,6 +71,7 @@ instance Applicative (Identity) where
 
 instance Monad (Identity) where
   (>>=) (Identity x) f = f x
+
 
 
 

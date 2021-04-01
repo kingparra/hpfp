@@ -47,6 +47,8 @@ monadic operations and it works:
 
   ``fmap f xs``  :math:`=`  ``xs >>= return . f``
 
+.. fmap f xs    ≡    xs >>= (\x -> return (f x))
+
 For example::
 
   ·∾ fmap (+1) [1,2,3]
@@ -147,6 +149,10 @@ how::
 
   ·∾ :type concat
   concat :: Foldable t => t (t a) -> t a
+
+.. (The actual type is ``concat :: Foldable t =>
+.. t [a] -> [a]``, but I've further generalized
+.. this to resemble join.)
 
 The module ``Control.Monad`` provides a
 similar function, ``join``::
