@@ -1,0 +1,10 @@
+·∾ :type fmap
+fmap :: Functor f => (a -> b) -> f a -> f b
+
+·∾ :{
+ ⋮ fmap' :: Functor f => (a -> f b) -> f a -> f (f b)
+ ⋮ fmap' = fmap
+ ⋮ :}
+
+·∾ :type fmap'
+fmap' :: Functor f => (a -> f b) -> f a -> f (f b)

@@ -1,0 +1,7 @@
+·∾ putStrLn "Hello, " >> putStrLn "World!"
+Hello,
+World!
+
+·∾ putStrLn "Hello, " *> putStrLn "World!"
+Hello,
+World!

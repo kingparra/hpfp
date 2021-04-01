@@ -1,0 +1,35 @@
+18.7.1 Write the instance
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Write Monad instances for the following
+types. Use the QuickCheck properties we
+showed you to validate your instances.
+
+1. Welcome to the ``Nope Monad``, where
+   nothing happens and nobody cares. ::
+
+     data Nope a = NopeDotJpg
+     -- We're serious. Write it anyway.
+
+2. ``data PhhhbbtttEither b a = Left a | Right b``
+3. Write a ``Monad`` instance for ``Identity``. ::
+
+     newtype Identity a = Identity a
+       deriving (Eq, Ord, Show)
+
+     instance Functor Identity where
+       fmap = undefined
+
+     instance Applicative Identity where
+       pure = undefined
+       (<*>) = undefined
+
+     instance Monad Identity where
+       return = pure
+       (>>=) = undefined
+
+4. This one should be easier than the
+   Applicative instance was. Remember to
+   use the Functor that Monad requires,
+   then see where the chips fall. ::
+
+     data List a = Nil | Cons a (List a)

@@ -33,6 +33,8 @@ Contents
    16_-_functor/outline
    16_-_functor/notes
    17_-_applicative/notes
+   18_-_monad/outline
+   18_-_monad/notes
 
 
 Indices and tables

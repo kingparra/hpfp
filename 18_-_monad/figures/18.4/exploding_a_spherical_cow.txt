@@ -1,0 +1,258 @@
+-- @ page 758
+
+
+-- @ 18.4.2.3 Exploding a spherical cow
+-- @
+-- @ We said we'd be quite explicit about what's
+-- @ happening in the above, so let's do this
+-- @ thing. Let's get in the guts of this code
+-- @ and how binding over Maybe values works.
+-- @
+-- @ For once, this example instance is what's
+-- @ in GHC's base library at time of writing:
+
+
+-- @ page 759
+
+
+instance Monad Maybe where
+  return x       = Just x
+  (Just x) >>= k = k x
+  Nothing  >>= _ = Nothing
+
+
+mkSphericalCow'' :: String -> Int -> Int -> Maybe Cow
+mkSphericalCow'' name' age' weight' =
+  noEmpty name' >>=
+  \nammy ->
+    noNegative age' >>=
+    \agey ->
+      noNegative weight' >>=
+      \weighty ->
+      weightCheck (Cow nammy agey weighty)
+
+
+-- @ And what happens if we pass it some arguments?
+
+
+-- Proceeding outermost to innermost.
+mkSphericalCow'' "Bess" 5 499 =
+  noEmpty "Bess" >>=
+  \nammy ->
+    noNegative 5 >>=
+    \agey ->
+      noNegative 499 >>=
+      \weighty ->
+      weightCheck (Cow nammy agey weighty)
+
+-- "Bess" /= "", so skipping this pattern
+-- noEmpty "" = Nothing
+noEmpty "Bess" = Just "Bess"
+
+
+-- @ So we produced the value Just "Bess";
+-- @ however, nammy will be the String and not
+-- @ also the Maybe structure because >>= passes
+-- @ a to the
+
+
+-- @ page 760
+
+
+-- @ function it binds over the monadic
+-- @ value, not m a. Here we'll use the
+-- @ Maybe Monad instance to examine why:
+
+
+instance Monad Maybe where
+  return x = Just x
+
+  (Just x) >>= k = k x
+  Nothing  >>= _ = Nothing
+
+  noEmpty "Bess" >>= \nammy ->
+    (rest of the computation)
+
+  -- noEmpty "Bess" evaluated
+  -- to Just "Bess". So the first
+  -- Just case matches.
+
+
+  (Just "Bess") >>= \nammy -> ...
+  (Just x) >>= k = k x
+  -- k is \nammy et al.
+  -- x is "Bess" by itself.
+
+
+-- @ So nammy is bound to "Bess", and the
+-- @ following is the whole k:
+
+
+\"Bess" ->
+  noNegative 5 >>=
+  \agey ->
+    noNegative 499 >>=
+    \weighty ->
+      weightCheck (Cow nammy agey weighty)
+
+
+-- @ Then how does the age check go?
+
+
+-- @ page 761
+
+
+mkSphericalCow'' "Bess" 5 499 =
+  noEmpty "Bess" >>=
+  \"Bess" ->
+    noNegative 5 >>=
+    \agey ->
+      noNegative 499 >>=
+      \weighty ->
+      weightCheck (Cow "Bess" agey weighty)
+
+  -- 5 >= 0 is true, so we get Just 5
+  noNegative 5 | 5 >= 0    = Just 5
+               | otherwise = Nothing
+
+
+-- @ Again, although noNegative returns Just 5,
+-- @ the bind function will pass 5 on:
+
+
+mkSphericalCow'' "Bess" 5 499 =
+  noEmpty "Bess" >>=
+  \"Bess" ->
+    noNegative 5 >>=
+    \5 ->
+      noNegative 499 >>=
+      \weighty ->
+      weightCheck (Cow "Bess" 5 weighty)
+
+-- 499 >= 0 is true, so we get Just 499
+noNegative 499 | 499 >= 0 = Just 499
+               | otherwise = Nothing
+
+
+-- @ Passing 499 on:
+
+
+mkSphericalCow'' "Bess" 5 499 =
+  noEmpty "Bess" >>=
+  \"Bess" ->
+    noNegative 5 >>=
+    \5 ->
+      noNegative 499 >>=
+      \499 ->
+      weightCheck (Cow "Bess" 5 499) =
+
+
+-- @ page 762
+
+
+        let 499 = weight (Cow "Bess" 5 499)
+            "Bess" = name (Cow "Bess" 5 499)
+
+        -- fyi, 499 > 499 is False.
+        in if "Bess" == "Bess" && 499 > 499
+           then Nothing
+           else Just (Cow "Bess" 5 499)
+
+
+-- @ So in the end, we return Just (Cow "Bess" 5 499).
+
+
+-- @ 18.4.2.4 Fail fast, like an overfunded startup
+--
+-- @ But what if we had failed? We'll dissect
+-- @ the following computation:
+-- @
+-- @  Prelude> mkSphericalCow'' "" 5 499
+-- @  Nothing
+-- @
+-- @ And how do the guts fall when we explode
+-- @ this poor bovine?
+
+
+mkSphericalCow'' :: String -> Int -> Int -> Maybe Cow
+mkSphericalCow'' "" 5 499 =
+  noEmpty "" >>=
+  \nammy ->
+    noNegative 5 >>=
+    \agey ->
+      noNegative 499 >>=
+      \weighty ->
+      weightCheck (Cow nammy agey weighty)
+
+
+-- "" == "", we we get the Nothing case
+noEmpty "" = Nothing
+-- noEmpty str = Just str
+
+
+-- @ After we've evaluated noEmpty "" and
+-- @ gotten a Nothing value, we use (>>=).
+-- @ How does that go?
+
+
+-- @ page 763
+
+
+instance Monad Maybe where
+  return x = Just x
+
+  (Just x) >>= k = k x
+  Nothing  >>= _ = Nothing
+
+
+  -- noEmpty "" := Nothing
+  Nothing >>=
+    \nammy ->
+
+  -- Just case doesn't match, so skip it.
+  -- (Just x) >>= k  = k x
+
+  -- This is what we're doing.
+  Nothing >>= _ = Nothing
+
+
+-- @ So it turns out that the bind function will
+-- @ drop the entire rest of the computation on
+-- @ the floor the moment any of the functions
+-- @ participating in the Maybe Monad actions
+-- @ produce a Nothing value:
+
+
+mkSphericalCow'' "" 5 499 =
+  Nothing >>= -- NOPE.
+
+
+-- @ In fact, you can demonstrate to yourself
+-- @ that that stuff never gets used with
+-- @ bottom, but does with a Just value:
+-- @
+-- @   Prelude> Nothing >>= undefined
+-- @   Nothing
+-- @
+-- @   Prelude> Just 1 >>= undefined
+-- @   *** Exception: Prelude.undefined
+-- @
+-- @ But why do we use the Maybe Applicative
+-- @ and Monad? Because this:
+
+
+-- @ page 764
+
+
+mkSphericalCow' :: String -> Int -> Int -> Maybe Cow
+mkSphericalCow' name' age' weight' = do
+  nammy   <- noEmpty name'
+  agey    <- noNegative age'
+  weighty <- noNegative weight'
+  weightCheck (Cow nammy agey weighty)
+
+-- @ is a lot nicer than case matching the
+-- @ Nothing case over and over just so we can
+-- @ say Nothing -> NOthing a million times.
+-- @ Life is too short for repetition when
+-- @ computers love taking care of repetition.
