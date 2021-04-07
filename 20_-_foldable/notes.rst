@@ -208,8 +208,8 @@ On the other hand, for ``foldMap`` we use the
   Sum {getSum = 0}
 
 When the value is a ``Just`` value, though, we
-need to apply the folding functiont o the
-avlue and, again, dispose of the structure::
+need to apply the folding function to the
+value and, again, dispose of the structure::
 
   ·∾ foldr (+) 1 (Just 3)
   4
@@ -258,16 +258,16 @@ in the class declaration
 ``toList``
 ^^^^^^^^^^
 ::
-  
+
   ·∾ :type toList
   toList :: Foldable t => t a -> [a]
 
   ·∾ :doc toList
    List of elements of a structure, from left to right.
-  
+
   ·∾ toList (Just 1)
   [1]
- 
+
   ·∾ map toList [Just 1,Just 2,Just 3]
   [[1],[2],[3]]
 
@@ -287,20 +287,26 @@ in the class declaration
 
   ·∾ :type null
   null :: Foldable t => t a -> Bool
-  ·∾ :doc null
-   Test whether the structure is empty. The default implementation is
-   optimized for structures that are similar to cons-lists, because there
-   is no general way to do better.
 
-   @since 4.8.0.0
+  ·∾ :doc null
+   Test whether the structure is empty. The
+   default implementation is optimized for
+   structures that are similar to cons-lists,
+   because there is no general way to do
+   better.
+
   ·∾ null (Left 3)
   True
+
   ·∾ null []
   True
+
   ·∾ null Nothing
   True
+
   ·∾ null (1,2)
   False
+
   ·∾ fmap null [Just 1,Just 2,Nothing]
   [False,False,True]
 
@@ -312,13 +318,15 @@ in the class declaration
   length :: Foldable t => t a -> Int
 
   ·∾ :doc length
-   Returns the size/length of a finite structure as an 'Int'.  The
-   default implementation is optimized for structures that are similar to
-   cons-lists, because there is no general way to do better.
+   Returns the size/length of a finite
+   structure as an 'Int'. The default
+   implementation is optimized for structures
+   that are similar to cons-lists, because
+   there is no general way to do better.
 
-   @since 4.8.0.0
   ·∾ length [(1,2),(3,4),(5,6)]
   3
+
   ·∾ fmap length [(1,2),(3,4),(5,6)]
   [1,1,1]
 
@@ -330,3 +338,100 @@ in the class declaration
 
   ·∾ fmap length [Just 1,Just 2,Nothing]
   [1,1,0]
+
+
+``elem``
+^^^^^^^^
+::
+
+  ·∾ :type elem
+  elem :: (Foldable t, Eq a) => a -> t a -> Bool
+
+  ·∾ :doc elem
+   Does the element occur in the structure?
+
+  ·∾ elem 2 (Just 3)
+  False
+
+  ·∾ elem True (Left False)
+  False
+
+  ·∾ elem True (Left True)
+  False
+
+  ·∾ elem True (Right False)
+  False
+
+  ·∾ elem True (Right True)
+  True
+
+  ·∾ xs = [Right 1,Right 2,Right 3]
+
+  ·∾ fmap (elem 3) xs
+  [False,False,True]
+
+
+``maximum`` and ``minimum``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Here, notice that ``Left`` and ``Nothing``
+(and similar) values are empty for the
+purposes of these functions::
+
+  ·∾ maximum [10,12,33,5]
+  33
+
+  ·∾ xs = [Just 2, Just 10, Just 4]
+
+  ·∾ fmap maximum xs
+  [2,10,4]
+
+  ·∾ fmap maximum [Just 2, Just 10, Just 4]
+  [2,10,4]
+
+  ·∾ fmap maximum (Just [3,7,10,2])
+  Just 10
+
+  ·∾ minimum "julie"
+  'e'
+
+  ·∾ fmap minimum (Just "julie")
+  Just 'e'
+
+  ·∾ xs = map Just "jul"
+  ·∾ xs
+  [Just 'j',Just 'u',Just 'l']
+
+  ·∾ fmap minimum xs
+  "jul"
+
+  ·∾ xs = [Just 4, Just 3, Nothing]
+
+  ·∾ fmap minimum xs 
+  [4,3,*** Exception: minimum: empty structure
+
+  ·∾ minimum (Left 3)
+  *** Exception: minimum: empty structure
+
+``sum`` and ``product``
+^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+  ·∾ sum (7,5)
+  5
+
+  ·∾ fmap sum [(7,5),(3,4)]
+  [5,4]
+
+  ·∾ fmap sum (Just [1,2,3,4,5])
+  Just 15
+
+  ·∾ product Nothing 
+  1
+
+  ·∾ fmap product (Just [])
+  Just 1
+
+  ·∾ fmap product (Right [1,2,3])
+  Right 6
+
+.. include:: exercises/20.5.1_-_library_functions.rst
