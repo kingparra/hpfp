@@ -1,0 +1,17 @@
+·∾ data Identity a = Identity a deriving (Eq, Show)
+
+·∾ :{
+ ⋮ instance Foldable Identity where
+ ⋮   foldr f z (Identity x) = f x z
+ ⋮   foldl f z (Identity x) = f z x
+ ⋮   foldMap f (Identity x) = f x
+ ⋮ :}
+
+·∾ foldr (*) 1 (Identity 5)
+5
+
+·∾ foldr (*) 5 (Identity 5)
+25
+
+·∾ foldMap (*5) (Identity 100) :: Product Integer 
+Product {getProduct = 500}
