@@ -1,64 +1,55 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 module Lib where
-
--- Hide list processing functions that clash
--- with the names we're defining, but make
--- everything else available.
 import Prelude hiding
   ( sum , product , elem , minimum , maximum
   , null , length, foldr, foldMap )
-
--- Hide all functions from Foldable other than
--- foldr. The typeclass Foldable is visisble.
 import qualified Data.Foldable hiding
   ( sum , product , elem , minimum , maximum
   , null , length , toList , fold , foldMap )
-
 import Data.Monoid
 
 
--- Implement these in terms of foldr or
--- foldMap, then try them out with multiple
--- types that have Foldable instances.
-
 -- Question 1
 sum :: (Foldable t, Num a) => t a -> a
-sum x = undefined
+sum x = getSum $ foldMap Sum x
 
 
 -- Question 2
 product :: (Foldable t, Num a) => t a -> a
-product x = undefined
+product x = getProduct $ foldMap Product x
 
 
 -- Question 3
 elem :: (Foldable t, Eq a) => a -> t a -> Bool
-elem x y = undefined
+elem e t = foldr (\x xs -> e == x || xs) False t
 
 
 -- Question 4
 minimum :: (Foldable t, Ord a) => t a -> Maybe a
-minimum t = undefined
+minimum t
+  | null t    = Nothing
+  | otherwise = undefined -- getFirst $ foldMap (First . Just) t {- this is wrong -}
 
 
--- Question 5
 maximum :: (Foldable t, Ord a) => t a -> Maybe a
-maximum x = undefined
+maximum t
+  | null t    = Nothing
+  | otherwise = undefined
 
 
 -- Question 6
 null :: (Foldable t) => t a -> Bool
-null x = undefined
+null x = length x == 0
 
 
 -- Question 7
 length :: (Foldable t) => t a -> Int
-length x = undefined
+length t = foldr (\x xs -> 1 + xs) 0 t
 
 
 -- Question 8
 toList :: (Foldable t) => t a -> [a]
-toList x = undefined
+toList t = foldr (\x xs -> x : xs) [] t
 
 
 -- Question 9
@@ -69,4 +60,8 @@ fold x = foldMap id x
 -- Question 10
 -- Write this function in terms of foldr.
 foldMap :: (Foldable t, Monoid m) => (a -> m) -> t a -> m
-foldMap f x = Data.Foldable.foldr (mappend . f) mempty x
+foldMap f x = foldr (mappend . f) mempty x
+
+
+foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+foldr = Data.Foldable.foldr

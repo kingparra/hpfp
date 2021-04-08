@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fbc17547afcef3f75b01e8e0bc5ee9e0b977a52d0a2c31b421e9f64ff430fbb7
+-- hash: 372e06c225d57b73fe67d30a3b9a39a43a3542caa54ace4813f3c2a8b4fe0148
 
 name:           library-functions
 version:        0.0.0
@@ -28,7 +28,7 @@ test-suite library-functions-test
       Paths_library_functions
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fno-max-valid-hole-fits
   build-depends:
       base >=4.7 && <5
     , hspec
