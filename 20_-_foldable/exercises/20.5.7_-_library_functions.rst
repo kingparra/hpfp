@@ -1,26 +1,84 @@
 20.5.7 Exercises: Library Functions
 -----------------------------------
-Implement the functions in terms of ``foldMap`` or ``foldr``
-from ``Foldable``, then try them out with multiple types
-that have ``Foldable`` instances.
+Implement the functions in terms of
+``foldMap`` or ``foldr`` from ``Foldable``,
+then try them out with multiple types that
+have ``Foldable`` instances.
 
 1. This and the next one are nicer with ``foldMap``, but
    ``foldr`` is fine, too. ``sum :: (Foldable t, Num a) => t
    a -> a``
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+      :code:
+
 2. ``product :: (Foldable t, Num a) => t a -> a``
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+      :code:
+
 3. ``elem :: (Foldable t, Eq a) => a -> t a -> Bool``
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+      :code:
+
 4. ``minimum :: (Foldable t, Ord a) => t a -> Maybe a``
+
+   I'm still working on this exercise.
+
+   .. TODO finish this exercise
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 4
+      :end-before: -- Question 5
+      :code:
+
 5. ``maximum :: (Foldable t, Ord a) => t a -> Maybe a``
+
+   I'm still working on this exercise.
+
+   .. TODO finish this exercise
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 5
+      :end-before: -- Question 6
+      :code:
+
 6. ``null :: (Foldable t) => t a -> Bool``
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 6
+      :end-before: -- Question 7
+      :code:
+
 7. ``length :: (Foldable t) => t a -> Int``
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 7
+      :end-before: -- Question 8
+      :code:
+
 8. Some say this is all ``Foldable`` amounts to.
    ``toList :: (Foldable t) => t a -> [a]``
-9. Hint: use ``foldMap``.
 
-   ::
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 8
+      :end-before: -- Question 9
+      :code:
 
-     -- | Combine the elements of a structure using a monoid.
-     fold :: (Foldable t, Monoid m) => t m -> m
+9.  ``fold :: (Foldable t, Monoid m) => t m -> m``
+    (Hint: use ``foldMap``.)
+
+   .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
+      :start-after: -- Question 9
+      :end-before: -- Question 10
+      :code:
 
 10. Define ``foldMap`` in terms of ``foldr``. ``foldMap ::
     (Foldable t, Monoid m) => (a -> m) -> t a -> m``
@@ -28,4 +86,3 @@ that have ``Foldable`` instances.
    .. include:: exercises/20.5.7_-_library_functions.rst.d/library-functions/src/Lib.hs
       :start-after: -- Question 10
       :code:
-
