@@ -3,6 +3,7 @@ import qualified Lib
 import Test.Hspec
 import Test.Hspec.QuickCheck
 
+
 main = hspec $ do
 
   describe "Question 10" $ do

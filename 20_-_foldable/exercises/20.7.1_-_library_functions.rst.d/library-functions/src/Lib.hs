@@ -6,11 +6,11 @@ module Lib where
 -- everything else available.
 import Prelude hiding
   ( sum , product , elem , minimum , maximum
-  , null , length, foldMap )
+  , null , length, foldr, foldMap )
 
 -- Hide all functions from Foldable other than
 -- foldr. The typeclass Foldable is visisble.
-import Data.Foldable hiding
+import qualified Data.Foldable hiding
   ( sum , product , elem , minimum , maximum
   , null , length , toList , fold , foldMap )
 
@@ -69,4 +69,4 @@ fold x = foldMap id x
 -- Question 10
 -- Write this function in terms of foldr.
 foldMap :: (Foldable t, Monoid m) => (a -> m) -> t a -> m
-foldMap f x = foldr (mappend . f) mempty x
+foldMap f x = Data.Foldable.foldr (mappend . f) mempty x
