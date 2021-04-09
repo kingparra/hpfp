@@ -28,13 +28,22 @@ elem e t = foldr (\x xs -> e == x || xs) False t
 minimum :: (Foldable t, Ord a) => t a -> Maybe a
 minimum t
   | null t    = Nothing
-  | otherwise = undefined -- getFirst $ foldMap (First . Just) t {- this is wrong -}
+  | otherwise  = foldr f Nothing t
+    where
+      f x Nothing    = Just x
+      f x (Just acc) =
+        if x < acc then Just x else Just acc
 
 
+-- Question 5
 maximum :: (Foldable t, Ord a) => t a -> Maybe a
 maximum t
   | null t    = Nothing
-  | otherwise = undefined
+  | otherwise  = foldr f Nothing t
+    where
+      f x Nothing    = Just x
+      f x (Just acc) =
+        if x > acc then Just x else Just acc
 
 
 -- Question 6
