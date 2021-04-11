@@ -35,6 +35,8 @@ Contents
    17_-_applicative/notes
    18_-_monad/outline
    18_-_monad/notes
+   20_-_foldable/outline
+   20_-_foldable/notes
 
 
 Indices and tables
