@@ -101,7 +101,7 @@ How should we think about the intended usage
 of these methods?
 
 ``traverse`` almost seems like an "effectful
-``fmap``", and resembles the ``forM`` function
+``fmap``", and resembles the ``mapM`` function
 that I've been using for a while, now. Here's
 an example someone gave me from IRC::
 
@@ -146,9 +146,11 @@ An experiment in GHCi::
    collect the results. For a version that ignores the results
    see 'Data.Foldable.sequenceA_'.
 
-  ·∾ sequenceA [ (putStrLn "one" >> getLine)
-               , (putStrLn "two" >> getLine)
-               , (putStrLn "three" >> getLine)]
+  ·∾ :{
+   ⋮ sequenceA [ putStrLn "one" >> getLine
+   ⋮           , putStrLn "two" >> getLine
+   ⋮           , putStrLn "three" >> getLine ]
+   ⋮ :}
   one
   1
   two
@@ -160,4 +162,43 @@ An experiment in GHCi::
 Some examples from this section.
 
 .. include:: figures/21.3/ghci_examples.txt
+   :code:
+
+.. topic:: What the ``fmap``?
+
+   In the example above, this line confused me::
+
+     ·∾ (fmap . fmap) sum Just [1,2,3]
+     Just 6
+
+   Here's what I expected it to desugar to::
+
+     ·∾ fmap sum (fmap Just [1,2,3])
+     [1,2,3]
+
+   But as you can see, the result is ``[1,2,3]``
+   rather than ``Just 6``.
+
+   After some brute force experimentation, I
+   came up with this, which produces the same
+   result::
+
+     ·∾ fmap sum (Just [1,2,3])
+     Just 6
+
+   What happened to the inner ``fmap``?
+
+
+21.4 traverse
+-------------
+Let's look at the type of ``traverse``::
+
+  ·∾ :type traverse
+  traverse :: (Traversable t, Applicative f)
+           => (a -> f b) -> t a -> f (t b)
+
+You might notice a similarity between that and
+the types of ``fmap`` and ``(flip bind)``:
+
+.. include:: figures/21.4/fmap_bind_traverse.hs
    :code:
