@@ -1,0 +1,60 @@
+-- Compare these...
+·∾ sum [1,2,3]
+6
+·∾ fmap sum [Just 1, Just 2, Just 3]
+[1,2,3]
+
+·∾ (fmap . fmap) sum Just [1,2,3]
+Just 6
+
+·∾ fmap product [Just 1, Just 2, Nothing]
+[1,2,1]
+
+
+-- ...to these...
+·∾ fmap Just [1,2,3]
+[Just 1,Just 2,Just 3]
+
+·∾ sequenceA $ fmap Just [1,2,3]
+Just [1,2,3]
+
+·∾ sequenceA [Just 1, Just 2, Just 3]
+Just [1,2,3]
+
+·∾ sequenceA [Just 1, Just 2, Nothing]
+Nothing
+
+·∾ fmap sum $ sequenceA [Just 1, Just 2, Just 3]
+Just 6
+
+·∾ fmap product (sequenceA [Just 1, Just 2, Nothing])
+Nothing
+
+
+-- It's worth mentioning that
+-- Data.Maybe.catMaybes offers a different way
+-- of handling a list of Maybe values...
+·∾ import Data.Maybe
+
+·∾ xs = [Just 1, Just 2, Just 3]
+
+·∾ catMaybes xs
+[1,2,3]
+
+·∾ xsn = [Just 1, Just 2, Nothing]
+
+·∾ catMaybes xsn
+[1,2]
+
+·∾ xsn' = xs ++ [Nothing]
+
+·∾ sum $ catMaybes xsn'
+6
+
+·∾ fmap sum $ sequenceA xsn'
+Nothing
+
+-- Using catMaybes allows you to sum (or
+-- otherwise process) the list of Maybe values
+-- even if there's potentially a Nothing value
+-- lurking within.
