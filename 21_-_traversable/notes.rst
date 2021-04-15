@@ -58,6 +58,16 @@
 .. monochrom :
 ..   Just different argument orders.
 
+.. http://dev.stephendiehl.com/hask/#foldable-traversable
+
+.. traversable allows us to walk a data
+   structure left-to-right within an
+   applicative context.
+
+
+.. A traversable structure has a finite number
+   of elements that can be accessed in a
+   linear order.
 
 In this chapter, we will:
 
@@ -69,64 +79,16 @@ In this chapter, we will:
 
 21.2 The Traversable type class definition
 ------------------------------------------
-First let's look at the typeclass definition
-of ``Traversable``, which I've somewhat
-rearranged::
+It speaks for itself, really.
 
-  class (Functor t, Foldable t) => Traversable (t :: * -> *) where
-
-    traverse   :: Applicative f   =>   (a -> f b)  ->  t a  ->  f (t b)
-    mapM       :: Monad m         =>   (a -> m b)  ->  t a  ->  m (t b)
-    sequenceA  :: Applicative f   =>      t (f a)  ->  f (t a)
-    sequence   :: Monad m         =>      t (m a)  ->  m (t a)
-    {-# MINIMAL traverse | sequenceA #-}
-
-  instance Traversable []
-  instance Traversable Maybe
-  instance Traversable (Either a)
-  instance Traversable ((,) a)
-
-As you can see, a minimal class definition
-requires only one of either ``traverse`` or
-``sequenceA``.
-
-These two methods can be written in terms of
-each other, and have the following default
-definitions::
-
-  traverse f = sequenceA . fmap f
-  sequenceA = traverse id
-
-How should we think about the intended usage
-of these methods?
-
-``traverse`` almost seems like an "effectful
-``fmap``", and resembles the ``mapM`` function
-that I've been using for a while, now. Here's
-an example someone gave me from IRC::
-
-
-  ·∾ traverse (\s -> putStrLn s >> getLine) ["hello", "hi", "aloha"]
-  hello
-  Chris
-  hi
-  Bonjour!
-  aloha
-  Aloha!
-  ["Chris","Bonjour!","Aloha!"]
-
-  ·∾ mapM (\s -> putStrLn s >> getLine ) ["hello", "hi", "aloha"]
-  hello
-  Chris
-  hi
-  Bounjour!
-  aloha
-  Alohahaha
-  ["Chris","Bounjour!","Alohahaha"]
+.. include:: figures/21.2/typeclass_definition.txt
+   :code:
 
 
 21.3 sequenceA
 --------------
+Alright, what is ``sequenceA``, really?
+
 You can see from the type signature that
 ``sequenceA`` is flipping two contexts or
 structures::
@@ -134,17 +96,18 @@ structures::
   ·∾ :type sequenceA
   sequenceA :: (Traversable t, Applicative f) => t (f a) -> f (t a)
 
-It doesn't by itself allow you to apply any
+``sequenceA`` doesn't allow you to apply any
 function to the ``a`` value inside the
-structure; it only flips the layers of
-structure around.
+structure by itself; it only flips the layers
+of structure around.
 
 An experiment in GHCi::
 
   ·∾ :doc sequenceA
-   Evaluate each action in the structure from left to right, and
-   collect the results. For a version that ignores the results
-   see 'Data.Foldable.sequenceA_'.
+   Evaluate each action in the structure from
+   left to right, and collect the results. For
+   a version that ignores the results see
+   'Data.Foldable.sequenceA_'.
 
   ·∾ :{
    ⋮ sequenceA [ putStrLn "one" >> getLine
@@ -202,3 +165,111 @@ the types of ``fmap`` and ``(flip bind)``:
 
 .. include:: figures/21.4/fmap_bind_traverse.hs
    :code:
+
+``traverse`` **is similar to** ``fmap``\ **,
+except that it also allows you to run
+applicative effects while you're rebuilding
+the data structure, which also changes the
+result type.**
+
+In this usage, applicative is almost the same
+as monad, except that effects cannot depend on
+previous results.
+
+Here's an example someone gave me from IRC
+that illustrates this::
+
+  ·∾ traverse (\s -> putStrLn s >> getLine) ["hello", "hi", "aloha"]
+  hello
+  Chris
+  hi
+  Bonjour!
+  aloha
+  Aloha!
+  ["Chris","Bonjour!","Aloha!"]
+
+  ·∾ mapM (\s -> putStrLn s >> getLine ) ["hello", "hi", "aloha"]
+  hello
+  Chris
+  hi
+  Bounjour!
+  aloha
+  Alohahaha
+  ["Chris","Bounjour!","Alohahaha"]
+
+Since I've been using ``mapM`` for a while I
+found this a useful comparison.
+
+You've already seen that traverse is ``fmap``
+composed with ``sequenceA``. Here are a few
+examples of that:
+
+.. include:: figures/21.4/traverse_in_more_steps.txt
+   :code:
+
+The general idea is that anytime you're using
+``sequenceA . fmap f`` you can use ``traverse``
+to achieve the same result in one step.
+
+
+
+21.5 So, what's Traversable for?
+--------------------------------
+In a literal sense, **anytime you need to flip
+two type constructors around, or map something
+and then flip them around, that's probably**
+``Traversable``\ **.**
+
+::
+
+  ·∾ f = undefined :: a -> Maybe b
+
+  ·∾ xs = undefined :: [a]
+
+  ·∾ :type map f xs
+  map f xs :: [Maybe b]
+
+  ·∾ :type sequenceA $ map f xs
+  sequenceA $ map f xs :: Maybe [a]
+
+It's usually better to use ``traverse``
+whenever we see a ``sequence`` or
+``sequenceA`` combined with a ``map``
+or ``fmap``.
+
+::
+
+  ·∾ :type sequenceA $ map f xs
+  sequenceA $ map f xs :: Maybe [a]
+
+  ·∾ :type traverse f xs
+  traverse f xs :: Maybe [b]
+
+
+21.6 Morse code revisited
+-------------------------
+The expression ``(sequence .) . fmap`` is so
+hard to read that the authors included a
+translation in the book. Just don't write code
+like that in the first place, it's awful.
+
+
+21.7 Axing tedious code
+-----------------------
+.. include:: figures/21.7/Decoder.hs
+   :code:
+
+
+21.8 Do all the things
+----------------------
+Here, have some more code! Get ready for a
+really long compile time if you try to run
+this.
+
+.. include:: figures/21.8/HttpStuff.hs
+   :code:
+
+Strength for understanding
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+We can write ``Functor`` and ``Foldable`` in
+terms of ``Traversable``.
