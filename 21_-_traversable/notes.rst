@@ -5,58 +5,22 @@
 
 21.1 Traversable
 ----------------
-.. The book says:
+.. "Traversable allows you to transform elements
+.. inside a structure like a functor, producing
+.. applicative effects along the way, and lift
+.. those potentially multiple instances of
+.. applicative structure outside of the
+.. traversable structure."
 ..
-..  "Traversable allows you to transform
-..   elements inside the structure like a
-..   functor, producing applicative effects
-..   along the way, and lift those potentially
-..   multiple instances of applicative
-..   structure outside of the traveresavle
-..   structure."
-..
-.. Which sounds important, but is completely
-.. impenetrable to me. What the hell does that
-.. mean!?
 
-.. Is traversable the same thing as an iterator?
-.. An iterator interface presents operations to:
-.. * access the current element,
-.. * move to the next element,
-.. * and to test for completion.
-
-.. justsomeguy:
-..   Can someone give me a dumbed-down, possibly
-..   inaccurate summary of what Traversable is,
-..   just to give me a sense of it? Is it an
-..   iterator? A thingy that flips inner
-..   structure with outer structure? Something
-..   that helps me climb trees?
 .. koz_ justsomeguy:
 ..   Traversable is 'effectful fmap'.
 .. koz_ :t fmap
 .. lambdabot Functor f => (a -> b) -> f a -> f b
 .. koz_ :t traverse
-.. lambdabot (Traversable t, Applicative f) => (a -> f b) -> t a -> f (t b)
+.. lambdabot (Traversable t, Applicative f) =>
+.. (a -> f b) -> t a -> f (t b)
 .. koz_ s/is/allows/
-.. * | justsomeguy slowly mulls over what an applicative effect is.
-.. monochrom :
-..  IO is an example.
-.. monochrom :
-..   If you have ["hello", "hi", "aloha"], and if
-..   you want for each string there you putStrLn
-..   then getLine, and you want the result list
-..   to be the 3 lines you get from the 3 getLines:
-.. monochrom :
-..   traverse (\s -> putStrLn s >> getLine) ["hello", "hi", "aloha"]
-.. monochrom :
-..   THE END
-.. justsomeguy :
-..   Hrm, that's pretty similar to forM, which
-..   I've been using for a while now without
-..   understanding.
-.. monochrom :
-..   Just different argument orders.
 
 .. http://dev.stephendiehl.com/hask/#foldable-traversable
 
@@ -64,10 +28,13 @@
    structure left-to-right within an
    applicative context.
 
-
 .. A traversable structure has a finite number
    of elements that can be accessed in a
    linear order.
+
+.. "Class of data structures that can be
+   traversed from left to right, perfoming an
+   action on each element."
 
 In this chapter, we will:
 
@@ -79,10 +46,57 @@ In this chapter, we will:
 
 21.2 The Traversable type class definition
 ------------------------------------------
-It speaks for itself, really.
+Let's look at the type class definition for ``Traversable``::
 
-.. include:: figures/21.2/typeclass_definition.txt
-   :code:
+  class (Functor t, Foldable t) => Traversable (t :: * -> *) where
+
+    traverse   :: Applicative f   =>   (a -> f b)  ->  t a  ->  f (t b)
+    traverse f = sequenceA . fmap f
+
+    mapM       :: Monad m         =>   (a -> m b)  ->  t a  ->  m (t b)
+    mapM = traverse
+
+    sequenceA  :: Applicative f   =>      t (f a)  ->  f (t a)
+    sequenceA = traverse id
+
+    sequence   :: Monad m         =>      t (m a)  ->  m (t a)
+    sequence = sequenceA
+
+    {-# MINIMAL traverse | sequenceA #-}
+
+
+  instance Traversable []
+  instance Traversable Maybe
+  instance Traversable (Either a)
+  instance Traversable ((,) a)
+
+Notice that the constraint of ``Applicative``
+is a property of some of the class methods,
+rather than the type class itself.
+
+Let's look more closely at the type signature
+for ``traverse``::
+
+  class (Functor t, Foldable t) => Traversable t where
+    traverse :: Applicative f => (a -> f b) -> t a -> f (t b)
+    -- fmap  ::                  (a -> b)   -> f a -> f b
+    --                                    b ~ t c
+    --                           (a -> t c) -> f a -> f (t c)
+
+The ``a -> t c`` could be a function like
+Leaf, an effectful function. The function
+``a -> t c`` would inject this ``t`` effect
+while acting on ``a``, preserving the structure
+of ``f`` while doing so.  For ``traverse``, it
+flips the ``f`` and ``t`` so the result is ``t
+(f c)``.
+
+What does ``traverse`` do? It maps each
+element within a structure to an action,
+evaluates those actions from left to right,
+and collects the results.
+
+What does "collects the results" mean, here?
 
 
 21.3 sequenceA
@@ -264,12 +278,21 @@ like that in the first place, it's awful.
 ----------------------
 Here, have some more code! Get ready for a
 really long compile time if you try to run
-this.
+this. Also, what is this supposed to even do?
+How do I use it? What is a bytestring? What's
+wreq?
 
 .. include:: figures/21.8/HttpStuff.hs
    :code:
 
-Strength for understanding
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-We can write ``Functor`` and ``Foldable`` in
-terms of ``Traversable``.
+
+21.10 Traversable Laws
+----------------------
+
+20.10.1 traverse
+^^^^^^^^^^^^^^^^
+1. **Naturality** ``t . traverse f`` :math:`=` ``traverse (t . f)``
+2. **Identity** ``traverse Identity`` :math:`=` ``Identity``
+3. **Composition**
+   ``traverse (Compose . fmap g . f)`` :math:`=`
+   ``Compose . fmap (traverse g) . traverse f``
