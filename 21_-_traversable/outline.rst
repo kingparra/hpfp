@@ -49,8 +49,16 @@
     * Big
     * Bigger
     * S
-    * Instances for Tree
 
-      * hints
+  * 21.12.2 Instances for Tree
+
+    * hints
 
 * 21.13 Follow-up resources
+
+  * Jakub Arnold. Foldable and Traversable
+  * Jeremy Gibbons and Bruno C. d. S.
+    Oliveira. The Essence of the Iterator
+    Pattern.
+  * Conor McBride and Ross Paterson.
+    Applicative programming with effects.

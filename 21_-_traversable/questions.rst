@@ -3,18 +3,33 @@
 **********************
 
 
+**21.2 reading comprehension check**
+
+* What does sequenceA do?
+* What does traverse do?
+* What is the type signature of sequenceA?
+* What is the type signature of traverse?
+* How can you derive traverse from sequenceA?
+* How can you derive sequenceA from traverse?
+* Which type classes does Traversable inherit
+  from?
+* What are the minimum required class methods
+  for a complete instance definition?
+
+
 **What do I find difficult right now?**
 
 * Writing generators for QuickCheck.
+* Understanding how to use the checkers package.
 * Remembering the type class laws.
 * Writing instances for type classes.
 * Understanding trees.
+* The Morse code example program.
 
 * Problem decomposition.
-* Defining functions in terms of primitive
-  recursion.
-* Desugaring the function composition
-  operator.
+* Defining functions in terms of primitive recursion.
+* Desugaring the function composition operator.
+
 
 **The first and third paragraphs of 21.1 left me
 with several questions.** Here they are, again:
@@ -86,12 +101,14 @@ the each function applied to each value.
   not sure I recognize any accumulation going
   on.
 
+
 **Is traversable the same thing as an iterator?**
 An iterator interface presents operations to:
 
 * access the current element,
 * move to the next element,
 * and to test for completion.
+
 
 **So, here's what happened when I asked about
 Traversable on IRC**
