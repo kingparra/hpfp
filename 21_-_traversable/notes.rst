@@ -11,7 +11,6 @@
 .. those potentially multiple instances of
 .. applicative structure outside of the
 .. traversable structure."
-..
 
 .. koz_ justsomeguy:
 ..   Traversable is 'effectful fmap'.
@@ -107,8 +106,9 @@ You can see from the type signature that
 ``sequenceA`` is flipping two contexts or
 structures::
 
-  ·∾ :type sequenceA
-  sequenceA :: (Traversable t, Applicative f) => t (f a) -> f (t a)
+  sequenceA :: ( Traversable t
+               , Applicative f )
+            => t (f a) -> f (t a)
 
 ``sequenceA`` doesn't allow you to apply any
 function to the ``a`` value inside the
@@ -289,10 +289,33 @@ wreq?
 21.10 Traversable Laws
 ----------------------
 
-20.10.1 traverse
+21.10.1 traverse
 ^^^^^^^^^^^^^^^^
-1. **Naturality** ``t . traverse f`` :math:`=` ``traverse (t . f)``
-2. **Identity** ``traverse Identity`` :math:`=` ``Identity``
+1. **Naturality**
+   ``t . traverse f`` :math:`=` ``traverse (t . f)``
+2. **Identity**
+   ``traverse Identity`` :math:`=` ``Identity``
+   This is another way of saying that a
+   traversable instance cannot add or inject
+   any structure or effects.
 3. **Composition**
    ``traverse (Compose . fmap g . f)`` :math:`=`
    ``Compose . fmap (traverse g) . traverse f``
+
+21.10.2 sequenceA
+^^^^^^^^^^^^^^^^^
+1. **Naturality**
+   ``t . sequenceA`` :math:`=` ``sequenceA . fmap t``
+2. **Identity**
+   ``sequenceA . fmap Identity`` :math:`=` ``Identity``
+3. **Composition**
+   ``sequenceA . fmap Compose`` :math:`=`
+   ``Compose . fmap sequenceA . sequenceA``
+
+
+21.12 Chapter Exercises
+-----------------------
+
+.. include:: exercises/21.12.1_-_traversable_instances.rst
+
+.. include:: exercises/21.12.2_-_instances_for_tree.rst
