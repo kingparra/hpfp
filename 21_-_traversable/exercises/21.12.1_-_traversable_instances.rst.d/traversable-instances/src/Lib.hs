@@ -1,7 +1,7 @@
 module Lib where
 import Test.QuickCheck
 import Test.QuickCheck.Checkers
-
+import Test.QuickCheck.Classes
 
 
 -- Question 1
@@ -10,16 +10,26 @@ newtype Identity a = Identity a
 
 
 instance Functor Identity where
-  fmap f (Identity a) = (Identity (f a))
+  fmap f (Identity a) = Identity $ (f a)
 
 
 instance Foldable Identity where
-  foldMap = undefined
+  foldMap f (Identity a) = f a
 
 
 instance Traversable Identity where
-  traverse = undefined
+  traverse f (Identity a) = Identity <$> (f a)
 
+
+instance Arbitrary a => Arbitrary (Identity a) where
+  -- arbitrary = pure (Identity 7)
+  -- arbitrary = pure (Identity (choose (7,42))
+  -- arbitrary = pure (Identity (elements [1,2,3]))
+  arbitrary = arbitrary >>= pure . Identity
+
+
+instance Eq a => EqProp (Identity a) where
+  (=-=) = eq
 
 
 -- Question 2
@@ -28,7 +38,7 @@ newtype Constant a b =
 
 
 instance Functor (Constant b) where
-  fmap = undefined
+  fmap f = undefined
 
 
 instance Foldable (Constant b) where
