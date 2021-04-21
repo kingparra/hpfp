@@ -1,4 +1,3 @@
-{-# LANGUAGE FlexibleContexts #-}
 module Lib where
 import Test.QuickCheck
 import Test.QuickCheck.Checkers
@@ -11,7 +10,7 @@ newtype Identity a = Identity a
 
 
 instance Functor Identity where
-  fmap = undefined
+  fmap f (Identity a) = (Identity (f a))
 
 
 instance Foldable Identity where
@@ -144,28 +143,29 @@ instance Traversable (Bigger b) where
 
 
 
--- Question 9
-data S n a = S (n a) a deriving (Eq, Show)
+-- -- Question 9
+-- {-# LANGUAGE FlexibleContexts #-}
+-- data S n a = S (n a) a deriving (Eq, Show)
 
 
-instance ( Functor n
-         , Arbitrary (n a)
-         , Arbitrary a 
-         ) => Arbitrary (S n a) where
-  arbitrary = S <$> arbitrary <*> arbitrary
+-- instance ( Functor n
+--          , Arbitrary (n a)
+--          , Arbitrary a
+--          ) => Arbitrary (S n a) where
+--   arbitrary = S <$> arbitrary <*> arbitrary
 
 
-instance ( Applicative n
-         , Testable (n Property)
-         , Eq a
-         , Eq (n a)
-         , EqProp a 
-         ) => EqProp (S n a) where
-  (=-=) = eq
+-- instance ( Applicative n
+--          , Testable (n Property)
+--          , Eq a
+--          , Eq (n a)
+--          , EqProp a
+--          ) => EqProp (S n a) where
+--   (=-=) = eq
 
 
-instance Traversable n => Traversable (S n) where
-  traverse = undefined
+-- instance Traversable n => Traversable (S n) where
+--   traverse = undefined
 
 
-main = sample' (arbitrary :: Gen (S [] Int))
+-- main = sample' (arbitrary :: Gen (S [] Int))
