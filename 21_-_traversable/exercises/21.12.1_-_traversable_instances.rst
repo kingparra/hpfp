@@ -1,0 +1,113 @@
+21.12.1 Traversable instances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Write a ``Traversable`` instance for the
+datatype provided, filling in any required
+superclasses. Use QuickCheck to validate your
+instances.
+
+
+Identity
+~~~~~~~~
+Write a Traversable instance for Identity::
+
+  newtype Identity a = Identity a
+    deriving (Eq, Ord, Show)
+
+
+  instance Traversable Identity where
+    traverse = undefined
+
+
+Constant
+~~~~~~~~
+::
+
+  newtype Constant a b =
+    Constant { getConstant :: a }
+
+
+Maybe
+~~~~~
+::
+
+  data Optional a = Nada | Yep a
+
+
+List
+~~~~
+::
+
+  data List a = Nil | Cons a (List a)
+
+
+Three
+~~~~~
+::
+
+  data Three a b c = Three a b c
+
+
+Pair
+~~~~
+::
+
+  data Pair a b = Pair a b
+
+
+Big
+~~~
+When you have more than one value of type
+``b``, use ``Monoid`` and ``Applicative`` for
+the ``Foldable`` and ``Traversable``
+instances, respectively::
+
+  data Big a b = Big a b b
+
+
+Bigger
+~~~~~~
+Same as for ``Big``::
+
+  data Bigger a b = Bigger a b b b
+
+
+S
+~~~
+This may be difficult. To make it easier,
+we'll give you the constraints and QuickCheck
+instances::
+
+  {-# LANGUAGE FlexibleContexts #-}
+  module SkiFree where
+  import Test.QuickCheck
+  import Test.QuickCheck.Checkers
+
+
+  data S n a = S (n a) a deriving (Eq, Show)
+
+
+  instance ( Functor n
+           , Arbitrary (n a)
+           , Arbitrary a )
+           => Arbitrary (S n a)
+  where
+    arbitrary = S <$> arbitrary <*> arbitrary
+
+
+  instance ( Applicative n
+           , Testable (n Property)
+           , Eq a
+           , Eq (n a)
+           , EqProp a)
+           => EqProp (S n a)
+   where
+     (=-=) = eq
+
+
+  instance Traversable n => Traversable (S n) where
+    traverse = undefined
+
+
+  main = sample' (arbitrary :: Gen (S [] Int))
+
+

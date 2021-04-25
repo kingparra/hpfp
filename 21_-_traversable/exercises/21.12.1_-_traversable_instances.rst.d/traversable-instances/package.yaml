@@ -1,0 +1,20 @@
+---
+name: traversable-instances
+dependencies:
+  - base >= 4.7 && < 5
+  - QuickCheck
+  - checkers
+library:
+  source-dirs: src
+tests:
+  traversable-instances-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - checkers
+      - QuickCheck
+      - traversable-instances
