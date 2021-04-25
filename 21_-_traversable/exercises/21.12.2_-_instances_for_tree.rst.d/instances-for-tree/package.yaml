@@ -1,0 +1,11 @@
+---
+name: instances-for-tree
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  instances-for-tree-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [instances-for-tree, hspec]

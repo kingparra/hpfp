@@ -1,0 +1,11 @@
+·∾ fmap Just [1,2,3]
+[Just 1,Just 2,Just 3]
+
+·∾ sequenceA $ fmap Just [1,2,3]
+Just [1,2,3]
+
+·∾ sequenceA . fmap Just $ [1,2,3]
+Just [1,2,3]
+
+·∾ traverse Just [1,2,3]
+Just [1,2,3]
