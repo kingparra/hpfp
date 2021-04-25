@@ -19,6 +19,7 @@ instance Foldable Identity where
 
 instance Traversable Identity where
   traverse f (Identity a) = Identity <$> (f a)
+  -- <$> <*> <*>
 
 
 instance Arbitrary a => Arbitrary (Identity a) where
@@ -32,21 +33,29 @@ instance Eq a => EqProp (Identity a) where
   (=-=) = eq
 
 
+
 -- Question 2
 newtype Constant a b =
   Constant { getConstant :: a }
+  deriving (Eq, Show)
 
 
 instance Functor (Constant b) where
-  fmap f = undefined
+  -- We can't operate on x because it is of
+  -- type a, and our instance can only see
+  -- type b, due to outermost reduction. So
+  -- attempting to operate on x will result
+  -- in a type error. It really has to be a
+  -- constant.
+  fmap f (Constant x) = Constant x
 
 
 instance Foldable (Constant b) where
-  foldMap = undefined
+  foldMap _ (Constant x) = undefined
 
 
 instance Traversable (Constant b) where
-  traverse = undefined
+  traverse f x = undefined
 
 
 
