@@ -40,6 +40,8 @@ Contents
    21_-_traversable/outline
    21_-_traversable/questions
    21_-_traversable/notes
+   22_-_reader/outline
+   22_-_reader/notes
 
 
 Indices and tables
