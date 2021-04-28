@@ -45,3 +45,39 @@ duwop = liftA2 (+) boop doop
 -- Prelude> bbop 3
 -- 19
 --
+
+
+
+-- page 846, figure 6
+--
+-- That does something like this:
+--
+-- ((+) <$> (*2) <*> (+10)) 3
+--
+-- First the fmap
+--
+-- (*2) :: Num a => a -> a
+-- (+)  :: Num a => a -> a -> a
+-- (+) <$> (*2) :: Num a => a -> a -> a
+--
+
+
+-- page 846, figure 7
+--
+-- (+) . (*2) :: Num a => a -> a -> a
+--
+
+
+
+-- page 846, figure 8
+--
+-- Prelude> ((+) . (*2)) 5 3
+-- 13
+--
+-- Prelude> ((+) <$> (*2)) 5 3
+-- 13
+--
+
+
+
+
