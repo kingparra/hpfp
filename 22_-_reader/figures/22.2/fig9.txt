@@ -1,0 +1,14 @@
+-- page 847, figure 9
+
+((+) <$> (*2)) 5 3
+
+Keeping in mind that (<$>) is the (.)
+operator under the hood.
+
+((+) . (*2)) 5 3
+
+Remember that function composition
+desugars to a lambda like this:
+(f . g) ≡ (\x -> f (g x)).
+
+((+) . (*2)) == (\x -> (+) (2 * x))

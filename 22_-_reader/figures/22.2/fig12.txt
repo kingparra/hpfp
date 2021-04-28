@@ -1,0 +1,5 @@
+-- page 847, figure 12
+
+Prelude> :t (<*>)
+(<*>) :: Applicative f
+    => f (a -> b) -> f a -> f b

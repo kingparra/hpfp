@@ -1,0 +1,3 @@
+-- page 845, figure 3
+
+fmap boop doop x == (*2) ((+10) x)
