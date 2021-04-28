@@ -15,3 +15,15 @@ doop = (+10)
 
 bip :: Integer -> Integer
 bip = boop . doop
+
+
+
+-- page 845, figure 2
+bloop :: Integer -> Integer
+bloop = fmap boop boop
+
+
+
+-- page 845, figure 3
+--
+-- fmap boop doop x == (*2) ((+10) x)
