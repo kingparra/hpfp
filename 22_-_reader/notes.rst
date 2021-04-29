@@ -92,6 +92,8 @@ along with the section.
     async></script>
 
 
+The Functor instance for functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. paragraph 5
 
 ``fmap`` applies functions to each element
@@ -109,6 +111,113 @@ structure?
 Answer: The structure is a partially applied
 function, and the elements are the arguments
 to that function.
+
+So something like this::
+
+  fmap  (\x -> (+) 10 x)  (\y -> (*) 2 y)
+
+Will evaluate to this::
+
+  \y -> (*)  2  ((\x -> (+) 10 x) y)
+
+As you can see, the function we map gets
+applied to the argument of our containing
+function, meaning that the function ``f`` must
+act on the result of it's argument with ``g``
+applied. This is really just function
+composition.
+
+It's literally defined that way in ``GHC.Base``,
+`which you can see here <https://hackage.haskell.org/
+package/base-4.14.0.0/docs/src/GHC.Base.html#line-969>`_.
+Here's what the definition of ``fmap`` looks
+like at the time of this writing::
+
+  . . .
+
+	-- instances for Prelude types
+
+	-- | @since 2.01
+	instance Functor ((->) r) where
+			fmap = (.)
+
+  . . .
+
+.. paragraph 10
+
+The Applicative instance for functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Let's look at a different example, now::
+
+  -- page 846, figure 4
+  bbop :: Integer -> Integer
+  bbop = (+) <$> boop <*> doop
+
+  duwop :: Integer -> Integer
+  duwop = liftA2 (+) boop doop
+
+The ``Applicative`` instance for functions
+looks like this::
+
+  -- | @since 2.01
+  instance Applicative ((->) r) where
+    pure = const
+    (<*>) f g x = f x (g x)
+    liftA2 q f g x = q (f x) (g x)
+
+Desugaring an expression in GHCi::
+
+  ·∾ ((+) <$> boop <*> doop) 10
+  40
+
+  ·∾ ((\x -> (+) (boop x)) <*> doop) 10
+  40
+
+  ·∾ :{
+  ·∾ ((<*>)
+   ⋮  (\x -> (+) (boop x))
+   ⋮  doop
+   ⋮ )
+   ⋮ 10
+   ⋮ :}
+  40
+
+  ·∾ -- [ (<*>) := (\f g x -> f x (g x)) ]
+  ·∾ :{
+   ⋮ ((\f g x -> f x (g x))
+   ⋮  (\z -> (+) (boop z))
+   ⋮  doop
+   ⋮ )
+   ⋮ 10
+   ⋮ :}
+  40
+
+  ·∾ -- [ f := (\z -> (+) (boop z)) ]
+  ·∾ :{
+   ⋮ ((\g x -> (\z -> (+) (boop z)) x (g x))
+   ⋮  doop
+   ⋮ )
+   ⋮ 10
+   ⋮ :}
+  40
+
+  ·∾ -- [ g := doop ]
+  ·∾ :{
+   ⋮ (\x -> (\z -> (+) (boop z)) x (doop x))
+   ⋮ 10
+   ⋮ :}
+  40
+
+  ·∾ -- [ x := 10 ]
+  ·∾ (\z -> (+) (boop z)) 10 (doop 10)
+  40
+
+  ·∾ -- [ z := 10 ]
+  ·∾ ((+) (boop 10)) (doop 10)
+  40
+
+  ·∾ (+) (boop 10) (doop 10)
+  40
 
 .. paragraph 28
 
@@ -139,3 +248,10 @@ to that function.
    constant value that we will obtain from
    somewhere outside our program that will be
    an argument to a whole bunch of functions.
+
+.. 22.2 Recap
+
+   What were:
+
+   * The subjects discussed in this section?
+   * The things I learned from it that I can use every day?
