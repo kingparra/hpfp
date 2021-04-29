@@ -5,149 +5,72 @@
 
 22.1 Reader
 -----------
-.. "
-.. A program in a pure functional language is
-.. written as a set of equations. Explicit data
-.. flow ensures that the value of an expression
-.. depends only on its free variables.
-.. " ~ Monad for functional programming, Phillip Wadler
 
+.. Paragraph 2.
 
-.. Some vocabulary...
-..
-.. Free variable
-..
-..   A variable that is not a parameter
-..   or locally defined.
-..
-..   A variable that is used locally, but
-..   defined in an enclosing scope.
-..
-.. Bound variable
-..
-..   A parameter.
-..
-..   A parameter name that has been saturated
-..   with the value of its respective argument
-..   for that function call.
-..
-.. Combinator
-..
-..   A function that serves only to combine
-..   its parameters and does not have any
-..   free variables within its definition.
-..
-..   In the lambda calculus, all names used in
-..   the function body would also be present
-..   in the head.
-..
-.. Closure
-..
-..   An expression (or function) that
-..   introduces, or has, free variables.
-..
-..   In the lambda calculus, some names in the
-..   function body would not be present in the
-..   head.
-..
-..   "A lambda expression whose open bindings (free variables)
-..   have been closed by (or bound in) the lexical environment,
-..   resulting in a closed expression, or closure."
-..
-..   [5] Åke Wikström (1987). Functional Programming
-..   using Standard ML. ISBN 0-13-331968-7. "The
-..   reason it is called a "closure" is that an
-..   expression containing free variables is
-..   called an "open" expression, and by
-..   associating to it the bindings of its free
-..   variables, you close it."
-..
-..   Strictly, an anonymous function is a function
-..   literal without a name, while a closure is
-..   an instance of a function, a value, whose
-..   non-local variables have been bound either
-..   to values or to storage locations
-..   (depending on the language; see the lexical
-..   environment section below).
-..
-..   https://en.wikipedia.org/wiki/Closure_(computer_programming)
-..
-..   Peter J. Landin defined the term closure in
-..   1964 as having an environment part and a
-..   control part as used by his SECD machine for
-..   evaluating expressions.[3] Joel Moses credits
-..   Landin with introducing the term closure to
-..   refer to **a lambda expression whose open
-..   bindings (free variables) have been closed by
-..   (or bound in) the lexical environment,
-..   resulting in a closed expression, or
-..   closure.[4][5]** This usage was subsequently
-..   adopted by Sussman and Steele when they
-..   defined Scheme in 1975,[6] a lexically scoped
-..   variant of Lisp, and became widespread.
-..
-..   https://en.wikipedia.org/wiki/Closure_(computer_programming)
-..
-..  The scope of a variable describes where in a
-..  program's text the variable may be used, while
-..  the extent (or lifetime) describes when in a
-..  program's execution a variable has a
-..  (meaningful) value.
-..
-..  In languages with closures, variables must
-..  continue to exist as long as any existing
-..  closures have references to them. This is
-..  most commonly implemented using some form
-..  of garbage collection.
-..
-..
-.. "
-.. A program in a pure functional language is
-.. written as a set of equations. Explicit data
-.. flow ensures that the value of an expression
-.. depends only on its free variables.
-..
-.. Hence substitution of equals for equals is
-.. always valid, making such programs especially
-.. easy to reason about. Explicit data flow also
-.. ensures that the order of computation is
-.. irrelevant, making such programs susceptible
-.. to lazy evaluation.
+   a) When writing applications, programmers
+      often need to pass around some information
+      that may be needed intermittently or
+      universally throughtout an entire
+      application.
 
-.. It is with regard to modularity that explicit
-.. data flow becomes both a blessing and a curse.
-.. On the one hand, it is the ultimate in
-.. modularity. All data in and all data out are
-.. rendered manifest and accessible, providing a
-.. maximum of flexibility. On the other hand, it
-.. is the nadir of modularity. The essence of an
-.. algorithm can become buried under the plumbing
-.. required to carry data from its point of
-.. creation to its point of use
-.. " ~ Monad for functional programming, Phillip Wadler
+      * Ok, so things like envionment variables,
+        config file directives, the os type, etc.
 
+   b) We don't want to simply pass this
+      information as arguments, because it
+      would be present in the type of almost
+      every function.
 
-..  |  justsomeguy What is the Reader monad?
-..  |
-..  |       Axman6 it's a way to pass around some
-..  |              data that various parts of your
-..  |              application needs, without needing to
-..  |              explicitly pass it as function arguments
-..  |
-..  |  justsomeguy So, a named closure that shows up
-..  |              in type signatures?
-..  |
-..  |      shachaf Well, a closure closes over some
-..  |              existing value. "Reader" means a
-..  |              thing is parameterized.
-..  |
-..  |       Axman6 so, it's commonly used to pass
-..  |              around settings your application was
-..  |              passed when it launched, from command
-..  |              line arguments, config files, etc.
-..  |
-..  |      shachaf But "Reader r a" is just a function, "r -> a".
+      * When you say "pass this information as
+        arguments", what do you have in mind?
 
+        Do you mean passing all of the
+        information as a single argument, such
+        as a named record containing all
+        name:value pairs you may want to
+        access (an environment)?
+
+        Or do you mean passing each possible
+        config option individually; where each
+        option has a separate argument that
+        functions must accept using appropriate
+        parameters, respectively?
+
+        Or maybe something else?
+
+      * Can you show an example of what this
+        would look like?
+      * Why not use another approach like:
+
+        * A top-level definition; or
+        * a closure (an enclosing scope that
+          contains any names you may wish to
+          access), possibly generated by a
+          function, like the JS function
+          factory pattern, Python decerators;
+          or
+        * an expression imported from a module.
+
+   c) This can make the code harder to read and
+      harder to maintain.
+
+      * How does having explicit arguments
+        make the code harder to read?
+      * Wouldn't it be easier to read, since
+        you know what data the functions
+        depend on?
+      * Can you show an example of what you
+        have in mind?
+
+.. The Reader monad effectively creates a
+   global read-only value of a specified type.
+   All functions within the monad can "read"
+   the type. ~ https://mmhaskell.com/blog/2017/
+   2/20/how-to-read-and-write-with-monads
+
+.. The phrase "dependency injection" keeps on
+   coming up. What is that?
 
 In this chapter, we will:
 
@@ -159,8 +82,60 @@ In this chapter, we will:
 
 22.2 A new beginning
 --------------------
-.. todo Create an expect script that follows
-.. the narrative in 22.2, loading in figures
-.. in at the approriate times, and record it
-.. with git and asciinema. Phew, that sounds
-.. like a lot of work.
+Here is a recording of me following
+along with the section.
+
+.. raw:: html
+
+   <script id="asciicast-he9wsyPdZlIvZ0eSw9XJ3wXDe"
+    src="https://asciinema.org/a/he9wsyPdZlIvZ0eSw9XJ3wXDe.js"
+    async></script>
+
+
+.. paragraph 5
+
+``fmap`` applies functions to each element
+within a structure. Some of these structures
+make intuitive sense, like lists. But, did you
+know you can also ``fmap`` over a function?
+
+In the case of ``fmap``'ping over a function,
+what is the structure, and what are the
+elements that we operate on within that
+structure?
+
+.. paragraph 6
+
+Answer: The structure is a partially applied
+function, and the elements are the arguments
+to that function.
+
+.. paragraph 28
+
+   So, we've seen here that we can have a
+   ``Functor``, ``Applicative``, anad
+   ``Monad`` for partially applied functions.
+
+   The ``Functor`` of functions is function
+   composition.
+
+   The ``Applicative`` and ``Monad`` chain the
+   argment forward in addition to the
+   composition.
+
+   * What does that mean? What does "chaining
+     the argumetn forward" mean? How is that
+     different from composition? I would
+     assume that they are the same thing.
+
+.. pragraph 29
+
+   Reader is a way of stringing fuctions
+   together when all those functions are
+   awaiting one input from a shared
+   environment.
+
+   We use this most often when we have a
+   constant value that we will obtain from
+   somewhere outside our program that will be
+   an argument to a whole bunch of functions.
