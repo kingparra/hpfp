@@ -82,8 +82,15 @@ In this chapter, we will:
 
 22.2 A new beginning
 --------------------
-Here is a recording of me following
-along with the section.
+This section is all about demonstrating the
+instances of ``Functor``, ``Applicative``, and
+``Monad`` for the function type ``((->) r)``.
+In each case, these are awaiting application
+to one argument that will allow both functions
+to be evaluated.
+
+Here is a recording of me following along with
+the section.
 
 .. raw:: html
 
@@ -94,19 +101,16 @@ along with the section.
 
 The Functor instance for functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. paragraph 5
-
 ``fmap`` applies functions to each element
 within a structure. Some of these structures
 make intuitive sense, like lists. But, did you
-know you can also ``fmap`` over a function?
+know you can also ``fmap`` a function over
+another function?
 
-In the case of ``fmap``'ping over a function,
-what is the structure, and what are the
-elements that we operate on within that
-structure?
-
-.. paragraph 6
+In the case of ``fmap``'ping a function over a
+function, what is the containing structure,
+and what are the elements that we operate on
+within that structure?
 
 Answer: The structure is a partially applied
 function, and the elements are the arguments
@@ -118,140 +122,165 @@ So something like this::
 
 Will evaluate to this::
 
-  \y -> (*)  2  ((\x -> (+) 10 x) y)
+  \y -> (*) 2 ((\x -> (+) 10 x) y)
 
 As you can see, the function we map gets
 applied to the argument of our containing
-function, meaning that the function ``f`` must
-act on the result of it's argument with ``g``
-applied. This is really just function
-composition.
+function, meaning that the function ``f``
+must act on the result of it's argument
+with ``g`` applied. This is really just
+function composition.
 
-It's literally defined that way in ``GHC.Base``,
-`which you can see here <https://hackage.haskell.org/
-package/base-4.14.0.0/docs/src/GHC.Base.html#line-969>`_.
 Here's what the definition of ``fmap`` looks
-like at the time of this writing::
+like, taken from ``GHC.Base`` at the time of
+this writing::
 
-  . . .
-
-	-- instances for Prelude types
-
-	-- | @since 2.01
-	instance Functor ((->) r) where
-			fmap = (.)
-
-  . . .
-
-.. paragraph 10
+  instance Functor ((->) r) where
+    fmap = (.)
 
 The Applicative instance for functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Let's look at a different example, now::
 
   -- page 846, figure 4
+
   bbop :: Integer -> Integer
   bbop = (+) <$> boop <*> doop
 
   duwop :: Integer -> Integer
   duwop = liftA2 (+) boop doop
 
-The ``Applicative`` instance for functions
-looks like this::
+Around this area in the book, there are a few
+remarks explaining how ``liftA2`` is
+evaluated, but I found them mostly unhelpful.
+There are also some examples, but I don't
+understand them. I really tried to; But I
+don't.
 
-  -- | @since 2.01
+.. There are many remarks I didn't understand
+   until I looked up the instance declaration.
+
+   I'm going to list them here in an attempt
+   to debug my reading process.
+
+   Paragraph 10
+
+   c) This time, the argument gets passed to
+      both ``boop`` and ``doop`` in parallel,
+      and the results are added together.
+
+      Questions I asked myself:
+
+      * What does "in parallel" mean?
+
+      After finding the instance for
+      Applicative below, it became clear.
+      Without that information, I never would
+      have figured it out.
+
+   Paragraph 13
+
+   Mapping a function awaiting two arguments
+   over a function awaiting one produces a two
+   argument function.
+
+   I also had a hard time following the
+   examples where they desugared the
+   expression:
+
+   Prelude> bbop 3
+
+   In figure 6, and after paragraph 12.
+
+   Paragraph 21, and figure 13
+
+   * I've completely lost track of how he's
+     picking apart the evaluation, here. Why
+     are we defining a new function,
+     appReader?
+
+   Figure 15: What is this a figure of? What
+   does it do?
+
+   I get the feeling that the author wants us
+   to derive how (<*>) works from the type
+   signature.
+
+Instead, here is the ``Applicative`` instance
+for functions::
+
   instance Applicative ((->) r) where
-    pure = const
-    (<*>) f g x = f x (g x)
-    liftA2 q f g x = q (f x) (g x)
+    pure            =          const
+    (<*>)    f g x  =     f x  (g x)
+    liftA2 q f g x  =  q (f x) (g x)
 
-Desugaring an expression in GHCi::
+...and here is a transcript of me mechanically
+desugaring an expression that uses ``(<*>)``
+in GHCi:
 
-  ·∾ ((+) <$> boop <*> doop) 10
-  40
+.. include:: figures/22.2/desugaring_apply.txt
+   :code:
 
-  ·∾ ((\x -> (+) (boop x)) <*> doop) 10
-  40
+The Monad instance for functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This example does the same thing as the last
+one, but is phrased to use the ``Monad``
+instance of ``(->)``, instead of ``Applicative``::
 
-  ·∾ :{
-  ·∾ ((<*>)
-   ⋮  (\x -> (+) (boop x))
-   ⋮  doop
-   ⋮ )
-   ⋮ 10
-   ⋮ :}
-  40
+  boopDoop :: Integer -> Integer
+  boopDoop = do
+    a <- boop
+    b <- doop
+    return (a + b)
 
-  ·∾ -- [ (<*>) := (\f g x -> f x (g x)) ]
-  ·∾ :{
-   ⋮ ((\f g x -> f x (g x))
-   ⋮  (\z -> (+) (boop z))
-   ⋮  doop
-   ⋮ )
-   ⋮ 10
-   ⋮ :}
-  40
+Here is the instance definition, so we can
+decode it::
 
-  ·∾ -- [ f := (\z -> (+) (boop z)) ]
-  ·∾ :{
-   ⋮ ((\g x -> (\z -> (+) (boop z)) x (g x))
-   ⋮  doop
-   ⋮ )
-   ⋮ 10
-   ⋮ :}
-  40
+  instance Monad ((->) r) where
+    f >>= k         =   \r -> k (f r) r
 
-  ·∾ -- [ g := doop ]
-  ·∾ :{
-   ⋮ (\x -> (\z -> (+) (boop z)) x (doop x))
-   ⋮ 10
-   ⋮ :}
-  40
-
-  ·∾ -- [ x := 10 ]
-  ·∾ (\z -> (+) (boop z)) 10 (doop 10)
-  40
-
-  ·∾ -- [ z := 10 ]
-  ·∾ ((+) (boop 10)) (doop 10)
-  40
-
-  ·∾ (+) (boop 10) (doop 10)
-  40
+.. todo Write out the desugared evaluation
+   steps of ``boopDoop 3``.
 
 .. paragraph 28
 
-   So, we've seen here that we can have a
-   ``Functor``, ``Applicative``, anad
-   ``Monad`` for partially applied functions.
-
-   The ``Functor`` of functions is function
+   a) The Functor of function is function
    composition.
 
-   The ``Applicative`` and ``Monad`` chain the
-   argment forward in addition to the
-   composition.
+   b) The Applicative and Monad chain the
+   argument forward in addition to the
+   composition (applicatives and monads are
+   both varieties of functors, so they retain
+   that core functorial behaviour).
 
-   * What does that mean? What does "chaining
-     the argumetn forward" mean? How is that
-     different from composition? I would
-     assume that they are the same thing.
+   * What does "chain the argument forward"
+     mean?
 
-.. pragraph 29
+.. Paragraph 29
 
-   Reader is a way of stringing fuctions
+   a) This is the idea of Reader.
+
+   b) It is a way of stringing functions
    together when all those functions are
    awaiting one input from a shared
    environment.
 
-   We use this most often when we have a
+   c) We're going to get into the details of
+   how it works, but the important intuition
+   here is that it's another way of
+   abstracting out function application, and
+   it gives us a way to do computation in
+   terms of an argument that hasn't been
+   supplied yet.
+
+   d) We use this most often when we have a
    constant value that we will obtain from
-   somewhere outside our program that will be
+   womewhere outside our program that will be
    an argument to a whole bunch of functions.
 
-.. 22.2 Recap
+   e) Using Reader allows us to avoi passing
+   that argument around explicitly.
 
-   What were:
-
-   * The subjects discussed in this section?
-   * The things I learned from it that I can use every day?
+.. Fuck, that section was hard to read. I
+   still don't understand the examples. I'm
+   tired now.
