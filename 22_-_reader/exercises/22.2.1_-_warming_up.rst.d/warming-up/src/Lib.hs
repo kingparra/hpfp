@@ -1,4 +1,13 @@
-module Lib where
+module Lib 
+  ( cap
+  , rev
+  , composed
+  , fmapped
+  , tupled
+  , tupled'
+  , tupledM
+  , tupledM'
+  ) where
 import Data.Char
 
 
@@ -20,19 +29,22 @@ fmapped :: String -> String
 fmapped = cap <$> rev
 
 
+swap (x,y) = (y,x)
+
+
 -- Use applicative to define these functions.
 tupled :: String -> (String, String)
 tupled = (,) <$> cap <*> rev
 
 
 tupled' :: String -> (String, String)
-tupled' = (,) <$> rev <*> cap
+tupled' = swap . tupled
 
 
 -- Write these using do syntax, then with (>>=).
 tupledM :: String -> (String, String)
-tupledM x = (cap x, rev x)
+tupledM = do { x <-cap; y <- rev; return (x,y) }
 
 
-tupled'M :: String -> (String, String)
-tupled'M x = (rev x, cap x)
+tupledM' :: String -> (String, String)
+tupledM' = swap . tupledM
