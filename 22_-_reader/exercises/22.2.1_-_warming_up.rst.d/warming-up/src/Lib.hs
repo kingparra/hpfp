@@ -3,36 +3,36 @@ import Data.Char
 
 
 {-# ANN cap "HLint: ignore Eta reduce" #-}
-cap :: [Char] -> [Char]
+cap :: String -> String
 cap xs = map toUpper xs
 
 
 {-# ANN rev "HLint: ignore Eta reduce" #-}
-rev :: [Char] -> [Char]
+rev :: String -> String
 rev xs = reverse xs
 
 
-composed :: [Char] -> [Char]
+composed :: String -> String
 composed = cap . rev
 
 
-fmapped :: [Char] -> [Char]
+fmapped :: String -> String
 fmapped = cap <$> rev
 
 
 -- Use applicative to define these functions.
-tupled :: [Char] -> ([Char], [Char])
-tupled x = (cap x, rev x)
+tupled :: String -> (String, String)
+tupled = (,) <$> cap <*> rev
 
 
-tupled' :: [Char] -> ([Char], [Char])
-tupled' x = (rev x, cap x)
+tupled' :: String -> (String, String)
+tupled' = (,) <$> rev <*> cap
 
 
 -- Write these using do syntax, then with (>>=).
-tupledM :: [Char] -> ([Char], [Char])
+tupledM :: String -> (String, String)
 tupledM x = (cap x, rev x)
 
 
-tupled'M :: [Char] -> ([Char], [Char])
+tupled'M :: String -> (String, String)
 tupled'M x = (rev x, cap x)
