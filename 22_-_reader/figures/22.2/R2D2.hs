@@ -20,13 +20,7 @@ bip = boop . doop
 
 -- page 845, figure 2
 bloop :: Integer -> Integer
-bloop = fmap boop boop
-
-
-
--- page 845, figure 3
---
--- fmap boop doop x == (*2) ((+10) x)
+bloop = fmap boop doop
 
 
 
@@ -40,8 +34,10 @@ duwop = liftA2 (+) boop doop
 
 
 
--- page 846, figure 5
+-- page 849, figure 16
 --
--- Prelude> bbop 3
--- 19
---
+boopDoop :: Integer -> Integer
+boopDoop = do
+  a <- boop
+  b <- doop
+  return (a + b)
