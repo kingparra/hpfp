@@ -4,69 +4,6 @@
 
 * 22.1 Reader
 * 22.2 A new beginning
-
-  This section is a mix of a long running
-  interactive ghci session, and a series of
-  examples.
-
-  Here are some short summaries of what each
-  paragraph is about.
-
-  1. Creating a module with the ``boop``,
-     ``doop``, and ``bip`` functions in it,
-     so we can load it into ghci.
-
-  2. What can we know about the code just by
-     reading it? Check our assumptions by
-     examining expressions in GHCi.
-
-  3. How ``bip`` evaluates by composing
-     ``doop`` and ``boop``.
-
-  4. Writing the same composition using
-     ``fmap``.
-
-  5. Fmapping over something involves
-     modifying elements within a structure
-     (or "functorial context").
-
-     What is the structure we ``fmap`` over
-     when the thing we ``fmap`` over is a
-     function?
-
-  6. Answer: The structure is a partially
-     applied function, and the elements are
-     the arguments to the function.
-
-  7. Describing arguments to ``(\x -> fmap
-     boop doop x)``.
-
-  8. This is the ``Functor`` instance for
-     the function type constructor ``(->)``.
-
-  9. Adding the ``bbop`` and ``duwop``
-     functions to our file from paragraph 1.
-
-  10. **I don't understand what this paragrph
-      is about**
-
-  11. **or this**
-
-  12. What the expression ``bbop 3`` desugars
-      to, and how it and evaluates.
-
-  13. **no idea what this means**
-
-  14. Composing ``(+)`` and ``(*2)`` with
-      ``(.)``.
-
-  15. The same expression rephrased using
-      ``(.)`` and ``(<$>)``.
-
-  16. **this is some kind of demonstration, I
-      don't understand what it's trying to
-      illustrate, though**
-
 * 22.2.1 Short Exercise: Warming Up
 
 * 22.3 This is Reader
