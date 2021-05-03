@@ -9,6 +9,7 @@ module Lib
   , tupledM'
   ) where
 import Data.Char
+import Control.Applicative (liftA2)
 
 
 {-# ANN cap "HLint: ignore Eta reduce" #-}
@@ -35,12 +36,11 @@ tupled = (,) <$> cap <*> rev
 
 
 tupled' :: String -> (String, String)
-tupled' = swap . tupled
-  where swap (x,y) = (y,x)
-
+tupled' = liftA2 (,) rev cap
 
 -- Write these using do syntax, then with (>>=).
--- I only figured this one out because the example in fig16 is so similar.
+-- I only figured this one out because the
+-- example in fig16 is so similar.
 tupledM :: String -> (String, String)
 tupledM = do { x <- cap; y <- rev; return (x,y) }
 
