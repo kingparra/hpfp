@@ -54,21 +54,21 @@ boopDoop''' =
 --
 --     \r -> (\a -> doop >>= (\b -> const (a + b))) (boop r) r
 
---     \r -> (\a -> 
+--     \r -> (\a ->
 --        doop >>= (\b -> const (a + b))
 --        ) (boop r) r
 --
---  [ 
+--  [
 --    doop >>= (\b -> const (a + b))
---    :=   
+--    :=
 --    (\v -> (\b -> const (a + b)) (doop v) v)
 --  ]
 --
 
 {-# ANN boopDoopDesugared "Hlint: Ignore redundant lambda"  #-}
 boopDoopDesugared =
-   (\r -> 
-     (\a -> 
+   (\r ->
+     (\a ->
        (\v ->
           (\b -> const (a + b))
           (doop v)

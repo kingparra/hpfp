@@ -132,15 +132,19 @@ with ``g`` applied. This is really just
 function composition.
 
 Here's what the definition of ``fmap`` looks
-like, taken from ``GHC.Base`` at the time of
-this writing::
+like, `taken from ``GHC.Base``
+<https://hackage.haskell.org/
+package/base-4.15.0.0/docs/
+src/GHC-Base.html#Functor>`_
+at the time of this writing::
 
   instance Functor ((->) r) where
     fmap = (.)
 
 The Applicative instance for functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Let's look at a different example, now::
+Let's look at how sequential application
+works, now::
 
   -- page 846, figure 4
 
@@ -159,7 +163,6 @@ don't.
 
 .. There are many remarks I didn't understand
    until I looked up the instance declaration.
-
    I'm going to list them here in an attempt
    to debug my reading process.
 
@@ -237,10 +240,13 @@ Here is the instance definition, so we can
 decode it::
 
   instance Monad ((->) r) where
+    return          =   const
     f >>= k         =   \r -> k (f r) r
 
-.. todo Write out the desugared evaluation
-   steps of ``boopDoop 3``.
+...and here I go, desugaring ``boopDoop``:
+
+.. include:: figures/22.2/desugaring_f16.hs
+   :code:
 
 .. paragraph 28
 
@@ -253,8 +259,7 @@ decode it::
    both varieties of functors, so they retain
    that core functorial behaviour).
 
-   * What does "chain the argument forward"
-     mean?
+   * What does "chain the argument forward" mean?
 
 .. Paragraph 29
 
@@ -278,9 +283,9 @@ decode it::
    womewhere outside our program that will be
    an argument to a whole bunch of functions.
 
-   e) Using Reader allows us to avoi passing
-   that argument around explicitly.
+   e) Using Reader allows us to avoid passing
+      that argument around explicitly.
 
-.. Fuck, that section was hard to read. I
-   still don't understand the examples. I'm
-   tired now.
+.. include:: exercises/22.2.1_-_warming_up.rst
+
+

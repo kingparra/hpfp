@@ -1,0 +1,26 @@
+22.11.2 Rewriting Shawty
+^^^^^^^^^^^^^^^^^^^^^^^^
+Remember the URL shortener?
+
+.. Uhh, no. What url shortener? From where?
+
+Instead of manually passing the database
+connection ``rConn`` from ``main`` to the app
+function that generates a Scotty app, use
+``ReaderT`` to make the database connection
+available.
+
+.. What does the app function do?
+   What is Scotty?
+   What is a database?
+   Why do we need to *connect* to the
+   database, is it a remote resource?
+
+We know you haven't seen the transformer
+variant yet, and we'll explain transformers
+soon, but you should try to do the
+transformation mechanically.
+
+Use this version of the app: `Main 
+<https://github.com/bitemyapp/shawty-prime/
+blob/master/app/Main.hs>`_.

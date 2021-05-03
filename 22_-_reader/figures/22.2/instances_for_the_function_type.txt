@@ -1,0 +1,41 @@
+instance Functor ((->) r) where
+    fmap = (.)
+
+
+instance Applicative ((->) r) where
+    pure = const
+    (<*>) f g x = f x (g x)
+    liftA2 q f g x = q (f x) (g x)
+
+
+instance Monad ((->) r) where
+    f >>= k = \ r -> k (f r) r
+
+
+instance Functor ((,) a) where
+    fmap f (x,y) = (x, f y)
+
+
+instance  Functor Maybe  where
+    fmap _ Nothing       = Nothing
+    fmap f (Just a)      = Just (f a)
+
+
+instance Applicative Maybe where
+    pure = Just
+
+    Just f  <*> m       = fmap f m
+    Nothing <*> _m      = Nothing
+
+    liftA2 f (Just x) (Just y) = Just (f x y)
+    liftA2 _ _ _ = Nothing
+
+    Just _m1 *> m2      = m2
+    Nothing  *> _m2     = Nothing
+
+
+instance  Monad Maybe  where
+    (Just x) >>= k      = k x
+    Nothing  >>= _      = Nothing
+
+    (>>) = (*>)

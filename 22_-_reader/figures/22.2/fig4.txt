@@ -1,0 +1,7 @@
+-- page 846, figure 4
+bbop :: Integer -> Integer
+bbop = (+) <$> boop <*> doop
+
+
+duwop :: Integer -> Integer
+duwop = liftA2 (+) boop doop

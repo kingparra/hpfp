@@ -17,14 +17,14 @@ main = hspec $ do
 
 
   context "tests that were in main on page 869..870" $ do
-    
+
     describe "based on sequenceA" $ do
 
       it "[Just 3, Just 2, Just 1] ==> Just [3,2,1]" $ do
-        sequenceA [Just 3, Just 2, Just 1] 
+        sequenceA [Just 3, Just 2, Just 1]
           `shouldBe` Just [3,2,1]
       it "[x, y] ==> a matrix of xs and ys" $ do
-        sequenceA [x, y] `shouldBe` 
+        sequenceA [x, y] `shouldBe`
           [ [1,4], [1,5], [1,6]
           , [2,4], [2,5], [2,6]
           , [3,4], [3,5], [3,6] ]
