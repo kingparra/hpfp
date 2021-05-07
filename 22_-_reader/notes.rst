@@ -3,6 +3,13 @@
 ********************
 
 
+**Hey; Stop!** This chapter sucks, and so do
+my notes on it. Go read `this simple example
+<https://blog.ssanj.net/posts/
+2014-09-23-A-Simple-Reader-Monad-Example.html
+>`_, instead.
+
+
 22.1 Reader
 -----------
 
@@ -80,14 +87,87 @@ In this chapter, we will:
 * and see some examples of using ``Reader``.
 
 
+.. First off, what is reader used for?
+.. -----------------------------------
+.. Reader is a monad for querying things from an
+.. environment. Think of it as a named closure
+.. that can be generated at runtime and shows up
+.. in type signatures.
+
+.. It provides three operations:
+
+.. * ``ask``, which we can use to retrieve a value with.
+.. * ``local``, which executes a computation
+..   within the environment that our ``Reader``
+..   encapsulates; and
+.. * ``reader``, which retrieves a ... uhh, I
+..   don't know what this one does.
+
+.. You won't find the ``Reader`` type as defined
+.. in this book anywhere on Hackage; Instead, the
+.. ``mtl`` package provides ``ReaderT``, which
+.. can be used to define it.
+
+.. Like this::
+
+..   import Control.Monad.Reader (ReaderT)
+..   import
+
+..   type Reader r = ReaderT r Identity
+
+.. ::
+
+..   -----------------------------------------------------------
+..   -- From the mtl package, in the module Control.Monad.Reader
+..   -----------------------------------------------------------
+
+
+..   class Monad m => MonadReader r m | m -> r where
+
+..     -- | Retrieves the monad environment.
+..     ask :: m r
+..     ask = reader id
+
+..     -- | Executes a coputation in a modified environment.
+..     local :: (r -> r) -- ^  The function to modify the environment.
+..           -> m a      -- ^  Reader to run in the modified environment.
+..           -> m a
+
+..     -- | Retrieves a function of the current environment.
+..     reader :: (r -> a) -- ^ The selector function to apply to the environment.
+..            -> m a
+..     reader f = do
+..       r <- ask
+..       return (f r)
+
+..     {-# MINIMAL (ask | reader), local #-}
+
+
+.. .. https://gist.github.com/egonSchiele/5752172
+
+
 22.2 A new beginning
 --------------------
-This section is all about demonstrating the
-instances of ``Functor``, ``Applicative``, and
-``Monad`` for the function type ``((->) r)``.
-In each case, these are awaiting application
-to one argument that will allow both functions
-to be evaluated.
+This section demonstrates how the instances of
+``Functor``, ``Applicative``, and ``Monad``
+work for functions.
+
+Why is this relevant to ``Reader``? Well,
+``Reader`` is implemented as a wrapper for the
+function type constructor, so the behaviour
+listed here applies to the class methods of
+``Reader``.
+
+.. The function is represented as ``((->) r)`` in
+.. the instance definitions, where ``(->)`` is
+.. the function type constructor, and ``r`` is a
+.. type variable to it.
+
+.. In all cases, the "structure" being operated
+.. on by the class methods is ``(->)``, and the
+.. "contained element" is the argument to that
+.. function on the term level, which is of type
+.. ``r``.
 
 Here is a recording of me following along with
 the section.
@@ -98,7 +178,6 @@ the section.
     src="https://asciinema.org/a/he9wsyPdZlIvZ0eSw9XJ3wXDe.js"
     async></script>
 
-
 The Functor instance for functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``fmap`` applies functions to each element
@@ -106,6 +185,31 @@ within a structure. Some of these structures
 make intuitive sense, like lists. But, did you
 know you can also ``fmap`` a function over
 another function?
+
+.. ::
+..
+..   ·∾ -- We can fmap a function over another function, like this:
+..   ·∾ fmap (\x -> (*) x 2) (\y -> (+) y 10) $ 5
+..   30
+..
+..   ·∾ -- What happens is that (\x -> (*) x 2) is applied to y.
+..   ·∾ -- [ y := ((\x -> (*) x 2) y) ]
+..   ·∾ (\y -> (+) ((\x -> (*) x 2) y) 10) 5
+..   20
+..
+..   ·∾ -- This means that in order for the resulting function to compl
+..   ete its evaluation, the argument to it must first be passed throug
+..   h the function that we're mapping.
+..
+..   ·∾ -- Which is really just function composition. So this...
+..
+..   ·∾ (\x -> (*) x 2) . (\y -> (+) y 10) $ 5
+..   30
+..
+..   ·∾ -- is the same as this...
+..
+..   ·∾ (\x -> (*) x 2) <$> (\y -> (+) y 10) $ 5
+..   30
 
 In the case of ``fmap``'ping a function over a
 function, what is the containing structure,
@@ -132,7 +236,7 @@ with ``g`` applied. This is really just
 function composition.
 
 Here's what the definition of ``fmap`` looks
-like, `taken from ``GHC.Base``
+like, `taken from GHC.Base
 <https://hackage.haskell.org/
 package/base-4.15.0.0/docs/
 src/GHC-Base.html#Functor>`_
@@ -289,3 +393,63 @@ decode it::
 .. include:: exercises/22.2.1_-_warming_up.rst
 
 
+22.3 This is Reader
+-------------------
+Usually when you see the term ``Reader``, it
+is used to refer to the ``Monad`` instance of
+the function type constructor.
+
+Reader is all about reading an argument from
+the environment into functions.
+
+
+22.4 Breaking down the Functor of functions
+-------------------------------------------
+Specialize the ``f`` in ``fmap``'s type
+signature to the function constructor and you
+get ``(.)``::
+
+  fmap :: Functor f =>   (a -> b)  ->  f a       ->  f b
+  -- [ f := ((->) r) ]
+  fmap ::                (a -> b)  ->  (r -> a)  ->  (r -> b)
+  -- [ b := c ]
+  fmap ::                (a -> c)  ->  (r -> a)  ->  (r -> c)
+  -- [ a := b ]
+  fmap ::                (b -> c)  ->  (r -> b)  ->  (r -> c)
+  -- [ r := a ]
+  fmap ::                (b -> c)  ->  (a -> b)  ->  (a -> c)
+  (.)  ::                (b -> c)  ->  (a -> b)  ->  (a -> c)
+
+
+22.5 But uh, Reader?
+--------------------
+.. Other resources to understand Reader
+.. https://www.mjoldfield.com/atelier/2014/08/monads-reader.html
+.. https://blog.latukha.com/haskell-notes.html#org7373240
+
+``Reader`` is a newtype wrapper for the
+function type::
+
+  newtype Reader r a =
+    Reader { runReader :: r -> a }
+
+The ``r`` is the type we're reading in, and
+``a`` is the result type of our function.
+
+
+.. Wait! Where do I find reader?
+
+   If you search for ``Reader`` on Hoogle, you
+   won't find an exact match. Instead, the
+   closest match will be ``ReaderT``, which
+   comes from either the ``Control.Monad.Trans``
+   module of the ``transformers`` package, or the
+   ``Control.Monad.Reader`` module of the ``mtl``
+   package.
+
+   The ``Reader`` monad, as it appears in the
+   book, is equivalent to this definition
+   using functions from ``Control.Monad.Reader``::
+
+
+     type Reader r = ReaderT r Identity
