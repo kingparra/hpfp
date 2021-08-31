@@ -1,6 +1,6 @@
-***********************************
- Chapter 1: All You Need is Lambda
-***********************************
+********************
+ Chapter 1 Overkill
+********************
 
 
 1.1 All you need is lambda
@@ -8,14 +8,126 @@
 
 Subjects
 ^^^^^^^^
-* lambda calculus, model of computation, mathematical model, Alonzo Church, (logical)
-  calculus, method, process, formalization, formalism, Turing machine, effective
-  computability, problem, solvable problems, unsolvable problems, classes of problems,
-  decidability, decision problem
+* lambda calculus, model of computation, mathematical model, Alonzo Church, (logical) calculus,
+  method, process, formalization, formalism, Turing machine, effective computability, problem,
+  solvable problems, unsolvable problems, classes of problems, decidability, decision problem
 
 Claims
 ^^^^^^
-1b **"A calculus is method of calculation or reasoning; the lambda calculus is one process for
+1a **This chapter provides a very brief introduction to the lambda calculus, a model of computation
+devised in the 1930s by Alonzo Church.**
+
+* Very brief? How brief is that? What are some things that you aren't covering?
+
+  * Pretty much any useful function definitions are not covered. Arithmetic, boolean operations,
+    representation of basic data structures like pairs or lists, and recursion using the Y
+    combinator aren't covered. Neither are different evaluation strategies. Neither are explicit
+    substitution methods, for representing the process of beta-reduction precisely. Measuring the
+    complexity of lambda expressions is also not mentioned. But that's OK, we only need the basics
+    for understanding Haskell.
+
+* What is a model of computation?
+
+  * A model of computation is a model which describes how an output of a mathematical
+    function is computed given an input. A model describes how units of computations,
+    memories, and communications are organized. The computational complexity of an
+    algorithm can be measured given a model of computation. Using a model allows
+    studying the performance of algorithms independently of the variations that are
+    specific to particular implementations and specific technology.
+
+* What is a (mathematical) model?
+
+  * from https://www.wikiwand.com/en/Mathematical_model
+
+    A mathematical model is a description of a system using mathematical concepts and language. ...
+    A model may help to explain a system and to study the effects of different components, and to
+    make predictions about behavior.
+
+* How does someone devise a model of computation?
+* What problem, idea, or event motivated Alonzo Church to create the lambda calculus?
+
+  .. There were efforts to prove the consistency of all of math using a small core set of operations
+  .. in the 1900's. Principia Mathematica tries to derive mathematics using logic.
+  .. hilberts 10th problem, hilberts program
+  .. hilberts program: independence, consistency, completeness, decidability
+
+* When particularly was the lambda calculus introduced?
+  In which papers, conferences, or historical events was LC introduced?
+
+    * 1932 A. Church, "A set of postulates for the foundation of logic", Annals of Mathematics,
+      Series 2, 33:346–366
+
+      Church introduces the lambda calculus as part of his investigation into the foundations of
+      mathematics.
+
+    * 1934 Curry, Haskell B. "Functionality in combinatory logic." Proceedings of the National
+      Academy of Sciences 20.11 (1934): 584-590
+
+      Curry observes that types of the combinators could be seen as axiom-schemas for an
+      intuitionistic implicational logic.
+
+    * 1935 Kleene, S. C. & Rosser, J. B. "The inconsistency of certain formal logics". Annals of
+      Mathematics 36 (3): 630–636
+
+      The Kleene-Rosser paradox is established, showing the inconsistency of Curry's combinatory
+      logic and Church's original lambda calculus.
+
+    * 1936 A. Church, "An unsolvable problem of elementary number theory", American Journal of
+      Mathematics, Volume 58, No. 2. (April 1936), pp. 345-363
+
+      In response to Kleene and Rosser, Church introduces what would later be called the untyped
+      lambda calculus. He did this by isolating the relevant portions of the original lambda
+      calculus that pertained solely to computation.
+
+    * 1940 Church, A. "A Formulation of the Simple Theory of Types". Journal of Symbolic Logic 5:
+      1940.
+
+      Church introduces the simply typed lambda calculus.
+
+    * 1958 Curry, H. B., Feys, R., Craig, W., & Craig, W. (1958). Combinatory logic, vol. 1.
+      North-Holland Publ.
+
+      Curry, et al, observes a close correspondence between axioms of positive implicational
+      propositional logic and "basic combinators".
+
+    * 1969 Howard, W., 1980 [1969], “The formulae-as-types notion of construction,” in J. Seldin and
+      J. Hindley (eds.), To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism,
+      London, New York: Academic Press, pp. 480–490
+
+      The Curry-Howard correspondence is circulated as notes but would not be officially published
+      until 1980. It was based on the "formulas-as-types" or "propositions-as-sets" principle and
+      linked with Church's simply typed lambda calculus.
+
+      Howard did so by taking the untyped lambda calculus and creating what could be interpreted as a
+      variant of the simply typed lambda calculus (in § "Type symbols, terms and constructors) that
+      could be more readily expressed with the concepts he was explaining at the time.
+
+      This correspondence would make intuitionistic natural deduction part of computer science proper
+      [1], and would be instrumental to further developments in type theory.
+
+    * 1972 Martin-Löf, P. "An intuitionistic theory of types." Omtryckt i (Sambin och Smith 1998)
+
+      This is abridged, as there was a prior formalization in 1971 called "A theory of types" that was
+      shown to be inconsistent as demonstrated by Girard's paradox, and his later refinements became
+      predicative, along with adding many other seminal contributions to type theory. There would also
+      be intensional and extensional variants.  The historical context is that it was based on an
+      isomorphism between propositions and types, which is associated with the Curry-Howard
+      correspondence, in which Howard directly mentions Martin-Löf during his communications. Thus,
+      this links intuitionistic type theory to the simply typed lambda calculus, or, at the very
+      minimum, to the entire family of the lambda calculi.  (2009-) Voevodsky, Vladimir. "Notes on
+      type systems." Unpublished notes, (www.math.ias.edu/~ vladimir/Site3/Univalent_Foundations) HTML
+
+      Voevodsky introduces the starting point of the homotopy type theory and the univalent
+      foundations. All of this was based on Voevodsky's investigations into the foundations of
+      mathematics, just as it was with Church, and those before him. Church's simply typed lambda
+      calculus has played a not insignificant role in the history of these developments, despite its
+      seeming invisibility in the most modern incarnation of these theories.
+
+      Later refinements came in "The Simplicial Model of Univalent Foundations" (2012) and more can
+      be read in the Homotopy Type Theory book. An overview was published in Quanta magazine that is
+      highly approachable.
+
+1b **"A calculus is a method of calculation or reasoning; the lambda calculus is one process for
 formalizing a method."**
 
 * There *is* a definition of what a calculus is here, but I feel that it is too terse. I'm just
@@ -31,13 +143,20 @@ formalizing a method."**
   One can give meaning to the symbols (semantics), but that's not part of the calculus (pure syntax).
   One can associate meanings to expressions in a way that corresponds to computations (functional programs)."
 
-  From 1.6 Multiple arguments, paragraph 8, sentence c.
+  The authors say something similar later on. From 1.6 Multiple arguments, paragraph 8, sentence c.
 
   1.6 8c **"The lambda calculus is a process or method, like a game with a few simple rules for
   transforming lambdas but no specific meaning."**
 
+  * Does calling LC a "method of calculation or reasoning" make sense, given that it is purely
+    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation
+    scheme.
+
 * What is a process?
 * What is a method?
+* Are the **"method of calculuation or reasoning"** and the **"method"** that is to be formalized by
+  LC different methods?
+* Is LC a method for formalizing a method?
 * Is the word "method" here being used in the specialized sense that it appears as within
   discussions of the Church-Turing thesis, as in, an effective (mechanically calculable) method?
 
@@ -45,52 +164,40 @@ formalizing a method."**
 
     "1. The Thesis and its History
 
-    The Church-Turing thesis concerns the concept of an
-    effective or systematic or mechanical method in logic,
-    mathematics and computer science. "Effective" and its
-    synonyms "systematic" and "mechanical" are terms of art
-    in these disciplines: they do not carry their everyday
-    meaning.
+    The Church-Turing thesis concerns the concept of an effective or systematic or mechanical method
+    in logic, mathematics and computer science. "Effective" and its synonyms "systematic" and
+    "mechanical" are terms of art in these disciplines: they do not carry their everyday meaning.
 
-    **A method, or procedure, M, for achieving some desired
-    result is called ‘effective’ (or ‘systematic’ or
-    ‘mechanical’) just in case:
+    A method, or procedure, M, for achieving some desired result is called ‘effective’ (or
+    ‘systematic’ or ‘mechanical’) just in case:
 
-    * M is set out in terms of a finite number of exact
-      instructions (each instruction being expressed by
-      means of a finite number of symbols);
+    * M is set out in terms of a finite number of exact instructions (each instruction being
+      expressed by means of a finite number of symbols);
 
-    * M will, if carried out without error, produce the
-      desired result in a finite number of steps;
+    * M will, if carried out without error, produce the desired result in a finite number of steps;
 
-    * M can (in practice or in principle) be carried out by
-      a human being unaided by any machinery except paper
-      and pencil;
+    * M can (in practice or in principle) be carried out by a human being unaided by any machinery
+      except paper and pencil;
 
-    * M demands no insight, intuition, or ingenuity, on the
-      part of the human being carrying out the method.**
+    * M demands no insight, intuition, or ingenuity, on the part of the human being carrying out the
+      method.
 
     . . .
 
-    One of Alan Turing's achievements, in his famous paper
-    of 1936, was to present a formally exact predicate with
-    which the informal predicate “can be done by means of an
-    effective method” may be replaced (Turing 1936). Alonzo
-    Church, working independently, did the same (Church 1936a).
+    One of Alan Turing's achievements, in his famous paper of 1936, was to present a formally exact
+    predicate with which the informal predicate "can be done by means of an effective method" may be
+    replaced (Turing 1936). Alonzo Church, working independently, did the same (Church 1936a).
 
     . . .
 
-    As explained by Turing (1936: 84), Hilbert's
-    Entscheidungsproblem is this: Is there a general
-    (effective) process for determining whether a given
-    formula A of the first-order propositional calculus is
-    provable?
+    As explained by Turing (1936: 84), Hilbert's Entscheidungsproblem is this: Is there a general
+    (effective) process for determining whether a given formula A of the first-order propositional
+    calculus is provable?
 
     . . .
 
-    Church's thesis: A function of positive integers is
-    effectively calculable only if lambda-definable (or,
-    equivalently, recursive)."
+    Church's thesis: A function of positive integers is effectively calculable only if
+    lambda-definable (or, equivalently, recursive)."
 
 * What does it mean to formalize a method?
 * How does someone formalize a method, in general?
@@ -112,34 +219,27 @@ formalizing a method."**
   How-to-formalize-it%3A-Formalization-principles-for-Hofstede-Proper/
   991cc9588026661e48effec5cb551304933b4795
 
-
-  Also, `here is the definition of **formalization method**
-  from the Encylopedia of Mathematics
+  Also, `here is the definition of **formalization method** from the Encylopedia of Mathematics
   <https://encyclopediaofmath.org/wiki/Formalization_method>`_,
 
-  Formalization method
+  **Formalization method**
 
-  A way of expressing by a formal system a mathematical
-  theory. It is one of the main methods in proof theory.
+  A way of expressing by a formal system a mathematical theory. It is one of the main methods in
+  proof theory.
 
-  An application of the formalization method involves
-  carrying out the following stages.
+  An application of the formalization method involves carrying out the following stages.
 
-  * Putting the original mathematical theory into symbols.
-    In this all the propositions of the theory are written
-    in a suitable logico-mathematical language L.
+  * Putting the original mathematical theory into symbols.  In this all the propositions of the
+    theory are written in a suitable logico-mathematical language L.
 
-  * The deductive analysis of the theory and the choice of
-    axioms, that is, of a collection of propositions of the
-    theory from which all other propositions of the theory
-    can be logically derived.
+  * The deductive analysis of the theory and the choice of axioms, that is, of a collection of
+    propositions of the theory from which all other propositions of the theory can be logically
+    derived.
 
-  * Adding the axioms in their symbolic notation to a
-    suitable logical calculus based on L.
+  * Adding the axioms in their symbolic notation to a suitable logical calculus based on L.
 
-  The system obtained by this formalization is now itself
-  the object of precise mathematical study (see Axiomatic
-  method; Proof theory).
+  The system obtained by this formalization is now itself the object of precise mathematical study
+  (see Axiomatic method; Proof theory).
 
   References: [1] S.C. Kleene, "Introduction to
   metamathematics", North-Holland (1951)
@@ -149,6 +249,20 @@ formalizing a method."**
 * What problem or turn of events motivated the creation of lambda calculus?
 * Which papers and events were the lambda calculus introduced by?
 
+1c **"Like Turing machines, the lambda calculus formalizes the concept of effective computability,
+thus determining which problems, or classes or problems, can be solved."**
+
+* What is effective computability?
+* Is effective computability a set of criteria for which problems can be solved mechanically?
+* How does formalizing the concept of effective computability determine which problems can be solved?
+* How does LC formalize the concept of effective computability?
+* What is a class of problems? What are these classes categorized by? Complexity? Problem area?
+
+2 **You may be wondering where the Haskell is. You may be contemplating skipping this chapter. You
+may feel tempted to leap ahead to the fun stuff where we build a project.**
+
+* Why do you think I would be contemplating skipping this chapter?
+
 4a **"We're starting from first principles here, so that when we get around to building
 projects, you know what you're doing."**
 
@@ -156,7 +270,12 @@ projects, you know what you're doing."**
 
   * It won't. But LC will be useful for several other things:
 
-    * Communicating with other Haskellers.
+    * Communicating with other Haskellers in public forums and chatrooms.
+    * Being able to read papers from various functional programming conferences. This is important
+      since Haskell language extensions (using GHC LANGUAGE pragmas) are often introduced and
+      prototyped at conferences first, before gaining traction and getting a more robust
+      implementation. Reading those papers is a quick way to get oriented on an extension because it
+      explains the core idea in a self-contained way.
     * Understanding how multiple arguments are treated during program evaluation.
     * Understanding how control flow works in functional languages.
 
@@ -170,23 +289,97 @@ projects, you know what you're doing."**
       * Running a program corresponds to reducing those expressions to a simpler form.
       * At any point during program execution, a name may be replaced with its definition, as in math.
       * Thinking of programs this way means you can rearrange source code algebraically,
-        too, in order to make it easier to read.
+        too, in order to make it easier to read, or easier to modify in different ways.
       * You can begin to think of a program as a graph. In this graph, each node is a
         function execution instance, represented as an equation. Within each equation,
-        names don't change meaning. Connections between nodes represent input arguments to
-        parameters of each nodes execution instance.
+        names don't change meaning. Connections between nodes represent arguments, which act as
+        inputs values bound to parameters names of each nodes execution instance.
 
     * Reading type signatures, and deducing how different type signatures may be combined.
+
+    * Someone else asked this same question --
+      https://teddit.net/r/haskell/comments/69wcm3/haskell_programming_from_first_principles_why_do/
+
+      Here is the top comment:
+
+        Blackheart
+
+        63 points, 4 years ago
+
+        There are many reasons why lambda-calculus is important.
+
+        Untyped lambda-calculus (ULC), along with Turing machines, combinatorial logic, partial
+        recursive functions and type-0 grammars, is one of the foundational models of computation,
+        so we know that if ULC can be translated into a programming language then that language
+        can express any computation.
+
+        Compared with partial recursive functions, ULC is syntactic and easily axiomatized, so
+        it's easy to list all the rules. You don't need a background in recursion theory or domain
+        theory to grasp the definition.
+
+        Compared with the other models, LC is notationally simple. To write down a program, you
+        just need to write out a term; you don't need to define a machine or tape symbols; you
+        don't need a separate disembodied list of definitions; scoping is extremely clear.
+        Compared to combinatorial logic, it's more human-readable. To transform a program or show
+        two programs are "the same", you can use essentially the same methods that you learned in
+        high school to manipulate algebraic expressions. You can execute a program by hand.
+
+        LC has both equational and rewriting models. An equational model says when two programs
+        give the same result for the same inputs, but ignores the space/time complexity. Rewriting
+        models are similar, except they also note the steps, so you can reason about complexity.
+        In LC, the relationship between these two is usually pretty simple, so it's easy to start
+        thinking about a problem in terms of correctness and then, later, once you've convinced
+        yourself of that, think about rewrites and efficiency. This promotes separation of
+        concerns.
+
+        It's fairly easy to add types to ULC, and to compare the typed and untyped versions. When
+        you add types in the most obvious way, types correspond to logical propositions and typed
+        terms correspond to proofs of those propositions, so you get an additional way of thinking
+        about programs, and writing total, correct programs becomes an exercise in proving theorems
+        in constructive logic.
+
+        These types "coordinatize" the space of computations so we can think about it in parts
+        (e.g., sums, products) and not just as a big ball of mud.  LC is pretty amenable to
+        extension with features we see in other programming languages, such as I/O, mutation and
+        concurrency.
+
+        There is a huge body of literature about lambda-calculi, so it's easy to benefit from the
+        work of other people. LC is a lingua franca. It's conventions are well-established; it's
+        concise; conceptually, it's robust enough to accommodate many sorts of extensions.
+
+        You mentioned unnecessary jargon and complexity. Of course, I don't know specifically what you're
+        referring to (and I haven't read the book you mention), but chances are it's probably not
+        unnecessary. Because LC is concise, treatments of it can afford to give you the whole story.
+
+        Most programming language definitions sweep a lot of things under the rug and/or punt it to
+        a vague, assumed understanding of a von Neumann architecture. Practically none give you a
+        complete, unambiguous list of ALL the rules which say how two programs are related.
+
+        Think about the power of this as a tool. In pure ULC, you can prove that two programs do exactly the
+        same thing on all inputs with 100% confidence, and it doesn't involve any testing or assumptions
+        about the implementation or architecture.
+
+  * When you say "know what you're doing", what do you imagine that I will be doing? What are the
+    things I need to do, in order to build projects, that LC will help me to know?
 
 4c **"Lambda calculus is your foundation, because Haskell is a lambda calculus."**
 
 * Is that really true? In what sense is Haskell a lambda calculus?
 
+  * Haskell's regular language syntax reduces to a subset of the language called the language kernel.
+  * The language kernel then is reduced to the core type, which is an implementation of a typed
+    lambda calculus called system fc. https://gitlab.haskell.org/ghc/ghc/-/wikis/commentary/compiler/fc
+  * This eventually turns into a build artifact you can run on your computer.
+  * Furthermore, the evaluation strategy used by Haskell resembles the lambda calculus.
+
 Remarks
 ^^^^^^^
 The quote at the beginning of the chapter talks about great mathematicians. Then the first paragraph
-name drops several concepts related to computability that someone without exposure to cs would
-be completely unaware of. This makes me wonder: who is the real target audience, here?
+name drops several concepts related to computability that someone without exposure to cs would be
+completely unaware of. This makes me wonder: who is the real target audience, here? Beginner
+programmers, people who've never written a single line of code, don't know this stuff, and would
+probably be put off by even mentioning it. Who then is the intended reader, and what things must
+they know beforehand? Maybe it's CS dropouts like me?
 
 Why is there no description of how learning lambda calculus will benefit your ability to write
 Haskell code?
@@ -195,10 +388,12 @@ Where are the learning objectives?
 
 *What* are the learning objectives?
 
-What are the abilities you'll gain by completing the chapter?
+What are the expected outcomes of completing the chapter?
+
+What are the abilities you'll gain by completing the chapter that you did not have before?
 
 I get that your asking me to trust you, but I think you've missed an opportunity to make your
-writing more compelling.
+writing more compelling by explaining the relevance of LC to writing Haskell.
 
 
 1.2 What is functional programming?
@@ -209,17 +404,24 @@ Subjects
 * functional programming, programming paradigm, mathematical functions, expression,
   values, variables, functions, argument, input, application (of a function to its
   arguments), reduction, evaluation, first-class, argument passing, lambda expression,
-  purity, referential transparency, abstraction, composability, (re)factoring, generic
-  code
+  purity, referential transparency, abstraction, composability, (re)factoring, generic code
 
 Claims
 ^^^^^^
+1a **"Functional programming is a computer programming paradigm that relies on functions modeled on
+mathematical functions."**
+
+* What is a mathematical function?
+* What is a programming paradigm?
+* Why does it mean for functions in a PL to be modelled on mathematical functions?
+* Do other programming languages not use functions that behave like mathematical functions?
+
 2a **"Functional programming languages are all based on the lambda calculus."**
 
 * What does it mean for a language to be based on LC?
 * What about languages based on other calculi that allow equational reasoning, like closure
   calculus, or SKI combinator calculus? Are those not functional languages, too?
-* LISP is one of the first functional languages and it was not initially based on lambda calculus,
+* LISP is one of the first functional languages, but it was not initially based on lambda calculus,
   but on a formalism that McCarthy developed, instead.
 
   "The recursive functions mentioned in McCarthy's seminal paper, Recursive functions of Symbolic
@@ -233,7 +435,62 @@ Claims
   was the intention. The truth is that I didn't understand the lambda calculus, really."
   ~ John McCarthy, Lisp session, History of Programming Languages
 
+Source here: https://dl.acm.org/doi/book/10.1145/800025#sec4
+
 See the discussion here and linked article for details: https://news.ycombinator.com/item?id=20696931
+
+  vga805 on Aug 14, 2019 [–]
+
+  . . .
+
+  So there are a two issues here,
+
+    1) whether or not it was McCarthy's intention to realize the Lambda Calculus in LISP, and
+    2) whether or not LISP is such a realization. Or at least some kind of close realization.
+
+  The answer to 1 is clearly no. This doesn't imply an answer to 2 one way or another.
+
+  If 2 isn't true, what explains the widespread belief? Is it really just that he, McCarthy,
+  borrowed some notation?
+
+
+  vilhelm_s on Aug 14, 2019 [–]
+
+  Modern lisps do realize the lambda calculus, but this was not immediate. In particular, in order to
+  exactly match the lambda-calculus beta-reduction rule, you need to use lexical rather than dynamic
+  scope, which did not really become popular until Scheme in the 1970s.
+
+
+1b **"The essence of functional programming is that programs are a combination of expressions."**
+
+  .. etymology online
+     expression (noun)
+
+     early 15c., expressioun, "action of pressing out;" later "action of manifesting a feeling;" "a
+     putting into words" (mid-15c.); from Late Latin expressionem (nominative expressio) "expression,
+     vividness," in classical Latin "a pressing out, a projection," noun of action from past-participle
+     stem of exprimere "represent, describe," literally "press out" (see express (v.)). Meaning "an
+     action or creation that expresses feelings" is from 1620s. Of the face, from 1774. Occasionally the
+     word also was used literally, for "the action of squeezing out." Related: Expressional.
+
+     Merriam-Webster
+     exprssion (noun)
+
+     Definition of expression
+     1a: an act, process, or instance of representing in a medium (such as words) : UTTERANCE
+     b(1): something that manifests, embodies, or symbolizes something else this gift is an
+           expression of my admiration for you
+      (2): a significant word or phrase
+      (3): a mathematical or logical symbol or a meaningful combination of symbols
+      (4): the detectable effect of a gene
+           also : EXPRESSIVITY sense 1
+     2a: a mode, means, or use of significant representation or symbolism
+         especially : felicitous or vivid indication or depiction of mood or sentiment
+     b(1): the quality or fact of being expressive
+      (2): facial aspect or vocal intonation as indicative of feeling
+     3: an act or product of pressing out
+
+     Synonyms: articulation, formulation, phrasing, statement, utterance, berbalism, voice, wording.
 
 2b **"Some languages in the general category incorporate features that aren't translatable
 into lambda expressions."**
