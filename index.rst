@@ -12,6 +12,7 @@ Contents
 
    readme
    01_-_all_you_need_is_lambda/notes
+   01_-_all_you_need_is_lambda/notes2
    02_-_hello_haskell/notes
    03_-_strings/notes
    03_-_strings/questions
