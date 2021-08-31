@@ -1,0 +1,17 @@
+---
+name: a-warmup-stretch
+dependencies: base >= 4.7 && < 5
+executables:
+  a-warmup-stretch-exe:
+    main: Main.hs
+    source-dirs: exe
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [a-warmup-stretch]
+library:
+  source-dirs: src
+tests:
+  a-warmup-stretch-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [a-warmup-stretch, hspec]

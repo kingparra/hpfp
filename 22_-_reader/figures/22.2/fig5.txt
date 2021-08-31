@@ -1,0 +1,4 @@
+-- page 846, figure 5
+
+Prelude> bbop 3
+19

@@ -1,0 +1,11 @@
+-- page 846, figure 6
+
+That does something like this:
+
+  ((+) <$> (*2) <*> (+10)) 3
+
+First the fmap
+
+  (*2) :: Num a => a -> a
+  (+)  :: Num a => a -> a -> a
+  (+) <$> (*2) :: Num a => a -> a -> a

@@ -12,6 +12,7 @@ Contents
 
    readme
    01_-_all_you_need_is_lambda/notes
+   01_-_all_you_need_is_lambda/notes2
    02_-_hello_haskell/notes
    03_-_strings/notes
    03_-_strings/questions
@@ -40,6 +41,8 @@ Contents
    21_-_traversable/outline
    21_-_traversable/questions
    21_-_traversable/notes
+   22_-_reader/outline
+   22_-_reader/notes
 
 
 Indices and tables

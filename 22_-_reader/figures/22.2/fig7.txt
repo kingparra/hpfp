@@ -1,0 +1,3 @@
+-- page 846, figure 7
+
+(+) . (*2) :: Num a => a -> a -> a

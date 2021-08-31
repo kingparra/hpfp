@@ -1,0 +1,95 @@
+-- Here's a small ghci session where I
+-- desugar an expression that uses the
+-- Applicative instance of functions to get
+-- a feel for it.
+--
+-- Desugaring the expression:
+--
+--   Prelude> bbop 10
+--
+-- Where bbop has the definition
+-- (from figure 4):
+--
+--   bbop = (+) <$> boop <*> doop
+--
+-- Using the definition for (<*>) of...
+--
+--   (<*>) f g x = f x (g x)
+--
+-- ( Taken from here https://hackage.haskell.org/
+-- package/base-4.14.0.0/docs/src/GHC.Base.html
+-- #line-969 )
+--
+-- ...and a definition of fmap of..
+--
+--   fmap = (.)
+--
+-- ...and the definition of (.) of...
+--
+--   (.) f g x = f (g x)
+--
+
+
+·∾ ((+) <$> boop <*> doop) 10
+40
+
+
+·∾ ((\x -> (+) (boop x)) <*> doop) 10
+40
+
+
+·∾ :{
+·∾ ((<*>)
+⋮  (\x -> (+) (boop x))
+⋮  doop
+⋮ )
+⋮ 10
+⋮ :}
+40
+
+
+·∾ -- [  (<*>)  :=  (\f g x -> f x (g x))  ]
+·∾ :{
+⋮ ((\f g x -> f x (g x))
+⋮  (\z -> (+) (boop z))
+⋮  doop
+⋮ )
+⋮ 10
+⋮ :}
+40
+
+
+·∾ -- [  f  :=  (\z -> (+) (boop z))  ]
+·∾ :{
+⋮ ((\g x -> (\z -> (+) (boop z)) x (g x))
+⋮  doop
+⋮ )
+⋮ 10
+⋮ :}
+40
+
+
+·∾ -- [ g := doop ]
+·∾ :{
+⋮ (\x -> (\z -> (+) (boop z)) x (doop x))
+⋮ 10
+⋮ :}
+40
+
+
+·∾ -- [ x := 10 ]
+·∾ (\z -> (+) (boop z)) 10 (doop 10)
+40
+
+
+·∾ -- [ z := 10 ]
+·∾ ((+) (boop 10)) (doop 10)
+40
+
+
+·∾ (+) (boop 10) (doop 10)
+40
+
+
+·∾ boop 10 + doop 10
+40
