@@ -46,10 +46,63 @@ devised in the 1930s by Alonzo Church.**
 * How does someone devise a model of computation?
 * What problem, idea, or event motivated Alonzo Church to create the lambda calculus?
 
-  .. There were efforts to prove the consistency of all of math using a small core set of operations
-  .. in the 1900's. Principia Mathematica tries to derive mathematics using logic.
-  .. hilberts 10th problem, hilberts program
-  .. hilberts program: independence, consistency, completeness, decidability
+  .. topic:: Hilberts 10th Problem
+
+     from a lecture deliverd before the international congress of mathemeticians at paris on August
+     8th, 1900, where he lists a number of interesting problems for mathematicians to work on in the
+     coming century.
+
+     https://www.ams.org/journals/bull/1902-08-10/S0002-9904-1902-00923-3/home.html
+     https://www.wikiwand.com/en/Hilbert%27s_problems?wprov=srpw1_0
+
+     From the preface:
+
+     It remains to discuss briefly what general requirements may be justly laid down for the solution
+     of a mathematical problem. I should say first of all, this : that it shall be possible to
+     establish the correctness of the solution by means of a finite number of steps based upon a finite
+     number of hypotheses which are implied in the statement of the problem and which must always be
+     exactly formulated. This requirement of logical deduction by means of a finite number of processes
+     is simply the requirement of rigor in reasoning.
+
+     . . .
+
+     Besides it is an error to believe that rigor in the proof is the enemy of simplicity. On the
+     contrary we find it confirmed by numerous examples that the rigorous method is at the same time
+     the simpler and the more easily comprehended. The very effort for rigor forces us to find out
+     simpler methods of proof. It also frequently leads the way to methods which are more capable of
+     development than the old methods of less rigor.
+
+     . . .
+
+     Question 10:
+
+     10. Determination of the solvbility of a diophantine equation
+
+     Given a diophantine equation with any number of unknown quantities and with rational integral
+     numerical coefficients: To devise a process according to which it can be determined by a finite
+     number of operations whether the equation is solvable in rational integers.
+
+  .. topic:: Behamann's description of the decision problem
+
+     Exceripts from Heinrich Behmann's 1921 lecture on the decision problem and the algebra of logic
+
+     Behmann then describes the decision problem as the more specific problem of finding a
+     deterministic, computational procedure to decide any mathematical claim:
+
+     "[We require] not only the individual operations but also the path of calculation as a whole
+     should be specified by rules, in other words, an elimination of thinking in favor of mechanical
+     calculation. If a logical or mathematical assertion is given, the required proce- dure should
+     give complete instructions for determining whether the assertion is correct or false by a
+     deterministic [zwangsläufig] calculation after finitely many steps. The problem thus formulated
+     I want to call the general decision problem."
+
+     . . .
+
+     "It is essential to the character of this problem that as method of proof
+     only entirely mechanical calculation according to given instructions, with-
+     out any activity of thinking in the narrower sense, is allowed. One might,
+     if one wanted to, speak of mechanical or machine-like thinking. (Perhaps
+     one can one day even let it be carried out by a machine.)"
 
 * When particularly was the lambda calculus introduced?
   In which papers, conferences, or historical events was LC introduced?
@@ -241,8 +294,7 @@ formalizing a method."**
   The system obtained by this formalization is now itself the object of precise mathematical study
   (see Axiomatic method; Proof theory).
 
-  References: [1] S.C. Kleene, "Introduction to
-  metamathematics", North-Holland (1951)
+  References: [1] S.C. Kleene, "Introduction to metamathematics", North-Holland (1951)
 
 * Are there other processes for formalizing a method?
 * What is a formalism?
@@ -629,7 +681,7 @@ mean beta normal form.**
 
 * What are the other normal forms?
 
-1b **"Beta normal form is when you cannot beta reduce (apply lambdas to arguments) tht terms any
+1b **"Beta normal form is when you cannot beta reduce (apply lambdas to arguments) the terms any
 further."**
 
 1.8 combinators
