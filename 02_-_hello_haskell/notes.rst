@@ -10,6 +10,19 @@ In order to run our code, we'll need a compiler.
 Install stack by following the directions on their `website
 <https://docs.haskellstack.org/en/stable/README/>`_.
 
+.. topic:: Per-user install of stack, the quick version
+
+   ::
+
+     $ wget http://get.haskellstack.org/linux-x86_64.tar.gz &&
+     tar -xf linux-x86_64.tar.gz '*/stack' -C ~/.local/bin &&
+     printf '%s\n' 'PATH=$HOME/.local/bin:$PATH' >> ~/.profile
+
+   This snippet makes assumptions based on my environment,
+   and may not make sense for you, so consider the trade-offs.
+   I've also omitted directions on verifying the binary and making
+   sure ``$PATH`` is sane.
+
 Stack manages the entire tool-chain that you'll typically use for a
 project in an isolated way. Right now we're only interested in it
 because it will provide a compiler to execute our code with.
@@ -27,12 +40,15 @@ because it will provide a compiler to execute our code with.
     * `An excellent video series <https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV>`_
     * `The GHC users guide <https://downloads.haskell.org/ghc/latest/docs/html/users_guide>`_
     * `The Haskell 2010 language report <https://www.haskell.org/onlinereport/haskell2010/>`_
-I've included a bash script to download these things for you, in pdf
-    where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
-    Hoogle is like a search engine for API docs. You'll want to bookmark this.
-    https://wiki.haskell.org/Hoogle
 
-    The freenode IRC #haskell channel is incredibly helpful, too.
+    I've included a bash script to download these things for you, in pdf
+    where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
+
+    Some other resources:
+
+    * `Hoogle <https://wiki.haskell.org/Hoogle>`_ is like a search engine
+      for API docs. You'll want to bookmark this.
+    * The freenode IRC #haskell channel is incredibly helpful, too.
 
 
 2.2 Interacting with Haskell code
