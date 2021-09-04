@@ -35,6 +35,39 @@ devised in the 1930s by Alonzo Church.**
     studying the performance of algorithms independently of the variations that are
     specific to particular implementations and specific technology.
 
+* What is an algorithm?
+
+  * From https://link.springer.com/chapter/10.1007/978-1-4615-7288-6_6
+
+    An algorithm is a computational method for solving each and every problem from a large class of
+    problems. The computation has to be precisely specified so that it requires no ingenuity for its
+    performance. The familiar technique for adding integers is an algorithm, as are the techniques
+    for computing the other arithmetic operations of subtraction, multiplication, and division. The
+    truth table procedure to determine whether a statement form is a tautology is an algorithm
+    within logic itself.
+
+  * From "Introduction to Computer Science using Python: A Computational Problem-Solving Focus" by
+    Charles Dierbach.
+
+    1.2.1 What Is an Algorithm?
+
+    An algorithm is a finite number of clearly described, unambiguous “doable” steps that can be
+    systematically followed to produce a desired result for given input in a finite amount of time
+    (that is, it eventually terminates). Algorithms solve general problems (determining whether any
+    given number is a prime number), and not specific ones (determining whether 30753 is a prime
+    number). Algorithms, there- fore, are general computational methods used for solving particular
+    problem instances.  The word “algorithm” is derived from the ninth-century Arab mathematician,
+    Al-Khwarizmi (Figure 1-7), who worked on “written processes to achieve some goal.” (The term
+    “algebra” also derives from the term “al-jabr,” which he introduced.) Computer algorithms are
+    central to computer science. They provide step-by-step methods of computation that a machine can
+    carry out. Having high-speed machines (computers) that can consistently follow and execute a given
+    set of instructions provides a reliable and effective means of realizing computation. How- ever,
+    the computation that a given computer performs is only as good as the underlying algorithm used .
+    Understanding what can be effectively programmed and executed by computers, therefore, relies on
+    the understanding of computer algorithms.  An algorithm is a finite number of clearly described,
+    unambiguous “doable” steps that can be systematically followed to produce a desired result for
+    given input in a finite amount of time.
+
 * What is a (mathematical) model?
 
   * from https://www.wikiwand.com/en/Mathematical_model
@@ -202,8 +235,8 @@ formalizing a method."**
   transforming lambdas but no specific meaning."**
 
   * Does calling LC a "method of calculation or reasoning" make sense, given that it is purely
-    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation
-    scheme.
+    syntactic? Don't calculation and reasoning require ascribing semantics to our symbol
+    manipulation scheme.
 
 * What is a process?
 * What is a method?
@@ -487,6 +520,8 @@ mathematical functions."**
   was the intention. The truth is that I didn't understand the lambda calculus, really."
   ~ John McCarthy, Lisp session, History of Programming Languages
 
+* Another language that is purely functional, but based on a different calculus, is Joy.
+
 Source here: https://dl.acm.org/doi/book/10.1145/800025#sec4
 
 See the discussion here and linked article for details: https://news.ycombinator.com/item?id=20696931
@@ -514,6 +549,9 @@ See the discussion here and linked article for details: https://news.ycombinator
 
 
 1b **"The essence of functional programming is that programs are a combination of expressions."**
+
+  .. Is there an implied sense here of "expression" as opposed to "statement" that you'd encounter
+     in imperative languages?
 
   .. etymology online
      expression (noun)
