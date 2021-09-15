@@ -35,39 +35,6 @@ devised in the 1930s by Alonzo Church.**
     studying the performance of algorithms independently of the variations that are
     specific to particular implementations and specific technology.
 
-* What is an algorithm?
-
-  * From https://link.springer.com/chapter/10.1007/978-1-4615-7288-6_6
-
-    An algorithm is a computational method for solving each and every problem from a large class of
-    problems. The computation has to be precisely specified so that it requires no ingenuity for its
-    performance. The familiar technique for adding integers is an algorithm, as are the techniques
-    for computing the other arithmetic operations of subtraction, multiplication, and division. The
-    truth table procedure to determine whether a statement form is a tautology is an algorithm
-    within logic itself.
-
-  * From "Introduction to Computer Science using Python: A Computational Problem-Solving Focus" by
-    Charles Dierbach.
-
-    1.2.1 What Is an Algorithm?
-
-    An algorithm is a finite number of clearly described, unambiguous “doable” steps that can be
-    systematically followed to produce a desired result for given input in a finite amount of time
-    (that is, it eventually terminates). Algorithms solve general problems (determining whether any
-    given number is a prime number), and not specific ones (determining whether 30753 is a prime
-    number). Algorithms, there- fore, are general computational methods used for solving particular
-    problem instances.  The word “algorithm” is derived from the ninth-century Arab mathematician,
-    Al-Khwarizmi (Figure 1-7), who worked on “written processes to achieve some goal.” (The term
-    “algebra” also derives from the term “al-jabr,” which he introduced.) Computer algorithms are
-    central to computer science. They provide step-by-step methods of computation that a machine can
-    carry out. Having high-speed machines (computers) that can consistently follow and execute a given
-    set of instructions provides a reliable and effective means of realizing computation. How- ever,
-    the computation that a given computer performs is only as good as the underlying algorithm used .
-    Understanding what can be effectively programmed and executed by computers, therefore, relies on
-    the understanding of computer algorithms.  An algorithm is a finite number of clearly described,
-    unambiguous “doable” steps that can be systematically followed to produce a desired result for
-    given input in a finite amount of time.
-
 * What is a (mathematical) model?
 
   * from https://www.wikiwand.com/en/Mathematical_model
@@ -77,65 +44,59 @@ devised in the 1930s by Alonzo Church.**
     make predictions about behavior.
 
 * How does someone devise a model of computation?
-* What problem, idea, or event motivated Alonzo Church to create the lambda calculus?
+* **What problem, idea, or event motivated Alonzo Church to create the lambda calculus?**
 
-  .. topic:: Hilberts 10th Problem
+  This is a big subject that I can't hope to answer satisfactorily without a lot of reading, but
+  here's my understanding of the issue right now.
 
-     from a lecture deliverd before the international congress of mathemeticians at paris on August
-     8th, 1900, where he lists a number of interesting problems for mathematicians to work on in the
-     coming century.
+  Since the late 1600s, mathematicians have been investigating the possibility that all of
+  mathematics could be reduced to formal logic, which may then be calculated by machine. Some, like
+  Liebniz and George Boole, envisaged automating much of human thought, or at least the subset of
+  thought that is based on logical reasoning.
 
-     https://www.ams.org/journals/bull/1902-08-10/S0002-9904-1902-00923-3/home.html
-     https://www.wikiwand.com/en/Hilbert%27s_problems?wprov=srpw1_0
+  How can we tell what can or cannot be computed? From the view of mathematics, when considering a
+  particular function, the question may be rephrased to "can the mathematical function undergoing
+  computation eventually result in an answer?", or "is the function effectively calculable", or in
+  the case of logical statements "can the truth value eventually be decided?".
 
-     From the preface:
+  This last question is known as the decision problem, and this is the problem that Church tries to
+  make precise with LC. Church was interested in a few particular instances of the problem,
+  articulated by David Hilbert -- Hilberts 10th problem, and Hilberts Program. He tries to address
+  these examples, and assumes the reader will generalize his conclusions to the larger issue of
+  what can be computed mechanically.
 
-     It remains to discuss briefly what general requirements may be justly laid down for the solution
-     of a mathematical problem. I should say first of all, this : that it shall be possible to
-     establish the correctness of the solution by means of a finite number of steps based upon a finite
-     number of hypotheses which are implied in the statement of the problem and which must always be
-     exactly formulated. This requirement of logical deduction by means of a finite number of processes
-     is simply the requirement of rigor in reasoning.
+  If you want to read more about the subject, I suggest "Engines of Logic" by Martin Davis and "The
+  Annotated Turing" by Charles Petzold. Engines presents a timeline of several important thinkers,
+  leading up to the idea of the decision problem, and the Church-Turing thesis. The Annotated Turing
+  focuses on the Alan Turing's paper that describes his model of computation, the universal
+  computing machine. Another interesting resource is "Lambda Calculus: Then and Now", a lecture by
+  Dana Scott available through publications of the ACM. It links to a timeline of important
+  milestone publications leading up to the lambda calculus, and some of the lambda calculus'
+  applications in programming language design.
 
-     . . .
+  .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture1.pdf
+  .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture3.pdf
+  .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture4.pdf
 
-     Besides it is an error to believe that rigor in the proof is the enemy of simplicity. On the
-     contrary we find it confirmed by numerous examples that the rigorous method is at the same time
-     the simpler and the more easily comprehended. The very effort for rigor forces us to find out
-     simpler methods of proof. It also frequently leads the way to methods which are more capable of
-     development than the old methods of less rigor.
+  .. Leibniz, jul 1646 to nov 1716,
+  .. * Belived human reasoning could be reduced to calculations. envisaged a calculus rationcinator
+  ..   (resembing symbolic logic) to make such calculations feasible.
 
-     . . .
+  .. Lebiniz's wonderful idea:
+  .. * Seek an alphabet whose elements represent concepts,
+  .. * this alphabet would form a language,
+  .. * in this language by symbolic reasoning determine
+  ..
+  ..   * which sentences in the language were true and,
+  ..   * what logical relationships existed among them.
+  ..
+  .. Leibniz held onto this vision throughtout his lifetime and made some progress towards it.
 
-     Question 10:
+  .. There were efforts to prove the consistency of all of math using a small core set of operations
+  .. in the 1900's. Principia Mathematica tries to derive mathematics using logic.
+  .. hilberts 10th problem, hilberts program
+  .. hilberts program: independence, consistency, completeness, decidability
 
-     10. Determination of the solvbility of a diophantine equation
-
-     Given a diophantine equation with any number of unknown quantities and with rational integral
-     numerical coefficients: To devise a process according to which it can be determined by a finite
-     number of operations whether the equation is solvable in rational integers.
-
-  .. topic:: Behamann's description of the decision problem
-
-     Exceripts from Heinrich Behmann's 1921 lecture on the decision problem and the algebra of logic
-
-     Behmann then describes the decision problem as the more specific problem of finding a
-     deterministic, computational procedure to decide any mathematical claim:
-
-     "[We require] not only the individual operations but also the path of calculation as a whole
-     should be specified by rules, in other words, an elimination of thinking in favor of mechanical
-     calculation. If a logical or mathematical assertion is given, the required proce- dure should
-     give complete instructions for determining whether the assertion is correct or false by a
-     deterministic [zwangsläufig] calculation after finitely many steps. The problem thus formulated
-     I want to call the general decision problem."
-
-     . . .
-
-     "It is essential to the character of this problem that as method of proof
-     only entirely mechanical calculation according to given instructions, with-
-     out any activity of thinking in the narrower sense, is allowed. One might,
-     if one wanted to, speak of mechanical or machine-like thinking. (Perhaps
-     one can one day even let it be carried out by a machine.)"
 
 * When particularly was the lambda calculus introduced?
   In which papers, conferences, or historical events was LC introduced?
@@ -235,8 +196,8 @@ formalizing a method."**
   transforming lambdas but no specific meaning."**
 
   * Does calling LC a "method of calculation or reasoning" make sense, given that it is purely
-    syntactic? Don't calculation and reasoning require ascribing semantics to our symbol
-    manipulation scheme.
+    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation
+    scheme.
 
 * What is a process?
 * What is a method?
@@ -327,7 +288,8 @@ formalizing a method."**
   The system obtained by this formalization is now itself the object of precise mathematical study
   (see Axiomatic method; Proof theory).
 
-  References: [1] S.C. Kleene, "Introduction to metamathematics", North-Holland (1951)
+  References: [1] S.C. Kleene, "Introduction to
+  metamathematics", North-Holland (1951)
 
 * Are there other processes for formalizing a method?
 * What is a formalism?
@@ -520,8 +482,6 @@ mathematical functions."**
   was the intention. The truth is that I didn't understand the lambda calculus, really."
   ~ John McCarthy, Lisp session, History of Programming Languages
 
-* Another language that is purely functional, but based on a different calculus, is Joy.
-
 Source here: https://dl.acm.org/doi/book/10.1145/800025#sec4
 
 See the discussion here and linked article for details: https://news.ycombinator.com/item?id=20696931
@@ -549,9 +509,6 @@ See the discussion here and linked article for details: https://news.ycombinator
 
 
 1b **"The essence of functional programming is that programs are a combination of expressions."**
-
-  .. Is there an implied sense here of "expression" as opposed to "statement" that you'd encounter
-     in imperative languages?
 
   .. etymology online
      expression (noun)
@@ -719,7 +676,7 @@ mean beta normal form.**
 
 * What are the other normal forms?
 
-1b **"Beta normal form is when you cannot beta reduce (apply lambdas to arguments) the terms any
+1b **"Beta normal form is when you cannot beta reduce (apply lambdas to arguments) tht terms any
 further."**
 
 1.8 combinators
