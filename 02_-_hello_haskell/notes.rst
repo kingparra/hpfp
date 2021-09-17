@@ -48,6 +48,8 @@ because it will provide a compiler to execute our code with.
 
     * `Hoogle <https://wiki.haskell.org/Hoogle>`_ is like a search engine
       for API docs. You'll want to bookmark this.
+    * A directory of frequently used modules, included with GHC:
+      http://downloads.haskell.org/~ghc/8.6.5/docs/html/libraries/index.html
     * The freenode IRC #haskell channel is incredibly helpful, too.
 
 
