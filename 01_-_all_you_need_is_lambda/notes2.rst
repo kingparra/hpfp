@@ -50,8 +50,8 @@ devised in the 1930s by Alonzo Church.**
   here's my understanding of the issue right now.
 
   Since the late 1600s, mathematicians have been investigating the possibility that all of
-  mathematics could be reduced to formal logic, which may then be calculated by machine. Some, like
-  Liebniz and George Boole, envisaged automating much of human thought, or at least the subset of
+  mathematics could be reduced to formal logic, which may then be calculated by machine.  Liebniz
+  and George Boole envisaged automating much of human thought, or at least the subset of
   thought that is based on logical reasoning.
 
   How can we tell what can or cannot be computed? From the view of mathematics, when considering a
@@ -65,14 +65,14 @@ devised in the 1930s by Alonzo Church.**
   these examples, and assumes the reader will generalize his conclusions to the larger issue of
   what can be computed mechanically.
 
-  If you want to read more about the subject, I suggest "Engines of Logic" by Martin Davis and "The
-  Annotated Turing" by Charles Petzold. Engines presents a timeline of several important thinkers,
-  leading up to the idea of the decision problem, and the Church-Turing thesis. The Annotated Turing
-  focuses on the Alan Turing's paper that describes his model of computation, the universal
-  computing machine. Another interesting resource is "Lambda Calculus: Then and Now", a lecture by
-  Dana Scott available through publications of the ACM. It links to a timeline of important
-  milestone publications leading up to the lambda calculus, and some of the lambda calculus'
-  applications in programming language design.
+  If you want to read more about the subject, I suggest "**Engines of Logic**" by Martin Davis and
+  "**The Annotated Turing**" by Charles Petzold. Engines presents a timeline of several important
+  thinkers, leading up to the idea of the decision problem, and the Church-Turing thesis. The
+  Annotated Turing focuses on the Alan Turing's paper that describes his model of computation, the
+  universal computing machine. Another interesting resource is "**Lambda Calculus: Then and Now**",
+  a lecture by Dana Scott available through publications of the ACM. It links to a timeline of
+  important milestone publications leading up to the lambda calculus, and some of the lambda
+  calculus' applications in programming language design.
 
   .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture1.pdf
   .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture3.pdf
@@ -97,9 +97,26 @@ devised in the 1930s by Alonzo Church.**
   .. hilberts 10th problem, hilberts program
   .. hilberts program: independence, consistency, completeness, decidability
 
+  .. https://www.jstor.org/stable/2318447?origin=JSTOR-pdf "Hilbert's Tenth Problem is Unsolvable" by Martin Davis
 
-* When particularly was the lambda calculus introduced?
-  In which papers, conferences, or historical events was LC introduced?
+* **When particularly was the lambda calculus introduced?
+  In which papers, conferences, or historical events was LC introduced?**
+
+
+  from Lambda Calculus: Then & Now ... http://fm.csl.sri.com/SSFT15/LambdaThenNow.pdf
+
+  Alonzo Church, “An Unsolvable Problem in Elementary Number Theory,” American J. of Mathematics,
+  vol. 5 (1936), pp. 345-363.
+
+  Alonzo Church, “A Note on the Entscheidungsproblem,” J. of Symbolic Logic, vol. 1 (1936) pp.
+  40-41. Correction: ibid, pp. 101-102.
+
+  Alan Turing,“On Computable Numbers with an Application to the Entscheidungsproblem,” Proc. of the
+  London Math. Soc., vol. 42 (1936), pp.  230-267. Correction: vol. 43 (1937), pp. 544-546.
+
+  Alan Turing,“Computability and λ-definability,” J. Symbolic Logic, vol. 2 (1937), pp. 153-163.
+
+  from https://math.stackexchange.com/questions/1165686/what-is-the-actual-significance-of-the-lambda-calculus-for-the-formalization-of
 
     * 1932 A. Church, "A set of postulates for the foundation of logic", Annals of Mathematics,
       Series 2, 33:346–366
