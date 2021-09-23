@@ -213,8 +213,7 @@ formalizing a method."**
   transforming lambdas but no specific meaning."**
 
   * Does calling LC a "method of calculation or reasoning" make sense, given that it is purely
-    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation
-    scheme.
+    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation scheme.
 
 * What is a process?
 * What is a method?
@@ -602,6 +601,7 @@ transparency."**
 
 * Ok, I'll take your word for that. You said "sometimes". What about those other times? Is
   purity (as in purely functional) used to mean something else? If so, what?
+* Is there a formal definition of what referential transparency means?
 
 Remarks
 ^^^^^^^
@@ -616,12 +616,47 @@ Subjects
 ^^^^^^^^
 * function, relation, set, inputs, outputs, relationship, domain, codomain, range,
   preimage, image, surjective, bijective, injective, reflexive, symmetric, transitive,
-  referential transparency, predictable, function body, return
+  **referential transparency**, predictable, function body, return
 
 General questions and comments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * What is the difference between the codomain, range, and image of a function? These ideas
-  seem similar.
+  seem similar, and the distinctions between them are sometimes only evident if the function is
+  partial, or has incomputable elements in the domain.
+* Referential transparency is probably one of the most important ideas in functional programming, so
+  I want to be able to explain it well. I should experiment with different ways of explaining the idea.
+
+.. A name is referentially transparent if can be replaced by its definition at any point in the
+.. program without changing its behaviour. So, referentially transparent names are indepent of
+.. time ordering and don't have side-effects. They also don't mutate values outside of their
+.. scope.
+
+.. One definition of functional programming: No assignment statements, and no mutable objects. All data flow is explicit.
+.. "proof of non-intereference"
+
+.. FUNDAMENTAL CONCEPTS IN PROGRAMMING LANGUAGES page 19
+.. 3.2.  Expressions and evaluation
+.. 3.2.1. Values.
+.. . . .
+.. One of the most useful properties of expressions is that called by Quine referential
+.. transparency. In essence this means that if we wish to find the value of an expression which
+.. contains a sub-expression, the only thing we need to know about the sub-expression is its
+.. value.
+..
+.. Also cites Quine 1 on this matter.
+..
+.. We tend to assume automatically that the symbol x in an expression such as 3x**2 + 2x + 17 stands
+.. for the same thing (or has the same value) on each occasion it occurs. This is the most important
+.. consequence of referential transparency
+..
+.. 3.3.1 Variables, page 22
+..
+.. If we consider L-values as well as R-Values, however, we can preserve referential transparency as
+.. far as L-values are concerned. Thi is because L-values, being generalised addresses, are not
+.. altered by assignment command
+..
+.. 3.3.1 Variables, page 22
+
 
 
 1.4 The structure of lambda expressions
