@@ -1,0 +1,7 @@
+-- page 849, figure 16
+
+boopDoop :: Integer -> Integer
+boopDoop = do
+  a <- boop
+  b <- doop
+  return (a + b)

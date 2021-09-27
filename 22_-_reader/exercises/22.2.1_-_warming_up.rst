@@ -1,0 +1,71 @@
+22.2.1 Short Exercise: Warming up
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We'll be doing something here similar to what
+you saw above, to give you practice and help
+you try to develop a feel or intuition for
+what is to come. These are similar enough to
+what you just saw that you can almost copy and
+paste, so try not to overthink them too much.
+
+First, start a file off like this::
+
+  import Data.Char
+
+
+  cap :: [Char] -> [Char]
+  cap xs = map toUpper xs
+
+
+  rev :: [Char] -> [Char]
+  rev xs = reverse xs
+
+Two simple functions with the same type,
+taking the same type of input. We could
+compose them, using the ``(.)`` operator or
+``fmap``::
+
+  composed :: [Char] -> [Char]
+  composed = undefined
+
+
+  fmapped :: [Char] -> [Char]
+  fmapped = undefined
+
+The output of these two functions should be
+identical, one string that is made all
+uppercase and reversed, like this::
+
+  Prelude> composed "Julie"
+  "EILUJ"
+
+  Prelude> fmapped "Chris"
+  "SIRHC"
+
+We want to return the results of ``cap`` and
+``rev`` as a tuple, like this::
+
+  Prelude> tupled "Julie"
+  ("JULIE","eiluJ")
+
+...or this::
+
+  Prelude> tupled' "Julie"
+  ("eiluJ","JULIE")
+
+We want to use an Applicative here. The type
+looks like this::
+
+  tupled :: [Char] -> ([Char], [Char])
+
+There is no special reason such a function
+needs to be monadic, but let's do that, too,
+to get some practice. Do it one time using do
+syntax. Then try writing a new version using
+``(>>=)``. The types will be the same as the
+type for ``tupled``.
+
+
+Here is my attempt:
+
+.. include:: exercises/22.2.1_-_warming_up.rst.d/warming-up/src/Lib.hs
+   :code:

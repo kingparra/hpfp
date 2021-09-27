@@ -1,0 +1,9 @@
+-- page 847, figure 11
+
+((+) <$> (*2) <*> (+10)) 3
+
+-- Wait, what? What happened to the
+-- first argument?
+
+((+) <$> (*2) <*> (+10)) :: Num b => b -> b
+

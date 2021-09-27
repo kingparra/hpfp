@@ -1,0 +1,6 @@
+-- page 848, figure 13
+
+appReader :: (a -> a -> b)
+          -> (a -> a)
+          -> (a -> b)
+appReader = (<*>)

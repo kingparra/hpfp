@@ -1,0 +1,326 @@
+******************************************************************************
+                               LC Scratchpad
+******************************************************************************
+These notes are embarrasing...
+
+https://arxiv.org/abs/1503.09060
+https://crypto.stanford.edu/~blynn/lambda/
+https://plato.stanford.edu/entries/lambda-calculus/
+https://plato.stanford.edu/entries/logic-combinatory/
+https://www.invidio.us/watch?v=7cPtCpyBPNI
+https://turing100.acm.org/lambda_calculus_timeline.pdf
+http://logitext.mit.edu/tutorial <-- basics of sequent calculus, for types
+
+> monochrom:
+>   No, asm has addition and multiplication ready-made. What you're doing
+> is building adders and multipliers from imaginary logic gates.
+
+
+Definition
+----------
+::
+          .  expression  ⇐   name | function | application
+                   name  ⇐    a | b | c | d | e | ⋯ | z
+               function  ⇐      ( λ name . expression )
+            application  ⇐     ( expression expression )
+
+(In this version of EBNF a space means "followed by", a stroke means "or", and
+curly braces means "repeated zero or more times".)
+
+The *head* of a function is everything between "λ" and "."; These identifiers
+are your parameters. The *body* of a function is everything after the ".".
+
+For example:
+
+                                   body
+                                  vvvvvv
+                            (λnab.a(nab))
+                              ^^^
+                              head
+
+                   "->" is read as "reduces to"
+
+         "[y / z]" is read as "y replaces all occurances of z"
+
+                        (λx.x)y -> [y/x]x -> y
+
+
+Another way to write this is "[z := y]", which reads "z will be substituted by
+y" or "y is assigned to z".
+
+                        (λx.x)y -> [x := y]x -> y
+
+  "x ≡ y" is read as "x is identical to y" or "x is a synonym for y"
+
+                    (λa.a) ≡ (λb.b) ≡ (λc.c)
+
+             Function application associates from the left.
+
+              (λa.a)(λb.b)(λc.c) ≡ (((λa.a)(λb.b))(λc.c))
+                a.a   b.b   c.c  ≡ ((  a.a   b.b )  c.c )
+
+      α alpha conversion  λx.x ≡ λa.a ≡ λz.z
+        β beta reduction  (λa.a)(λxy.y) -> [a := λxy.y] a -> λxy.y
+         η eta reduction  λx.f(x) ≡ f
+
+ I'm using my own notation here. "λ" is not needed, since anything
+before a "." is the head. If I need to seperate two expressions, instead
+of using parenthesis, I may use a space. If I want to indicate that an
+expression should wait for the expression on it's right to evaulate before
+consuming it, I'll use a backtick "`". (This is like the "$" operator in
+haskell.) If I want to indicate a more complicated grouping or change in
+ evaluation order, I'll use parenthesis. So:
+
+                            λa.a ≡ a.a
+
+                4 ≡ λsz.s(s(s(sz))) ≡ sz.s`s`s`sz
+
+            3S2 ≡ (λsz.s(s(sz)))(λnab.a(nab))(λsz.s(sz))
+                ≡   sz.s`s`sz     nab.a`nab    sz.s`sz
+                ≡   sz.s`s`sz
+                    nab.a`nab
+                    sz.s`sz
+
+  How do you know if...  x.x`abc
+  means...               x.x(abc)
+  or...                  x.x(a)bc
+  or even...             x.x(ab)c
+  ?
+
+ Simple. If there are no spaces between terms, they are grouped within the same
+ set of parenthesis.
+
+                    x.x(abc) ≡ x.x`abc ≡ x.x(a b c)
+
+ I find this easier to type and read. Maybe if I was doing reductions on
+paper I wouldn't care. By the way, the font "IBM Plex Mono, Light Italic"
+ has a nice look for the symbols used here.
+
+
+Arithmetic
+----------
+Number are represented by choosing a name to represent zero, and counting up by
+nesting it in function calls.
+
+S ≡ nab.a`nab
+
+0 ≡ sz.z
+1 ≡ sz.sz
+2 ≡ sz.s`sz
+3 ≡ sz.s`s`sz
+
+
+Addition
+--------
+S0  ≡ nab.a`nab sz.z
+      [n/sz.z]
+    ≡  ab.a(sz.z ab)
+           [s/a]
+    ≡  ab.a(z.z b)
+           [z/b]
+    ≡  ab.a`b
+    ≡  sz.s`z
+    ≡  1
+
+2+3 ≡ 2S3
+    ≡ sz.s`sz nab.a`nab bf.b`b`bf
+    ≡  z.(nab.a`nab (nab.a`nab z)) bf.b`b`bf
+    ≡  nab.a`nab (jot.o`jot bf.b`b`bf)
+    ≡  nab.a`nab ot.o(bf.b`b`bf ot)
+    ≡   ab.a(ot.o(bf.b`b`bf ot) ab)
+    ≡   ab.a(t.a(bf.b`b`bf at) b)
+    ≡   ab.a`a(bf.b`b`bf ab)
+    ≡   ab.a`a(f.a`a`af b)
+    ≡   ab.a`a(a`a`ab)
+    ≡   ab.a`a`a`a`ab
+    ≡   sz.s`s`s`s`sz
+    ≡ 5
+
+
+Multiplication
+--------------
+M   ≡ xya.x`ya
+M33 ≡ xya.x`ya 3 3
+    ≡  ya.3`ya 3
+    ≡  ya.(
+           3
+           ya
+          )
+       3
+    [ 3 / sz.s`s`sz]
+    ≡  ya.(
+           sz.s`s`sz
+           ya
+          )
+       3
+    [s / ya]
+    ≡  ya.(
+           z.ya`ya(ya z)
+          )
+       3
+    [3 / y]
+    ≡   a.(
+           z.3a`3a(3a z)
+          )
+    ≡   az.3a`3a(3a z)
+
+
+Conditionals
+------------
+T ≡ xy.x
+F ≡ xy.y
+
+
+Logical operations
+------------------
+AND ≡ ∧ ≡ xy.xyF
+
+.. is this right?
+∧TF ≡ xy.(xy ab.b)TF
+            TFF
+             F
+
+ OR ≡ ∨ ≡ xy.xTy
+NOT ≡ ¬ ≡ x.xFT
+
+
+A conditional test
+------------------
+Z returns true if a number is zero and false otherwise.
+
+Z  ≡ x.xF¬F
+Z0 ≡ x.xF¬F 0 -> 0F¬F -> ¬F ->  T
+
+
+The predecessor function
+------------------------
+.. http://gettingsharper.de/2012/08/30/lambda-calculus-subtraction-is-hard/
+
+Here's a pair representing (a,b)
+
+p ≡ z.zab
+
+to construct a pair, use C
+
+    C ≡ ab.(z.zab)
+
+C 2 1 ≡ z.z(2 1) ≡ v
+
+extracting elements from the pair v
+
+vT ≡ 2
+vF ≡ 1
+
+Φ is read as phi, this function is core logic of pred, and can be
+summarized as (a,b) -> (a+1,a)
+
+Φ ≡ pz.z((S`pT) (pT))
+
+The predecessor of a number n is obtained by applying n times the function Φ
+to the pair (\z.z00), denoted as C 0 0 here, and then selecting the second
+member of the new pair.
+
+P ≡ (λn.(nΦ(C 0 0))F)
+
+P =   n.(nΦ(C 0 0) F)
+
+
+Equality and inequalities
+-------------------------
+>= ≡ G ≡ xy.Z`xPy
+== ≡ E ≡ xy.(∧ Z`xPy Z`yPx)
+
+
+Recursion
+---------
+Y ≡ (λy.(λx.y(xx))(λx.y(xx)))
+Y ≡   y.( x.y`xx    x.y`xx  )
+
+Y ≡   y.(
+         x.y`xx
+         x.y`xx
+        )
+
+An infinite loop:
+
+YI -> I(YI) -> YI -> ...
+
+YR -> R(YR)
+
+YR ≡ y.(x.y`xx x.y`xx) R
+  -> x.R`xx a.R`aa
+  -> R(a.R`aa b.R`bb)
+  -> R`R(b.R`bb c.R`cc)
+
+Add the first n natural numbers
+R  ≡ (λrn.Zn0(nS(r(Pn))))
+
+R  ≡ (rn . Zn 0 ` nS ` r ` Pn)
+..          F 0 ` nS ` r ` Pn
+..              ` nS ` r ` Pn
+
+If n is not 0, then the successor function is
+applied n times to the recursive call, r, of
+the function applied to the predecessor of n.
+
+YR3 -> R(YR)3 -> Z30(3S(YR(P3)))
+
+YR3 -> R`YR 3 -> Z30`3S`YR`P3 -> 3S`YR`P3 -> ... -> 3S`2S`1S0 -> 6
+
+???
+
+
+Combinatory logic
+-----------------
+S ≡ xyz.xz`yz
+K ≡ xy.x
+I ≡ x.x
+
+
+Projects for the reader
+-----------------------
+1. Define the functions "less than" and "greater than" of two numerical arguments.
+
+   * "greater than"
+
+     In Haskell...
+
+          x .> y =    x >= y && not (x == y)
+
+     ...rearranged to be more similar to the lc description, which is uses
+     prefix notation...
+
+          x .> y =    (&&) ((>=) x y) (not ((==) x y))
+
+     ... in lambda calculus
+
+               > ≡     xy.(∧ Gxy ¬`Exy)
+
+     ... Haskell and LC lined up together
+
+          (\x y -> (&&) ((>=) x y) (not ((==) x y)))
+              xy.(  ∧   ( G   x y) (¬   ( E   x y)))
+
+   * "less than"
+
+      x <. y = not (x >= y)
+
+       < ≡ xy.¬`Gxy
+
+2. Define the positive and negative integers using pairs of natural numbers.
+3. Define addition and subtraction of integers.
+
+   You can just do 3S2 to mean 3+2, and 3P5 to mean -3 + 5 ...
+
+   + ≡ xy.xPy
+   - ≡ xy.xSy
+
+4. Define the division of positive integers recursively.
+5. Define the factorial function recursively.
+6. Define the rational numbers as pairs of integers.
+7. Define functions for the addition, subtraction, multiplication and division of rationals.
+8. Define a data structure to represent a list of numbers.
+9. Define a function which extracts the first element from a list.
+10. Define a recursive function which counts the number of elements in a list.
+11. Can you simulate a turning maching using lambda calculus?
+
