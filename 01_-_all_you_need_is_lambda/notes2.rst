@@ -44,15 +44,79 @@ devised in the 1930s by Alonzo Church.**
     make predictions about behavior.
 
 * How does someone devise a model of computation?
-* What problem, idea, or event motivated Alonzo Church to create the lambda calculus?
+* **What problem, idea, or event motivated Alonzo Church to create the lambda calculus?**
+
+  This is a big subject that I can't hope to answer satisfactorily without a lot of reading, but
+  here's my understanding of the issue right now.
+
+  Since the late 1600s, mathematicians have been investigating the possibility that all of
+  mathematics could be reduced to formal logic, which may then be calculated by machine.  Liebniz
+  and George Boole envisaged automating much of human thought, or at least the subset of
+  thought that is based on logical reasoning.
+
+  How can we tell what can or cannot be computed? From the view of mathematics, when considering a
+  particular function, the question may be rephrased to "can the mathematical function undergoing
+  computation eventually result in an answer?", or "is the function effectively calculable", or in
+  the case of logical statements "can the truth value eventually be decided?".
+
+  This last question is known as the decision problem, and this is the problem that Church tries to
+  make precise with LC. Church was interested in a few particular instances of the problem,
+  articulated by David Hilbert -- Hilberts 10th problem, and Hilberts Program. He tries to address
+  these examples, and assumes the reader will generalize his conclusions to the larger issue of
+  what can be computed mechanically.
+
+  If you want to read more about the subject, I suggest "**Engines of Logic**" by Martin Davis and
+  "**The Annotated Turing**" by Charles Petzold. Engines presents a timeline of several important
+  thinkers, leading up to the idea of the decision problem, and the Church-Turing thesis. The
+  Annotated Turing focuses on the Alan Turing's paper that describes his model of computation, the
+  universal computing machine. Another interesting resource is "**Lambda Calculus: Then and Now**",
+  a lecture by Dana Scott available through publications of the ACM. It links to a timeline of
+  important milestone publications leading up to the lambda calculus, and some of the lambda
+  calculus' applications in programming language design.
+
+  .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture1.pdf
+  .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture3.pdf
+  .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture4.pdf
+
+  .. Leibniz, jul 1646 to nov 1716,
+  .. * Belived human reasoning could be reduced to calculations. envisaged a calculus rationcinator
+  ..   (resembing symbolic logic) to make such calculations feasible.
+
+  .. Lebiniz's wonderful idea:
+  .. * Seek an alphabet whose elements represent concepts,
+  .. * this alphabet would form a language,
+  .. * in this language by symbolic reasoning determine
+  ..
+  ..   * which sentences in the language were true and,
+  ..   * what logical relationships existed among them.
+  ..
+  .. Leibniz held onto this vision throughtout his lifetime and made some progress towards it.
 
   .. There were efforts to prove the consistency of all of math using a small core set of operations
   .. in the 1900's. Principia Mathematica tries to derive mathematics using logic.
   .. hilberts 10th problem, hilberts program
   .. hilberts program: independence, consistency, completeness, decidability
 
-* When particularly was the lambda calculus introduced?
-  In which papers, conferences, or historical events was LC introduced?
+  .. https://www.jstor.org/stable/2318447?origin=JSTOR-pdf "Hilbert's Tenth Problem is Unsolvable" by Martin Davis
+
+* **When particularly was the lambda calculus introduced?
+  In which papers, conferences, or historical events was LC introduced?**
+
+
+  from Lambda Calculus: Then & Now ... http://fm.csl.sri.com/SSFT15/LambdaThenNow.pdf
+
+  Alonzo Church, “An Unsolvable Problem in Elementary Number Theory,” American J. of Mathematics,
+  vol. 5 (1936), pp. 345-363.
+
+  Alonzo Church, “A Note on the Entscheidungsproblem,” J. of Symbolic Logic, vol. 1 (1936) pp.
+  40-41. Correction: ibid, pp. 101-102.
+
+  Alan Turing,“On Computable Numbers with an Application to the Entscheidungsproblem,” Proc. of the
+  London Math. Soc., vol. 42 (1936), pp.  230-267. Correction: vol. 43 (1937), pp. 544-546.
+
+  Alan Turing,“Computability and λ-definability,” J. Symbolic Logic, vol. 2 (1937), pp. 153-163.
+
+  from https://math.stackexchange.com/questions/1165686/what-is-the-actual-significance-of-the-lambda-calculus-for-the-formalization-of
 
     * 1932 A. Church, "A set of postulates for the foundation of logic", Annals of Mathematics,
       Series 2, 33:346–366
@@ -149,8 +213,7 @@ formalizing a method."**
   transforming lambdas but no specific meaning."**
 
   * Does calling LC a "method of calculation or reasoning" make sense, given that it is purely
-    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation
-    scheme.
+    syntactic? Calculation and reasoning require ascribing semantics to our symbol manipulation scheme.
 
 * What is a process?
 * What is a method?
@@ -538,6 +601,7 @@ transparency."**
 
 * Ok, I'll take your word for that. You said "sometimes". What about those other times? Is
   purity (as in purely functional) used to mean something else? If so, what?
+* Is there a formal definition of what referential transparency means?
 
 Remarks
 ^^^^^^^
@@ -552,12 +616,47 @@ Subjects
 ^^^^^^^^
 * function, relation, set, inputs, outputs, relationship, domain, codomain, range,
   preimage, image, surjective, bijective, injective, reflexive, symmetric, transitive,
-  referential transparency, predictable, function body, return
+  **referential transparency**, predictable, function body, return
 
 General questions and comments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * What is the difference between the codomain, range, and image of a function? These ideas
-  seem similar.
+  seem similar, and the distinctions between them are sometimes only evident if the function is
+  partial, or has incomputable elements in the domain.
+* Referential transparency is probably one of the most important ideas in functional programming, so
+  I want to be able to explain it well. I should experiment with different ways of explaining the idea.
+
+.. A name is referentially transparent if can be replaced by its definition at any point in the
+.. program without changing its behaviour. So, referentially transparent names are indepent of
+.. time ordering and don't have side-effects. They also don't mutate values outside of their
+.. scope.
+
+.. One definition of functional programming: No assignment statements, and no mutable objects. All data flow is explicit.
+.. "proof of non-intereference"
+
+.. FUNDAMENTAL CONCEPTS IN PROGRAMMING LANGUAGES page 19
+.. 3.2.  Expressions and evaluation
+.. 3.2.1. Values.
+.. . . .
+.. One of the most useful properties of expressions is that called by Quine referential
+.. transparency. In essence this means that if we wish to find the value of an expression which
+.. contains a sub-expression, the only thing we need to know about the sub-expression is its
+.. value.
+..
+.. Also cites Quine 1 on this matter.
+..
+.. We tend to assume automatically that the symbol x in an expression such as 3x**2 + 2x + 17 stands
+.. for the same thing (or has the same value) on each occasion it occurs. This is the most important
+.. consequence of referential transparency
+..
+.. 3.3.1 Variables, page 22
+..
+.. If we consider L-values as well as R-Values, however, we can preserve referential transparency as
+.. far as L-values are concerned. Thi is because L-values, being generalised addresses, are not
+.. altered by assignment command
+..
+.. 3.3.1 Variables, page 22
+
 
 
 1.4 The structure of lambda expressions
