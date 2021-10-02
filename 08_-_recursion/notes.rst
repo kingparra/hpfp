@@ -14,19 +14,124 @@ In this chapter, we will
 
 8.1 & ½, Some remarks about recursion
 -------------------------------------
-Recursion, at its essence, is really just a *pattern*.
 
-**If smaller self-similar instances of an overall strucutre form
-part of itself, then that structure is recursive.**
+What is recursion, in general?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. "An entity or concept is said to be recursive when simpler or smaller self-similar instances form
+.. part of its constituents." ~ Manuel Rubio-Sanchez, Introduction to Recursive Programming, Chapter 1:
+.. Basic Concepts of Recursive Programming, 1.1 Recognizing Recursion, Paragraph 1, Sentence 1.
 
-As programmers, however, we're most interested in recursion as an algorithmic
-problem solving tool.
+Recursion is a pattern that occurs naturally in many structures, both physical and abstract. **When
+a structure contains sucessively smaller instances of itself, then it's recursive.** Recursion is
+not a programming technique, but a pattern of structure. The programming techniques just use that
+pattern.
 
-Most recursive solutions are a special case of divide-and-conquer. In
-divide-and-conquer a problem is repeatedly broken down into sub-problems, which
-are then used as a black box. The result of these black box sub-problems are
-then combined to produce the final result. With recursive solutions, however,
-each sub-problem is a smaller instance of the overall problem.
+.. !etymology recursion {{{
+
+   recursion (n.)
+   "return, backward movement," 1610s, from Latin recursionem (nominative recursio) "a running
+   backward, return," noun of action from past-participle stem of recurrere "run back" (see recur).
+
+.. !etymology recur
+
+   recur (v.)
+   late 14c., recuren, "to recover from illness or suffering" (a sense now obsolete); mid-15c., "to
+   return" (to or into a place), from Latin recurrere "to return, run back, hasten back,"
+   figuratively "revert, recur," from re- "back, again" (see re-) + currere "to run" (from PIE root
+   *kers- "to run"). Originally of persons; application to thoughts, ideas, etc., "return to the
+   mind," is recorded from 1620s. Meaning "happen again" is from 1670s. Related: Recurred;
+   recurring.
+
+.. !etymology re-
+
+   re-
+   word-forming element meaning "back, back from, back to the original place;" also "again, anew,
+   once more," also conveying the notion of "undoing" or "backward," etc. (see sense evolution
+   below), c. 1200, from Old French re- and directly from Latin re- an inseparable prefix meaning
+   "again; back; anew, against."
+
+   Watkins (2000) describes this as a "Latin combining form conceivably from Indo-European *wret-,
+   metathetical variant of *wert- "to turn." De Vaan says the "only acceptable etymology" for it is
+   a 2004 explanation which reconstructs a root in PIE *ure "back."
+
+   In earliest Latin the prefix became red- before vowels and h-, a form preserved in redact,
+   redeem, redolent, redundant, redintegrate, and, in disguise, render (v.). In some English words
+   from French and Italian re- appears as ra- and the  following consonant is often doubled (see
+   rally (v.1)).
+
+   The many meanings in the notion of "back" give re- its broad sense-range: "a turning back;
+   opposition; restoration to a former state; "transition to an opposite state." From the extended
+   senses in "again," re- becomes "repetition of an action," and in this sense it is extremely
+   common as a formative element in English, applicable to any verb. OED writes that it is
+   "impossible to attempt a complete record of all the forms resulting from its use," and adds that
+   "The number of these is practically infinite ...."
+
+   Often merely intensive, and in many of the older borrowings from French and Latin the precise
+   sense of re- is forgotten, lost in secondary senses, or weakened beyond recognition, so that it
+   has no apparent semantic content (receive, recommend, recover, reduce, recreate, refer, religion,
+   remain, request, require). There seem to have been more such words in Middle English than after,
+   e.g. recomfort (v.) "to comfort, console; encourage;" recourse (n.) "a process, way, course."
+   Recover in Middle English also could mean "obtain, win" (happiness, a kingdom, etc.) with no
+   notion of getting something back, also "gain the upper hand, overcome; arrive at;" also consider
+   the legal sense of recovery as "obtain (property) by judgment or legal proceedings."
+
+   And, due to sound changes and accent shifts, re- sometimes entirely loses its identity as a
+   prefix (rebel, relic, remnant, restive, rest (n.2) "remainder," rally (v.1) "bring together"). In
+   a few words it is reduced to r-, as in ransom (a doublet of redemption), rampart, etc.
+
+   It was used from Middle English in forming words from Germanic as well as Latin elements
+   (rebuild, refill, reset, rewrite), and was used so even in Old French (regret, regard, reward,
+   etc.).
+
+   Prefixed to a word beginning with e, re- is separated by a hyphen, as re-establish, re-estate,
+   re-edify, etc. ; or else the second e has a dieresis over it: as, reëstablish, reëmbark, etc. The
+   hyphen is also sometimes used to bring out emphatically the sense of repetition or iteration :
+   as, sung and re-sung. The dieresis is not used over other vowels than e when re is prefixed :
+   thus, reinforce, reunite, reabolish. [Century Dictionary, 1895]
+
+.. !etymology *kers-
+
+   *kers-
+   Proto-Indo-European root meaning "to run."
+
+   It forms all or part of: car; career; cargo; caricature; cark; carpenter; carriage; carrier;
+   carry; charabanc; charette; charge; chariot; concourse; concur; concurrent; corral; corridor;
+   corsair; courant; courier; course; currency; current; curriculum; cursive; cursor; cursory;
+   discharge; discourse; encharge; excursion; hussar; incur; intercourse; kraal; miscarry; occur;
+   precursor; recourse; recur; succor.
+
+   It is the hypothetical source of/evidence for its existence is provided by: Greek -khouros
+   "running;" Latin currere "to run, move quickly;" Lithuanian karšiu, karšti "go quickly;" Old
+   Irish and Middle Welsh carr "cart, wagon," Breton karr "chariot," Welsh carrog "torrent;" Old
+   Norse horskr "swift."
+
+.. !etymology motif
+
+   motif (n.)
+   "theme, predominant feature that recurs often in an artistic or dramatic work," 1848, from French
+   motif "dominant idea, theme," from Medieval Latin motivus "moving, impelling," from past
+   participle stem of movere "to move" (from PIE root *meue- "to push away"). Also a Middle English
+   form of motive (late 14c.).
+
+.. }}}
+
+Recursive function calls as a control flow mechanism
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Control structures that overwrite names like loops are forbidden in Haskell, since they violate
+referential transparency, so recursion is the only mechanism in the language that we have to express
+repetition.
+
+Recursion as an algorithmic problem solving tool
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Most recursive solutions are a special case of divide-and-conquer. In divide-and-conquer a problem
+is repeatedly broken down into sub-problems, which are then used as a black box. The result of these
+black box sub-problems are then combined to produce the final result. With recursive solutions,
+however, each sub-problem is a smaller instance of the overall problem.
+
+Defining recursive functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. "Note: Recursion is the process that consists in defining the value of a function by using other
+.. values of the same function." ~ Lisp ≠ Lambda Calculus, Daniel Szmulewicz
 
 A recursive function is often defined as "a function that calls itself". What we
 mean by "calls itself" is that the function creates another execution instance.
@@ -34,6 +139,8 @@ A function is a "cookie cutter" from which any number of execution instances can
 be created. While there is only on definition for a recursive function, there
 can be any number of execution instances.
 
+Termination and base cases
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 If the definition of a recursive function were written so that the function
 calls itself unconditionally, then every execution instance would
 unconditionally call another instance, forever. This is referred to as
@@ -48,19 +155,36 @@ recursive case to work towards it. Each invocation (or execution instance) of
 the recursive case should either decrease the input size or simplify the
 problem in a way that brings you closer to the base case.
 
-Linear recursion occurs when methods call themselves only once.
+Varieties of recursive patterns
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**Linear recursion** occurs when methods call themselves only once.
 
-Tail recursion is a type of linear recursion where the recursive call is the
+**Tail recursion** is a type of linear recursion where the recursive call is the
 last operation carried out int the recursive case. Therefore, they do not
 manipulate the result of the recursive call.
 
-Multiple recursion is where a method calls itself several times in some
+**Multiple recursion** is where a method calls itself several times in some
 recursive case.
 
-Mutual recursion is when a functions call each other in a cyclical order.
+**Mutual recursion** is when a functions call each other in a cyclical order.
 
-Nested recursion occurs when an argument of a recursive function is defined
+**Nested recursion** occurs when an argument of a recursive function is defined
 through another recursive call.
+
+Examples of recursive anonymous function literals
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. TODO Find some examples that use Data.Function.fix to write anonymous function literals with direct recursion.
+..
+..  > import Data.Function (fix, apply)
+..  > :{
+..  > apply
+..  >   (fix (\f n ->
+..  >          if    n == 0
+..  >          then  1
+..  >          else  n * f (n - 1)))
+..  >   3
+..  > :}
+..  6
 
 
 8.2 Factorial!
