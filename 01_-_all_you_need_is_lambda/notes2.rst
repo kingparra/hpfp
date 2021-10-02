@@ -50,35 +50,43 @@ devised in the 1930s by Alonzo Church.**
   here's my understanding of the issue right now.
 
   Since the late 1600s, mathematicians have been investigating the possibility that all of
-  mathematics could be reduced to formal logic, which may then be calculated by machine.  Liebniz
-  and George Boole envisaged automating much of human thought, or at least the subset of
-  thought that is based on logical reasoning.
+  mathematics could be reduced to formal logic, which may then be calculated by machine. Leibniz
+  and George Boole envisaged automating much of human thought, or at least the subset of thought
+  that is based on logical reasoning.
 
-  How can we tell what can or cannot be computed? From the view of mathematics, when considering a
-  particular function, the question may be rephrased to "can the mathematical function undergoing
-  computation eventually result in an answer?", or "is the function effectively calculable", or in
-  the case of logical statements "can the truth value eventually be decided?".
+  How can we determine which calculations can or cannot be computed? From the view of mathematics,
+  when considering a particular function, the question may be rephrased to "can the mathematical
+  function undergoing computation eventually result in an answer?", or "is the function effectively
+  calculable", or in the case of logical statements (as in mathematical logic) "can the truth value
+  eventually be decided?".
 
-  This last question is known as the decision problem, and this is the problem that Church tries to
-  make precise with LC. Church was interested in a few particular instances of the problem,
-  articulated by David Hilbert -- Hilberts 10th problem, and Hilberts Program. He tries to address
-  these examples, and assumes the reader will generalize his conclusions to the larger issue of
-  what can be computed mechanically.
+  This last question is known as the decision problem, or Entscheidungsproblem, and this is the
+  problem that Church tries to make precise with LC. Church was interested in a few particular
+  instances of the problem, articulated by David Hilbert -- Hilberts 10th problem, and Hilberts
+  Program. He tries to address these examples, and assumes the reader will generalize his
+  conclusions to the larger issue of what can be computed mechanically.
+
+  Here is Church's account of the Entscheidungsproblem:
+
+    "By the Entscheidungsproblem of a system of symbolic logic is here understood the problem to
+    find an effective method by which, given any expression Q in the notation of the system, it
+    can be determined whether or not Q is provable in the system." ~ Church 1936
 
   If you want to read more about the subject, I suggest "**Engines of Logic**" by Martin Davis and
   "**The Annotated Turing**" by Charles Petzold. Engines presents a timeline of several important
   thinkers, leading up to the idea of the decision problem, and the Church-Turing thesis. The
   Annotated Turing focuses on the Alan Turing's paper that describes his model of computation, the
-  universal computing machine. Another interesting resource is "**Lambda Calculus: Then and Now**",
-  a lecture by Dana Scott available through publications of the ACM. It links to a timeline of
-  important milestone publications leading up to the lambda calculus, and some of the lambda
-  calculus' applications in programming language design.
+  logical computing machine. Another interesting resource is "**Lambda Calculus: Then and Now**", a
+  lecture by Dana Scott available through publications of the ACM. It links to a timeline of
+  important academic papers leading up to the lambda calculus, and some of the lambda calculus'
+  applications in programming language design.
 
   .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture1.pdf
   .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture3.pdf
   .. https://www.csc.kth.se/utbildning/kth/kurser/DD3001/drtmp12/DownloadMaterial/Lectures/Lecture4.pdf
 
   .. Leibniz, jul 1646 to nov 1716,
+  ..
   .. * Belived human reasoning could be reduced to calculations. envisaged a calculus rationcinator
   ..   (resembing symbolic logic) to make such calculations feasible.
 
@@ -92,8 +100,6 @@ devised in the 1930s by Alonzo Church.**
   ..
   .. Leibniz held onto this vision throughtout his lifetime and made some progress towards it.
 
-  .. There were efforts to prove the consistency of all of math using a small core set of operations
-  .. in the 1900's. Principia Mathematica tries to derive mathematics using logic.
   .. hilberts 10th problem, hilberts program
   .. hilberts program: independence, consistency, completeness, decidability
 
@@ -111,10 +117,10 @@ devised in the 1930s by Alonzo Church.**
   Alonzo Church, “A Note on the Entscheidungsproblem,” J. of Symbolic Logic, vol. 1 (1936) pp.
   40-41. Correction: ibid, pp. 101-102.
 
-  Alan Turing,“On Computable Numbers with an Application to the Entscheidungsproblem,” Proc. of the
+  Alan Turing, “On Computable Numbers with an Application to the Entscheidungsproblem,” Proc. of the
   London Math. Soc., vol. 42 (1936), pp.  230-267. Correction: vol. 43 (1937), pp. 544-546.
 
-  Alan Turing,“Computability and λ-definability,” J. Symbolic Logic, vol. 2 (1937), pp. 153-163.
+  Alan Turing, “Computability and λ-definability,” J. Symbolic Logic, vol. 2 (1937), pp. 153-163.
 
   from https://math.stackexchange.com/questions/1165686/what-is-the-actual-significance-of-the-lambda-calculus-for-the-formalization-of
 
