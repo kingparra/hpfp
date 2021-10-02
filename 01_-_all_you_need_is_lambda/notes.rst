@@ -195,6 +195,15 @@ functional vs imperative
 
    In order to simplify a function we must bind some other expression to the name it introduces.
 
+.. All functions in Haskell follow three rules that force them to behave like functions in math:
+
+   * All functions must take an argument.
+   * All functions must return a value.
+   * Anytime a function is called with the same argument, it must return the same value.
+
+   The third rule is part of the basic mathematical definition of a function. When the rule that the
+   same argument must always produce the same result is applied to function in a programming
+   language, it’s called referential transparency.
 
 1.4 The structure of lambda terms
 ---------------------------------
