@@ -175,16 +175,19 @@ Examples of recursive anonymous function literals
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. TODO Find some examples that use Data.Function.fix to write anonymous function literals with direct recursion.
 ..
-..  > import Data.Function (fix, apply)
-..  > :{
-..  > apply
-..  >   (fix (\f n ->
-..  >          if    n == 0
-..  >          then  1
-..  >          else  n * f (n - 1)))
-..  >   3
-..  > :}
-..  6
+
+::
+
+   > import Data.Function (fix, apply)
+   > :{
+   > apply
+   >   (fix (\f n ->
+   >          if    n == 0
+   >          then  1
+   >          else  n * f (n - 1)))
+   >   3
+   > :}
+   6
 
 
 8.2 Factorial!
@@ -202,19 +205,45 @@ application.
 
 An example of how ``factorial 4`` evaluates::
 
+  factorial 0 = 1
   factorial n  =  n * factorial (n - 1)
-            4  =  4 * factorial (4 - 1)
-            3  =  4 * 3 * factorial (3 - 1)
-            2  =  4 * 3 * 2 * factorial (2 - 1)
-            1  =  4 * 3 * 2 * factorial (1 - 1)
-            0  =  -- this triggers the base case 0 -> 1
-                  4 * 3 * 2 * 1
-                  -- the call stack collapses here
-                  -- and the expression is reduced
-               =  24
+
+  -- The ==> symbol represents a new step in the reduction process. Each call of
+  -- ⧼factorial arg⧽ is replaced with its definition, where ⧼n⧽ is replaced by
+  -- the current argument.
+
+  factorial 4 ==> 4 * factorial (4 - 1)
+              ==>     (4 - 1) * factorial ((4 - 1) - 1)
+              ==>               ((4 - 1) - 1) * factorial (((4 - 1) - 1) - 1)
+              ==>                               (((4 - 1) - 1) - 1) * factorial ((((4 - 1) - 1) - 1) - 1)
+              ==>                                                     1 -- base case is triggered
+
+  -- The call stack collapses here, and all of the reduced values percolate up to an overall expression.
+
+  factorial 4  =  4 * (4 - 1) * (4 - 1 - 1) * (4 - 1 - 1 - 1) * 1
+  factorial 4  =  4 * 3 * 2 * 1 * 1
+  factorial 4  =  24
 
 If we didn't supply the base case ``0 -> 1``, then the recursive call would
-never stop, subtracting infinitely.
+never stop, subtracting forever.
+
+8.2.1 Another way to look at recursion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Here's another example, to show how building up the call stack resembles composing multiple
+instances of the same function::
+
+ applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
+ applyTimes 0 f b = b
+ applyTimes n f b = f (applyTimes (n-1) f b)
+
+ incTimes' :: (Eq a, Num a) => a -> a -> a
+ incTimes' times n = applyTimes times (+1) n
+
+ applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
+ applyTimes 0 f b = b
+ applyTimes n f b = f . applyTimes (n-1) f $ b
+ --                   ^
+ --   building up the series of self-referential function compositions
 
 .. include:: exercises/8.2.2_-_intermission_exercise.rst
 
