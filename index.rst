@@ -24,6 +24,7 @@ Contents
    06_-_typeclasses/notes
    07_-_more_functional_patterns/notes
    08_-_recursion/notes
+   08_-_recursion/design-recipe
    09_-_lists/notes
    10_-_folds/notes
    11_-_algebraic_datatypes/notes
