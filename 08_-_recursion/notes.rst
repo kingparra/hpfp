@@ -3,6 +3,30 @@
 **********************
 
 
+  "Recursion (rĭ-kûr’-zhən) noun. If you still don't get it, see recursion."
+  ~ Unknown
+
+  "Recursion is the root of computation since it trades description for time."
+  ~ Alan Perlis
+
+  "The power of recursion evidently lies in the possibility of defining
+  an infinite set of objects by a finite statement. In the same manner,
+  an infinite number of computations can be described by a finite recursive
+  program, even if this program contains no explicit repetitions."
+  ~ Niklaus Wirth, Algorithms + Data Structures = Programs, 1976 ISBN 978-0-13-022418-7
+
+  "One of the characteristics of recursion, then, is that it can take
+  its own output as the next input, a loop that can be extended
+  indefinitely to create sequences or structures of unbounded length
+  or complexity."
+  ~ http://assets.press.princeton.edu/chapters/s9424.pdf
+
+  "Recursion is the process that consists in defining the value of
+  a function by using other values of the same function."
+  ~ Daniel Szmulewicz, Lisp ≠ Lambda Calculus,
+  https://danielsz.github.io/blog/2019-08-05T21_14.html
+
+
 8.1 Recursion
 -------------
 In this chapter, we will
@@ -38,27 +62,14 @@ What is recursion, in general?
     Paragraph 1,
     Sentence 1.
 
-  "Recursion (rĭ-kûr’-zhən) noun. If you still don't get it, see recursion."
+Here is the pattern of recursion: **When a structure contains
+progressively smaller instances of itself, then it is recursive.**
+The recursive programming techniques discussed in this book are
+only particular uses of this general pattern.
 
-  ~ Unknown
-
-  "One of the characteristics of recursion, then, is that it can take its own output as the next
-  input, a loop that can be extended indefinitely to create sequences or structures of unbounded
-  length or complexity."
-
-  ~ http://assets.press.princeton.edu/chapters/s9424.pdf
-
-  "A procedure that calls itself, or ... a constituent that contains a constituent of the same
-  kind."
-
-  ~ Steven Pinker and Ray Jeckendoff
-
-Here is the pattern of recursion: **When a structure contains progressively smaller instances of
-itself, then it is recursive.** The recursive programming techniques discussed in this book are only
-particular uses of this general pattern.
-
-One place recursion is often employed are function definitions. So, how do you recognize a recursive
-function? Well, if a function calls itself within its definition, then it's recursive.
+One place recursion is often employed are function definitions. So,
+how do you recognize a recursive function? Well, if a function calls
+itself within its definition, then it's recursive.
 
 .. !etymology recursion {{{
 
@@ -241,19 +252,23 @@ An example of how ``factorial 4`` evaluates::
   -- by the current argument.
 
   factorial 4 ==> 4 * factorial (4 - 1)
-              ==>     (4 - 1) * factorial ((4 - 1) - 1)
-              ==>               ((4 - 1) - 1) * factorial (((4 - 1) - 1) - 1)
-              ==>                               (((4 - 1) - 1) - 1) * factorial ((((4 - 1) - 1) - 1) - 1)
-              ==>                                                     1 -- base case is triggered
+              ==> 4 * (4 - 1) * factorial ((4 - 1) - 1)
+              ==> 4 * (4 - 1) * ((4 - 1) - 1) * factorial (((4 - 1) - 1) - 1)
+              ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * factorial ((((4 - 1) - 1) - 1) - 1)
+              ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * 1 -- base case is triggered
+              ==> 4 * (4 - 1) * ((4 - 1) - 1) * 1 * 1
+              ==> 4 * (4 - 1) * 2 * 1 * 1
+              ==> 4 * 3 * 2 * 1 * 1
+              ==> 4 * 3 * 2 * 1
+              ==> 4 * 3 * 2
+              ==> 4 * 6
+              ==> 24
 
-  -- The call stack collapses here, and all of the reduced values percolate up to an overall expression.
-
-  factorial 4  =  4 * (4 - 1) * (4 - 1 - 1) * (4 - 1 - 1 - 1) * 1
-  factorial 4  =  4 * 3 * 2 * 1 * 1
-  factorial 4  =  24
 
 If we didn't supply the base case ``0 -> 1``, then the recursive call would
 never stop, subtracting forever.
+
+.. {{{
 
 8.2.1 Another way to look at recursion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -274,7 +289,7 @@ composing multiple instances of the same function::
   --  Building up the series of self-referential function compositions...
 
 .. include:: exercises/8.2.2_-_intermission_exercise.rst
-
+.. }}}
 
 8.3 Bottom
 ----------
@@ -341,6 +356,25 @@ Another source of bottom values are intentionally thrown errors. The function
   *** Exception: Should this be in a monad?
   CallStack (from HasCallStack):
     error, called at <interactive>:27:1 in interactive:Ghci9
+
+
+8.4 Fibonacci numbers
+---------------------
+This section demonstrates the steps you'd typically go through to
+write a recursive function by demonstration with a Fibonacci function.
+
+But first, here's quip I found useful. The recursive problem solving
+process can be described loosely as follows:
+
+  * If the given instance of the problem can be solved directly, do so.
+  * Otherwise, reduce it to one or more smaller instances of the same problem.
+
+Now, we'll return to the demonstration...
+
+**Consider the types**
+**Consider the base case**
+**Consider the arguments**
+**Consider the recursion**
 
 
 8.6 Chapter Exercises
