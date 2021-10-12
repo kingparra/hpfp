@@ -283,6 +283,8 @@ value. The two main varieties of bottom are computations that failed with an
 error or those that failed to terminate. In logic ``⊥`` corresponds to
 ``False``.
 
+Non-termination
+^^^^^^^^^^^^^^^
 Here's a non-terminating expression. When we run it, GHCi gets stuck in an
 infinite loop::
 
@@ -292,6 +294,8 @@ infinite loop::
 With a different version of GHC, the expression ``let x = x in x`` may have
 resulted in an exception, instead of heating up my laptop until I pressed Control-c.
 
+Partial functions
+^^^^^^^^^^^^^^^^^
 Another source of bottom are partial functions. For example::
 
   ·∾ :{
@@ -318,6 +322,8 @@ so, we can explicitly return nothing, using the ``Maybe`` data type, like this::
   ·∾ f False
   Just 0
 
+Undefined values
+^^^^^^^^^^^^^^^^
 What happens if we try to evaluate ``undefined`` in the repl? ::
 
   ·∾ undefined
@@ -326,6 +332,8 @@ What happens if we try to evaluate ``undefined`` in the repl? ::
     error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
     undefined, called at <interactive>:22:1 in interactive:Ghci9
 
+Intentionally thrown errors
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Another source of bottom values are intentionally thrown errors. The function
 ``error`` prints a string and returns ``undefined``. ::
 
