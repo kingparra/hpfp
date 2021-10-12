@@ -11,20 +11,40 @@ In this chapter, we will
 * go step-by-step through the process of writing recursive functions;
 * have fun with bottom.
 
+.. {{{
 
 8.1 & ½, Some remarks about recursion
 -------------------------------------
 
 What is recursion, in general?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. "An entity or concept is said to be recursive when simpler or smaller self-similar instances form
-.. part of its constituents." ~ Manuel Rubio-Sanchez, Introduction to Recursive Programming, Chapter 1:
-.. Basic Concepts of Recursive Programming, 1.1 Recognizing Recursion, Paragraph 1, Sentence 1.
 
-Recursion is a pattern that occurs naturally in many structures, both physical and abstract. **When
-a structure contains sucessively smaller instances of itself, then it's recursive.** Recursion is
-not a programming technique, but a pattern of structure. The programming techniques just use that
-pattern.
+  "In general, something is recursive if it's defined in terms of itself."
+
+  ~ Will Kurt,
+    Get Programming with Haskell,
+    Lesson 7: Rules for recursion and pattern matching,
+    7.1 Recursion,
+    Paragraph 1,
+    Sentence 1.
+
+  "An entity or concept is said to be recursive when simpler or
+  smaller self-similar instances form part of its constituents."
+
+  ~ Manuel Rubio-Sánchez,
+    Introduction to Recursive Programming,
+    Chapter 1: Basic Concepts of Recursive Programming,
+    1.1 Recognizing Recursion,
+    Paragraph 1,
+    Sentence 1.
+
+
+Here is the pattern of recursion: **When a structure contains progressively smaller instances of
+itself, then it is recursive.** The recursive programming techniques discussed in this book are only
+particular uses of this general pattern.
+
+One place recursion is often employed are function definitions. So, how do you recognize a recursive
+function? Well, if a function calls itself within its definition, then it's recursive.
 
 .. !etymology recursion {{{
 
@@ -173,21 +193,15 @@ through another recursive call.
 
 Examples of recursive anonymous function literals
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. TODO Find some examples that use Data.Function.fix to write anonymous function literals with direct recursion.
-..
+Here is the Fibonacci function written as an anonymous function literal. The ``fix`` function
+duplicates the anonymous function and feeds it to itself. The anonymous function has an extra
+parameter for an input function, named ``f``, so that it can receive its duplicated definition::
 
-::
-
-   > import Data.Function (fix, apply)
-   > :{
-   > apply
-   >   (fix (\f n ->
-   >          if    n == 0
-   >          then  1
-   >          else  n * f (n - 1)))
-   >   3
-   > :}
+   ·∾  import Data.Function (fix)
+   ·∾  fix (\f n -> if n <= 1 then 1 else n * f (n-1))  3
    6
+
+.. }}}
 
 
 8.2 Factorial!
@@ -206,11 +220,11 @@ application.
 An example of how ``factorial 4`` evaluates::
 
   factorial 0 = 1
-  factorial n  =  n * factorial (n - 1)
+  factorial n = n * factorial (n - 1)
 
-  -- The ==> symbol represents a new step in the reduction process. Each call of
-  -- ⧼factorial arg⧽ is replaced with its definition, where ⧼n⧽ is replaced by
-  -- the current argument.
+  -- The ==> symbol indicates a new step in the reduction process. Each call of
+  -- ⧼factorial arg⧽ is replaced with its definition, where ⧼n⧽ has been replaced
+  -- by the current argument.
 
   factorial 4 ==> 4 * factorial (4 - 1)
               ==>     (4 - 1) * factorial ((4 - 1) - 1)
@@ -229,21 +243,21 @@ never stop, subtracting forever.
 
 8.2.1 Another way to look at recursion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Here's another example, to show how building up the call stack resembles composing multiple
-instances of the same function::
+Here's another example, to show how building up the call stack resembles
+composing multiple instances of the same function::
 
- applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
- applyTimes 0 f b = b
- applyTimes n f b = f (applyTimes (n-1) f b)
+  applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
+  applyTimes 0 f b = b
+  applyTimes n f b = f (applyTimes (n-1) f b)
 
- incTimes' :: (Eq a, Num a) => a -> a -> a
- incTimes' times n = applyTimes times (+1) n
+  incTimes' :: (Eq a, Num a) => a -> a -> a
+  incTimes' times n = applyTimes times (+1) n
 
- applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
- applyTimes 0 f b = b
- applyTimes n f b = f . applyTimes (n-1) f $ b
- --                   ^
- --   building up the series of self-referential function compositions
+  applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
+  applyTimes 0 f b  =  b
+  applyTimes n f b  =  f . applyTimes (n-1) f $ b
+  --                     ^
+  --  Building up the series of self-referential function compositions...
 
 .. include:: exercises/8.2.2_-_intermission_exercise.rst
 
@@ -262,7 +276,33 @@ infinite loop::
   ^CInterrupted.
 
 With a different version of GHC, the expression ``let x = x in x`` may have
-resulted in an exception, instead.
+resulted in an exception, instead of heating up my laptop until I pressed Control-c.
+
+Another source of bottom are partial functions. For example::
+
+  ·∾ :{
+   ⋮ f :: Bool -> Int
+   ⋮ f False = 0
+   ⋮ :}
+  ·∾
+  ·∾ f False
+  0
+  ·∾ f True
+  *** Exception: <interactive>:3:1-11: Non-exhaustive patterns in function f
+
+In order to defend against this, we can define a catch-all case. Or, if it doesn't make sense to do
+so, we can explicitly return nothing, using the ``Maybe`` data type, like this::
+
+  ·∾ :{
+   ⋮ f :: Bool -> Maybe Int
+   ⋮ f False = Just 0
+   ⋮ f _     = Nothing
+   ⋮ :}
+  ·∾
+  ·∾ f True
+  Nothing
+  ·∾ f False
+  Just 0
 
 What happens if we try to evaluate ``undefined`` in the repl? ::
 
@@ -279,22 +319,6 @@ Another source of bottom values are intentionally thrown errors. The function
   *** Exception: Should this be in a monad?
   CallStack (from HasCallStack):
     error, called at <interactive>:27:1 in interactive:Ghci9
-
-
-8.4 Fibonacci numbers
----------------------
-1. Consider the types
-2. Consider the base case
-3. Consider the arguments
-4. Consider the recursion
-
-I think I prefer these questions, instead...
-
-* What are the preconditions?
-* What stays the same? (base case)
-* What changes during a recursive step?
-* Under what circumstances does it change?
-* Are the subproblems getting smaller?
 
 
 8.6 Chapter Exercises
