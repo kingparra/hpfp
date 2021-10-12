@@ -38,6 +38,20 @@ What is recursion, in general?
     Paragraph 1,
     Sentence 1.
 
+  "Recursion (rĭ-kûr’-zhən) noun. If you still don't get it, see recursion."
+
+  ~ Unknown
+
+  "One of the characteristics of recursion, then, is that it can take its own output as the next
+  input, a loop that can be extended indefinitely to create sequences or structures of unbounded
+  length or complexity."
+
+  ~ http://assets.press.princeton.edu/chapters/s9424.pdf
+
+  "A procedure that calls itself, or ... a constituent that contains a constituent of the same
+  kind."
+
+  ~ Steven Pinker and Ray Jeckendoff
 
 Here is the pattern of recursion: **When a structure contains progressively smaller instances of
 itself, then it is recursive.** The recursive programming techniques discussed in this book are only
