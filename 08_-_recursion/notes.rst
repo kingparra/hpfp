@@ -21,10 +21,12 @@
   or complexity."
   ~ http://assets.press.princeton.edu/chapters/s9424.pdf
 
-  "Recursion is the process that consists in defining the value of
-  a function by using other values of the same function."
-  ~ Daniel Szmulewicz, Lisp ≠ Lambda Calculus,
-  https://danielsz.github.io/blog/2019-08-05T21_14.html
+  "The recursive problem solving process can be described loosely as follows:
+
+    * If the given instance of the problem can be solved directly, do so.
+    * Otherwise, reduce it to one or more smaller instances of the same problem."
+
+  ~ Jeff Erickson
 
 
 8.1 Recursion
@@ -43,15 +45,6 @@ In this chapter, we will
 What is recursion, in general?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  "In general, something is recursive if it's defined in terms of itself."
-
-  ~ Will Kurt,
-    Get Programming with Haskell,
-    Lesson 7: Rules for recursion and pattern matching,
-    7.1 Recursion,
-    Paragraph 1,
-    Sentence 1.
-
   "An entity or concept is said to be recursive when simpler or
   smaller self-similar instances form part of its constituents."
 
@@ -62,14 +55,10 @@ What is recursion, in general?
     Paragraph 1,
     Sentence 1.
 
-Here is the pattern of recursion: **When a structure contains
-progressively smaller instances of itself, then it is recursive.**
-The recursive programming techniques discussed in this book are
-only particular uses of this general pattern.
-
-One place recursion is often employed are function definitions. So,
-how do you recognize a recursive function? Well, if a function calls
-itself within its definition, then it's recursive.
+Here is the pattern of recursion: **When a structure contains progressively smaller instances of
+itself, then it is recursive.** The recursive programming techniques discussed in this book are only
+particular uses of this general pattern. Recursive calls in programming are interesting because they
+combine data flow, control flow, and logical inference into the same mechanism.
 
 .. !etymology recursion {{{
 
@@ -159,6 +148,21 @@ itself within its definition, then it's recursive.
    form of motive (late 14c.).
 
 .. }}}
+
+What is a base case?
+^^^^^^^^^^^^^^^^^^^^
+Function declarations in Haskell made up of a series of equations. Each equation describes
+the output for a case of a particular input value, or a pattern of possible values.
+
+The base case is an equation where the output value can be determined without recursive calls,
+directly from the input value alone.
+
+The recursive case is an equation where the input is decomposed into smaller instances of the
+function declaration.
+
+The base case is a nonrecursive component of the function. It is what stops recursive
+evaluation from going on forever. If you want your function to eventually stop, you should write
+the recursive case so that each instance of the case moves progressively closer to the base case.
 
 Recursive function calls as a control flow mechanism
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -255,9 +259,7 @@ An example of how ``factorial 4`` evaluates::
               ==> 4 * (4 - 1) * factorial ((4 - 1) - 1)
               ==> 4 * (4 - 1) * ((4 - 1) - 1) * factorial (((4 - 1) - 1) - 1)
               ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * factorial ((((4 - 1) - 1) - 1) - 1)
-              ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * 1 -- base case is triggered
-              ==> 4 * (4 - 1) * ((4 - 1) - 1) * 1 * 1
-              ==> 4 * (4 - 1) * 2 * 1 * 1
+              ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * 1    {- base case is triggered here -}
               ==> 4 * 3 * 2 * 1 * 1
               ==> 4 * 3 * 2 * 1
               ==> 4 * 3 * 2
@@ -290,6 +292,7 @@ composing multiple instances of the same function::
 
 .. include:: exercises/8.2.2_-_intermission_exercise.rst
 .. }}}
+
 
 8.3 Bottom
 ----------
@@ -360,21 +363,48 @@ Another source of bottom values are intentionally thrown errors. The function
 
 8.4 Fibonacci numbers
 ---------------------
-This section demonstrates the steps you'd typically go through to
-write a recursive function by demonstration with a Fibonacci function.
+The Fibonacci sequence is a progression of numbers such that each number is the sum of the previous
+two. It looks like this: **1, 1, 2, 3, 5, 8, 13, 21, 34, ...**.
 
-But first, here's quip I found useful. The recursive problem solving
-process can be described loosely as follows:
+This section demonstrates the steps you'd typically go through to write a recursive function by way
+of demonstration with the Fibonacci function.
 
-  * If the given instance of the problem can be solved directly, do so.
-  * Otherwise, reduce it to one or more smaller instances of the same problem.
+Now, we'll return to the demonstration... Or actually, my complaints about the demonstration.
 
-Now, we'll return to the demonstration...
+1. **Consider the types**
 
-**Consider the types**
-**Consider the base case**
-**Consider the arguments**
-**Consider the recursion**
+   * Why is it useful to consider the type signature first?
+   * Why did the author choose ``Integer`` rather than ``Natural``? ``Integer`` permits negative
+     numbers, which our function isn't defined for.
+
+2. **Consider the base case**
+
+   * What is a base case? This chapter does not explain the idea of a base case. In fact, it's not
+     explained anywhere in this book.
+   * How is the author coming up with the base cases? Why are 0 -> 1 and 1 -> 1 reasonable base
+     cases?
+
+3. **Consider the arguments**
+
+   * This section makes no sense. Why are there two arguments? What do they represent?
+
+4. **Consider the recursion**
+
+   Man I'm glad I have other books that cover recursion because this demonstration is totally
+   confusing. I don't know how to use this approach to solve other problems. Maybe this is
+   because I don't comprehend the explanation well, but I also think the writing can be improved.
+
+
+8.5 Integral division from scratch
+----------------------------------
+Here's and example for integral division. The inner ``go`` function keeps a count that the outer
+``dividedBy`` function doesn't care about::
+
+  dividedBy :: Integral a => a -> a -> (a, a)
+  dividedBy num denom = go num denom 0
+    where go n d count
+            | n < d     = (count, n)
+            | otherwise = go (n - d) d (count + 1)
 
 
 8.6 Chapter Exercises
