@@ -1,7 +1,11 @@
 ***********************************
  How to design recursive functions
 ***********************************
-
+Here are a few problem solving techniques I've found from various
+sources. These are only outlines of the general process, the
+source material that they come from has examples of their use. To
+really understand them, you should read the source material, and
+practice using them on a few simple programming problems.
 
 .. topic:: Design recipe for writing recursive programs
 
@@ -93,3 +97,113 @@
    examples in that they help others read and understand the
    definition when the need arises — and it will arise for any
    serious program.
+
+
+.. topic:: Process of computational problem solving
+
+   Stolen from "Introduction to Computer Science Using Python: A Computational Problem-Solving
+   Focus" by Charles Dierbach, Page 18, Figure 1-22 Process of Computational Problem Solving.
+
+   **Analysis**
+
+   * Clearly understand the problem.
+   * Know what constitutes a solution.
+
+   **Design**
+
+   * Determine what type of data is needed.
+   * Determine how data is to be structured.
+   * Find and/or design appropriate algorithms.
+
+   **Implementation**
+
+   * Represent data within the programming language.
+   * Implement algorithms in the programming language.
+
+   **Testing**
+
+   * Test the program on a selected set of problem instances.
+   * Correct and understand the causes of any errors found.
+
+
+.. topic:: PEDAC
+
+   Taken from the medium article `Solving Coding Problems With PEDAC
+   <https://medium.com/launch-school/solving-coding-problems-with-pedac-29141331f93f>`_.
+
+   **Problem**
+
+   * Identify expected input and output.
+   * Make the requirements explicit.
+   * Identify rules.
+   * Form a mental model of the problem, if you can.
+
+   **Examples**
+
+   * Validate your understanding of the problem by coming up with examples for how the program or
+     subprogram should behave given particular inputs. Ask the customer if the output in your
+     example matches their expectation. Try to find properties that always hold true for any output.
+   * These examples can be turned into automated tests.
+
+   **Data**
+
+   * How we represent data that we'll work with in our program. Think about what representation most
+     closely matches your mental model of the problem, and is easiest for other programmers to read.
+
+   **Algorithm**
+
+   * Steps for converting input to output. Consider time complexity, intermediate results.
+
+   **Code**
+
+   * Implement the algorithm and any data structures needed in your programming language.
+
+
+.. topic:: Polya's problem solving techniques
+
+   Huerestics for solving mathematical problems, taken from "How to Solve It: A New Aspect of
+   Mathematical Method" by George Pólya, `mirrored here <http://www.math.utah.edu/~pa/math/polya.html>`_.
+
+   **Understanding the problem**
+
+   * First. You have to understand the problem.
+   * What is the unknown? What are the data? What is the condition?
+   * Is it possible to satisfy the condition? Is the condition sufficient to determine the unknown? Or
+     is it insufficient? Or redundant? Or contradictory?
+   * Draw a figure. Introduce suitable notation.
+   * Separate the various parts of the condition. Can you write them down?
+
+   **Devising a plan**
+
+   * Second. Find the connection between the data and the unknown. You may be obliged to consider
+     auxiliary problems if an immediate connection cannot be found. You should obtain eventually a
+     plan of the solution.
+   * Have you seen it before? Or have you seen the same problem in a slightly different form?
+   * Do you know a related problem? Do you know a theorem that could be useful?
+   * Look at the unknown! And try to think of a familiar problem having the same or a similar unknown.
+   * Here is a problem related to yours and solved before. Could you use it? Could you use its
+     result?  Could you use its method? Should you introduce some auxiliary element in order to make
+     its use possible?
+   * Could you restate the problem? Could you restate it still differently? Go back to definitions.
+   * If you cannot solve the proposed problem try to solve first some related problem. Could you
+     imagine a more accessible related problem? A more general problem? A more special problem? An
+     analogous problem? Could you solve a part of the problem? Keep only a part of the condition,
+     drop the other part; how far is the unknown then determined, how can it vary? Could you derive
+     something useful from the data? Could you think of other data appropriate to determine the
+     unknown? Could you change the unknown or data, or both if necessary, so that the new unknown
+     and the new data are nearer to each other?
+   * Did you use all the data? Did you use the whole condition? Have you taken into account all
+     essential notions involved in the problem?
+
+   **Carrying out the plan**
+
+   * Third. Carry out your plan.
+   * Carrying out your plan of the solution, check each step. Can you see clearly that the step is
+     correct? Can you prove that it is correct?
+
+   **Looking back**
+
+   * Fourth. Examine the solution obtained.
+   * Can you check the result? Can you check the argument?
+   * Can you derive the solution differently? Can you see it at a glance?
+   * Can you use the result, or the method, for some other problem?
