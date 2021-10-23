@@ -3,15 +3,18 @@
 **********************
 
 
-  **When a structure contains progressively smaller instances of itself, then it is recursive.**
+  **Something is recursive when it contains progressively smaller instances of itself.**
 
 
-  "Recursion is the root of computation since it trades description for time." ~ Alan Perlis
+  "Recursion is the root of computation since it trades description for time."
+
+  ~ Alan Perlis
 
 
-  "The power of recursion evidently lies in the possibility of defining an infinite set of objects
-  by a finite statement. In the same manner, an infinite number of computations can be described by
-  a finite recursive program, even if this program contains no explicit repetitions."
+  "The power of recursion evidently lies in the possibility of defining an infinite 
+  set of objects by a finite statement. In the same manner, an infinite number of 
+  computations can be described by a finite recursive program, even if this program
+  contains no explicit repetitions."
 
   ~ Niklaus Wirth, Algorithms + Data Structures = Programs
 
@@ -40,11 +43,9 @@ Let's examine a simple factorial function::
   factorial 0 = 1
   factorial n = n * factorial (n - 1)
 
-Base case: recursion stops when we get a 0. The return value, 1, is the identity
-value.
+Base case: recursion stops when we get a 0. The return value, 1, is the identity value.
 
-Recursive case: Critically, the input size of this case gets smaller with each
-application.
+Recursive case: Critically, the input size of this case gets smaller with each application.
 
 An example of how ``factorial 4`` evaluates::
 
@@ -161,13 +162,10 @@ Another source of bottom values are intentionally thrown errors. The function
 8.5 Integral division from scratch
 ----------------------------------
 Here's and example for integral division. The inner ``go`` function keeps a count that the outer
-``dividedBy`` function doesn't care about::
+``dividedBy`` function doesn't care about:
 
-  dividedBy :: Integral a => a -> a -> (a, a)
-  dividedBy num denom = go num denom 0
-    where go n d count
-            | n < d     = (count, n)
-            | otherwise = go (n - d) d (count + 1)
+.. include:: figures/DividedBy.hs
+   :code:
 
 
 8.6 Chapter Exercises
