@@ -7,11 +7,25 @@
    c) ``[a]``
    d) **[[Bool]]**
 
+      Here's the proof::
+
+        ·∾ :type [[True, False], [True, True], [False, True]]
+        [[True, False], [True, True], [False, True]] :: [[Bool]]
+
 2. Which of the following has the same type as ``[[True, False], [True, True],
    [False, True]]``?
 
    a) ``[(True, False), (True, True), (False, True)]``
    b) **[[3 == 3], [6 > 5], [3 < 4]]**
+
+      Have some proof! ::
+
+        ·∾ :type [[True, False], [True, True], [False, True]]
+        [[True, False], [True, True], [False, True]] :: [[Bool]]
+
+        ·∾ :type [[3 == 3], [6 > 5], [3 < 4]]
+        [[3 == 3], [6 > 5], [3 < 4]] :: [[Bool]]
+
    c) ``[3 == 3, 6 > 5, 3 < 4]``
    d) ``["Bool", "more Bool", "Booly Bool!"]``
 
@@ -25,8 +39,21 @@
    ...which of the following is true?
 
    a) ``x`` and ``y`` must be of the same type
+
+      Yes, the ``a`` within the type signature here denotes the same type for both parameters, as
+      well as the return type.
+
    b) ``x`` and ``y`` must both be lists
+
+      Yup. Each parameter has type ``[a]`` or "list of a".
+
    c) if ``x`` is a ``String`` then ``y`` must be a ``String``
+
+      This is true, too. Here is the proof::
+
+        ·∾ :type func "The value of param x"
+        func "The value of param x" :: [Char] -> [Char]
+
    d) **all of the above**
 
 4. For the following code, which is a valid application of ``func`` to both
@@ -38,6 +65,47 @@
       func x y = x ++ y
 
    a) ``func "Hello World"``
+
+      This will return a partially applied function, with one parameter left unsaturated.
+
+      Here's what happens when you try it in GHCi::
+
+        ·∾ func "Hello World"
+
+        <interactive>:30:1: error:
+            • No instance for (Show ([Char] -> [Char]))
+                arising from a use of ‘print’
+                (maybe you haven't applied a function to enough arguments?)
+            • In a stmt of an interactive GHCi command: print it
+
    b) **func "Hello" "World"**
+
+      This saturates both parameters with values. ::
+
+        ·∾ func "Hello" "World"
+        "HelloWorld"
+
    c) ``func [1, 2, 3] "a, b, c"``
+
+      This won't work, since each argument has a different type, and ``func`` requires that they
+      both be of the same type. Here's what happens when I try::
+
+        ·∾ func [1, 2, 3] "a, b, c"
+
+        <interactive>:32:7: error:
+            • No instance for (Num Char) arising from the literal ‘1’
+            • In the expression: 1
+              In the first argument of ‘func’, namely ‘[1, 2, 3]’
+              In the expression: func [1, 2, 3] "a, b, c"
+
    d) ``func ["Hello", "World"]``
+
+      This has only one argument. ::
+
+        ·∾ func ["Hello", "World"]
+
+        <interactive>:33:1: error:
+            • No instance for (Show ([[Char]] -> [[Char]]))
+                arising from a use of ‘print’
+                (maybe you haven't applied a function to enough arguments?)
+            • In a stmt of an interactive GHCi command: print it
