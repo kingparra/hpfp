@@ -11,8 +11,8 @@
   ~ Alan Perlis
 
 
-  "The power of recursion evidently lies in the possibility of defining an infinite 
-  set of objects by a finite statement. In the same manner, an infinite number of 
+  "The power of recursion evidently lies in the possibility of defining an infinite
+  set of objects by a finite statement. In the same manner, an infinite number of
   computations can be described by a finite recursive program, even if this program
   contains no explicit repetitions."
 
@@ -34,6 +34,22 @@ In this chapter, we will:
 * explore what recursion is and how recursive functions evaluate;
 * go step-by-step through the process of writing recursive functions;
 * have fun with bottom.
+
+.. "But the lambda calculus does not appear on the surface to have any
+.. means of recursion, because of the anonymity of expressions. How do
+.. you call something without a name?"
+..
+.. What would a recursive anonymous function literal look like in haskell?
+..
+.. https://stackoverflow.com/questions/40099927/how-do-i-define-an-anonymous-recursive-function
+..
+.. ::
+.. > import Data.Function (fix)
+.. > (fix (\f n -> if n == 0 then 1 else n * f (n - 1))) 3
+.. 6
+
+.. "Recursive functions may take an indefinite number of steps to return a result."
+.. (count-controlled or definite vs indefinite)
 
 
 8.2 Factorial!
