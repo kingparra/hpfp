@@ -35,21 +35,47 @@ In this chapter, we will:
 * go step-by-step through the process of writing recursive functions;
 * have fun with bottom.
 
-.. "But the lambda calculus does not appear on the surface to have any
+.. Questions
+.. ^^^^^^^^^
+..
+.. **"But the lambda calculus does not appear on the surface to have any
 .. means of recursion, because of the anonymity of expressions. How do
-.. you call something without a name?"
+.. you call something without a name?"**
 ..
 .. What would a recursive anonymous function literal look like in haskell?
 ..
 .. https://stackoverflow.com/questions/40099927/how-do-i-define-an-anonymous-recursive-function
 ..
-.. ::
-.. > import Data.Function (fix)
-.. > (fix (\f n -> if n == 0 then 1 else n * f (n - 1))) 3
-.. 6
-
-.. "Recursive functions may take an indefinite number of steps to return a result."
-.. (count-controlled or definite vs indefinite)
+.. | > import Data.Function (fix)
+.. | > (fix (\f n -> if n == 0 then 1 else n * f (n-1))) 3
+.. | 6
+..
+.. I turns out that the definition of ``fix`` is pretty different from the lambda calculus
+.. implementation. It is written as::
+..
+.. | fix f = let x = f x in x
+..
+.. Here is the Y combinator, written in a way that more closely resembles the untyped LC definition::
+..
+.. | import Unsafe.Coerce (unsafeCoerce)
+.. |
+.. | y :: (a -> a) -> a
+.. | y = \f -> (\x -> f (unsafeCoerce x x)) (\x -> f (unsafeCoerce x x))
+.. |
+.. | main = putStrLn $ y ("circular reasoning works because " ++)
+..
+.. Thoughts about this section
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..
+.. It seems like each paragraph has two or three topics. If
+.. each paragraph is rewritten to deal with a single topic, instead, I think it will be easier to read.
+..
+.. The first sentence **"Recursion is defining a function in terms of itself via self-referential
+.. expressions"** bugs me, too, because it gives the impression that recursion is something specific
+.. to fuctions in a programming language, instead of a general pattern. Later, in paragraph 2, the
+.. autohrs say "Recursion is a natural property of many logical and mathematical systems...",
+.. somewhat softening this definition -- but it would be better to introduce the general
+.. concept of recursion, first, and then describing how it's used in programming later.
 
 
 8.2 Factorial!
@@ -76,7 +102,10 @@ An example of how ``factorial 4`` evaluates::
               ==> 4 * (4 - 1) * factorial ((4 - 1) - 1)
               ==> 4 * (4 - 1) * ((4 - 1) - 1) * factorial (((4 - 1) - 1) - 1)
               ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * factorial ((((4 - 1) - 1) - 1) - 1)
-              ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * 1    {- base case is triggered here -}
+              --                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^
+              --                                       The base case is triggered here.
+              --                                                      v
+              ==> 4 * (4 - 1) * ((4 - 1) - 1) * (((4 - 1) - 1) - 1) * 1
               ==> 4 * 3 * 2 * 1 * 1
               ==> 4 * 3 * 2 * 1
               ==> 4 * 3 * 2
