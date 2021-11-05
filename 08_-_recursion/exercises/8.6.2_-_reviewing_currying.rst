@@ -1,101 +1,107 @@
 8.6.2 Reviewing currying
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Given the following definitions, tell us what value results from further
-applications. ::
+applications.
 
-  cattyConny :: String -> String -> String
-  cattyConny x y = x ++ " mrow " ++ y
-
-  flippy :: String -> String -> String
-  flippy = flip cattyConny
-
-  appedCatty :: String -> String
-  appedCatty = cattyConny "woops"
-
-  frappe :: String -> String
-  frappe = flippy "haha"
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/src/Lib.hs
+      :code:
 
 1. What is the value of ``appedCatty "woohoo!"``? Try to determine the answer
    for yourself, then test in the REPL.
 
    Ok, desk-checking time::
 
-     appedCatty "woohoo!"
+     >>> appedCatty "woohoo!"
+     >>> (cattyConny "woops") "woohoo!"
+     >>> ((\x y -> x ++ " mrow " ++ y) "woops") "woohoo!"
+     >>> (\y -> "woops" ++ " mrow" ++ y) "woohoo!"
+     >>> "woops" ++ " mrow" ++ "woohoo!"
+     >>> "woops mrowwoohoo!"
 
-     (cattyConny "woops") "woohoo!"
+   My test looks like this:
 
-     ((\x y -> x ++ " mrow " ++ y) "woops") "woohoo!"
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/test/Spec.hs
+      :code:
+      :start-after: describe "Question 1" $ do
+      :end-before: describe "Question 2" $ do
 
-     (\y -> x ++ " mrow " ++ "woops") "woohoo!"
+   ...and here is what happens when I run it::
 
-     "woohoo!" ++ " mrow " ++ "woops"
+      $ pwd
+      /home/chris/Projects/hpfp/08_-_recursion/exercises/8.6.2_-_reviewing_currying.rst.d/currying
 
-     "woohoo! mrow woops"
+      $ stack test --test-arguments='--match "Question 1"' --verbosity silent
 
-   The proof::
+      Question 1
+        appended to the end
 
-     ·∾ appedCatty "woohoo!"
-     "woops mrow woohoo!"
+      Finished in 0.0003 seconds
+      1 example, 0 failures
 
 2. ``frappe "1"``
 
    Let me think about this::
 
-     -- Replacing frappe with its definition.
-     ((flip (\x y -> x ++ " mrow " ++ y)) "haha") "1"
+     >>> frappe "1"
+     >>> (flippy "haha") "1"
+     >>> ((flip cattyConny) "haha") "1"
+     >>> ((flip (\x y -> x ++ " mrow " ++ y)) "haha") "1"
+     >>> ((\y x -> x ++ " mrow " ++ y) "haha") "1")
+     >>> (\x -> x ++ " mrow " ++ "haha") "1"
+     >>> "1" ++ " mrow " ++ "haha"
+     >>> "1 mrow haha"
 
-     -- Apply flip, which reorders the arguments.
-     ((\y x -> x ++ " mrow " ++ y) "haha") "1"
+   Here's what my test looks like:
 
-     -- Apply "haha"
-     (\x -> x ++ " mrow " ++ "haha") "1"
-
-     -- Apply "1"
-     "1" ++ " mrow " ++ "haha"
-
-     -- Simplify
-     "1 mrow haha"
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/test/Spec.hs
+      :code:
+      :start-after: describe "Question 2" $ do
+      :end-before: describe "Question 3" $ do
 
    Time to test::
 
-     ·∾ :type frappe
-     frappe :: String -> String
+     $ stack test --test-arguments='--match "Question 2"' --verbosity silent
 
-     ·∾ frappe "1"
-     "1 mrow haha"
+     Question 2
+       frappe "1" ==> "1 mrow haha"
+
+     Finished in 0.0004 seconds
+     1 example, 0 failures
 
 3. ``frappe (appedCatty "2")``
 
    Unpacking indirection::
 
-     -- Replacing frappe and appedCatty with their definnitions.
-     flippy "haha" (cattyConny "woops" "2")
+     >>> frappe (appedCatty "2")
+     >>> frappe ((cattyConny "woops") "2")
+     >>> frappe (((\x y -> x ++ " mrow " ++ y) "woops") "2")
+     >>> (flippy "haha") (((\x y -> x ++ " mrow " ++ y) "woops") "2")
+     >>> ((flip cattyConny) "haha") (((\x y -> x ++ " mrow " ++ y) "woops") "2")
+     >>> ((flip (\x y -> x ++ " mrow " ++ y)) "haha") (((\x y -> x ++ " mrow " ++ y) "woops") "2")
+     >>> ((\y x -> x ++ " mrow " ++ y) "haha") (((\x y -> x ++ " mrow " ++ y) "woops") "2")
+     >>> (\x -> x ++ " mrow " ++ "haha") (((\x y -> x ++ " mrow " ++ y) "woops") "2")
+     >>> (\x -> x ++ " mrow " ++ "haha") ((\y -> "woops" ++ " mrow " ++ y) "2")
+     >>> (\x -> x ++ " mrow " ++ "haha") ("woops" ++ " mrow " ++ "2")
+     >>> (\x -> x ++ " mrow " ++ "haha") "woops mrow 2"
+     >>> "woops mrow 2" ++ " mrow " ++ "haha"
+     >>> "woops mrow 2 mrow haha"
 
-     -- Replacing flippy and cattyConny with their definitions...
-     ((flip cattyConny) "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
+   Here is the test case:
 
-     -- Replacing the other cattyConny with its definition.
-     ((flip (\x y -> x ++ " mrow " ++ y) "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
-
-     -- Reduction~
-     ((\y x -> x ++ " mrow " ++ y) "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
-
-     (\x -> x ++ " mrow " ++ "haha") ((\x y -> x ++ " mrow " ++ y) "woops" "2")
-
-     ((\x y -> x ++ " mrow " ++ y) "woops" "2") ++ " mrow " ++ "haha"
-
-     ((\y -> "woops" ++ " mrow " ++ y) "2") ++ " mrow " ++ "haha"
-
-     ("woops" ++ " mrow " ++ "2") ++ " mrow " ++ "haha"
-
-     "woops mrow 2" ++ " mrow " ++ "haha"
-
-     "woops mrow 2 mrow haha"
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/test/Spec.hs
+      :code:
+      :start-after: describe "Question 3" $ do
+      :end-before: describe "Question 4" $ do
 
    Now to test it out. I hope I didn't do all that typing for nothing::
 
-     ·∾ frappe (appedCatty "2")
-     "woops mrow 2 mrow haha"
+     $ stack test --test-arguments='--match "Question 3"' --verbosity silent
+     Progress 1/2: currying
+     Question 3
+       frappe (appedCatty "2") ==> "woops mrow 2 mrow haha"
+
+     Finished in 0.0002 seconds
+     1 example, 0 failures
 
    I should see if there is an editor plugin to replace functions with their
    definitions.
@@ -107,201 +113,90 @@ applications. ::
 
    No, I better write it out::
 
-     -- Replace appedCatty and frappe with their definitions.
-     (cattyConny "woops") ((flippy "haha") "blue"
+     >>> appedCatty (frappe "blue")
+     >>> appedCatty ((flippy "haha") "blue")
+     >>> appedCatty (((flip cattyConny) "haha") "blue")
+     >>> appedCatty (((flip (\x y -> x ++ " mrow " ++ y) "haha") "blue")
+     >>> appedCatty (((\y x -> x ++ " mrow " ++ y) "haha") "blue")
+     >>> (cattyConny "woops") (((\y x -> x ++ " mrow " ++ y) "haha") "blue")
+     >>> ((\x y -> x ++ " mrow " ++ y) "woops") (((\y x -> x ++ " mrow " ++ y) "haha") "blue")
+     >>> (\y -> "woops" ++ " mrow " ++ y) (((\y x -> x ++ " mrow " ++ y) "haha") "blue")
+     >>> (\y -> "woops" ++ " mrow " ++ y) ((\x -> x ++ " mrow " ++ "haha") "blue")
+     >>> (\y -> "woops" ++ " mrow " ++ y) ("blue" ++ " mrow " ++ "haha")
+     >>> (\y -> "woops" ++ " mrow " ++ y) "blue mrow haha"
+     >>> "woops" ++ " mrow " ++ "blue mrow haha"
+     >>> "woops mrow blue mrow haha"
 
-     -- Replace cattyConny and flippy.
-     ((\x y -> x ++ " mrow " ++ y) "woops")
-     (((flip cattyConny) "haha") "blue")
+   Here is the test case:
 
-     -- Replace cattyConny, again.
-     ((\x y -> x ++ " mrow " ++ y) "woops")
-     (((flip (\x y -> x ++ " mrow " ++ y)) "haha") "blue")
-
-     -- Apply "woops" to leftmost function.
-     (\y -> "woops" ++ " mrow " ++ y)
-     ((((\y x -> x ++ " mrow " ++ y)) "haha") "blue")
-
-     -- Replace y with first arg
-     "woops" ++ " mrow " ++
-     ((((\y x -> x ++ " mrow " ++ y)) "haha") "blue")
-
-     -- [ y := "haha" ]
-     "woops" ++ " mrow " ++
-     ((\x -> x ++ " mrow " ++ "haha")  "blue")
-
-     -- [ x := "blue" ]
-     "woops" ++ " mrow " ++
-     ("blue" ++ " mrow " ++ "haha")
-
-     -- Simplify parenthesized expression
-     "woops" ++ " mrow " ++ "blue mrow haha"
-
-     -- Simplify
-     "woops mrow blue mrow haha"
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/test/Spec.hs
+      :code:
+      :start-after: describe "Question 4" $ do
+      :end-before: describe "Question 5" $ do
 
    Now to test it::
 
-     ·∾ appedCatty (frappe "blue")
-     "woops mrow blue mrow haha"
+     $ stack test --test-arguments='--match "Question 4"' --verbosity silent
+     Progress 1/2: currying
+     Question 4
+       appedCatty (frappe "blue") ==> "woops mrow blue mrow haha"
+
+     Finished in 0.0004 seconds
+     1 example, 0 failures
 
 5. ``cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))``
 
-   First I did it in my head, but then I thought it would be better to write it
-   out. This is gonna be a long one::
+   I'm getting tired, now, so I skipped a few steps::
 
-     cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))
+     >>> cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))
+     >>> (\y -> (frappe "pink") ++ " mrow " ++ y) (cattyConny "green" (appedCatty "blue"))
+     >>> frappe "pink" ++ " mrow " ++ (cattyConny "green" (appedCatty "blue"))
+     >>> frappe "pink" ++ " mrow " ++ ("green" ++ " mrow " ++ ("woops" ++ " mrow " ++  "blue"))
+     >>> frappe "pink" ++ " mrow green mrow woops mrow blue"
+     >>> (flippy "haha") "pink" ++ " mrow green mrow woops mrow blue"
+     >>> ((flip cattyConny) "haha") "pink" ++ " mrow green mrow woops mrow blue"
+     >>> (\x -> x ++ " mrow " ++ "haha") "pink" ++ " mrow green mrow woops mrow blue"
+     >>> "pink" ++ " mrow " ++ "haha" ++ " mrow green mrow woops mrow blue"
+     >>> "pink mrow haha mrow green mrow woops mrow blue"
 
-     -- replace frappe
-     cattyConny ((flippy "haha") "pink") (cattyConny "green" (appedCatty "blue"))
+   Here's the test case:
 
-     -- replace appedCatty
-     cattyConny ((flippy "haha") "pink") (cattyConny "green" (appedCatty "blue"))
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/test/Spec.hs
+      :code:
+      :start-after: describe "Question 5" $ do
+      :end-before: describe "Question 6" $ do
 
-     -- replace appedCatty
-     cattyConny ((flippy "haha") "pink") (cattyConny "green" ((cattyConny "woops") "blue"))
+   Results of the test::
 
-     -- replace flippy
-     cattyConny (((flip cattyConny) "haha") "pink") (cattyConny "green" ((cattyConny "woops") "blue"))
+     $ stack test --test-arguments='--match "Question 5"' --verbosity silent
+     Progress 1/2: currying
+     Question 5
+       cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))  ==>  "pink mrow haha mrow green mrow woops mrow blue"
 
-     -- replace cattyConny
-     (\x y -> x ++ " mrow " ++ y)
-     (
-       ((flip (\x y -> x ++ " mrow " ++ y)) "haha")
-       "pink"
-     )
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Bring in first arg to leftmost expression
-     (\y ->
-       (
-         (
-           (flip (\x y -> x ++ " mrow " ++ y))
-           "haha"
-         )
-         "pink"
-       ) ++ " mrow " ++ y
-     )
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Bring in next arg to leftmost expression
-     (
-       (
-         (flip (\x y -> x ++ " mrow " ++ y))
-         "haha"
-       )
-       "pink"
-     )
-     ++ " mrow " ++
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Apply flip
-     (
-       (
-         (\y x -> x ++ " mrow " ++ y)
-         "haha"
-       )
-       "pink"
-     )
-     ++ " mrow " ++
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Apply "haha"
-     (
-      (\x -> x ++ " mrow " ++ "haha")
-       "pink"
-     )
-     ++ " mrow " ++
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Apply "pink"
-     ("pink" ++ " mrow " ++ "haha")
-     ++ " mrow " ++
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Simplify
-     "pink mrow haha mrow " ++
-     (
-       (\x y -> x ++ " mrow " ++ y)
-       "green"
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Apply "green"
-     "pink mrow haha mrow " ++
-     (
-       (\y -> "green" ++ " mrow " ++ y)
-       (((\x y -> x ++ " mrow " ++ y) "woops") "blue")
-     )
-
-
-     -- Apply first arg
-     "pink mrow haha mrow " ++
-     ("green" ++ " mrow " ++ (((\x y -> x ++ " mrow " ++ y) "woops") "blue"))
-
-     -- Apply "woops"
-     "pink mrow haha mrow " ++
-     ("green" ++ " mrow " ++ ((\y -> "woops" ++ " mrow " ++ y) "blue"))
-
-     -- Apply "blue"
-     "pink mrow haha mrow " ++
-     ("green" ++ " mrow " ++ ("woops" ++ " mrow " ++ "blue"))
-
-     -- Simplify innermost expression
-     "pink mrow haha mrow " ++
-     ("green" ++ " mrow " ++ "woops mrow blue")
-
-     -- Simplify some more
-     "pink mrow haha mrow " ++
-     "green mrow woops mrow blue"
-
-     -- Finally, we're done.
-     "pink mrow haha mrow green mrow woops mrow blue"
-
-   Proof::
-
-     ·∾ cattyConny (frappe "pink") (cattyConny "green" (appedCatty "blue"))
-     "pink mrow haha mrow green mrow woops mrow blue"
+     Finished in 0.0002 seconds
+     1 example, 0 failures
 
 6. ``cattyConny (flippy "Pugs" "are") "awesome"``
 
-   Reduction, mostly in my head::
+   Reduction::
 
-     flippy "Pugs" "are" ++ " mrow awesome"
-     "are mrow Pugs mrow awesome"
+     >>> cattyConny (flippy "Pugs" "are") "awesome"
+     >>> (flippy "Pugs" "are") ++ " mrow " ++ "awesome"
+     >>> ("are" ++ " mrow " ++ "Pugs") ++ " mrow " ++ "awesome"
+     >>> "are mrow Pugs mrow awesome"
+
+   Test case:
+
+   .. include:: exercises/8.6.2_-_reviewing_currying.rst.d/currying/test/Spec.hs
+      :code:
+      :start-after: describe "Question 6" $ do
 
    Proof::
 
-     ·∾ cattyConny (flippy "Pugs" "are") "awesome"
-     "are mrow Pugs mrow awesome"
+     $ stack test --test-arguments='--match "Question 6"' --verbosity silent
+
+     Question 6
+       cattyConny (flippy "Pugs" "are") "awesome" ==> "are mrow Pugs mrow awesome"
+
+     Finished in 0.0007 seconds
+     1 example, 0 failures

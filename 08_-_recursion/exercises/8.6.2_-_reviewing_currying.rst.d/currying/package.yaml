@@ -1,0 +1,11 @@
+---
+name: currying
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  currying-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [currying, hspec]
