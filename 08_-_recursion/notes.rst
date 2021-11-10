@@ -50,12 +50,12 @@ In this chapter, we will:
 .. | > (fix (\f n -> if n == 0 then 1 else n * f (n-1))) 3
 .. | 6
 ..
-.. I turns out that the definition of ``fix`` is pretty different from the lambda calculus
-.. implementation. It is written as::
+.. It turns out ``fix``'s definition is pretty different from the lambda calculus
+.. implementation of the Y-combinator. It is written as::
 ..
 .. | fix f = let x = f x in x
 ..
-.. Here is the Y combinator, written in a way that more closely resembles the untyped LC definition::
+.. Here is a definition that more closely resembles the untyped LC representation::
 ..
 .. | import Unsafe.Coerce (unsafeCoerce)
 .. |
@@ -67,14 +67,13 @@ In this chapter, we will:
 .. Thoughts about this section
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ..
-.. It seems like each paragraph has two or three topics. If
-.. each paragraph is rewritten to deal with a single topic, instead, I think it will be easier to read.
+.. It seems like each paragraph has two or three topics. Single topic paragraphs are easier to read.
 ..
 .. The first sentence **"Recursion is defining a function in terms of itself via self-referential
 .. expressions"** bugs me, too, because it gives the impression that recursion is something specific
 .. to fuctions in a programming language, instead of a general pattern. Later, in paragraph 2, the
-.. autohrs say "Recursion is a natural property of many logical and mathematical systems...",
-.. somewhat softening this definition -- but it would be better to introduce the general
+.. autohrs say "Recursion is a natural property of many logical and mathematical systems..."
+..  -- but it would be better to introduce the general
 .. concept of recursion, first, and then describing how it's used in programming later.
 
 
@@ -85,11 +84,24 @@ Let's examine a simple factorial function::
   factorial 0 = 1
   factorial n = n * factorial (n - 1)
 
-Base case: recursion stops when we get a 0. The return value, 1, is the identity value.
+Recursive functions are comprised of two categories of input cases: base cases and recursive cases.
+A recursive function can contain any number of base cases, but must have at least one recursive
+case.
 
-Recursive case: Critically, the input size of this case gets smaller with each application.
+Base cases are where the functions output can be obtained without requiring further recursive calls.
+In the ``factorial`` function declaration above, the base case is ``factorial 0 = 1``.
 
-An example of how ``factorial 4`` evaluates::
+Recursive cases are where self-referencing function calls occur. A recursive function call is where
+the function definition is applied to different input values. Each call of the function splits the
+input it into smaller instances of that function, building up intermediate results along the way
+which will eventually be combined to arrive at the final answer. In our function declaration, the
+recursive case is the equasion ``factorial n = n * factorial (n - 1)``.
+
+In order for function evaluation to eventually stop, each recursive call of this case should move
+progressively closer towards one of the base cases. If not, the function will call itself forever, a
+phenomena know as infinite recursion.
+
+Here is an example of how ``factorial 4`` evaluates::
 
   factorial 0 = 1
   factorial n = n * factorial (n - 1)
@@ -202,6 +214,12 @@ Another source of bottom values are intentionally thrown errors. The function
   *** Exception: Should this be in a monad?
   CallStack (from HasCallStack):
     error, called at <interactive>:27:1 in interactive:Ghci9
+
+
+8.4 Fibonacci numbers
+---------------------
+This section describes how the author would come up with a Fibonacci function in Haskell. I wasn't
+able to understand the reasoning process, here. So it's completely useless. Shit.
 
 
 8.5 Integral division from scratch
