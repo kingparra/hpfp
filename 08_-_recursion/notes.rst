@@ -50,6 +50,11 @@ In this chapter, we will:
 .. | > (fix (\f n -> if n == 0 then 1 else n * f (n-1))) 3
 .. | 6
 ..
+.. So ``fix`` duplicates the function and feed it to itself. The function has an extra parameter to
+.. accept its duplicate. That input function is then used for the recursive call.
+..
+.. How is ``fix`` written, I wonder?
+..
 .. It turns out ``fix``'s definition is pretty different from the lambda calculus
 .. implementation of the Y-combinator. It is written as::
 ..
@@ -61,8 +66,6 @@ In this chapter, we will:
 .. |
 .. | y :: (a -> a) -> a
 .. | y = \f -> (\x -> f (unsafeCoerce x x)) (\x -> f (unsafeCoerce x x))
-.. |
-.. | main = putStrLn $ y ("circular reasoning works because " ++)
 ..
 .. Thoughts about this section
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -73,8 +76,9 @@ In this chapter, we will:
 .. expressions"** bugs me, too, because it gives the impression that recursion is something specific
 .. to fuctions in a programming language, instead of a general pattern. Later, in paragraph 2, the
 .. autohrs say "Recursion is a natural property of many logical and mathematical systems..."
-..  -- but it would be better to introduce the general
-.. concept of recursion, first, and then describing how it's used in programming later.
+.. If you take the first definition literally, the authors contradict themselves. I think it would
+.. be better to introduce the general concept of recursion, first, and then describing how it's used
+.. in programming later.
 
 
 8.2 Factorial!
