@@ -20,7 +20,7 @@ main = hspec $ do
     it "intersperses dashes for multi-digit outputs" $ do
       wordNumber 123 `shouldBe` "one-two-three"
       wordNumber 88 `shouldBe` "eight-eight"
-      wordNumber 123456 `shouldBe` "one-two-three-two-four-five-four-six"
+      wordNumber 123456 `shouldBe` "one-two-three-four-five-six"
     it "prefixes 'negative' when the input is a negative number" $ do
       wordNumber (-98) `shouldBe` "negative-nine-eight"
       -- Since (-0) resolves to 0 before function application, we don't
