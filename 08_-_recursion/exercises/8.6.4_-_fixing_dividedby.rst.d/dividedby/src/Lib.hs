@@ -1,6 +1,6 @@
 module Lib (dividedBy', DividedResult(..)) where
 
-data DividedResult = Result Integer | DividedByZero deriving (Eq, Show)
+data DividedResult = Result Integer | DividedByZero deriving (Eq, Ord, Show)
 
 dividedBy' :: Integer -> Integer -> DividedResult
 dividedBy' num denom
