@@ -2,8 +2,10 @@
  Chapter 8: Recursion
 **********************
 
+  .. image:: figures/nickieatmirror.jpg
+     :align: center
 
-  **Something is recursive when it contains progressively smaller instances of itself.**
+  **Something is recursive when it contains progressively smaller nested instances of itself.**
 
 
   "Recursion is the root of computation since it trades description for time."
@@ -16,7 +18,7 @@
   computations can be described by a finite recursive program, even if this program
   contains no explicit repetitions."
 
-  ~ Niklaus Wirth, Algorithms + Data Structures = Programs
+  ~ Niklaus Wirth. "Algorithms + Data Structures = Programs"
 
 
   "The recursive problem solving process can be described loosely as follows:
@@ -34,51 +36,6 @@ In this chapter, we will:
 * explore what recursion is and how recursive functions evaluate;
 * go step-by-step through the process of writing recursive functions;
 * have fun with bottom.
-
-.. Questions
-.. ^^^^^^^^^
-..
-.. **"But the lambda calculus does not appear on the surface to have any
-.. means of recursion, because of the anonymity of expressions. How do
-.. you call something without a name?"**
-..
-.. What would a recursive anonymous function literal look like in haskell?
-..
-.. https://stackoverflow.com/questions/40099927/how-do-i-define-an-anonymous-recursive-function
-..
-.. | > import Data.Function (fix)
-.. | > (fix (\f n -> if n == 0 then 1 else n * f (n-1))) 3
-.. | 6
-..
-.. So ``fix`` duplicates the function and feed it to itself. The function has an extra parameter to
-.. accept its duplicate. That input function is then used for the recursive call.
-..
-.. How is ``fix`` written, I wonder?
-..
-.. It turns out ``fix``'s definition is pretty different from the lambda calculus
-.. implementation of the Y-combinator. It is written as::
-..
-.. | fix f = let x = f x in x
-..
-.. Here is a definition that more closely resembles the untyped LC representation::
-..
-.. | import Unsafe.Coerce (unsafeCoerce)
-.. |
-.. | y :: (a -> a) -> a
-.. | y = \f -> (\x -> f (unsafeCoerce x x)) (\x -> f (unsafeCoerce x x))
-..
-.. Thoughts about this section
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-..
-.. It seems like each paragraph has two or three topics. Single topic paragraphs are easier to read.
-..
-.. The first sentence **"Recursion is defining a function in terms of itself via self-referential
-.. expressions"** bugs me, too, because it gives the impression that recursion is something specific
-.. to fuctions in a programming language, instead of a general pattern. Later, in paragraph 2, the
-.. autohrs say "Recursion is a natural property of many logical and mathematical systems..."
-.. If you take the first definition literally, the authors contradict themselves. I think it would
-.. be better to introduce the general concept of recursion, first, and then describing how it's used
-.. in programming later.
 
 
 8.2 Factorial!
