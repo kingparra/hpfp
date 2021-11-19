@@ -5,12 +5,16 @@
   .. image:: figures/nickieatmirror.jpg
      :align: center
 
+
   **Something is recursive when it contains progressively smaller nested instances of itself.**
 
 
-  "Recursion is the root of computation since it trades description for time."
+  "The recursive problem solving process can be described loosely as follows:
 
-  ~ Alan Perlis
+    * If the given instance of the problem can be solved directly, do so.
+    * Otherwise, reduce it to one or more smaller instances of the same problem."
+
+  ~ Jeff Erickson
 
 
   "The power of recursion evidently lies in the possibility of defining an infinite
@@ -21,12 +25,9 @@
   ~ Niklaus Wirth. "Algorithms + Data Structures = Programs"
 
 
-  "The recursive problem solving process can be described loosely as follows:
+  "Recursion is the root of computation since it trades description for time."
 
-    * If the given instance of the problem can be solved directly, do so.
-    * Otherwise, reduce it to one or more smaller instances of the same problem."
-
-  ~ Jeff Erickson
+  ~ Alan Perlis
 
 
 8.1 Recursion
