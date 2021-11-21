@@ -2,11 +2,36 @@
  Chapter 8: Recursion
 **********************
 
+
+
+
   .. image:: figures/nickieatmirror.jpg
      :align: center
+     :alt: A visual example of recursion. The nested instances of the
+           reflection are the recursive case. The fade to dark green
+           is the base case.
+
+
 
 
   **Something is recursive when it contains progressively smaller nested instances of itself.**
+
+
+
+
+  "An object is said to be recursive if it partially consists or is defined in terms of itself."
+
+  ~ Niklaus Wirth. Algorithms + Data Structures = Programs. ISBN-13: 978-0130224187.
+
+
+
+
+  "An entity or concept is said to be recursive when simpler or smaller
+  self-similar instances form part of its constituents."
+
+  ~ Manuel Rubio-Sánchez. Introduction to Recursive Programming. ISBN-13: 978-1-4987-3528-5.
+
+
 
 
   "The recursive problem solving process can be described loosely as follows:
@@ -14,7 +39,9 @@
     * If the given instance of the problem can be solved directly, do so.
     * Otherwise, reduce it to one or more smaller instances of the same problem."
 
-  ~ Jeff Erickson
+  ~ Jeff Erickson. `Algorithms <https://jeffe.cs.illinois.edu/teaching/algorithms/>`_. ISBN-13: 978-1792644832.
+
+
 
 
   "The power of recursion evidently lies in the possibility of defining an infinite
@@ -22,12 +49,17 @@
   computations can be described by a finite recursive program, even if this program
   contains no explicit repetitions."
 
-  ~ Niklaus Wirth. "Algorithms + Data Structures = Programs"
+  ~ Niklaus Wirth. `Algorithms + Data Structures = Programs <https://archive.org/
+  details/algorithmsdatast00wirt/mode/2up>`_. ISBN-13: 978-0130224187.
+
+
 
 
   "Recursion is the root of computation since it trades description for time."
 
-  ~ Alan Perlis
+  ~ Alan Perlis. `Epigrams on Programming <http://pu.inf.uni-tuebingen.de/users/klaeren/epigrams.html>`_.
+
+
 
 
 8.1 Recursion
@@ -45,6 +77,13 @@ Let's examine a simple factorial function::
 
   factorial 0 = 1
   factorial n = n * factorial (n - 1)
+
+.. "Base case" is first mentioned in 8.2, paragraph 5, **"Let's look at some broken code to
+   introduce the concept of a base case:"**.
+
+   paragraph 7, sentence a **"The way we can stop a recursive expression is by having a base case
+   that stops the sel-application to further arguments."**, sentence c **"Here's what that looks
+   like for factorial:"**.
 
 Recursive functions are comprised of two categories of input cases: base cases and recursive cases.
 A recursive function can contain any number of base cases, but must have at least one recursive
@@ -92,6 +131,9 @@ never stop, subtracting forever.
 
 8.2.1 Another way to look at recursion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. 2b **"The number of times the function may be applied depends on the arguments to the function,
+..       and the applications can be infinite if a stopping point is not clearly defined"**.
+
 Here's another example, to show how building up the call stack resembles
 composing multiple instances of the same function::
 
@@ -115,8 +157,7 @@ composing multiple instances of the same function::
 ----------
 ``⊥``, or bottom, denotes computations that don't successfully result in a
 value. The two main varieties of bottom are computations that failed with an
-error or those that failed to terminate. In logic ``⊥`` corresponds to
-``False``.
+error or those that failed to terminate. In logic ``⊥`` corresponds to ``False``.
 
 Non-termination
 ^^^^^^^^^^^^^^^
@@ -183,6 +224,19 @@ Another source of bottom values are intentionally thrown errors. The function
 This section describes how the author would come up with a Fibonacci function in Haskell. I wasn't
 able to understand the reasoning process, here. So it's completely useless. Shit.
 
+Consider the types. Writing a type signature involves determining what the input and output of the
+function should be.
+
+Consider the base case. The base case is the non-recursive part of your function. Think about what
+cases can be solved without further problem decomposition.
+
+Consider the arguments. The arguments represent things that change. What do you need to change in
+order to progress towards the base case?
+
+Consider the recursion. How do you want to call your function? Are you using multiple calls at once,
+or a direct call, or indirect calls? Do you use a nested function to process some arguments
+internally?
+
 
 8.5 Integral division from scratch
 ----------------------------------
@@ -205,3 +259,6 @@ Here's and example for integral division. The inner ``go`` function keeps a coun
 .. include:: exercises/8.6.4_-_fixing_dividedby.rst
 
 .. include:: exercises/8.6.5_-_mccarthy_91_function.rst
+
+
+.. further reading: https://blog.sumtypeofway.com/posts/introduction-to-recursion-schemes.html

@@ -1,0 +1,32 @@
+-- Changes to
+-- n = n * factorial (n - 1)
+factorial 4 =
+  4 * factorial (4 - 1)
+
+  -- evaluate (-) applied to 4 and 1
+  4 * factorial 3
+
+  -- evaluate factorial applied to 3
+  -- expands to 3 * factorial (3 - 1)
+  4 * 3 * factorial (3 - 1)
+
+  -- beta reduce (-) applied to 3 and 1
+  4 * 3 * factorial 2
+
+  -- evaluate factorial applied to 2
+  4 * 3 * 2 * factorial (2 - 1)
+
+  -- evaluate (-) applied to 2 and 1
+  4 * 3 * 2 * factorial 1
+
+  -- evaluate factorial applied to 1
+  4 * 3 * 2 * 1 * factorial (1 - 1)
+
+  -- evaluate (-) applied to 1 and 1
+  -- we know factorial 0 = 1
+  -- so we evaluate that to 1
+  4 * 3 * 2 * 1 * 1
+
+  -- And when we evaluate
+  -- our multiplications
+  24
