@@ -1,3 +1,6 @@
+-- 8.2 Factorial!, page 278
+
+
 -- Changes to
 -- n = n * factorial (n - 1)
 factorial 4 =
@@ -21,6 +24,8 @@ factorial 4 =
 
   -- evaluate factorial applied to 1
   4 * 3 * 2 * 1 * factorial (1 - 1)
+
+-- page 279
 
   -- evaluate (-) applied to 1 and 1
   -- we know factorial 0 = 1

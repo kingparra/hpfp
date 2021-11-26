@@ -1,0 +1,2 @@
+Prelude> let x = x in x
+*** Exception: <<loop>>

@@ -1,0 +1,4 @@
+Prelude> f False
+0
+Prelude> f True
+*** Exception: blah

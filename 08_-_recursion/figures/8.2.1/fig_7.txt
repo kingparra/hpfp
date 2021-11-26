@@ -1,0 +1,6 @@
+Prelude> incTimes 10 0
+10
+Prelude> incTimes 5 0
+5
+Prelude> incTimes 5 5
+10

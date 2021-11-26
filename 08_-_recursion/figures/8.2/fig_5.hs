@@ -1,3 +1,5 @@
+-- 8.2 Factorial!, page 278
+--
 module Factorial where
 
 

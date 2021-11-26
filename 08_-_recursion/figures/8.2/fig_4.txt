@@ -1,3 +1,6 @@
+-- 8.2 Factorial!, Paragraph 6, page 277
+-- "Let's apply this to 4 and see what happens:"
+
 brokenFact1 4 =
   4 * (4 - 1)
   * ((4 - 1) - 1)
