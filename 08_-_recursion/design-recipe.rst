@@ -7,6 +7,49 @@ source material that they come from has examples of their use. To
 really understand them, you should read the source material, and
 practice using them on a few simple programming problems.
 
+
+.. topic:: Rules for recursion
+
+   From "Get Programming with Haskell" by Will Kurt.
+
+   The way to solve recursive function is by following this simple set of rules:
+
+   * Identify the end goals.
+   * Determine what happens when a goal is reached.
+   * List all alternate possibilities.
+   * Determine your "rinse and repeat" process.
+   * Ensure that each alternative moves you toward your goal.
+
+
+.. topic:: General program design recipe
+
+   Stolen from `CS457`_.
+
+   To write a program one follows a recipe of steps. Here are the steps we will use for all our
+   programs.
+
+   * Each step is a concrete activity.
+   * Each step has a product that can be inspected.
+
+   Here are the steps we will follow:
+
+   * Understand the problem. Often the analysis is inserted in the program as a comment.
+
+   * Write a contract for each function about how its inputs and outputs behave. In Haskell, a
+     contract is written using a typing prototype.
+
+   * Create a set of examples. We will use HUnit assertions as the product that encodes examples.
+
+   * Write the body of each function. Use the guideline that the structure of the body follows the
+     structure of the input data.
+
+   * Testing. Test your program. We will use HUnit tests as the testing product. Later we will learn
+     how to use QiuckCheck random testing as additonal testing products.
+
+   If you do not have all the products then you have not followed the design recipe, and you are
+   much more likely to make mistakes.
+
+
 .. topic:: Design recipe for writing recursive programs
 
    Stolen from `CS457`_.
