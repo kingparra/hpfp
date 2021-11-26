@@ -7,14 +7,24 @@
 
   .. image:: figures/nickieatmirror.jpg
      :align: center
-     :alt: A visual example of recursion. The nested instances of the
-           reflection are the recursive case. The fade to dark green
-           is the base case.
+     :alt: A picture of a girl looking into a mirror, opposite another mirror, forming an
+           infinite cooridor of reflections. This is a visual example of recursion. The nested
+           instances of the reflection are the recursive case. The fade to dark green is the
+           base case.
+
+
+
+  Recursion (rĭ-kûr’-zhən) noun. If you still don’t get it, see recursion.
 
 
 
 
-  **Something is recursive when it contains progressively smaller nested instances of itself.**
+  **A recursive structure contains a smaller instance of itself.**
+
+
+
+
+  **A process or structure is recursive when it contains progressively smaller nested instances of itself.**
 
 
 
