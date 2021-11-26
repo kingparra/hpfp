@@ -76,8 +76,8 @@ It seems like each paragraph has two or three topics. Single topic paragraphs ar
 The first sentence **"Recursion is defining a function in terms of itself via self-referential
 expressions"** bugs me, too, because it gives the impression that recursion is something specific to
 functions in a programming language, instead of a general pattern. Later, in paragraph 2, the
-authors say "Recursion is a natural property of many logical and mathematical systems..." If you
-take the first definition literally, the authors contradict themselves. I think it would be better
+authors say **"Recursion is a natural property of many logical and mathematical systems..."** If you
+take the first definition literally, the authors contradicts themselves. I think it would be better
 to introduce the general concept of recursion, first, and then describing how it's used in
 programming later.
 
