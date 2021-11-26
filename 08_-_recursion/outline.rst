@@ -6,14 +6,15 @@
 
   What makes a function recursive. Indefinite repetitions.
 
-  Recursion is a pattern that occurs in math and nature. Indefinite repetitions.
+  Recursion is a pattern that occurs in language and nature. Indefinite repetitions.
 
-  Haskell evaluation is similar to lambda calculus, and recursive anonymous function literals can be
-  written using the Y-combinator in both languages.
+  Haskell and lambda calculus have similar evaluation strategies, and recursive anonymous function
+  literals can be written using the Y-combinator in both languages.
 
   Recursion is the only method of expressing repetition in Haskell, so you need to understand it in
-  order to read other peoples code. Even though you can express repetition using only higher-order
-  functions like map, filter, and fold, direct recursion is used a lot by other programmers.
+  order to read other peoples code. Even though you can express repetition yourself using only
+  higher-order functions like map, filter, and fold, direct recursion is used a lot by other
+  programmers.
 
 * 8.2 Factorial!
 
