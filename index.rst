@@ -23,8 +23,10 @@ Contents
    05_-_types/questions
    06_-_typeclasses/notes
    07_-_more_functional_patterns/notes
+   08_-_recursion/outline
    08_-_recursion/notes
    08_-_recursion/design-recipe
+   08_-_recursion/overkill
    09_-_lists/notes
    10_-_folds/notes
    11_-_algebraic_datatypes/notes
