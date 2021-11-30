@@ -1,0 +1,15 @@
+Exercises: More Bottoms
+^^^^^^^^^^^^^^^^^^^^^^^
+1. Bottom.
+2. Yes, it will return ``2``.
+3. It will return the value bottom.
+4. The function ``itIsMystery`` take a string and then returns only the vowels
+   in that string, in the order that they occur.
+5.
+
+  a. ``[1,4,9,16,25,36,49,64,81,100]``
+  b. ``[1..10]``
+  c. ``[15,15,15]``
+
+6. What?
+

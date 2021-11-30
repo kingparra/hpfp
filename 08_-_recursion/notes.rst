@@ -14,12 +14,13 @@
 
 
 
+
   Recursion (rĭ-kûr’-zhən) noun. If you still don’t get it, see recursion.
 
 
 
 
-  **A recursive structure contains a smaller instance of itself.**
+  **A recursive structure is one that contains a smaller instance of itself.**
 
 
 
@@ -74,6 +75,85 @@
 
 8.1 Recursion
 -------------
+A recursive function is one that is defined in terms of itself. The recursive function will call
+itself with new arguments during its evaluation until some stopping condition is met to end the
+recursion. Recursive function evaluation may perform an indefinite number of repetitions. The number
+of repetitions is controlled not by a particular countdown mechanism with a predefined number of
+repetitions, but by whether or not the input arguments meet the functions stopping condition.
+
+
+.. topic:: Recursion as a general concept
+
+   Recursion is a general pattern where something contains a smaller instance of itself.
+   It can be recognized in all kinds of structures and processes, both in the natural
+   world and in language.
+
+   In Haskell, we use recursion to express repetition. Wherever an indefinite control flow construct
+   like a while-do-done loop is used, you can use recursion instead.
+
+   In problem analysis, recursion can be thought of as a special case of divide-and-conquer to break
+   problems down into subproblems that are easier to solve.
+
+.. topic:: Recursive function calls combine several concerns
+
+   Recursion is interesting because it combines three separate steps:
+
+   * An inductive reasoning step (in the form of a problem decomposition);
+   * a control flow transfer step (in the form of transferring control to a new function stack frame);
+   * and a data transformation step (in the form of a function call with new argument values).
+
+.. topic:: Unifing control-flow and data-flow
+
+   Function calls are the only mechanism for control flow in Haskell. They're also the only mechanism
+   for changing values. This effectively means that the control flow and data flow of a program are
+   the same; both control and data go from function call to function call. Rather than having a
+   separate graph for the control flow and data flow of a program, there is one graph that represents
+   both. This makes execution of a Haskell program less like updating registers of a machine that
+   advances a program counter, and more like evaluating a system of equations in algebra.
+
+.. topic:: Recursive function calls as a means of expressing repetition
+
+   Recursive patterns of application correspond to repeated evaluation of subexpressions. This is
+   similar to what loops are used for in imperative languages.
+
+.. topic:: Recursive function definitions without a name
+
+   Paragraph three asks this question: How do we define a recursive anonymous function? Doesn't the
+   function need a name so that it can call itself?
+
+   One workaround is to provide a duplicate of the function as an input argument, which is then
+   bound to a parameter name, so that it can be called, like so::
+
+     ·∾  import Data.Function (fix)
+
+     ·∾ -- Fix duplicates the function and feeds it to itself as the first argument.
+
+     ·∾  fix (\f n -> if n == 0 then 1 else n * f (n-1)) 3
+     6
+
+     ·∾ import Unsafe.Coerce (unsafeCoerce)
+
+     ·∾ -- Fix, above, corresponds to the Y-combinator in lambda calculus, but the definition is
+     ·∾ -- pretty different. It looks like fix f = let x = f x in x. The lambda calculus version
+     ·∾ -- looks like (λy.(λx.y(xx))(λx.y(xx))).
+
+     ·∾ -- Using unsafeCoerce we can write a definition of the Y-combinator that
+     ·∾ -- corresponds closely to that found in untyped lambda calculus.
+
+     ·∾ :{
+      ⋮ (\y -> (\x -> y (unsafeCoerce x x)) (\x -> y (unsafeCoerce x x)))
+      ⋮ (\f n -> if n == 0 then 1 else n * f (n-1))
+      ⋮ 6
+      ⋮ :}
+     6
+
+     ·∾ :{
+      ⋮ (\f -> (\x -> f (unsafeCoerce x x)) (\x -> f (unsafeCoerce x x)))
+      ⋮ (\f n -> if n == 0 then 1 else n * f (n-1))
+      ⋮ 20
+      ⋮ :}
+     2432902008176640000
+
 In this chapter, we will:
 
 * explore what recursion is and how recursive functions evaluate;

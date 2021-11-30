@@ -1,0 +1,15 @@
+22.5.1 Exercise: Ask
+^^^^^^^^^^^^^^^^^^^^
+Implement the following function. If you get
+stuck, remember it's less complicated than it
+looks.
+
+Write down what you know. What do you know
+about the type ``a``? What does the type
+simplify to? How many inhabitants does that
+type have? 
+
+You've seen this type before::
+
+  ask :: Reader a a
+  ask = Reader ???

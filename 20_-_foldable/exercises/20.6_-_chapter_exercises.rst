@@ -1,0 +1,39 @@
+20.6 Chapter Exercises
+----------------------
+Write ``Foldable`` instances for the following
+datatypes.
+
+1. ``data Constant a b = Constant b``
+
+   .. include:: 20_-_foldable/exercises/20.6_-_chapter_exercises.rst.d/chapter-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+2. ``data Two a b = Two a b``
+
+   .. include:: 20_-_foldable/exercises/20.6_-_chapter_exercises.rst.d/chapter-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+3. ``data Three a b c = Three a b c``
+
+   .. include:: 20_-_foldable/exercises/20.6_-_chapter_exercises.rst.d/chapter-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+
+4. ``data Three' a b = Three' a b b``
+
+   .. include:: 20_-_foldable/exercises/20.6_-_chapter_exercises.rst.d/chapter-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
+
+5. ``data Four' a b = Four' a b b b``
+
+   .. include:: 20_-_foldable/exercises/20.6_-_chapter_exercises.rst.d/chapter-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 5
+

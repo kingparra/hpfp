@@ -1,0 +1,98 @@
+<!DOCTYPE html> <html style><!--
+ Page saved with SingleFile 
+ url: https://blog.ssanj.net/posts/2014-09-23-A-Simple-Reader-Monad-Example.html 
+ saved date: Fri May 07 2021 13:15:34 GMT+0000 (Coordinated Universal Time)
+--><meta charset=utf-8>
+<meta http-equiv=X-UA-Compatible content="IE=edge">
+<title>A Simple Reader Monad Example</title>
+<meta name=viewport content="width=device-width">
+<meta name=description content="If you are looking for a simple Reader Monad example, then look no further.">
+<link rel=canonical href=https://blog.ssanj.net/posts/2014-09-23-A-Simple-Reader-Monad-Example.html>
+<style>*{margin:0;padding:0}html,body{height:100%}body{font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;font-weight:300;background-color:#fdfdfd}a:hover{color:#000;text-decoration:underline}a:visited{color:#205caa}.wrap:before,.wrap:after{content:"";display:table}.wrap:after{clear:both}.wrap{max-width:800px;margin:0 auto}.page-content{padding:30px 0;background-color:#fff}.post-tag{font-size:.8em}.post-tag a,.post-tag a:visited{color:#2a7ae2;text-decoration:none}.post-tag a:hover{text-decoration:underline}.post-header{margin:10px 0 30px;text-align:center}.post-header h1{font-weight:700;font-family:Helvetica,sans-serif;font-size:6em;line-height:1.25}.post-header .meta{font-size:.9em;color:#818181;margin-top:5px}.post-header h1 a,.post-header h1 a:hover,.post-header h1 a:visited{text-decoration:none;color:black}.post-content{margin:0 0 30px;font-family:Courier New,Serif;font-size:1em;text-align:justify}.post-content>*{margin:20px 0}.post pre,.post code{padding:8px 12px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;font-size:15px}.post code{padding:1px 5px}.post pre.scrollx{overflow-x:scroll}.wrap{padding:0 5px 0 0}.post pre code{padding-left:0}@media screen and (max-width:750px){.post pre{overflow-x:scroll}.wrap{padding:0 12px}.post-content{text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:1em}.post-header h1{font-family:Helvetica,Arial,sans-serif;font-size:2.13em}}@media screen and (max-width:600px){.post-header h1{font-size:36px}}.post code{color:#000000a6;font-size:1em}.post pre.sourceCode,.post code.sourceCode{background-color:hsl(0 0% 98% / 1);border:0}.post code.sourceCode span.kw{color:#cb50136e}.post code.sourceCode span.ot,.post code.sourceCode span.fu{color:#9e8383}.post code.sourceCode span.dt{color:#4494a4}.post code.sourceCode span.st{color:#03501c9c}.post code.sourceCode span.co{color:#73715e}html{overflow-y:scroll}html{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;line-height:1.2;color:#333}a{color:#03739c;text-decoration:none}a:hover{text-decoration:underline}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}</style>
+<link type=image/x-icon rel="shortcut icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><style>.sf-hidden{display:none!important}</style></head>
+ <body>
+ 
+ <div class=page-content>
+ <div class=wrap>
+ <div class=post>
+ <header class=post-header>
+ <h1><a href=https://blog.ssanj.net/>A Simple Reader Monad Example</a></h1>
+ <p class=meta>September 23, 2014&nbsp;<span class=post-tag><a href=https://blog.ssanj.net/tags/haskell.html>haskell</a></span></p>
+ </header>
+ <article class=post-content>
+ <p>What is a Reader Monad?</p>
+<p>The <a href=http://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Reader.html>Reader Monad</a> works within the context of a shared environment. But what does that mean? Say you needed some shared object to execute a bunch of functions. An example could be that you need a database connection in every query function you execute. Or it could be some configuration options read from a file that are needed across a number of functions.</p>
+<p>When trying to learn about the Reader Monad I’ve found most examples are convoluted or unnecessarily long. I hope to change that by providing a simple example that you can try out without too much head-spinning.</p>
+<p>The Reader Monad is defined as:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class=kw>type</span> <span class=dt>Reader</span> r <span class=fu>=</span> <span class=dt>ReaderT</span> r <span class=dt>Identity</span></code></pre></div>
+<p>One of the time-consuming things about learning the Reader Monad is that it is defined in terms of the ReaderT transformer (which is also a Monad). So now you have to learn multiple monads just to understand the Reader Monad. Annoying.</p>
+<p>Let’s ignore the ReaderT transformer for now and assume that Reader is defined as:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class=dt>Reader</span> r a</code></pre></div>
+<p>where r is some “environment” and a is some value you create from that environment. And thanks to the type alias above you can just about do that.</p>
+<p>Because Reader is a Monad we can do stuff like this:</p>
+<div class=sourceCode><pre class="sourceCode haskell scrollx"><code class="sourceCode haskell"><span class=kw>import </span><span class=dt>Control.Monad.Reader</span>
+
+<span class=kw>let</span> r1 <span class=fu>=</span> return <span class=dv>5</span><span class=ot> ::</span> <span class=dt>Reader</span> <span class=dt>String</span> <span class=dt>Int</span></code></pre></div>
+<p>We have created a simple Reader using the Monad’s <strong>return</strong> function.</p>
+<p>If we check the type of r1:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class=fu>:</span>t r1
+<span class=ot>r1 ::</span> <span class=dt>Reader</span> <span class=dt>String</span> <span class=dt>Int</span></code></pre></div>
+<p>We see that we have created a Reader that takes in a String and returns an Int. The String is the “environment” of the Reader. So how can we get the Int value out of the reader? By running it of course! We can use the <strong>runReader</strong> function to do that:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell">(runReader r1) <span class=st>"this is your environment"</span>
+<span class=dv>5</span></code></pre></div>
+<p><strong>runReader</strong> is defined as:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class=ot>runReader ::</span> <span class=dt>Reader</span> r a <span class=ot>-&gt;</span> r <span class=ot>-&gt;</span> a</code></pre></div>
+<p>So <strong>runReader</strong> takes in a Reader and an environment (<strong>r</strong>) and returns a value (<strong>a</strong>).</p>
+<p><em>Now notice that we didn’t really do anything with the environment supplied to us.</em></p>
+<p>What if we had a bunch of Readers and we wanted to <strong>bind</strong> across them?</p>
+<div class=sourceCode><pre class="sourceCode haskell scrollx"><code class="sourceCode haskell"><span class=kw>import </span><span class=dt>Control.Monad.Reader</span>
+
+<span class=ot>tom ::</span> <span class=dt>Reader</span> <span class=dt>String</span> <span class=dt>String</span>
+tom <span class=fu>=</span> <span class=kw>do</span>
+    env <span class=ot>&lt;-</span> ask <span class=co>-- gives you the environment which in this case is a String</span>
+    return (env <span class=fu>++</span> <span class=st>" This is Tom."</span>)
+
+<span class=ot>jerry ::</span> <span class=dt>Reader</span> <span class=dt>String</span> <span class=dt>String</span>
+jerry <span class=fu>=</span> <span class=kw>do</span>
+  env <span class=ot>&lt;-</span> ask
+  return (env <span class=fu>++</span> <span class=st>" This is Jerry."</span>)
+
+<span class=ot>tomAndJerry ::</span> <span class=dt>Reader</span> <span class=dt>String</span> <span class=dt>String</span>
+tomAndJerry <span class=fu>=</span> <span class=kw>do</span>
+    t <span class=ot>&lt;-</span> tom
+    j <span class=ot>&lt;-</span> jerry
+    return (t <span class=fu>++</span> <span class=st>"\n"</span> <span class=fu>++</span> j)
+
+<span class=ot>runJerryRun ::</span> <span class=dt>String</span>
+runJerryRun <span class=fu>=</span> (runReader tomAndJerry) <span class=st>"Who is this?"</span></code></pre></div>
+<p>The ask function is defined on <a href=http://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Reader.html#t:MonadReader>MonadReader</a>.</p>
+<div class=sourceCode><pre class="sourceCode haskell scrollx"><code class="sourceCode haskell"><span class=kw>class</span> <span class=dt>Monad</span> m <span class=ot>=&gt;</span> <span class=dt>MonadReader</span> r m <span class=fu>|</span> m <span class=ot>-&gt;</span> r <span class=kw>where</span></code></pre></div>
+<p>Let’s ignore MonadReader for now and focus on the definition of the ask function:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class=ot>ask ::</span> m r</code></pre></div>
+<p>Basically the above gives you a Reader Monad with the environment in it. So if you need access to the environment you ask for it. :)</p>
+<p>In the <strong>tom</strong>, <strong>jerry</strong> and <strong>tomAndJerry</strong> functions, we are working within the context of the Reader Monad. That allows us to <strong>bind</strong> to the environment within the Reader. It also means that we need to <strong>return</strong> all values within a new Reader as well.</p>
+<p>The <strong>tomAndJerry</strong> function binds to values from each Reader and then returns them combined in another Reader. We then run the whole lot in the <strong>runJerryRun</strong> function with the help of <strong>runReader</strong> and get the following output:</p>
+<div class=sourceCode><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class=dt>Who</span> is this<span class=fu>?</span> <span class=dt>This</span> is <span class=dt>Tom</span><span class=fu>.</span>
+<span class=dt>Who</span> is this<span class=fu>?</span> <span class=dt>This</span> is <span class=dt>Jerry</span><span class=fu>.</span></code></pre></div>
+<p>I hope this simple example is useful in getting you started in using and thinking about the Reader Monad.</p>
+ </article>
+ <a class="twitter-share-button sf-hidden" href="https://twitter.com/intent/tweet?text=A%20Simple%20Reader%20Monad%20Example%20via%20@ssanj" data-size=small>
+Tweet</a>
+ <a class=twitter-follow-button href=https://twitter.com/ssanj data-size=small data-show-count=false>
+Follow @TwitterDev</a>
+ <g:plusone size=medium annotation=none></g:plusone>
+ </div>
+ 
+ </div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</div>

@@ -1,0 +1,79 @@
+14.7.2 Using QuickCheck
+^^^^^^^^^^^^^^^^^^^^^^^
+Test some basic properties using QuickCheck.
+
+1. For a function
+   ::
+
+     half x = x / 2
+
+   This property should hold::
+
+     halfIdentity = (*2) . half
+
+2. ::
+
+     import Data.List (sort)
+
+     -- for any list you apply sort to this property should hold
+     listOrdered :: (Ord a) => [a] -> Bool
+     listOrdered xs =
+       snd $ foldr go (Nothing, True) xs
+       where go _ status@(_, False) = status
+         go y (Nothing, t) = (Just y, t)
+         go y (Just x, t) = (Just y, x >= y)
+
+3. Now we'll test the associative and commutative properties
+   of addition
+
+   ::
+
+     plusAssociative x y z  =  x + (y + z) == (x + y) + z
+     plusCommutative x y    =  x + y == y + x
+
+   Keep in mind these properties won't hold for types based
+   on IEEE-754 floating point numbers, such as Float or Double.
+
+4. Now do the same for multiplication.
+5. We mentioned in one of the first chapters that there are
+   some laws involving the relationship of quot and rem and
+   div and mod. Write QuickCheck tests to prove them.
+
+   ::
+
+     -- quot rem
+     (quot x y)*y + (rem x y) == x
+     (div x y)*y + (mod x y) == x
+
+6. Is ``(^)`` associative? Is it commutative? Use QuickCheck
+   to see if the computer can contradict such an assertion.
+7. Test that reversing a list twice is the same as the
+   identity of the list::
+
+     reverse . reverse == id
+
+8. Write a property for the definition of ``($)``.
+
+   ::
+
+     f $ a = f a
+     f . g = \x -> f (g x)
+
+9. See if these two functions are equal
+
+   ::
+
+     foldr (:) == (++)
+     foldr (++) [] == concat
+
+10. Hmm. Is that so?
+
+    ::
+
+      f n xs = length (take n xs) == n
+
+11. Finally, this is a fun one. You may remember we had you
+    compose read and show one time to complete a "round
+    trip." Well, now you can test that it works::
+
+      f x = (read (show x)) == x

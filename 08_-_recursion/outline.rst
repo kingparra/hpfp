@@ -14,7 +14,8 @@
   Recursion is the only method of expressing repetition in Haskell, so you need to understand it in
   order to read other peoples code. Even though you can express repetition yourself using only
   higher-order functions like map, filter, and fold, direct recursion is used a lot by other
-  programmers.
+  programmers. If the language disallowed direct recursion, and only allowed use of HOFs for control
+  flow, maybe you wouldn't have to worry about it, but Haskell doesn't do that, so learn recursion!
 
 * 8.2 Factorial!
 

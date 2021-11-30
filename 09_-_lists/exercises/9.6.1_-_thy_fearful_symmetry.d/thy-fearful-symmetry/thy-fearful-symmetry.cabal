@@ -1,0 +1,38 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 4be7c109191e50eb6688ecebbbcc8956bc73b1458be200138aed96bd732d45bc
+
+name:           thy-fearful-symmetry
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Lib
+      PoemLines
+  other-modules:
+      Paths_thy_fearful_symmetry
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite thy-fearful-symmetry-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_thy_fearful_symmetry
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , hspec
+    , thy-fearful-symmetry
+  default-language: Haskell2010

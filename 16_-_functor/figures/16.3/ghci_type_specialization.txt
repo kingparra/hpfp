@@ -1,0 +1,9 @@
+·∾ :set -XTypeApplications
+·∾ -- https://stackoverflow.com/questions/40275080/
+·∾ -- how-do-you-use-typeapplications-in-haskell
+
+·∾ :type fmap @Maybe
+fmap @Maybe :: (a -> b) -> Maybe a -> Maybe b
+
+·∾ :type fmap @(Either _)
+fmap @(Either _) :: (a -> b) -> Either _ a -> Either _ b

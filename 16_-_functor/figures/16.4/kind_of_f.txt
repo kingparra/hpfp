@@ -1,0 +1,6 @@
+-- 16.4 Let's talk about f baby
+-- 16.4.1 Shining star come into view
+-- page 627, fig 1
+
+·∾ :kind (->)
+(->) :: * -> * -> *

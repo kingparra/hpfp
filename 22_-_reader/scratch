@@ -1,0 +1,38 @@
+·∾ -- 22.2 A new beginning
+
+This section demonstrates how the instances of Functor,
+Applicative, and Monad work for functions.
+
+The function is represented as ((->) r) in the instance
+definitions, where (->) is the function type constructor, and r
+is a type variable to it.
+
+In all cases, the "structure" being operated on by the class
+methods is (->), and the "contained element" is the argument to
+that function on the term level, which is of type r.
+
+
+·∾ -- Functor for functions
+
+·∾ -- We can fmap a function over another function, like this:
+·∾ fmap (\x -> (*) x 2) (\y -> (+) y 10) $ 5
+30
+
+·∾ -- What happens is that (\x -> (*) x 2) is applied to y.
+·∾ -- [ y := ((\x -> (*) x 2) y) ]
+·∾ (\y -> (+) ((\x -> (*) x 2) y) 10) 5
+20
+
+·∾ -- This means that in order for the resulting function to compl
+ete its evaluation, the argument to it must first be passed throug
+h the function that we're mapping.
+
+·∾ -- Which is really just function composition. So this...
+
+·∾ (\x -> (*) x 2) . (\y -> (+) y 10) $ 5
+30
+
+·∾ -- is the same as this...
+
+·∾ (\x -> (*) x 2) <$> (\y -> (+) y 10) $ 5
+30

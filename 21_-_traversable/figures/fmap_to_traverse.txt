@@ -1,0 +1,13 @@
+fmap ::  (a -> b)  ->  f a  ->  f b
+
+-- b ~ t c
+fmap ::  (a -> t c)  ->  f a  ->  f (t c)
+
+-- (a -> t c) can be an effectful function, like Leaf.
+
+-- The function a -> t c would inject this t
+-- effect while acting on a, preserving the
+-- structure of f while doing so.
+
+-- For traverse, it flips the f and t so the
+-- result is t (f c).

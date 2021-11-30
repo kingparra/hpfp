@@ -1,0 +1,8 @@
+Zipping exercises
+^^^^^^^^^^^^^^^^^
+1. ``zip' x y = [(a,b) | a <- x, b <- y]`` This doesn't work... ``Prelude> zip'
+   [1..3] [3..99]`` should stop evaluating the second list after three elements,
+   but keeps on going to the end.
+2.
+3.
+
