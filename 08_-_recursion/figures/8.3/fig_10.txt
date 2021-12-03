@@ -1,0 +1,11 @@
+Prelude> :l code/brokenMaybe1.hs
+[1 of 1] Compiling Main
+brokenMaybe1.hs:2:11: error:
+• No instance for (Num (Maybe Int)) arising from the literal ‘0’
+• In the expression: 0
+  In an equation for ‘f’: f False = 0
+    |
+  2 | f False = 0
+    |           ^
+
+Failed, no modules loaded.

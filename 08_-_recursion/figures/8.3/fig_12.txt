@@ -1,0 +1,11 @@
+·∾ :load figures/8.3/fig_11.hs
+[1 of 1] Compiling Main             ( figures/8.3/fig_11.hs, interpreted )
+
+figures/8.3/fig_11.hs:2:11: error:
+    • Couldn't match expected type ‘Maybe Int’ with actual type ‘Int’
+    • In the expression: 0 :: Int
+      In an equation for ‘f’: f False = 0 :: Int
+  |
+2 | f False = 0 :: Int
+  |           ^^^^^^^^
+Failed, no modules loaded.
