@@ -186,48 +186,60 @@
 
   * p14. "We'll explain ``Maybe`` in more detail later."
 
+.. TODO Update section 8.4 to reflect the new structure in v1 of the book. It currently is modeled
+   after RC2.
+
 * 8.4 Fibonacci numbers
 
   * p1. We're going to walk through how to write a Fibonacci function.
-  * p2.
 
-    * f1.
+  * 8.4.1 Consider the types
 
-  * p3.
-  * p4.
+    * p2.
 
-    * f2.
+      * f1.
 
-  * p5.
-  * p6.
+  * 8.4.2 Consider the base case
 
-    * f3.
+    * p3.
+    * p4.
 
-  * p7.
+      * f2.
 
-    * f4.
+  * 8.4.3 Consider the arguments
 
-  * p8.
+    * p5.
+    * p6.
 
-    * f5.
+      * f3.
 
-  * p9.
+  * 8.4.4 Consider the recursion
 
-    * f6.
+    * p7.
 
-  * p10.
+      * f4.
 
-    * f7.
+    * p8.
 
-  * p11.
+      * f5.
 
-    * f8.
+    * p9.
 
-  * p12.
+      * f6.
 
-    * f9.
+    * p10.
 
-  * p13.
+      * f7.
+
+    * p11.
+
+      * f8.
+
+    * p12.
+
+      * f9.
+
+    * p13.
 
 * 8.5 Integral division from scratch
 * 8.6 Chapter exercises
