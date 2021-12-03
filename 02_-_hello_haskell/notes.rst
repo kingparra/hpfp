@@ -40,6 +40,8 @@ because it will provide a compiler to execute our code with.
     * `An excellent video series <https://www.youtube.com/playlist?list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV>`_
     * `The GHC users guide <https://downloads.haskell.org/ghc/latest/docs/html/users_guide>`_
     * `The Haskell 2010 language report <https://www.haskell.org/onlinereport/haskell2010/>`_
+    * `A hierarchial list of libraries included with a typical installation of haskell
+      <http://downloads.haskell.org/~ghc/8.6.5/docs/html/libraries/index.html>`_
 
     I've included a bash script to download these things for you, in pdf
     where possible, under ``02_-_hello_haskell/fetch_resources.bash``.
