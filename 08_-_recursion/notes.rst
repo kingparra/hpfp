@@ -75,13 +75,6 @@
 
 8.1 Recursion
 -------------
-A recursive function is one that is defined in terms of itself. The recursive function will call
-itself with new arguments during its evaluation until some stopping condition is met to end the
-recursion. Recursive function evaluation may perform an indefinite number of repetitions. The number
-of repetitions is controlled not by a particular countdown mechanism with a predefined number of
-repetitions, but by whether or not the input arguments meet the functions stopping condition.
-
-
 .. topic:: Recursion as a general concept
 
    Recursion is a general pattern where something contains a smaller instance of itself.
@@ -89,7 +82,7 @@ repetitions, but by whether or not the input arguments meet the functions stoppi
    world and in language.
 
    In Haskell, we use recursion to express repetition. Wherever an indefinite control flow construct
-   like a while-do-done loop is used, you can use recursion instead.
+   like a while-do-done loop is normally used, you can use recursion instead.
 
    In problem analysis, recursion can be thought of as a special case of divide-and-conquer to break
    problems down into subproblems that are easier to solve.
@@ -98,8 +91,8 @@ repetitions, but by whether or not the input arguments meet the functions stoppi
 
    Recursion is interesting because it combines three separate steps:
 
-   * An inductive reasoning step (in the form of a problem decomposition);
-   * a control flow transfer step (in the form of transferring control to a new function stack frame);
+   * An inductive reasoning step (in the form decomposiing a problem into a subproblem);
+   * a control flow transfer step (from the previous function execution instance to the new one);
    * and a data transformation step (in the form of a function call with new argument values).
 
 .. topic:: Unifing control-flow and data-flow
@@ -111,6 +104,8 @@ repetitions, but by whether or not the input arguments meet the functions stoppi
    both. This makes execution of a Haskell program less like updating registers of a machine that
    advances a program counter, and more like evaluating a system of equations in algebra.
 
+   Exceptions are also a mechanism for control flow, I suppose, but I don't know how that works yet.
+
 .. topic:: Recursive function calls as a means of expressing repetition
 
    Recursive patterns of application correspond to repeated evaluation of subexpressions. This is
@@ -121,8 +116,8 @@ repetitions, but by whether or not the input arguments meet the functions stoppi
    Paragraph three asks this question: How do we define a recursive anonymous function? Doesn't the
    function need a name so that it can call itself?
 
-   One workaround is to provide a duplicate of the function as an input argument, which is then
-   bound to a parameter name, so that it can be called, like so::
+   One workaround is to provide a duplicate of the function as an input argument value, which is
+   then bound to a parameter name so that it can be called within the function definition, like so::
 
      ·∾  import Data.Function (fix)
 
@@ -169,18 +164,36 @@ Let's examine a simple factorial function::
   factorial n = n * factorial (n - 1)
 
 .. "Base case" is first mentioned in 8.2, paragraph 5, **"Let's look at some broken code to
-   introduce the concept of a base case:"**.
-
-   paragraph 7, sentence a **"The way we can stop a recursive expression is by having a base case
-   that stops the sel-application to further arguments."**, sentence c **"Here's what that looks
-   like for factorial:"**.
+.. introduce the concept of a base case:"**.
+..
+.. paragraph 7, sentence a **"The way we can stop a recursive expression is by having a base case
+.. that stops the sel-application to further arguments."**, sentence c **"Here's what that looks
+.. like for factorial:"**.
 
 Recursive functions are comprised of two categories of input cases: base cases and recursive cases.
 A recursive function can contain any number of base cases, but must have at least one recursive
 case.
 
-Base cases are where the functions output can be obtained without requiring further recursive calls.
-In the ``factorial`` function declaration above, the base case is ``factorial 0 = 1``.
+.. What is a "case" in mathematics? I've seen a few phrases that use the term: special case, edge
+.. case, base case, recursive case.
+..
+.. ddg.gg "!mw case". 1a: a set of circumstances or conditions. 2: condition. 4: what actually
+.. exists or happens. "thought he had failed, but that wasn't the case."
+..
+.. Case. Noun (1). Case is used to direct attention to a real or assumed occurence or situation that
+.. is to be considered, studied, or dealt with. "a case of mistaken identity"
+..
+.. ddg.gg "!etymology case".
+.. https://www.etymonline.com/word/case
+.. case, from latin casus "a chance, occasion, opportunity; accident, mishap". Literally "a falling"
+.. from cas-, past participle stem of cadere "to fall, sink, settle down, decline perish". from PIE
+.. root \*kad- "to fall". The notion is of "that which falls" as "that which happens" (compare
+.. befall).
+
+Base cases are where a functions output can be obtained without requiring further recursive calls.
+In the ``factorial`` function declaration above, the base case is written as the equation
+``factorial 0 = 1``. Technically, the input value ``0`` is the base case, and ``1`` is the value
+that corresponds to it.
 
 Recursive cases are where self-referencing function calls occur. A recursive function call is where
 the function definition is applied to different input values. Each call of the function splits the
@@ -225,7 +238,8 @@ never stop, subtracting forever.
 ..       and the applications can be infinite if a stopping point is not clearly defined"**.
 
 Here's another example, to show how building up the call stack resembles
-composing multiple instances of the same function::
+composing multiple instances of the same function (this is a combination
+of figures 8 and 9)::
 
   applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
   applyTimes 0 f b = b
