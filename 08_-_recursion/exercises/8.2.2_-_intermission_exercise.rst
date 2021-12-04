@@ -1,8 +1,30 @@
 8.2.2 Intermission: Exercise
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Write out the evaluation of ``applyTimes 5 (+1) 5``
+Write out the evaluation of ``applyTimes 5 (+1) 5``. It might be
+a little less noisy if you do so with the form that doesn't use
+the composition operator, ``(.)``.
 
-First I'll provide the definition for context::
+With the definition of ``applyTimes`` that doesn't use composition::
+
+  applyTimes 0 f b    =  b
+  applyTimes n f b    =  f (applyTimes (n-1) f b)
+
+Reduction steps::
+
+  applyTimes 5 (+1) 5  =  (+1) (applyTimes (5-1) (+1) 5)
+  applyTimes 4 (+1) 5  =  (+1) ((+1) (applyTimes (4 -1) (+1) 5))
+  applyTimes 3 (+1) 5  =  (+1) ((+1) ((+1) (applyTimes (3 -1) (+1) 5)))
+  applyTimes 2 (+1) 5  =  (+1) ((+1) ((+1) ((+1) (applyTimes (2 -1) (+1) 5))))
+  applyTimes 1 (+1) 5  =  (+1) ((+1) ((+1) ((+1) ((+1) (applyTimes (1 -1) (+1) 5)))))
+  applyTimes 0 (+1) 5  =  (+1) ((+1) ((+1) ((+1) ((+1) 5))))
+                       =  (+1) ((+1) ((+1) ((+1) 6)))
+                       =  (+1) ((+1) ((+1) 7))
+                       =  (+1) ((+1) 8)
+                       =  (+1) 9
+                       =  10
+
+Using composition this time. First I'll provide the definition
+for context::
 
   applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
   applyTimes 0 f b  =  b
@@ -21,3 +43,6 @@ Now to show the reduction steps::
                        =  (+1) . (+1) $  8
                        =  (+1) $  9
                        =   10
+
+I think this version is easier to read. At least there are fewer
+parenthesis.
