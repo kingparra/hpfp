@@ -21,10 +21,7 @@
     function literals can be written using the Y-combinator in both languages.
 
   * p4. Recursion is the only method of expressing repetition in Haskell, so you need to understand it in
-    order to read other peoples code. Even though you can express repetition yourself using only
-    higher-order functions like map, filter, and fold, direct recursion is used a lot by other
-    programmers. If the language disallowed direct recursion, and only allowed use of HOFs for control
-    flow, maybe you wouldn't have to worry about it, but Haskell doesn't do that, so learn recursion!
+    order to read other peoples code. Something about leaky abstractions and HOFs.
 
 * 8.2 Factorial!
 
@@ -74,7 +71,8 @@
 
     * p4. And when we use it like this:
 
-      * f2. Shows an example of using ``(.)`` to compose functions.
+      * f2. Shows an example of using ``(.)`` to compose functions that get the first five odd
+        numbers after three.
 
     * p5.
     * p6. "Recursion is self-referential composition." Or, really, composition resembles the
@@ -191,27 +189,47 @@
 
 * 8.4 Fibonacci numbers
 
-  * p1. We're going to walk through how to write a Fibonacci function.
+  * p1. In order to demonstrate how to create recursive
+    functions, we're going to walk through how to write a
+    function that calculates the :math:`n`\th element of
+    the Fibonacci sequence.
 
   * 8.4.1 Consider the types
 
-    * p2.
+    * p2. First consider what the input and output should be, and
+      then encode that in a type signature. Consider any
+      preconditions for valid input.
 
-      * f1.
+      * f1. Shows the type signature of ``fibonacci``.
 
   * 8.4.2 Consider the base case
 
-    * p3.
-    * p4.
+    * p3. When can you solve the problem directly, without
+      recursing? In this case, ``fibonacci`` should only operate
+      on positive numbers, so if we get an argument value of 0,
+      we'll return a 0 to stop the recursion. (It would probably
+      make more sense to use a different type.)
 
-      * f2.
+    * p4. Fibonacci requires two base cases, since the sequence
+      by definition starts with :math:`(0,1,…)`.
+
+    * f2. Shows equations representing the two base cases of
+      the ``fibonacci`` function and the function type signature
+      in Haskell.
 
   * 8.4.3 Consider the arguments
 
-    * p5.
-    * p6.
+    I don't understand this section.
 
-      * f3.
+    * p5. Each argument is a number that represents an index for
+      the member of the Fibonacci sequence we want.
+
+    * p6. In order to come up with the new element we must
+      retrieve the two preceding elements.
+
+      * f3. Same as the last figure, but also shows a stub for
+        the recursive case that contains the arguments without
+        any function calls.
 
   * 8.4.4 Consider the recursion
 
