@@ -75,18 +75,6 @@
 
 8.1 Recursion
 -------------
-.. topic:: Recursion as a general concept
-
-   Recursion is a general pattern where something contains a smaller instance of itself.
-   It can be recognized in all kinds of structures and processes, both in the natural
-   world and in language.
-
-   In Haskell, we use recursion to express repetition. Wherever an indefinite control flow construct
-   like a while-do-done loop is normally used, you can use recursion instead.
-
-   In problem analysis, recursion can be thought of as a special case of divide-and-conquer to break
-   problems down into subproblems that are easier to solve.
-
 .. topic:: Recursive function calls combine several concerns
 
    Recursion is interesting because it combines three separate steps:
@@ -103,13 +91,6 @@
    separate graph for the control flow and data flow of a program, there is one graph that represents
    both. This makes execution of a Haskell program less like updating registers of a machine that
    advances a program counter, and more like evaluating a system of equations in algebra.
-
-   Exceptions are also a mechanism for control flow, I suppose, but I don't know how that works yet.
-
-.. topic:: Recursive function calls as a means of expressing repetition
-
-   Recursive patterns of application correspond to repeated evaluation of subexpressions. This is
-   similar to what loops are used for in imperative languages.
 
 .. topic:: Recursive function definitions without a name
 
@@ -321,90 +302,6 @@ Another source of bottom values are intentionally thrown errors. The function
   *** Exception: Should this be in a monad?
   CallStack (from HasCallStack):
     error, called at <interactive>:27:1 in interactive:Ghci9
-
-
-8.4 Fibonacci numbers
----------------------
-Honestly fuck this whole section.
-.. A sequence in mathematics is an enumerated collection of elements
-.. where repetitions are allowed and order matters. The position of
-.. an element in a sequence is known as its rank or index.
-.. Sequences can be finite, or infinite in one direction, or
-.. infinite in both directions. Elements usually have some relation
-.. to previous elements. This relation is sometimes called a *rule*,
-.. and can be used to calculate the element at the :math:`n`\th index.
-
-.. The Fibonacci sequence looks like this: :math:`(0, 1, 1, 2, 3, 5,
-.. 8, 13, 21, 34, …)`. The first two elements are :math:`0` and
-.. :math:`1`, respectively. After that, each successive element can
-.. be determined by adding the two preceding elements together.
-.. When written as a set of equational laws, or rules, it looks like
-.. this: :math:`x_{1} = 0, x_{2} = 1, x_{n} = x_{n-1} + x_{n-2}`.
-
-.. .. topic:: Patterns within the Fibonacci sequence
-
-..    Fibonacci has a few interesting patterns.
-
-..    * Every :math:`n`\th element is a multiple of its index.
-
-..    * When you take any two successive Fibonacci numbers, their
-..      ratio is very close to the golden ratio. The bigger the pair
-..      of Fibonacci numbers, the closer the approximation.
-
-..    * You can construct a Fibonacci number in terms of phi (the golden ratio).
-..      Written in Haskell-style psuedocode, the formula looks like
-..      this::
-
-..        x !! n   =   (phi^n - (1-phi)^n)  /  sqrt 5
-
-.. .. topic:: The original problem description for the Fibonacci sequence
-
-..    The original problem that Fibonacci investigated (in the year
-..    1202) was about how fast rabbits could breed in ideal
-..    circumstances.
-
-..    Suppose a newly-born pair of rabbits, one male, one female, are
-..    put in a field. Rabbits are able to mate at the age of one month
-..    so that at the end of its second month a female can produce
-..    another pair of rabbits. Suppose that our rabbits never die and
-..    that the female always produces one new pair (one male, one
-..    female) every month from the second month on. The puzzle that
-..    Fibonacci posed was...
-
-..    How many pairs will there be in one year?
-
-..    * At the end of the first month, they mate, but there is
-..      still one only 1 pair.
-..    * At the end of the second month the female produces a new
-..      pair, so now there are 2 pairs of rabbits in the field.
-..    * At the end of the third month, the original female
-..      produces a second pair, making 3 pairs in all in the
-..      field.
-..    * At the end of the fourth month, the original female
-..      has produced yet another new pair, the female born
-..      two months ago produces her first pair also, making 5
-..      pairs.
-
-.. In this section, we'll demonstrate how to design recursive solutions
-.. by breaking defining a function to calculate the :math:`n`\th element
-.. of the Fibonacci sequence given any positive index number :math:`n`.
-
-.. 8.4.1 Consider the types
-.. ^^^^^^^^^^^^^^^^^^^^^^^^
-.. Writing a type signature involves determining what the input should be,
-.. what final output should be, and expressing it as a stub.
-
-.. 8.4.2 Consider the base case
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. Why is 0 a reasonable base case?
-
-.. 8.4.3 Consider the arguments
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. What the fuck is up with this section? What!?
-
-.. 8.4.4 Consider the recursion
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. Why is this a separate step? What the fuck is this, even?
 
 
 8.5 Integral division from scratch
