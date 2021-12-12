@@ -21,7 +21,7 @@ messier than my normal written communication style.)
 
 The basic idea is to duplicate a function definition, and then feed the duplicate definition to the
 original as an argument. The original function expression takes that argument, binds it to a
-parameter, and then calls that parameter with new arguments in the recursive case.
+parameter name, and then calls that parameter with new arguments in the recursive case.
 
 Here's how you might do that in Haskell, using an anonymous function literal.
 
