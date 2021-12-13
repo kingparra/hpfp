@@ -15,7 +15,7 @@
 
 
 
-  Recursion (rĭ-kûr’-zhən) noun. If you still don’t get it, see recursion.
+  "Recursion (rĭ-kûr’-zhən) noun. If you still don’t get it, see recursion."
 
 
 
@@ -25,7 +25,7 @@
 
 
 
-  **A process or structure is recursive when it contains progressively smaller nested instances of itself.**
+  A process or structure is recursive when it contains progressively smaller nested instances of itself.
 
 
 
@@ -75,14 +75,6 @@
 
 8.1 Recursion
 -------------
-.. topic:: Recursive function calls combine several concerns
-
-   Recursion is interesting because it combines three separate steps:
-
-   * An inductive reasoning step (in the form decomposiing a problem into a subproblem);
-   * a control flow transfer step (from the previous function execution instance to the new one);
-   * and a data transformation step (in the form of a function call with new argument values).
-
 .. topic:: Unifing control-flow and data-flow
 
    Function calls are the only mechanism for control flow in Haskell. They're also the only mechanism
@@ -178,9 +170,10 @@ that corresponds to it.
 
 Recursive cases are where self-referencing function calls occur. A recursive function call is where
 the function definition is applied to different input values. Each call of the function splits the
-input it into smaller instances of that function, building up intermediate results along the way
-which will eventually be combined to arrive at the final answer. In our function declaration, the
-recursive case is the equasion ``factorial n = n * factorial (n - 1)``.
+input into smaller instances of that function, with each instance representing an intermediate
+result along the way.  Theses intermediate results will eventually be combined to arrive at the
+final answer. In our function declaration, the recursive case is the equasion ``factorial n = n *
+factorial (n - 1)``.
 
 In order for function evaluation to eventually stop, each recursive call of this case should move
 progressively closer towards one of the base cases. If not, the function will call itself forever, a

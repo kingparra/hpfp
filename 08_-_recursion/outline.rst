@@ -222,7 +222,7 @@
     I don't understand this section.
 
     * p5. Each argument is a number that represents an index for
-      the member of the Fibonacci sequence we want.
+      the element of the Fibonacci sequence we want to retrieve.
 
     * p6. In order to come up with the new element we must
       retrieve the two preceding elements.
