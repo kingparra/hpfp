@@ -162,18 +162,20 @@ case.
 .. from cas-, past participle stem of cadere "to fall, sink, settle down, decline perish". from PIE
 .. root \*kad- "to fall". The notion is of "that which falls" as "that which happens" (compare
 .. befall).
+..
+.. Maybe it's called the "base case" because it forms the *basis* of any inductive reasoning steps
+.. describe in the recursive case.
 
 Base cases are where a functions output can be obtained without requiring further recursive calls.
 In the ``factorial`` function declaration above, the base case is written as the equation
 ``factorial 0 = 1``. Technically, the input value ``0`` is the base case, and ``1`` is the value
-that corresponds to it.
+that corresponds to it. If you think of recursive call as inductive reasoning steps, the base case
+forms *the basis* for those inferences.
 
-Recursive cases are where self-referencing function calls occur. A recursive function call is where
-the function definition is applied to different input values. Each call of the function splits the
-input into smaller instances of that function, with each instance representing an intermediate
-result along the way.  Theses intermediate results will eventually be combined to arrive at the
-final answer. In our function declaration, the recursive case is the equasion ``factorial n = n *
-factorial (n - 1)``.
+Recursive cases are where self-referencing function calls occur. A recursive call applies the
+function definition to different input values. Each call of the function splits the input into
+smaller values of that function. Theses values are then combined to arrive at the final answer. In
+our function declaration, the recursive case is the equation ``factorial n = n * factorial (n - 1)``.
 
 In order for function evaluation to eventually stop, each recursive call of this case should move
 progressively closer towards one of the base cases. If not, the function will call itself forever, a
@@ -322,3 +324,11 @@ doesn't care about:
 
 
 .. further reading: https://blog.sumtypeofway.com/posts/introduction-to-recursion-schemes.html
+
+.. Categories of recursive procedures
+.. ----------------------------------
+.. linear: when a methods call itself only once each repetition.
+.. tail: like linear recursion, but the recursive call is the last operation carried out in the recursive case.
+.. multiple: when a method calls itself several times at once in some recursive case.
+.. mutual: When a set of methods call each other cyclically. Sometimes called indirect recursion.
+.. nested: when an argument of a recursive function is defined through another recursive call.  Consider the McCarthy 91 function.
