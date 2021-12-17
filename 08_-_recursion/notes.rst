@@ -304,7 +304,6 @@ Another source of bottom values are intentionally thrown errors. The function
 
 8.4.1 Consider the types
 ^^^^^^^^^^^^^^^^^^^^^^^^
-
 .. topic:: Why didn't the authors use ``Natural``?
 
    The Fibonacci function we're defining only works on positive numbers, so it makes more sense to
@@ -324,6 +323,11 @@ Another source of bottom values are intentionally thrown errors. The function
    I'm still confused, and I'll have to read up on this. But hey, I learned something new!
 
    https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/exts/lexical_negation.html#extension-LexicalNegation
+
+.. topic:: Can I write a better type signature for Fibonacci?
+
+   Here's an article about writing a proof for Fibonacci in a LiquidHaskell type annotation.
+   https://ucsd-progsys.github.io/liquidhaskell-blog/2016/09/18/refinement-reflection.lhs/
 
 
 8.5 Integral division from scratch
