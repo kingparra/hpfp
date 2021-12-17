@@ -299,6 +299,33 @@ Another source of bottom values are intentionally thrown errors. The function
     error, called at <interactive>:27:1 in interactive:Ghci9
 
 
+8.4 Fibonacci numbers
+---------------------
+
+8.4.1 Consider the types
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. topic:: Why didn't the authors use ``Natural``?
+
+   The Fibonacci function we're defining only works on positive numbers, so it makes more sense to
+   use a type that can only represent positive integers, like ``Natural`` or ``Word``. Why didn't
+   the authors do that?
+
+   Probably to avoid discussing the mechanics of how negative numeric literals are resolved to
+   values by GHC.
+
+   When GHC evaluates an expression like ``(-10)``, it does not immediately turn it into a
+   number with the value :math:`-10`, but instead desugurs it into ``(negate 10)``. At this
+   point, ``negate`` tries to turn a value ``10`` to ``(-10)`` of type ``Natural``, but it
+   can't, so it throws an exception if done at runtime. If we try compiling a file with this
+   expression, instead, we'll get a warning and it won't compile. I was expecting a type
+   error, instead.
+
+   I'm still confused, and I'll have to read up on this. But hey, I learned something new!
+
+   https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/exts/lexical_negation.html#extension-LexicalNegation
+
+
 8.5 Integral division from scratch
 ----------------------------------
 Here's an example for integral division. The inner ``go``
