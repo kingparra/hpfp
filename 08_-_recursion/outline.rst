@@ -13,15 +13,19 @@
 
 * 8.1 Recursion
 
-  * p1. What makes a function recursive. Indefinite repetitions.
+  * p1. Characteristics of a recursive function definition. (This paragraph is not a definition of
+    recursion itself, as a general idea, and it's not to be taken literally.) Input determines
+    when the evaluation of a recursive process will end.
 
-  * p2. Recursion is a pattern that occurs in language and nature. Indefinite repetitions.
+  * p2. An example of recursion in language. A limited recursive expression can produce an unlimited
+    number of computations. The number of repetitions are not defined beforehand, but determined by
+    the input.
 
   * p3. Haskell and lambda calculus have similar evaluation strategies, and recursive anonymous
-    function literals can be written using the Y-combinator in both languages.
+    function literals can be written using combinators like the Y-combinator in both languages.
 
-  * p4. Recursion is the only method of expressing repetition in Haskell, so you need to understand it in
-    order to read other peoples code. Something about leaky abstractions and HOFs.
+  * p4. Recursion is the only method of expressing repetition in Haskell, so you need to understand
+    it in order to read other peoples code. Something about leaky abstractions and HOFs.
 
 * 8.2 Factorial!
 
@@ -31,7 +35,7 @@
 
     * f1. Shows the evaluation steps for 4!.
 
-  * p3. Now let's look at a factorial definition, for only one input, the number 4.
+  * p3. Now let's look at a factorial definition in Haskell, for only one input, the number 4.
 
     * f2. Shows a definition of a literal value equivalent to ``factorial 4``.
 
@@ -197,8 +201,8 @@
   * 8.4.1 Consider the types
 
     * p2. First consider what the input and output should be, and
-      then encode that in a type signature. Consider any
-      preconditions for valid input.
+      then encode that in a type signature. The preconditions for
+      valid input are hints about what type you should use.
 
       * f1. Shows the type signature of ``fibonacci``.
 
@@ -260,9 +264,80 @@
     * p13.
 
 * 8.5 Integral division from scratch
+
+  * p1. Multiplication can be defined in terms of repeated addition. Likewise, division can be
+    defined in terms of repeated subtraction.
+
+  * p2. We will show how to define a function that performs multiplication in terms of addition
+    using recursion, step by step.
+
+    (Instead of explaining how to come up with a solution, this explains an existing solution step
+    by step. Annoying!)
+
+    * f1. Shows the type signature for ``dividedBy``.
+
+  * p3. "Instead of havin all the types labeled Integer we can instead do:"
+
+    * f2. Shows type aliases ``Numerator``, ``Denominator``, and ``Quotient`` in the type signature
+      for ``dividedBy``.
+
+  * p5. ``type`` introduces a type alias.
+
+  * p6. We aren't going to use those type synonyms after all. We also haven't written out a
+    recursive implementation of ``dividedBy`` yet.
+
+  * p7. The base case is when our result is lower than the divisor.
+
+    * f3. Shows a psuedocode example of :math:`20/4` in terms of repeated subtraction steps. In
+      comments, a stopping condition (result < divisor), and a count of the number of subtraction steps
+      are mentioned.
+
+  * p8. "Otherwise, we'll have a remainder. Let's look at a case where it doesn't divide evenly:"
+
+    * f4. Shows :math:`24/5` in the same style as above.
+
+  * p9. We can generalize the calculations in the figures above as a function. Also, now that the
+    possibility of a remainder has been pointed out, we want to reflect it in the type signature by
+    returning a tuple of ``(count, remainder)``.
+
+    * f5. Shows a definition of ``dividedBy``.
+
+  * p10. We changed the type signature to use ``Integral a =>`` and also to return a tuple ``(a,
+    a)``.
+
+  * p11. Explanation of ``go`` function idiom. Go functions are inner functions. This one keeps
+    track of an extra argument, the count.
+
+  * p12. Explains the two branches of the go function.
+
+  * p13. The result is our base case.
+
+  * p14. "Here’s an example of how dividedBy expands but with the code inlined:"
+
+    * f6. ``dividedBy 10 2``
+
+  * p15. First we'll show it in psuedocode, but keep track of how many times we'll subtract.
+
+    * f7.
+
+  * p16.
+
+  * p17. "Now, we'll expand the code:"
+
+    * f8. Shows a fragment of ``dividedBy``'s code during evaluation..
+
+  * p18. "The otherwise above is literally the value True, so if the first branch
+    fails, the otherwise branch always succeeds:"
+
+    * f9. Continues the evaluation of ``dividedBy``'s recursive branch until the base case it hit.
+
+  * f19. Explanation of final output.
+
 * 8.6 Chapter exercises
 
   * 8.6.1 Review of types
+
+    This is a series of multiple-choice questions asking the type signature of different expressions.
 
     * 1
     * 2
@@ -270,6 +345,8 @@
     * 4
 
   * 8.6.2 Reviewing currying
+
+    Desk-check the evaluation steps of the following expressions.
 
     * 1
     * 2
