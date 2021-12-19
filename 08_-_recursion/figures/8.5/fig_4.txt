@@ -1,0 +1,10 @@
+Solve 25 divided by 4
+
+25 divided by 4 == 25 - 4, 21
+                      - 4, 17
+                      - 4, 13
+                      - 4, 9
+                      - 4, 5
+                      - 4, 1
+
+We stop at 1, because it's less than 4.

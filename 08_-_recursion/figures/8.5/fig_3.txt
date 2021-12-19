@@ -1,0 +1,13 @@
+Solve  20  divided by 4
+--     [1]           [2]
+-- [1]: Dividend or numerator
+-- [2]: Divisor or denominator
+-- Result is quotient
+
+20 divided by 4 == 20 - 4, 16
+                      - 4, 12
+                      - 4, 8
+                      - 4, 4
+                      - 4, 0
+-- 0 is less than 4, so we stop.
+-- We subtract 5 times, so 20 / 4 == 5

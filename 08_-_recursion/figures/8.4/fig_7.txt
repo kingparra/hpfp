@@ -1,0 +1,2 @@
+Prelude> fibonacci 6
+8

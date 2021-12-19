@@ -1,0 +1,6 @@
+10 divided by 2 ==
+  10 - 2, 8 (subtracted 1 time)
+     - 2, 6 (subtracted 2 times)
+     - 2, 4 (subtracted 3 times)
+     - 2, 2 (subtracted 4 times)
+     - 2, 0 (subtracted 5 times)

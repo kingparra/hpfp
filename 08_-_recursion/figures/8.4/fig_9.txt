@@ -1,0 +1,8 @@
+-- 8.4.4 Consider the recursion, Paragraph 12, top of page 289
+fibonacci 0 +            0
+fibonacci 1 +            1
+fibonacci 2 +  (1 + 0 =) 1
+fibonacci 3 +  (1 + 1 =) 2
+fibonacci 4 +  (1 + 2 =) 3
+fibonacci 5 =  (2 + 3 =) 5
+fibonacci 6 =  (3 + 5 =) 8
