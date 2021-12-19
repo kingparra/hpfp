@@ -14,8 +14,8 @@
 * 8.1 Recursion
 
   * p1. Characteristics of a recursive function definition. (This paragraph is not a definition of
-    recursion itself, as a general idea, and it's not to be taken literally.) Input determines
-    when the evaluation of a recursive process will end.
+    recursion itself, as a general idea. Don't take it literally.) Input determines when the
+    evaluation of a recursive process will end.
 
   * p2. An example of recursion in language. A limited recursive expression can produce an unlimited
     number of computations. The number of repetitions are not defined beforehand, but determined by
@@ -188,9 +188,6 @@
 
   * p14. "We'll explain ``Maybe`` in more detail later."
 
-.. TODO Update section 8.4 to reflect the new structure in v1 of the book. It currently is modeled
-   after RC2.
-
 * 8.4 Fibonacci numbers
 
   * p1. In order to demonstrate how to create recursive
@@ -237,31 +234,37 @@
 
   * 8.4.4 Consider the recursion
 
-    * p7.
+    * p7. How will the function call itself? What needs to happen next to produce a Fibonacci
+      number?
 
-      * f4.
+      * f4. Shows a stub of the ``fibonacci`` function definition with the two base cases, but
+        without a complete recursive case.
 
-    * p8.
+    * p8. "If you pass the value 6 to that function, what will happen?"
 
-      * f5.
+      * f5. Shows GHCi output of ``fibonacci 6``.
 
-    * p9.
+    * p9. We want to add the elements, not the index numbers of those elements. So we'll call
+      ``fibonacci`` to retrieve them.
 
-      * f6.
+      * f6. Shows the complete definition of ``fibonacci``, with a working recursive case.
 
-    * p10.
+    * p10. "Now, if we apply this function to the value 6, we will get a different result:"
 
-      * f7.
+      * f7. Shows the GHCi output of ``fibonacci 6`` using the new definition.
 
-    * p11.
+    * p11. Why do we get this result? Because ``fibonacci`` evaluates its arguments recursively.
 
-      * f8.
+      * f8. Show each recursive function call that occurs when evaluating ``fibonacci 6``.
 
-    * p12.
+    * p12. "0 and 1 are defined as being equal to 0 and 1. So at this point, our recursion stops,
+      and the function starts adding up the result:"
 
-      * f9.
+      * f9. Shows the process of adding together the reduced value of all the recursive function
+        calls.
 
-    * p13.
+    * p13. Thinking about the evaluation process ahead of time can be intimidating. But you don't
+      have to do everything at once.
 
 * 8.5 Integral division from scratch
 
@@ -276,7 +279,7 @@
 
     * f1. Shows the type signature for ``dividedBy``.
 
-  * p3. "Instead of havin all the types labeled Integer we can instead do:"
+  * p3. "Instead of having all the types labeled Integer we can instead do:"
 
     * f2. Shows type aliases ``Numerator``, ``Denominator``, and ``Quotient`` in the type signature
       for ``dividedBy``.
