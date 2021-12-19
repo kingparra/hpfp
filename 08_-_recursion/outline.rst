@@ -1,14 +1,22 @@
 *******************
  Chapter 8 Outline
 *******************
+Here's the general structure of this outline. ::
 
-.. Here's the general structure of this outline.
-.. . . .
-..  * <section number> <section title>
-..    * p<paragraph number>. <One sentence summary of _what_ the main subject is. Not an
-..      explanation of the subject, unless I feel like explaining it.>
-..    * f<figure number>. <One sentence summary.>
-.. . . .
+  . . .
+
+   * <section number> <section title>
+
+     * p<paragraph number>. <One sentence summary of _what_ the main subject is. Not an
+       explanation of the subject, unless I feel like explaining it.>
+
+     * f<figure number>. <One sentence summary.>
+
+  . . .
+
+If something is nested, then it is subordinate to the section, paragraph, or figure in the book
+listed above it. A figure is often subordinate to a paragraph. A subsection is subordinate to a
+section.
 
 
 * 8.1 Recursion
@@ -340,16 +348,40 @@
 
   * 8.6.1 Review of types
 
-    This is a series of multiple-choice questions asking the type signature of different expressions.
-
     * 1
+
+      * a
+      * b
+      * c
+      * d
+
     * 2
+
+      * a
+      * b
+      * c
+      * d
+
     * 3
+
+      * a
+      * b
+      * c
+      * d
+
     * 4
+
+      * a
+      * b
+      * c
+      * d
 
   * 8.6.2 Reviewing currying
 
-    Desk-check the evaluation steps of the following expressions.
+    * p1. Desk-check the evaluation steps of the following expressions.
+
+      * f1. Shows the definitions of a few functions that concatenate strings and rearrange
+        arguments.
 
     * 1
     * 2
@@ -364,12 +396,59 @@
     * 2
     * 3
 
-  * 8.6.5 Fixing ``dividedBy``
-  * 8.6.6 ``McCarthy91`` function
-  * 8.6.7 Numbers into words
+  * 8.6.4 Fixing ``dividedBy``
+
+    * p1. ``dividedby`` is a undefined for numbers 0 or less.
+    * p2. Using ``div`` we can see how negative numbers should be handled:
+
+      * f1. Shows GHCi output of div against different arguments, both positive and negative.
+
+    * p3. The next issue is how to handle zero. Let's use a datatype to represent the possibility of
+      a result or a division by zero.
+
+      * f2. Shows the definition of ``DividedResult``.
+
+  * 8.6.5 ``McCarthy91`` function
+
+    * p1. We'll describe a function in English, math notation, and also show some test cases. Your
+      task is to write it in Haskell.
+    * p2. "The McCarthy 91 function yields x - 10 when x > 100 and 91 otherwise. The function is
+      recursive:"
+
+      * f1. Shows the McCarthy91 function in math notation.
+      * f2. Show an name binding in haskell for the identifier ``mc91`` to ``undefined``.
+
+    * p3. Map distributes a function over every element of a list.
+
+      * f3. Shows the GHCi output of ``map mc91 [95..110]``
+
+  * 8.6.6 Numbers into words
+
+    * f1.
+    * p1.
+    * p2.
+    * p3.
+    * p4.
+
+      * f2.
+
+    * p5. "Also consider:"
+
+      * f3.
+
+    * p6. "Here is what your REPL output should look like when it's working:"
+
+      * f4. Shows the GHCi output of ``wordNumber 123456``.
 
 * 8.7 Definitions
 
   * Recursion
 
-    This is a terrible definition of recursion.
+    * p1.
+    * p2. "This function is not recursive:"
+
+      * f1.
+
+    * p3. "This one is recursive:"
+
+      * f2.
