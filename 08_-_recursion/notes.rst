@@ -94,29 +94,35 @@
 
      ·∾  import Data.Function (fix)
 
-     ·∾ -- Fix duplicates the function and feeds it to itself as the first argument.
+     ·∾ -- Fix duplicates the function and feeds
+     ·∾ -- it to itself as the first argument.
 
      ·∾  fix (\f n -> if n == 0 then 1 else n * f (n-1)) 3
      6
 
      ·∾ import Unsafe.Coerce (unsafeCoerce)
 
-     ·∾ -- Fix, above, corresponds to the Y-combinator in lambda calculus, but the definition is
-     ·∾ -- pretty different. It looks like fix f = let x = f x in x. The lambda calculus version
-     ·∾ -- looks like (λy.(λx.y(xx))(λx.y(xx))).
+     ·∾ -- Fix, above, corresponds to the Y-combinator
+     ·∾ -- in lambda calculus, but the definition is
+     ·∾ -- pretty different. It looks like
+     ·∾ -- fix f = let x = f x in x. The lambda calculus
+     ·∾ -- version looks like (λy.(λx.y(xx))(λx.y(xx))).
 
-     ·∾ -- Using unsafeCoerce we can write a definition of the Y-combinator that
-     ·∾ -- corresponds closely to that found in untyped lambda calculus.
+     ·∾ -- Using unsafeCoerce we can write a definition
+     ·∾ -- of the Y-combinator that corresponds closely
+     ·∾ -- to that found in untyped lambda calculus.
+
+     ·∾ uc = unsafeCoerce
 
      ·∾ :{
-      ⋮ (\y -> (\x -> y (unsafeCoerce x x)) (\x -> y (unsafeCoerce x x)))
+      ⋮ (\y -> (\x -> y (uc x x)) (\x -> y (uc x x)))
       ⋮ (\f n -> if n == 0 then 1 else n * f (n-1))
       ⋮ 6
       ⋮ :}
      6
 
      ·∾ :{
-      ⋮ (\f -> (\x -> f (unsafeCoerce x x)) (\x -> f (unsafeCoerce x x)))
+      ⋮ (\f -> (\x -> f (uc x x)) (\x -> f (uc x x)))
       ⋮ (\f n -> if n == 0 then 1 else n * f (n-1))
       ⋮ 20
       ⋮ :}
