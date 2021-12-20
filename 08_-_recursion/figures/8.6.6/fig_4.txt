@@ -1,0 +1,2 @@
+Prelude> wordNumber 12324546
+"one-two-three-two-four-five-four-six"

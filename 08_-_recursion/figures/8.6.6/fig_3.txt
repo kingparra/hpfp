@@ -1,0 +1,8 @@
+Prelude> div 135 10
+13
+Prelude> mod 135 10
+5
+Prelude> div 13 10
+1
+Prelude> mod 13 10
+3

@@ -442,7 +442,7 @@ section.
 
 * 8.7 Definitions
 
-  * Recursion
+  * 8.7.1 Recursion
 
     * p1.
     * p2. "This function is not recursive:"
