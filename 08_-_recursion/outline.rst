@@ -7,17 +7,15 @@ Here's the general structure of this outline. ::
 
    * <section number> <section title>
 
-     * p<paragraph number>. <One sentence summary of _what_ the main subject is. Not an
-       explanation of the subject, unless I feel like explaining it.>
+     * p<paragraph number>. <One sentence summary of _what_ the
+       main subject is. Not an explanation of the subject,
+       unless I feel like explaining it.>
 
      * f<figure number>. <One sentence summary.>
 
   . . .
 
-If something is nested, then it is subordinate to the section, paragraph, or figure in the book
-listed above it. A figure is often subordinate to a paragraph. A subsection is subordinate to a
-section.
-
+If something is nested, then it is subordinate to the enclosing element.
 
 * 8.1 Recursion
 
