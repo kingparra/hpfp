@@ -68,6 +68,103 @@ For the identity function, every input value is a fixed point.
 Points that come back to the same value after a finite number of iterations of the function are
 called periodic points. A fixed point is a periodic point with period equal to one.
 
+
+.. topic:: Asking about it on IRC
+
+   ::
+
+    justsomeguy | Haskellbook says "Haskell has native recursion based on the same principle as the Y combinator". (Source here:
+                | https://gist.github.com/kingparra/a0600fe64999c391c320058aa0072125) What does that mean?
+    justsomeguy | In that gist, I added a comment with my stab at an explanation of that quote, but I feel like I'm missing something.
+      monochrom | I think it is either false or requires a very postmodern definition of "same principles".
+      monochrom | So let me start from the most anal and see if I can progress (regress?) to the most lax.
+      monochrom | The Y combinator is untypable in Haskell. So it is irrelevant right there.
+    justsomeguy | There are a lot of quotes like that in this book ... I think the intention is to relate how the evaluation strategy of LC
+                | is a useful mental model for how Haskell evaluates, but sometimes it's frustrating because it seems like some of these are
+                | factually incorrect.
+      monochrom | But you can work around by introducing a few newtype wrappings and unwrappings. It is not too bad. Then you can have an
+                | edited version of the Y combinator in Haskell.
+    justsomeguy | I did find a definition of Y in haskell, but it requires unsafeCoerce: y = \f -> (\x -> f (x' x)) (\x -> f (x' x))
+    justsomeguy |     where x' = unsafeCoerce x
+    justsomeguy | y
+     tomsmeding | I mean, the primary characteristic of the Y combinator is that Y f = f (Y f); and such a function does indeed exist: it's
+                | Data.Function.fix, defined as, you guessed it, fix f = f (fix f)
+      monochrom | But then, this still doesn't mean that Haskell's native recursion is actually defined in terms of that.
+    justsomeguy | Right, that what I'm wondering about. ...
+      monochrom | OK right, the next laxation is "we just mean that the fixed-point equation is solvable, and Y is one way to solve that
+                | equation".
+     tomsmeding | you need the weird structure of the standard Y combinator (which is untypeable in Haskell) because you don't have direct
+                | recursion in the standard lambda calculs
+      monochrom | But Y is by far not the only solution, not even in the untyped lambda calculus in the book's chapter 1.
+      geekosaur | I have this feeling it's really talking about letrec
+      geekosaur | but that's an odd way of putting it
+     tomsmeding | geekosaur: yeah, then it's doing the reader a disservice by saying that it's the same principle as the Y combinator
+      monochrom | This is a pretty broad disease. People cite Y as though it is the only solution. NO. There is an honest difference between
+                | "fixed point combinator" and Y.
+     tomsmeding | it's not, though it can be used to the same end
+      monochrom | In the same sense as "white horse is not horse" (white horses don't stand for all horses), Y is not fixed-point combinator.
+     tomsmeding | monochrom: are there any in the untyped lambda calculus that are typeable in Haskell?
+      monochrom | No. They all rely on \x -> x x
+     tomsmeding | makes sense
+      monochrom | Alternatively, if you delete recursive bindings and recursive data type definitions from Haskell, you end up with something
+                | less powerful than System F, and System F doesn't have \x -> x x, we know this because every program in System F
+                | terminates.
+     tomsmeding | (are there any in the simply-typed lambda calculus? No, because STLC is total)
+     tomsmeding | (or, perhaps, _therefore_ STLC is total)
+      monochrom | Yeah, like that kind of arguments.
+     tomsmeding | (not sure you can sensibly put a causality relation there)
+      monochrom | The most lax level is to first acknowledge that Haskell has syntactic recursion, which is by far totally not the point of
+                | any fixed-point combinator (which spares you from syntactic recursion).
+      monochrom | And then the semantics of Haskell goes on to map syntactic recursion to the use of a fixed-point combinator (and we don't
+                | care which). As alluded in the Haskell Report.
+      monochrom | So yeah, one point down for HFFP.
+    [justsomeguy(Ziw)]
+     monochrom | It uses a good pedogogical strategy, but it gets a couple of facts wrong.
+      monochrom | Although, hiding behind the façade of "same" "principle" you can make any claim you like.
+      monochrom | http://www.vex.net/~trebla/humour/tautologies.html #0
+    justsomeguy | There are a few mroe like this. From ch1 "Functional programming languages are all based on the lambda calculus.".
+                | Apparently the original lisp is based on McCarthys thesis.
+    justsomeguy | *more
+    justsomeguy | Thank you for clearing that up, monochrom
+      monochrom | Oh, that one I have no objection.
+      monochrom | Lisp's primary concern was cons cell. FP is only its secondary concern.
+     tomsmeding | though it's fairly easy to be "based on" the lambda calculus :p
+        Rembane | Maybe it's harder to not be based on the lambda calculus?
+     tomsmeding | C isn't in any reasonable way, I guess
+    justsomeguy | So your position is that Lisp isn't a functional lanauge, then? (I would say it isn't purely functional, but it's still
+                | functional.)
+      monochrom | I would pin Backus language "FP" as the 1st functional programming language. And it uses so many ideas from lambda calculus
+                | that I would not object to "based on that".
+           oats | you can write some really imperative code in some lisps
+      monochrom | But if you don't accept that, I have a weaker stance.
+           oats | lisp-family languages tend to be more expression-oriented, but idk if that can qualify it as functional
+     tomsmeding | I mean, to be "based on" the lambda calculus, you need variables (only basically removes assembly and forth-likes from the
+                | list of candidates), function application (same), and inline functions (removes a couple more, but leaves almost any
+                | language that is still receiving updates today)
+      geekosaur | you can write some really imperative code in haskell
+           oats | new rule, lambda calculus is the only functional language :P
+        Rembane | tomsmeding: So having a language that with some effort can be turned into lambda calculus doesn't count? :)
+     tomsmeding | geekosaur: I wonder if our students, who are learning Haskell as a second language after an imperative one, would find that
+                | a consolation :p
+      monochrom | Landin taught us to explain programming languages by a lambda calculus on steroid. ("The Next 700 Programming Languages.")
+                | So a revisionist would say that FPLs are based on that, retrospectively.
+     tomsmeding | Rembane: such as?
+      monochrom | But Landin in that paper used lambda calculus to explain Algol, not very functional. So there. >:)
+    [justsomeguy(Ziw)]
+      geekosaur | you can write some really imperative code in haskell
+           oats | new rule, lambda calculus is the only functional language :P
+        Rembane | tomsmeding: So having a language that with some effort can be turned into lambda calculus doesn't count? :)
+     tomsmeding | geekosaur: I wonder if our students, who are learning Haskell as a second language after an imperative one, would find that
+                | a consolation :p
+      monochrom | Landin taught us to explain programming languages by a lambda calculus on steroid. ("The Next 700 Programming Languages.")
+                | So a revisionist would say that FPLs are based on that, retrospectively.
+     tomsmeding | Rembane: such as?
+      monochrom | But Landin in that paper used lambda calculus to explain Algol, not very functional. So there. >:)
+     tomsmeding | lol
+      monochrom | Basically the paper covers everything except the Prolog camp...
+        Rembane | tomsmeding: What monochrom said about Landin, Algol and lambda calculus. That should mean that C can be turned into lambda
+                | calculus too. Or explained by it.
+
 4c **"But without understanding systematic behavior of recursion itself, it can be difficult to
 reason about those HOFs."**
 
