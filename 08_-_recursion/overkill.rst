@@ -54,6 +54,18 @@ definition that more closely resembles the untyped LC representation.
 How are those two definitions equivalent? (Or are they?) I should try tracing the evaluation
 steps to find out.
 
+Here's another definition (from https://groups.google.com/g/stanford-11au-cs240h/c/gRjdqUjD8_I?pli=1).
+This one doesn't break Haskell's type system by using ``unsafeCoerce``.
+
+::
+
+  newtype SelfApply t = SelfApply { selfApply :: SelfApply t -> t }
+
+  y :: (t -> t) -> t
+  y f = selfApply term term
+  where
+    term = (SelfApply (\x -> f (selfApply x x)))
+
 
 But also, what the heck is a fixedpoint?
 
@@ -68,6 +80,12 @@ For the identity function, every input value is a fixed point.
 Points that come back to the same value after a finite number of iterations of the function are
 called periodic points. A fixed point is a periodic point with period equal to one.
 
+4e **"Haskell has native recursion based on the same principle as the Y-combinator."**
+
+* What is "native recursion"?
+* Is there such a thing as "non-native recursion" or "foreign recursion"?
+* What is "the same principle as the Y-combinator"?
+* What principle does the Y-combinator operate on?
 
 .. topic:: Asking about it on IRC
 
@@ -86,7 +104,6 @@ called periodic points. A fixed point is a periodic point with period equal to o
                 | edited version of the Y combinator in Haskell.
     justsomeguy | I did find a definition of Y in haskell, but it requires unsafeCoerce: y = \f -> (\x -> f (x' x)) (\x -> f (x' x))
     justsomeguy |     where x' = unsafeCoerce x
-    justsomeguy | y
      tomsmeding | I mean, the primary characteristic of the Y combinator is that Y f = f (Y f); and such a function does indeed exist: it's
                 | Data.Function.fix, defined as, you guessed it, fix f = f (fix f)
       monochrom | But then, this still doesn't mean that Haskell's native recursion is actually defined in terms of that.

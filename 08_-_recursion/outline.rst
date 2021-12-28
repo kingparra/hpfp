@@ -1,7 +1,7 @@
 *******************
  Chapter 8 Outline
 *******************
-Here's the general structure of this outline. ::
+Here's the general structure of this outline::
 
   . . .
 
@@ -15,23 +15,19 @@ Here's the general structure of this outline. ::
 
   . . .
 
-If something is nested, then it is subordinate to the enclosing element.
 
 * 8.1 Recursion
 
-  * p1. Characteristics of a recursive function definition. (This paragraph is not a definition of
-    recursion itself, as a general idea. Don't take it literally.) Input determines when the
-    evaluation of a recursive process will end.
+  * p1. Characteristics of recursive function definitions.
 
-  * p2. An example of recursion in language. A limited recursive expression can produce an unlimited
-    number of computations. The number of repetitions are not defined beforehand, but determined by
-    the input.
+  * p2. An example of recursion as a pattern that occurs naturally in language.
 
-  * p3. Haskell and lambda calculus have similar evaluation strategies, and recursive anonymous
-    function literals can be written using combinators like the Y-combinator in both languages.
+  * p3. I'm not sure what the intention of this paragraph is. Why is the author bringing up LC,
+    Turing Completeness, and the Y-combinator here? How is it relevant to writing recursive
+    functions in Haskell?
 
   * p4. Recursion is the only method of expressing repetition in Haskell, so you need to understand
-    it in order to read other peoples code. Something about leaky abstractions and HOFs.
+    it in order to read others code.
 
 * 8.2 Factorial!
 
@@ -62,8 +58,8 @@ If something is nested, then it is subordinate to the enclosing element.
     * f5. Shows a complete definition of ``factorial``, as well as the evaluation steps of
       ``brokenFact1 4``.
 
-  * p8. The base case for ``factorial``, defined as ``factorial 0 = 1`` provides a stopping point,
-        so the reduction changes.
+  * p8. "The base case for ``factorial``, defined as ``factorial 0 = 1`` provides a stopping point,
+        so the reduction changes:"
 
     * f6. Shows the evaluation steps of the fully defined ``factorial`` function, which has a base
           case.

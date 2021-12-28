@@ -146,7 +146,7 @@ Let's examine a simple factorial function::
 .. introduce the concept of a base case:"**.
 ..
 .. paragraph 7, sentence a **"The way we can stop a recursive expression is by having a base case
-.. that stops the sel-application to further arguments."**, sentence c **"Here's what that looks
+.. that stops the self-application to further arguments."**, sentence c **"Here's what that looks
 .. like for factorial:"**.
 
 Recursive functions are comprised of two categories of input cases: base cases and recursive cases.
@@ -172,11 +172,15 @@ case.
 .. Maybe it's called the "base case" because it forms the *basis* of any inductive reasoning steps
 .. describe in the recursive case.
 
-Base cases are where a functions output can be obtained without requiring further recursive calls.
-In the ``factorial`` function declaration above, the base case is written as the equation
-``factorial 0 = 1``. Technically, the input value ``0`` is the base case, and ``1`` is the value
-that corresponds to it. If you think of recursive call as inductive reasoning steps, the base case
-forms *the basis* for those inferences.
+..  Base cases are instances of problems that can be solved without carrying out recursive calls.
+
+Base cases are where a functions output value can be obtained without
+requiring further recursive calls. In the ``factorial`` function
+declaration above, the base case is written as the equation
+``factorial 0 = 1``. Technically, the input value ``0`` is the base
+case, and ``1`` is the value that corresponds to it. In the case of
+``0``, we return ``1``. If you think of recursive calls as inductive
+reasoning steps, the base case forms *the basis* for those inferences.
 
 Recursive cases are where self-referencing function calls occur. A recursive call applies the
 function definition to different input values. Each call of the function splits the input into
@@ -243,7 +247,8 @@ of figures 8 and 9)::
 ----------
 ``⊥``, or bottom, denotes computations that don't successfully result in a
 value. The two main varieties of bottom are computations that failed with an
-error or those that failed to terminate. In logic ``⊥`` corresponds to ``False``.
+error or those that failed to terminate (for example, and infinite loop).
+In logic ``⊥`` corresponds to ``False``.
 
 Non-termination
 ^^^^^^^^^^^^^^^
