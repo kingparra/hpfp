@@ -20,18 +20,18 @@ lists in Haskell we will:
 
 10.4 Fold right
 ---------------
-First let's look at the definition of ``foldr`` ::
+First let's look at the definition of ``foldr`` for lists::
 
   --                     binary     initial      output
   --                    function     value  list  value
-  --                  vvvvvvvvvvvv     v     v     v
+  --                  vvvvvvvvvvvv     v    vvv    v
   foldr            :: (a -> b -> b) -> b -> [a] -> b
   foldr _ z []     =  z
   foldr f z (x:xs) =  f x (foldr f z xs)
 
   foldr f z l =
     case l of
-      []     -> 0
+      []     -> z
       (x:xs) -> f x (foldr f z xs)
 
   {-
