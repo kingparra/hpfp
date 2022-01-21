@@ -161,6 +161,12 @@
         * p1.
 
 * 9.7 List comprehensions
+
+  * 9.7.1 Adding predicates
+  * 9.7.2 Exercises: Comprehend thy lists
+  * 9.7.3 List comprehensions with strings
+  * 9.7.4 Exercises: Square Cube
+
 * 9.8 Spines and non-strict evaluation
 * 9.9 Transforming lists of values
 * 9.10 Filtering lists of values
