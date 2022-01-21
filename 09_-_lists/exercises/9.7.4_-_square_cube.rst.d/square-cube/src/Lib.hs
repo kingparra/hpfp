@@ -1,13 +1,17 @@
 module Lib where
 
-mySqr  = [x^2 | x <- [1..5]]
+
+mySqr = [ x^2 | x <- [1..10]]
 myCube = [y^3 | y <- [1..5]]
 
+
 -- Question 1
-tuples = [(x,y) | x <- mySqr, y <- myCube]
+one = [ (x,y) | x <- mySqr, y <- myCube]
+
 
 -- Question 2
-tuplesLT50 = [(x,y) | x <- mySqr, y <- myCube, x < 50 && y < 50]
+two = [ (x,y) | (x,y) <- one, x < 50 && y < 50 ]
+
 
 -- Question 3
-tuplesLT50Count = length tuplesLT50
+three = length two
