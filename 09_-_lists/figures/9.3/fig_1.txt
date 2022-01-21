@@ -1,0 +1,7 @@
+·∾ myHead (x:_) = x
+
+·∾ :type myHead
+myHead :: [a] -> a
+
+·∾ myHead [1,2,3]
+1

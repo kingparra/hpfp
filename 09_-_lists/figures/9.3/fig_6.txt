@@ -1,0 +1,16 @@
+·∾ :{
+ ⋮ safeTail :: [a] -> Maybe [a]
+ ⋮ safeTail [] = Nothing
+ ⋮ safeTail (_:[]) = Nothing
+ ⋮ safeTail (_:xs) = Just xs
+ ⋮ :}
+·∾
+
+·∾ safeTail []
+Nothing
+
+·∾ safeTail [3]
+Nothing
+
+·∾ safeTail [2,3]
+Just [3]

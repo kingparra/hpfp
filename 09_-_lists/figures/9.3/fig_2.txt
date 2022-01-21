@@ -1,0 +1,7 @@
+·∾ myTail (_:xs) = xs
+
+·∾ :type myTail
+myTail :: [a] -> [a]
+
+·∾ myTail [1,2,3]
+[2,3]

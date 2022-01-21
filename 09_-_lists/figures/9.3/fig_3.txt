@@ -1,0 +1,7 @@
+·∾ myHead []
+*** Exception: <interactive>:1:1-16: Non-exhaustive pattern
+s in function myHead
+
+·∾ myTail []
+*** Exception: <interactive>:5:1-18: Non-exhaustive pattern
+s in function myTail
