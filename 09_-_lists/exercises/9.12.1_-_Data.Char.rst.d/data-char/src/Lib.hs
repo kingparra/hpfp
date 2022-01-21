@@ -1,7 +1,7 @@
 module Lib where
 import Data.Char
 
--- 1
+-- Question 1
 -- I don't know how to query the type of this function
 -- without GHCi, so here they are as a comment.
 --
@@ -11,19 +11,19 @@ import Data.Char
 -- ·∾ :type toUpper
 -- toUpper :: Char -> Char
 
--- 2
+-- Question 2
 onlyUpper = filter isUpper
 
--- 3
+-- Question 3
 capFirstLetter [] = []
 capFirstLetter (x:xs) = toUpper x : xs
 
--- 4
+-- Question 4
 {-# ANN capAll ("HLint: Ignore all" :: String) #-}
 capAll [] = []
 capAll (x:xs) = toUpper x : capAll xs
 
--- 5
+-- Question 5
 firstCapCh [] = error "cannot convert empty string to char"
 firstCapCh x = toUpper $ head x
 
@@ -33,5 +33,5 @@ firstCapCh x = toUpper $ head x
 -- firstCapChMaybe  [] = Nothing
 -- firstCapChMaybe (x:_) = Just (toUpper x)
 
--- 6
+-- Question 6
 firstCapChPointfree = toUpper . head
