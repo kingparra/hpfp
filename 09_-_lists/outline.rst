@@ -146,13 +146,19 @@
       * 2.
 
           * p1.
-          * f1.
+          * f1. ``PoemLines`` module
           * p2.
-          * f2.
+          * f2. Expected result of ``putStrLn``
           * p3.
-          * f3. ``myLines``
+          * f3. ``myLines`` function stub
           * p4.
-          * f4. ``shouldEqual``
+          * f4. ``shouldEqual``, a list of strings that should be the result of ``myLines sentences``.
+          * p5.
+          * f5. the ``main`` module
+
+      * 3.
+
+        * p1.
 
 * 9.7 List comprehensions
 * 9.8 Spines and non-strict evaluation
