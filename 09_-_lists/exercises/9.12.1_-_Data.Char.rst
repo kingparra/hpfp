@@ -8,36 +8,36 @@
      ·∾ :type toUpper
      toUpper :: Char -> Char
 
-2.
+2. Write a function that filters for uppercase letters.
 
-.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
-   :code:
-   :start-after: -- Question 2
-   :end-before: -- Question 3
+   .. include:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
 
-3.
+3. Write a function that capitalizes the first letter of a string.
 
-.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
-   :code:
-   :start-after: -- Question 3
-   :end-before: -- Question 4
+   .. include:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
 
-4.
+4. Make a recursive version that capitalizes all the letters.
 
-.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
-   :code:
-   :start-after: -- Question 4
-   :end-before: -- Question 5
+   .. include:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
 
-5.
+5. Write a function that will capitalize the first letter of a string and return only that letter.
 
-.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
-   :code:
-   :start-after: -- Question 5
-   :end-before: -- Question 6
+   .. include:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+      :code:
+      :start-after: -- Question 5
+      :end-before: -- Question 6
 
-6.
+6. Now rewrite it as a composed function.
 
-.. inclue:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
-   :code:
-   :start-after: -- Question 6
+   .. include:: exercises/9.12.1_-_Data.Char.rst.d/data-char/src/Lib.hs
+      :code:
+      :start-after: -- Question 6
