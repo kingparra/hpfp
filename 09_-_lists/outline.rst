@@ -70,9 +70,81 @@
 
   * 9.5.1 Exercise: ``EnumFromTo``
 
+..
+  Should I create a terminal recording for 9.6? It's comprised entirely of examples, and even asks
+  you a question about how things evaluate.
+
 * 9.6 Extracting portions of lists
 
+  * p1.
+
+    * f1. Type signatures of ``take``, ``drop``, and ``splitAt``.
+
+  * p2.
+  * p3.
+
+    * f2. Demonstration of ``take`` in GHCi.
+
+  * p4.
+
+    * f3. Adding ``enumFrom`` to the demonstration.
+
+  * p5.
+
+    * f4. Demonstrating ``drop`` on lists created with range syntax.
+
+  * p6.
+
+    * f5. Demonstrating ``splitAt``.
+
+  * p7.
+
+    * f6. Type signatures of ``takeWhile`` and ``dropWhile``.
+
+  * p8.
+  * p9.
+
+    * f7. Demonstrating ``takeWhile``
+
+  * p10.
+
+    * f8.
+
+  * p11.
+
+    * f9. Demonstrating ``takeWhile`` with a predicate that is never met.
+
+  * p12. **"In the final example below, why does it only return a single a?"**
+
+    * f10. ``takeWhile (=='a') "abracadabra"``
+
+  * p13. Next we'll look at ``dropWhile``.
+
+    * f11. Examples of ``dropWhlie`` applied to different arguments in GHCi.
+
   * 9.6.1 Exercises: Thy Fearful Symmetry
+
+    * 1
+
+      * p1.
+      * f1.
+
+    * 2
+
+      * p1.
+      * f1. The ``PoemLines`` module.
+      * p2.
+      * f2. The result that ``putStrLn sentences`` should print.
+      * p3.
+      * f3. Stub for the ``myLines`` function.
+      * p4.
+      * f4. A list named ``shouldEqual`` that ``myLines sentences`` should produce.
+      * p5.
+      * f5. A small test.
+
+    * 3
+
+      * p1.
 
 * 9.7 List comprehensions
 
