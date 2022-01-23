@@ -3,16 +3,76 @@
 *******************
 
 * 9.1 Lists
+
+  * p1. Lists may be used to represent a finite collection or infinite series of values.
+  * p2. Learning objectives.
+
 * 9.2 The list datatype
+
+  * p1. "The list datatype is defined like this:"
+
+    * f1. Definition of the list datatype.
+
+  * p2. The type and data constructors of list.
+  * p3. Arity of constructors. (tycon) ``[] a`` unary, ``a : [a]`` binary, (datacon) ``[]`` unary.
+  * p4. "In English, one can read this as:"
+
+    * f2. Anatomy of the list datatype declaration.
+
+  * p5. The cons ``(:)`` data constructor is binary, takes a recursively defined argument, and represents a product relationship.
+  * p6. Lists in Haskell are similar to singly-linked lists.
+
 * 9.3 Pattern matching on lists
+
+  * p1. We can match on the ``(:)`` and ``[]`` data constructors. Here we match on the first argument of ``(:)``.
+
+    * f1. Definition, type query, and sample use of ``myHead`` in GHCi.
+
+  * p2. We'll match on the second argument of ``(:)`` in ``myTail``.
+
+    * f2. Definition, type query, and sample use of ``myTail`` in GHCi.
+
+  * p3. Both ``myHead`` and ``myTail`` don't handle the case of an empty list, ``[]``.
+
+    * f3. GHCi session showing that exceptions are thrown when ``myHead`` and ``myTail`` are applied to ``[]``.
+
+  * p4.
+
+    * f4. Definition of ``myTail`` as source code, with a base case for ``[]`` added.
+
+  * p5. "With that addition, our function now evaluates like this:"
+
+    * f5. GHCi session showing ``myTail`` applied to a finite list and the empty list.
+
+  * p6. Using ``Maybe``.
+  * p7. Let's try an example using ``Maybe`` with ``myTail``.
+
+    * f6. ``:info Maybe``
+
+  * p8. "Rewriting myTail to use Maybe is fairly straightforward:"
+
+    * f7. Definition of ``safeTail``.
+
+  * p9. Description of ``safeTail``. **See if you can rewrite the myHead function using Maybe.**
+  * p10. Later the book will cover ``NonEmpty``, which avoids the empty list problem.
+
 * 9.4 List's syntactic sugar
+
+  * p1.
+
+    * f1. GHCi session demonstrating equivalence of ``[1,2,3]++[4]`` and ``(1:2:3:[])++(4:[])``.
+
+  * p2. ``[x,y]`` syntax saves typing.
+  * p3. Cons cells and spines.
+  * p4. The spine is the connective structure between nested cons cells.
+
 * 9.5 Using ranges to construct lists
 
   * 9.5.1 Exercise: ``EnumFromTo``
 
 * 9.6 Extracting portions of lists
 
-  * 9.6.1 Exercises: Thy Fearful Symmetry -- page 310
+  * 9.6.1 Exercises: Thy Fearful Symmetry
 
 * 9.7 List comprehensions
 
