@@ -2,15 +2,22 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 1. Using ``takeWhile`` and ``dropWhile``, write a function that splits a string
    on spaces to return a list of words.
-2. Next, write a function that takes a string and splits it into lines, as in
-   the following (your job is to fill in the undefined function).
-3. Try writing a new function that parameterizes the character you're breaking
-   the string on. Rewrite ``myWords`` and ``myLines`` to use it.
+
+2. Next, write a function that takes a string and splits it into lines, breaking on the newline
+   character ``'\n'``.
+
+3. Try writing a new function that parameterizes the character you're breaking the string on.
+   Rewrite ``myWords`` and ``myLines`` to use it.
 
    Here is the answer to all three questions:
 
    .. include:: exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/src/Lib.hs
       :code:
 
-   Navigate to ``exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/src/Lib.hs``
-   and run ``stack test`` for proof it works.
+   Some tests:
+
+   .. include:: exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/tests/Spec.hs
+      :code:
+
+   Navigate to ``exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/`` and run ``stack
+   test`` for proof it works. (I did not use the ``main`` function in the textbook.)
