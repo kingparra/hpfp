@@ -1,0 +1,15 @@
+data [] a  =  []  |  a : [a]
+--   1  2  3  4   5  ^^^6^^^
+
+1. The datatype with the type constructor [],
+
+2. which takes a single type constructor argument of type a,
+
+3. at the term level can be constructed via
+
+4. the nullary list constructor [],
+
+5. or it can be constructed by
+
+6. the data constructor (or cons) :, which is a product of a value of type a
+   from the type constructor and a value of type [a], that is, "more list."
