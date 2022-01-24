@@ -1,0 +1,2 @@
+Prelude> takeWhile (>6) [1..10]
+[]

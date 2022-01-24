@@ -1,0 +1,8 @@
+Prelude> take 7 ['a'..'z']
+"abcdefg"
+
+Prelude> take 3 [1..10]
+[1,2,3]
+
+Prelude> take 3 []
+[]

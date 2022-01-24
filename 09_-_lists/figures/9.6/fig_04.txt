@@ -1,0 +1,11 @@
+Prelude> drop 5 [1..10]
+[6,7,8,9,10]
+
+Prelude> drop 8 ['a'..'z']
+"ijklmnopqrstuvwxyz"
+
+Prelude> drop 4 []
+[]
+
+Prelude> drop 2 (enumFromTo 10 20)
+[12,13,14,15,16,17,18,19,20]

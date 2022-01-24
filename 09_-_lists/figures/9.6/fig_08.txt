@@ -1,0 +1,2 @@
+Prelude> takeWhile (<8) (enumFromTo 5 15)
+[5,6,7]
