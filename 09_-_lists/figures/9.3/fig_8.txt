@@ -1,0 +1,38 @@
+·∾ -- 9d "Take a few minutes to play around
+·∾ -- with this fn and see how it works."
+·∾ safeTail []
+Nothing
+
+·∾ safeTail [3]
+Nothing
+
+·∾ safeTail [2,3]
+Just [3]
+
+·∾ -- 9e "See if you can rewrite the myHead
+·∾ -- function aboe using Maybe."
+
+·∾ :{
+ ⋮ safeHead :: [a] -> Maybe [a]
+ ⋮ safeHead [] = Nothing
+ ⋮ safeHead (x:_) = Just [x]
+ ⋮ :}
+
+·∾ safeHead []
+Nothing
+
+·∾ safeHead [1..]
+Just [1]
+
+·∾ safeHead [1,undefined]
+Just [1]
+
+
+·∾ head []
+*** Exception: Prelude.head: empty list
+
+·∾ head [1..]
+1
+
+·∾ head [1,undefined]
+1
