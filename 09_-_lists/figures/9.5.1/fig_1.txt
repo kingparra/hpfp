@@ -1,0 +1,20 @@
+·∾ :info Enum
+class Enum a where
+  succ           ::  a -> a
+  pred           ::  a -> a
+  toEnum         ::  Int -> a
+  fromEnum       ::  a -> Int
+  enumFrom       ::  a -> [a]
+  enumFromThen   ::  a -> a -> [a]
+  enumFromTo     ::  a -> a -> [a]
+  enumFromThenTo ::  a -> a -> a -> [a]
+  {-# MINIMAL toEnum, fromEnum #-}
+
+·∾ succ 0
+1
+
+·∾ succ 1
+2
+
+·∾ succ 'a'
+'b'
