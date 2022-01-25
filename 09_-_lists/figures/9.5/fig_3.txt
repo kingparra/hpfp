@@ -1,0 +1,8 @@
+·∾ -- Be aware that the first argument to enumFromTo must be
+·∾ -- lower than the second otherwise, you'll get an empty list.
+
+·∾ enumFromTo 3 1
+[]
+
+·∾ enumFromTo 1 3
+[1,2,3]

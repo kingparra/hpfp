@@ -1,0 +1,11 @@
+·∾ :type enumFrom
+enumFrom        ::  Enum a => a -> [a]
+
+·∾ :type enumFromThen
+enumFromThen    ::  Enum a => a -> a -> [a]
+
+·∾ :type enumFromTo
+enumFromTo      ::  Enum a => a -> a -> [a]
+
+·∾ :type enumFromThenTo
+enumFromThenTo  ::  Enum a => a -> a -> a -> [a]
