@@ -1,0 +1,16 @@
+·∾ s = "Self"
+·∾ c = " Contained"
+·∾ u = " Underwater"
+·∾ b = " Breathing"
+·∾ a = " Apparatus"
+·∾ scuba = s ++ c ++ u ++ b ++ a
+·∾ acro scuba
+"SCUBA"
+
+·∾ n = "National"
+·∾ a = " Aeronautics and"
+·∾ s = " Space"
+·∾ a' = " Administration"
+·∾ nasa = n ++ a ++ s ++ a'
+·∾ acro nasa
+"NASA"

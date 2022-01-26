@@ -1,0 +1,1 @@
+·∾ myString xs = [x | x <- xs, x `elem` "aeiou"]

@@ -1,0 +1,8 @@
+·∾ :type elem
+elem :: (Foldable t, Eq a) => a -> t a -> Bool
+
+·∾ elem 'a' "abracadabra"
+True
+
+·∾ elem 'a' "Julie"
+False

@@ -1,0 +1,1 @@
+·∾ acro xs = [x | x <- xs, x `elem` ['A'..'Z']]

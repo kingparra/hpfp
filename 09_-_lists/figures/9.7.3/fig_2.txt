@@ -1,0 +1,2 @@
+·∾ [ x | x <- "Three Letter Acronym", x `elem` ['A'..'Z']]
+"TLA"
