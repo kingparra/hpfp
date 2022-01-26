@@ -266,53 +266,94 @@ using ``:info``::
   infixl 6 +
   --   ^-- the l means left associative
 
----------------------------------------------------------------------------
 
-Associativity is how arguments group to functions during a step in the
-evaluation process.
+.. topic:: The detils of associativity, precedence, and fixity
 
-If something is left associative, arguments are associated with the
-function to the left of them.
+   Associativity is how arguments group to functions during a step
+   in the evaluation process. If something is left associative,
+   arguments to the left of an infix function are consumed first. If
+   something is right associative, arguments to the right of the
+   infix function are consumed first.  Haskell additionally has
+   non-associative operators, like ``==``, ``/=``, ``<``, ``<=``,
+   ``>``, ``>=``, ``\`elem\```, and ``\`notElem\```.
 
-Here's two examples where each term in the overall expression has the
-same associativity:
+   Here's two examples where each term in the overall expression has the
+   same associativity:
 
-Left associative,  ``f 1 2 3`` ≡ ``(((f 1) 2) 3)``.
-Right associative, ``1 2 3 f`` ≡ ``(1 (2 (3 f)))``.
+   Left associative,  ``f 1 2 3`` ≡ ``(((f 1) 2) 3)``.
+   Right associative, ``1 2 3 f`` ≡ ``(1 (2 (3 f)))``.
 
-You can have expressions that contain many functions with different
-associativity and different precedence. For example::
+   Precedence determines which function is evaluated first (who gets
+   first turn at consuming arguments). In Haskell precedence goes
+   from 0-9, where 9 is the highest (evaluated first). In Haskell,
+   functions get a precedence of 9 by default (``infixl 9``).
+   Additionally function application behaves as if it has fixity 10,
+   record updates behave as if they have fixity 11.
 
-  -- (^) is right associative
-  8 + 3 ^ 12 * 3
+   I asked about the default precedence of prefix function
+   definitions on IRC, and learned some things not in the 2010
+   Language Report.
 
-  -- Explicitly parenthesised, ()s show
-  -- associativity, {}s show precedence.
-  --
-  (8 +) {({3 (^ 12)} *) 3 }
-  -- ^        ^      ^
-  -- left    right   left
+   | **geekosaur** the default fixity of a function is infixl 9.
+   |
+   | **ski** justsomeguy: fixity of function application
+   | (juxtaposition syntactic operator) is 10.
+   |
+   | **geekosaur** Function application behaves as if it has fixity
+   | 10, record updates behave as if they had fixity 11.
+   |
+   | **justsomeguy** ski: I thought that precedence only goes from
+   | 0..9? Or maybe that's only the range for fixity declarations,
+   | rather than fixity in general?
+   |
+   | **ski** Ordinary (definable) operators have precedences
+   | from zero to nine, sure.
+   |
+   | **justsomeguy** Thank you, that clears things up. I wish the
+   | language report made that a little more obvious.
+   |
+   | **monochrom** Function application and record syntax cannot
+   | be formally given predence levels because there is no
+   | binary operator to attach the predence levels to.
+   |
+   | And the Haskell Report is supposed to give formal
+   | definitions not intuitive conceptual moral fast-and-loose
+   | bedtime stories.
+   |
+   | So it has to hide the intuitive interpretation in a
+   | formal grammar.
+   |
+   | [Ed: The function application operator is technically not
+   |  an operator, but a component of the AST.]
 
-Fixity is where functions or operators are placed in relation to the
-arguments they consume.
+   You can have expressions that contain many functions with different
+   associativity and different precedence. For example::
 
-Some examples of fixity are infix, prefix, postfix, `circumfix, precircumfix,
-and postcircumfix <https://docs.raku.org/language/functions#Defining_operators>`_,
-or even `mixfix <https://agda.readthedocs.io/en/v2.5.2/language/mixfix-operators.html>`_.
+     -- (^) is right associative
+     8 + 3 ^ 12 * 3
 
-Arity is the number of arguments that a function consumes. A binary
-function takes two arguments. A ternary function takes three. A
-finitary function takes a finite number of arguments. An infinitary
-function takes an infinite number of arguments. A nullary function
-takes no arguments. You get the idea.
+     -- Explicitly parenthesised, ()s show
+     -- associativity, {}s show precedence.
+     --
+     (8 +) {({3 (^ 12)} *) 3 }
+     -- ^        ^      ^
+     -- left    right   left
 
-Precedence determines which function is evaluated first (who gets
-first turn at consuming arguments).
+   Fixity is where functions or operators are placed in relation to the
+   arguments they consume. Some examples of fixity are infix, prefix,
+   postfix, `circumfix, precircumfix, and postcircumfix <https://
+   docs.raku.org/language/functions#Defining_operators>`_,
+   or even `mixfix <https://agda.readthedocs.io/en/v2.5.2/language
+   /mixfix-operators.html>`_. In haskell there are two possible
+   fixities: prefix or infix. Language extensions may enable you to
+   have more, I don't know.
 
-In Haskell precedence goes from 0-9, where 9 is the highest (evaluated
-first).
+   Arity is the number of arguments that a function consumes. A binary
+   function takes two arguments. A ternary function takes three. A
+   finitary function takes a finite number of arguments. An infinitary
+   function takes an infinite number of arguments. A nullary function
+   takes no arguments. You get the idea.
 
----------------------------------------------------------------------------
 
 .. include:: exercises/2.6.2_-_parentheses_and_association.rst
 
