@@ -108,10 +108,6 @@
 
   * 9.5.1 Exercise: ``EnumFromTo``
 
-..
-  Should I create a terminal recording for 9.6? It's comprised entirely of examples, and even asks
-  you a question about how things evaluate.
-
 * 9.6 Extracting portions of lists
 
   * p1.
@@ -259,9 +255,66 @@
 
   * 9.7.4 Exercises: Square Cube
 
+    * p1.
+
+      * f1.
+
+    * 1
+    * 2
+    * 3
+
 * 9.8 Spines and non-strict evaluation
 
+  * p1. The structure that connects values together in datatypes that
+    hold a collection of values is known as the spine.
+
+    * f1. An ASCII art representation of the list ``[1,2]`` as a tree of data constructors and their
+      term-level arguments.
+
+  * p2. Cons cells are data constructors that contain two things -- a value and a link to the next
+    list data constructor (either another cons cell or the empty list constructor). Since the value
+    exists "within" the cons cell, or cons data constructor, you can evaluate the data constructor
+    without forcing evaluation of its arguments.
+  * p3. Evaluation proceeds down the spine (left to right), but construction proceeds up the spine
+    (right to left).
+  * p4.
+
+    * f2. ASCII art pointing out the spine of a list. Underscores represent
+      values contained by cons cells that are ignored or not evaluated.
+
+  * p5. In the case of lists, the spine is a linkage of cons cells. With other data structures, like
+    trees for example, the spine can be nodes that contain two or more nodes.
+
   * 9.8.1 Using GHCi's :sprint command
+
+    * p1.
+    * p2.
+    * p3.
+    * p4.
+
+      * f1.
+
+    * p5.
+    * p6. "Next, we'll take one value..."
+
+      * f2.
+
+    * p7.
+    * p8.
+
+      * f3.
+
+    * p9.
+    * p10.
+
+      * f4.
+
+    * p11.
+
+      * f5.
+
+    * p12.
+
   * 9.8.2 Spines are evaluated independently of values
   * 9.8.3 Exercises: Bottom madness
 

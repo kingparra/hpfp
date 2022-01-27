@@ -1,0 +1,5 @@
+·∾ take 2 blah
+"ab"
+
+·∾ :sprint blah
+blah = 'a' : 'b' : _

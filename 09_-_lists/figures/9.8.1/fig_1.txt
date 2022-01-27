@@ -1,0 +1,4 @@
+·∾ blah = enumFromTo 'a' 'z'
+
+·∾ :sprint blah
+blah = _

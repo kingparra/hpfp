@@ -1,0 +1,5 @@
+·∾ length blah
+26
+
+·∾ :sprint blah
+blah = "abcdefghijklmnopqrstuvwxyz"
