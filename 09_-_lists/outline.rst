@@ -265,25 +265,24 @@
 
 * 9.8 Spines and non-strict evaluation
 
-  * p1. The structure that connects values together in datatypes that
-    hold a collection of values is known as the spine.
+  * p1. The structure that connects values together in
+    composite datatypes is known as the spine.
 
-    * f1. An ASCII art representation of the list ``[1,2]`` as a tree of data constructors and their
-      term-level arguments.
+    * f1. An ASCII art representation of the list
+      ``[1,2]`` as a tree of data constructors and
+      their term-level arguments.
 
-  * p2. Cons cells are data constructors that contain two things -- a value and a link to the next
-    list data constructor (either another cons cell or the empty list constructor). Since the value
-    exists "within" the cons cell, or cons data constructor, you can evaluate the data constructor
-    without forcing evaluation of its arguments.
-  * p3. Evaluation proceeds down the spine (left to right), but construction proceeds up the spine
+  * p2.
+
+  * p3. Evaluation proceeds down the spine (left to
+    right), but construction proceeds up the spine
     (right to left).
+
   * p4.
 
-    * f2. ASCII art pointing out the spine of a list. Underscores represent
-      values contained by cons cells that are ignored or not evaluated.
+    * f2. ASCII art pointing out the spine of a list.
 
-  * p5. In the case of lists, the spine is a linkage of cons cells. With other data structures, like
-    trees for example, the spine can be nodes that contain two or more nodes.
+  * p5.
 
   * 9.8.1 Using GHCi's :sprint command
 
@@ -316,6 +315,96 @@
     * p12.
 
   * 9.8.2 Spines are evaluated independently of values
+
+    -- page 320 
+
+    * p1. All expressions are evaluated to WHNF by default.
+
+    * p2. WHNF vs NF.
+
+    * p3. Examples of expressions, and whether they are
+      WHNF or NF.
+
+      * f1. ``(1, 2)``
+
+    -- page 321
+
+    * p4.
+
+      * f2. ``(1, 1+1)``
+
+    * p5.
+
+      * f3. ``\x -> x*10``
+
+    * p6.
+
+      * f4. ``"Papu" ++ "chon"``
+
+    * p7.
+
+      * f5. ``(1, "Papu" ++ "chon")``
+
+    * p8.
+
+      * f6. Showing a fully evaluated list in GHCi.
+
+    * p9.
+
+    -- page 322
+
+      * f7. A demonstration of WHNF evaluation in GHCi.
+
+    * p10.
+    * p11.
+
+      * f8. The spine of a list that isn't spine strict
+        and is awaiting something to force the evaluation.
+        (The first cons cells, no arguments evaluated.)
+
+    * p12.
+    * p13.
+
+    -- page 323
+
+    * p14.
+
+      * f9.
+
+    * p15.
+
+      * f10. GHCi ``x = [1,undefined]; length x``.
+
+    * p16.
+
+      * f11. Source code for a ``length`` function.
+
+    * p17.
+
+    -- page 234
+
+    * p18.
+
+      * f12.
+
+    * p19.
+
+      * f13.
+
+    * p20.
+    * p21.
+    * p23.
+
+      * f14.
+
+    * p24.
+
+    -- page 325
+
+      * f15. The evaluation steps of ``mySum [1..5]``
+
+    * p25.
+
   * 9.8.3 Exercises: Bottom madness
 
     * Will it blow up?
