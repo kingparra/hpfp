@@ -36,6 +36,7 @@ Contents
    08_-_recursion/design-recipe
    08_-_recursion/overkill
 
+   09_-_lists/outline
    09_-_lists/notes
 
    10_-_folds/notes
