@@ -1,0 +1,11 @@
+·∾ :{
+ ⋮ num :: [Int]
+ ⋮ num =  [1,2,3]
+ ⋮ :}
+
+·∾ :sprint num
+num = [1,2,3]
+
+·∾ -- N.B; The actual [removed] GHCi output
+·∾ -- contradicts the book here.
+

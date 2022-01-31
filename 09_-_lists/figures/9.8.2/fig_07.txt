@@ -1,0 +1,14 @@
+·∾ :{
+ ⋮ myNum :: [Int]
+ ⋮ myNum = [1..10]
+ ⋮ :}
+
+·∾ :sprint myNum
+myNum = _
+
+·∾ take 2 myNum
+[1,2]
+
+·∾ :sprint myNum
+myNum = 1 : 2 : _
+
