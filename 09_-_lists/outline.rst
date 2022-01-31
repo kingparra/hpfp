@@ -6,43 +6,6 @@
 
   * p1. Lists may be used to represent a finite collection or infinite sequence of values.
 
-      ..
-         I asked whether "sequence" is the right word for this on the ##math channel of libera.chat
-
-         13:57 <justsomeguy> What is the correct term for an infinite ordered collection of
-         elements, where each element is related to prior elements by a function? I'm a bit confused
-         on the difference between the idea of series, sequence, and progressions. Or even if any of
-         those captures what I'm thinking about. Also where the elements of the set can repeat (they
-         don't need to be unique).
-
-         13:58 <cheater> what do you know about the function?
-         13:59 <cheater> can you know the nth element before you know the elements 1...n-1?
-         13:59 <cheater> or is the nth element always dependent on the previous elements?
-         14:00 <cheater> justsomeguy
-
-         14:00 <justsomeguy> The nth element always depends on the value of previous elements.
-
-         14:00 <dude12312414> i think "sequence" is an appropriate term for that
-
-         14:02 <justsomeguy> And, also, it's impossible to know a future element without knowing prior elements.
-
-         14:02 <dude12312414> you could also say recurrence relation, though that's more about the
-         equation defining the terms in terms of previous ones
-         14:02 <dude12312414> sequence defined by a recurrence relation
-
-         14:04 <justsomeguy> Thank you, that helps. I also just found this page
-         https://www.embibe.com/exams/chapter/sequences-and-series-3/ which clears things up a bit.
-         14:05 <justsomeguy> The original text I'm editing called it a series, which to my
-         understanding is limited to sumnation.
-
-         14:07 <Z-module> justsomeguy: YOu mean in the same ordering as 1, 2, 3, ....  ?
-         14:09 <Z-module> ANY sequence  x_1, x_2, x_3, ...  of let's say real numbers is just an
-         "infinite sequence". Whether there's some simple rule to calculate each x_n based on just
-         the earlier terms isn't relevant to a name here. You might be thinking of the "axiom of
-         dependent choices", though.
-         14:10 <Z-module> and yes, some stuff does sometimes refer to these as "series", but it's
-         not an infinite series as used in analysis.
-
   * p2. Learning objectives.
 
 * 9.2 The list datatype
@@ -316,14 +279,11 @@
 
   * 9.8.2 Spines are evaluated independently of values
 
-    -- page 320 
+    -- page 320
 
     * p1. All expressions are evaluated to WHNF by default.
-
     * p2. WHNF vs NF.
-
-    * p3. Examples of expressions, and whether they are
-      WHNF or NF.
+    * p3. Examples of expressions, and whether they are WHNF or NF.
 
       * f1. ``(1, 2)``
 
@@ -349,6 +309,8 @@
 
       * f6. Showing a fully evaluated list in GHCi.
 
+    -- p9 is split between pages 321 and 322
+
     * p9.
 
     -- page 322
@@ -369,11 +331,13 @@
 
     * p14.
 
-      * f9.
+      * f9. Tree representation of the spine of an
+        unevaluated list with two elements.
 
     * p15.
 
-      * f10. GHCi ``x = [1,undefined]; length x``.
+      * f10. GHCi ``x = [1,undefined]; length x``
+        returns ``2``.
 
     * p16.
 
@@ -381,21 +345,27 @@
 
     * p17.
 
-    -- page 234
+    -- page 324
 
     * p18.
 
-      * f12.
+      * f12. A complicated tree representation showing
+        forced cons constructors, with unevaluated
+        arguments.
 
     * p19.
 
-      * f13.
+      * f13. Demonstration of applying ``length`` to a
+        list with ``undefined`` in the spine.
 
-    * p20.
-    * p21.
-    * p23.
+    * p20. Printing the list fails, but it gets as far
+      as printing the first ``[1***``.
+    * p21. It's possible to write functions that will
+      force both the spine and the values.
+    * p23. We'll write our own sum function for the
+      sake of demonstration:
 
-      * f14.
+      * f14. Source code for ``mySum``.
 
     * p24.
 
@@ -407,8 +377,8 @@
 
   * 9.8.3 Exercises: Bottom madness
 
-    * Will it blow up?
-    * Intermission: Is it in normal form?
+    * 9.8.3.1 Will it blow up?
+    * 9.8.3.2 Intermission: Is it in normal form?
 
 * 9.9 Transforming lists of values
 
