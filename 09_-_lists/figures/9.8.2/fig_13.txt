@@ -1,0 +1,7 @@
+·∾ x = [1] ++ undefined ++ [3]
+
+·∾ x
+[1*** Exception: Prelude.undefined
+
+·∾ length x
+*** Exception: Prelude.undefined

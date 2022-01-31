@@ -1,0 +1,9 @@
+These got evaluated +
+                    |
+         :      <---+
+        / \         |
++--->  _   :    <---+
+|         / \       |
++--->    _  []  <---+
+|
++ These did not
