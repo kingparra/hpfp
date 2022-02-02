@@ -362,18 +362,18 @@
       as printing the first ``[1***``.
     * p21. It's possible to write functions that will
       force both the spine and the values.
-    * p23. We'll write our own sum function for the
+    * p22. We'll write our own sum function for the
       sake of demonstration:
 
       * f14. Source code for ``mySum``.
 
-    * p24.
+    * p23.
 
     -- page 325
 
       * f15. The evaluation steps of ``mySum [1..5]``
 
-    * p25.
+    * p24.
 
   * 9.8.3 Exercises: Bottom madness
 
