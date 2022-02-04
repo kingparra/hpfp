@@ -1,0 +1,12 @@
+---
+name: will-it-blow-up
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  will-it-blow-up-test:
+    main: Spec.hs
+    source-dirs: test
+    # "Ambiguous module name 'Lib'" error.
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [will-it-blow-up, hspec, deepseq]

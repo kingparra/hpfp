@@ -1,137 +1,249 @@
 9.8.3 Exercise: Bottom Madness
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Will it blow up?
-""""""""""""""""
-Will the following expressions return a value or be ⊥ ?
+9.8.3.1 Will it blow up?
+""""""""""""""""""""""""
+Will the following expressions return a value
+or be ⊥ ?
+
+(NB: **I had a hard time writing test for this, so I've
+also included an expect script and asciinema recordings
+under** ``exercises/9.8.3*.rst.d/`` **as proof to
+myself that I've done the work.**)
 
 1.  ``[x^y | x <- [1..5], y <- [2, undefined]]``
 
-    Prediction: It will blow up -- the rightmost generator is evaluated first.
+    Prediction: The code should expand to a list
+    like this. Until forced, though, the elements
+    ``(x^y)`` remain unevaluated.
 
-    Proof::
+    ::
 
-      ·∾ [x^y | x <- [1..5], y <- [2,undefined]]
+      [ (1 ^ 2), (2 ^ undefined)
+      , (2 ^ 2), (2 ^ undefined)
+      , (3 ^ 2), (3 ^ undefined)
+      , (4 ^ 2), (4 ^ undefined)
+      , (4 ^ 2), (4 ^ undefined)
+      ]
+
+    Since undefined is forced  by the ``(^)`` operator,
+    it should crash after getting as far as ``1 : _``
+    in the evaluation process.
+
+    Result:
+
+    ::
+
+      ·∾ [ x^y | x <- [1..5], y <- [2,undefined]]
       [1,*** Exception: Prelude.undefined
       CallStack (from HasCallStack):
-        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
-        undefined, called at <interactive>:22:29 in interactive:Ghci12
+        error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+        undefined, called at <interactive>:2:30 in interactive:Ghci
+      1
 
 2.  ``take 1 $ [x^y | x <- [1..5], y <- [2, undefined]]``
 
-    Prediction: It will be fine -- we're only forcing one element to be
-    evaluated from each generator list.
+    Prediction:
 
-    Proof::
+    ::
 
-      ·∾ take 1 $ [x^y | x <- [1..5], y <- [2,undefined]]
+      [1]
+
+    We're only taking one element of that expanded
+    expression, so the second element won't be
+    forced, meaning no exception is thrown.
+
+    Result:
+
+    ::
+
+      ·∾ take 1 $ [ x ^ y | x <- [1..5], y <- [2,undefined]]
       [1]
 
 3.  ``sum [1, undefined, 3]``
 
-    Prediction: This will definitely blow up.
+    Prediction: Sum forces evaluation of all elements
+    in a list, in order to sum them, so this should
+    throw an exception.
 
-    Proof::
+    Result:
 
-      ·∾ sum [1,undefined,3]
+    ::
+
+      ·∾ sum [1, undefined, 3]
       *** Exception: Prelude.undefined
       CallStack (from HasCallStack):
-        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
-        undefined, called at <interactive>:34:8 in interactive:Ghci13
+        error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+        undefined, called at <interactive>:6:9 in interactive:Ghci2
 
 4.  ``length [1, 2, undefined]``
 
-    Prediction: Since length only needs to count the cons cells in the spine,
-    this will be fine.
+    Prediction: Because length counts the cons
+    constructors, but does not force evaluation of the
+    elements, it will return ``3``.
 
-    Proof::
+    Result:
+
+    ::
 
       ·∾ length [1,2,undefined]
       3
 
 5.  ``length $ [1, 2, 3] ++ undefined``
 
-    Prediction: Since ``(++)`` is evaluated first, it will hit bottom.
+    Prediction: Length will force the spine, and
+    undefined is part of the spine due to ``(++
+    undefined)``, so it will throw an exception.
 
-    Proof::
+    Result:
 
-      ·∾ length $ [1,2,3] ++ undefined 
+    ::
+
+      ·∾ length $ [1,2,3] ++ undefined
       *** Exception: Prelude.undefined
       CallStack (from HasCallStack):
-        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
-        undefined, called at <interactive>:36:21 in interactive:Ghci14
+        error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+        undefined, called at <interactive>:1:21 in interactive:Ghci1
 
-6.  ``take 1 $ filter even [1, 2, 3, undefined]``
+6.  ``take 1 $ filter even [1,2,3,undefined]``
 
-    Prediction: This was tricky. My first guess was that even would hit
-    undefined. Since we are only forcing the first even numbers evaluation,
-    though, it hits ``2`` and then stops evaluating before ``undefined``.
+    Prediction: I think that ``filter`` will force the
+    spine, and then ``even`` will be run only up to
+    ``2``, since ``take 1`` only needs one element.
+    So that should give me ``[2]``.
 
-    Proof::
+    But I'm not sure if ``filter even`` will introduce
+    any strictness, causing evaluation of
+    ``undefined``.
+
+    Result:
+
+    ::
 
       ·∾ take 1 $ filter even [1,2,3,undefined]
       [2]
 
-7.  ``take 1 $ filter even [1, 3, undefined]``
+7.  ``take 1 $ filter even [1,3,undefined]``
 
-    Prediction: There is no even number to stop evaluation on.. it will hit
-    ``undefined`` and throw an exception.
+    Prediction: Since we don't encounter any even
+    numbers before the ``undefined`` element the list
+    will continue to be evaluated by ``filter even``,
+    throwing an exception when we get to ``undefined``.
 
-    Proof::
+    Result:
+
+    ::
 
       ·∾ take 1 $ filter even [1,3,undefined]
       *** Exception: Prelude.undefined
       CallStack (from HasCallStack):
-        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
-        undefined, called at <interactive>:45:27 in interactive:Ghci19
+        error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+        undefined, called at <interactive>:1:27 in interactive:Ghci1
 
-8.  ``take 1 $ filter odd [1, 3, undefined]``
+8.  ``take 1 $ filter odd [1,3,undefined]``
 
-    Prediction: This will stop on ``1``.
+    Prediction: This should evaluate to ``[1]``.
 
-    Proof::
+    Result:
+
+    ::
 
       ·∾ take 1 $ filter odd [1,3,undefined]
       [1]
 
-9.  ``take 2 $ filter odd [1, 3, undefined]``
+9.  ``take 2 $ filter odd [1,3,undefined]``
 
-    Prediction: ``[1,3]``
+    Prediction: ``[1,3]``.
 
-    Proof::
+    Result:
+
+    ::
 
       ·∾ take 2 $ filter odd [1,3,undefined]
       [1,3]
 
-10. ``take 3 $ filter odd [1, 3, undefined]``
+10. ``take 3 $ filter odd [1,3,undefined]``
 
-    Prediction: There aren't three odd numbers before undefined. It will hit
-    bottom.
+    Prediction: Take requires three elements, so
+    ``undefined`` will be reached and an exception will
+    be thrown.
 
-    Proof::
+    Result:
+
+    ::
 
       ·∾ take 3 $ filter odd [1,3,undefined]
       [1,3*** Exception: Prelude.undefined
       CallStack (from HasCallStack):
-        error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
-        undefined, called at <interactive>:48:26 in interactive:Ghci21
+        error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+        undefined, called at <interactive>:1:26 in interactive:Ghci1
 
-.. Intermission: Is it in normal form?
-.. """""""""""""""""""""""""""""""""""
-.. For each expression below, determine whether it’s in:
+9.8.3.2 Intermission: Is it in normal form?
+"""""""""""""""""""""""""""""""""""""""""""
+For each expression below, determine whether
+it’s in:
 
-.. 1. normal form, which implies weak head normal form;
-.. 2. weak head normal form only; or,
-.. 3. neither.
+1. Normal form, which implies weak head normal form.
+2. Weak head normal form only.
+3. Neither.
 
-.. Remember that an expression cannot be in normal form or weak head normal form if
-.. the outermost part of the expression isn't a data constructor. It can't be in
-.. normal form if any part of the expression is unevaluated.
+Remember that an expression cannot be in
+normal form or weak head normal form if the
+outermost part of the expression isn't a data
+constructor. It can't be in normal form if
+any part of the expression is unevaluated:
 
-.. 1. ``[1, 2, 3, 4, 5]``
-.. 2. ``1 : 2 : 3 : 4 : _``
-.. 3. ``enumFromTo 1 10``
-.. 4. ``length [1, 2, 3, 4, 5]``
-.. 5. ``sum (enumFromTo 1 10)``
-.. 6. ``['a'..'m'] ++ ['n'..'z']``
-.. 7. ``(_, 'b')``
+**WHNF: the expression is only evaluated as far as is
+neccessary to reach a data constructor. The arguments
+to the data constructor don't need to be eavulated.
+NF: Completely reduced, including all subexpressions.
+NF is a subset of WHNF. Anything in NF is also in
+WHNF.**
+
+.. TODO Figure out how to test this.
+
+1. ``[1, 2, 3, 4, 5]``
+
+   This should be in NF and WHNF.
+
+2. ``1 : 2 : 3 : 4 : _``
+
+   WHNF, but not NF. The outermost data constructor is
+   the leftmost cons cell. So a data constructor
+   awaiting an argument is reached. Because the end of
+   the list isn't evaluated, however, this expression
+   isn't in NF.
+
+3. ``enumFromTo 1 10``
+
+   .. NOTE Is this in WHNF since it's generated as
+      needed, or NF since GHCi will force it's evaluation
+      with print?
+
+4. ``length [1, 2, 3, 4, 5]``
+
+   NF and WHNF.
+
+   While ``length`` only cares about the cons cells,
+   since we wrote the list as a literal value, the list
+   is in NF. Since ``length`` has all it's arguments,
+   and will evaluate the list, the overall expression
+   is also in NF.
+
+   This is assuming that it was typed into GHCi,
+   instead of on the right side of a namebinding, which
+   may potentially never be called.
+
+5. ``sum (enumFromTo 1 10)``
+
+   Sum will force the spine and all of the lists
+   elements. NF and WHNF.
+
+6. ``['a'..'m'] ++ ['n'..'z']``
+
+   NF and WHNF. ``(++)`` will force everything.
+
+7. ``(_, 'b')``
+
+   WHNF only. The outside data constructor is ``(,)``.
+   ``_`` and ``b`` are not evaluated, so it's not in NF.
