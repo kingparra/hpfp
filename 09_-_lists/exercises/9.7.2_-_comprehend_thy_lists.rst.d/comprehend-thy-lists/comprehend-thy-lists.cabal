@@ -1,10 +1,8 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: febd12ad9d8f65d232668f02c4027b5da80bfecfc9aa51706c72248e62971720
 
 name:           comprehend-thy-lists
 version:        0.0.0
