@@ -1,6 +1,7 @@
 import Test.Hspec
 import Lib
 import Control.Exception (evaluate)
+import Control.DeepSeq (force)
 
 {- To run this in GHCi
 
@@ -58,4 +59,4 @@ main = hspec $ do
     it "will print the first two elements" $ do
       take 2 ten `shouldBe` [1,3]
     it "will return an exception" $ do
-      evaluate (drop 2 ten) `shouldThrow` anyException
+      (evaluate . force) ten `shouldThrow` anyException
