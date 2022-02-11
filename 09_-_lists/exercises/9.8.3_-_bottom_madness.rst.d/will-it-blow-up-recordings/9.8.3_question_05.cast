@@ -1,7 +1,4 @@
 {"version": 2, "width": 66, "height": 11, "timestamp": 1643919864, "idle_time_limit": 0.2, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
-[0.355304, "o", "\u001b[?1h\u001b="]
-[0.355839, "o", "·∾ "]
-[1.469271, "o", "\u001b[H\u001b[2J"]
 [1.473471, "o", "·∾ "]
 [2.721947, "o", "l"]
 [2.804148, "o", "e"]
