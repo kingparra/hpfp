@@ -1,3 +1,6 @@
+**TL;DR** Check out http://hspec.github.io/expectations.html
+and Control-f for "Expecting exceptions from pure code"
+
 **justsomeguy** | I have this expression one = [x^y | x
 <- [1..5], y <- [2, undefined]]. Evaluating it results
 in an exception once it tries to create the second
