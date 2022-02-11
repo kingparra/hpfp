@@ -7,8 +7,8 @@ Will the following expressions return a value or be ⊥ ?
 
 (NB: **I had a hard time writing test for this, so I've
 also included an expect script and asciinema recordings
-under** ``exercises/9.8.3*.rst.d/`` **as proof to
-myself that I've done the work.**)
+under** ``exercises/9.8.3*.rst.d/`` **as proof to myself
+that I've done the work.**)
 
 1.  ``[x^y | x <- [1..5], y <- [2, undefined]]``
 
@@ -178,36 +178,61 @@ For each expression below, determine whether it's in:
 2. Weak head normal form only.
 3. Neither.
 
-Remember that an expression cannot be in normal form or
-weak head normal form if the outermost part of the
+Remember that an expression cannot be in normal form
+or weak head normal form if the outermost part of the
 expression isn't a data constructor. It can't be in
 normal form if any part of the expression is unevaluated:
 
 .. topic:: Definitions of WHNF and NF
 
-   Here are the definitions of WHNF and NF as a reminder to myself.
+   Here are the definitions of WHNF and NF as a
+   reminder to myself.
 
    WHNF
      The expression is only evaluated as far as is
      neccessary to reach a data constructor or lambda
      awaiting an argument. The arguments to the data
-     constructor don't need to be eavulated.
+     constructor don't need to be eavulated. The inside
+     of the lambda also doesn't need to be evaluated.
+     We are using outermost reduction, here.
 
    NF
-     Completely reduced, including all subexpressions.
-     NF is a subset of WHNF. Anything in NF is also in WHNF.
+     Completely reduced, including all inner
+     subexpressions. NF is a subset of WHNF.
+     Anything in NF is also in WHNF.
 
 
 1. ``[1, 2, 3, 4, 5]``
 
+   NF and WHNF.
+
 2. ``1 : 2 : 3 : 4 : _``
+
+   WHNF, but not NF. We reach the outermost data
+   constructor, the rightmost cons.
 
 3. ``enumFromTo 1 10``
 
+   Neither. This is a fully applied function that
+   has not been reduced. There is no data constructor
+   here, yet, until further reduction happens.
+
 4. ``length [1, 2, 3, 4, 5]``
+
+   Neither. Fully applied, but not reduced.
 
 5. ``sum (enumFromTo 1 10)``
 
+   Neither. Same as above.
+
 6. ``['a'..'m'] ++ ['n'..'z']``
 
+   Neither? It's fully applied, but not reduced, and
+   it's not a constructor or lambda awaiting an
+   argument.
+
 7. ``(_, 'b')``
+
+   WHNF, but not NF. We only need the data
+   constructor ``(_,_)`` to be evaluated for
+   WHNF.
