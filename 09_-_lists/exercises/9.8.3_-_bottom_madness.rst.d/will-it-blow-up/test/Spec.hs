@@ -4,7 +4,7 @@ import Control.Exception (evaluate)
 
 {- To run this in GHCi
 
-$ stack ghci will-it-blow-up:test:will-it-blow-up-test
+$ stack ghci will-it-blow-up:tests:will-it-blow-up-test
 
 This will make packages that the test component depends
 on avaialbe for import within ghci.
