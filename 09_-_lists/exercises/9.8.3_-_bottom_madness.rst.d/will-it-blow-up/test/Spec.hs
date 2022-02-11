@@ -55,5 +55,7 @@ main = hspec $ do
       nine `shouldBe` [1,3]
 
   describe "Question 10" $ do
-    it "will return and exception" $ do
+    it "will print the first two elements" $ do
+      take 2 ten `shouldBe` [1,3]
+    it "will return an exception" $ do
       evaluate (drop 2 ten) `shouldThrow` anyException
