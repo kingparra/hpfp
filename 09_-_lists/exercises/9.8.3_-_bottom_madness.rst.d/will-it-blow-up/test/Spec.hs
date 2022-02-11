@@ -1,15 +1,5 @@
 import Test.Hspec
 import Lib
-  ( one
-  , two
-  , three
-  , four
-  , five
-  , six
-  , seven
-  , eight
-  , nine
-  )
 import Control.Exception (evaluate)
 
 {- To run this in GHCi
@@ -19,7 +9,6 @@ $ stack ghci will-it-blow-up:test:will-it-blow-up-test
 This will make packages that the test component depends
 on avaialbe for import within ghci.
 -}
-
 
 main = hspec $ do
 
@@ -38,8 +27,8 @@ main = hspec $ do
       two `shouldBe` [1^2]
 
   describe "Question 3" $ do
-    it "will return and exception" $ do
-      pendingWith "figure out how to test for this exception"
+    it "will return an exception" $ do
+      evaluate three `shouldThrow` anyException
 
   describe "Question 4" $ do
     it "will return 3" $ do
@@ -47,7 +36,7 @@ main = hspec $ do
 
   describe "Question 5" $ do
     it "will return and exception" $ do
-      pendingWith "figure out how to test for this exception"
+      evaluate five `shouldThrow` anyException
 
   describe "Question 6" $ do
     it "will return [2]" $ do
@@ -55,7 +44,7 @@ main = hspec $ do
 
   describe "Question 7" $ do
     it "will return and exception" $ do
-      pendingWith "figure out how to test for this exception"
+      evaluate seven `shouldThrow` anyException
 
   describe "Question 8" $ do
     it "will return [1]" $ do
@@ -67,4 +56,4 @@ main = hspec $ do
 
   describe "Question 10" $ do
     it "will return and exception" $ do
-      pendingWith "figure out how to test for this exception"
+      evaluate (drop 2 ten) `shouldThrow` anyException
