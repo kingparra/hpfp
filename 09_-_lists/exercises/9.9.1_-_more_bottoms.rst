@@ -1,15 +1,199 @@
 Exercises: More Bottoms
 ^^^^^^^^^^^^^^^^^^^^^^^
-1. Bottom.
-2. Yes, it will return ``2``.
-3. It will return the value bottom.
-4. The function ``itIsMystery`` take a string and then returns only the vowels
-   in that string, in the order that they occur.
-5.
 
-  a. ``[1,4,9,16,25,36,49,64,81,100]``
-  b. ``[1..10]``
-  c. ``[15,15,15]``
+1. Will the following expression return a value or be bottom?
 
-6. What?
+   ::
 
+     one = take 1 $ map (+1) [undefined,2,3]
+
+   Because we're forcing ``map (+1)`` on the first
+   element, this will evaluate to bottom and throw an
+   exception.
+
+   Let's find out:
+
+   ::
+
+     ·∾ take 1 $ map (+1) [undefined,2,3]
+     [*** Exception: Prelude.undefined
+     CallStack (from HasCallStack):
+       error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+       undefined, called at <interactive>:231:20 in interactive:Ghci40
+
+2. Will the following expression return a value?
+
+   ::
+
+     take 1 $ map (+1) [1,undefined,3]
+
+   The result should be ``[2]``.
+
+   Let's find out:
+
+   ::
+
+     ·∾ take 1 $ map (+1) [1,undefined,3]
+     [2]
+
+3. Will the following expression return a value
+
+   ::
+
+      take 2 $ map (+1) [1,undefined,3]
+
+   Since we're taking two elements, this should attempt
+   to apply (+1), and throw an exception.
+
+   Let's test it:
+
+   ::
+
+     ·∾ take 2 $ map (+1) [1,undefined,3]
+     [2,*** Exception: Prelude.undefined
+     CallStack (from HasCallStack):
+       error, called at libraries/base/GHC/Err.hs:80:14 in base:GHC.Err
+       undefined, called at <interactive>:237:22 in interactive:Ghci41
+
+4. Describe what this function does in English, then run it.
+
+   ::
+
+     ·∾ itIsMystery xs = map (\x -> x `elem` "aeiou") xs
+
+   This function checks for vowels. If an element of
+   the list is a vowel, it's replaced with True.
+   Otherwise, it's replaced with False. The result is a
+   list of Boolean values.
+
+   Let's test it!
+
+   ::
+
+     ·∾ itIsMystery "This sentence"
+     {- This     -} [ False, False, True , False
+     {- ' '      -} , False
+     {- sentence -} , False, True , False, False, True, False, False, True
+                    ]
+
+   (The results are formatted, but it did come from a real GHCi session.)
+
+5. What will be the result of the following functions:
+
+   a) ``map (^2) [1..10]``
+
+      This should expand to the expression
+      ``[1^2,2^2,3^2,4^2,5^2,6^2,7^2,8^2,9^2,10^2]``.
+      When you press enter in GHCi to evaluate ``map
+      (^2) [1..10]``  GHCi will run ``print it`` to
+      display the output in the REPL session, forcing
+      the expressions evaluation to
+      ``[1,4,9,16,25,36,49,64,81,100]``. This is the
+      same value as the ``mySqr`` list comprehension
+      from previous exercises in this chapter.
+
+      Time to test.
+
+      ::
+
+        ·∾ map (^2) [1..10]
+        [1,4,9,16,25,36,49,64,81,100]
+
+        ·∾ [x^2 | x <- [1..10]]
+        [1,4,9,16,25,36,49,64,81,100]
+
+   b) ``map minimum [[1..10],[10..20],[20..30]]``
+
+      The GHCi command ``:doc minimum`` says it returns
+      the least element of a non-empty ``Foldable``
+      structure. So this should return ``[1,10,20]``, I
+      think.
+
+      Let's find out::
+
+        ·∾ map minimum [[1..10],[10..20],[20..30]]
+        [1,10,20]
+
+   c) ``map sum [[1..5],[1..5],[1..5]]``
+
+     This should evaluate  to ``[15,15,15]``.
+
+     ::
+
+       ·∾ map sum [[1..5],[1..5],[1..5]]
+       [15,15,15]
+
+6. Back in ... Wait, what? What are you asking me to do?
+
+   The function to modify, from figure 22 in section 9.9.
+
+   ::
+
+     ite x = map (\x -> if x == 3 then (-x) else (x))
+
+   Write this function in terms of ``Data.Bool
+   (bool)``, instead of the if-then-else expression.
+
+   Ok, here is the function rewrittten to use
+   ``bool``.
+
+    ::
+
+      ·∾ eti = map (\x -> bool x (negate x) (x == 3))
+
+      ·∾ eti [1..10]
+      [1,2,-3,4,5,6,7,8,9,10]
+
+      ·∾ ite = map (\x -> if x == 3 then negate x else x)
+      ·∾ ite [1..10]
+      [1,2,-3,4,5,6,7,8,9,10]
+
+      ·∾ ite [1..10] == eti [1..10]
+      True
+
+.. TODO Write HSpec test for eti/ite
+
+.. .. topic:: Documentation for ``bool``
+..
+..    **TL;DR** *bool* ~=~ *else-then-if*
+..
+..    **Function definition**
+..
+..    ::
+..
+..      bool :: a -> a -> Bool -> a
+..      bool f _ False = f
+..      bool _ t True  = t
+..
+..    **Case analysis for the Bool type**
+..
+..    ``bool x y p`` evaluates to ``x`` when ``p`` is ``False``,
+..    and evaluates to ``y`` when ``p`` is ``True``.
+..    This is equivalent to ``if p then y else x``; that is, one can
+..    think of it as an ``if-then-else`` construct with its arguments
+..    reordered. (``else-then-if``)
+..
+..    **Examples**
+..
+..    Basic usage...
+..
+..    ::
+..
+..      >>> bool "foo" "bar" True
+..      "bar"
+..      >>> bool "foo" "bar" False
+..      "foo"
+..
+..    Confirm that ``bool x y p`` and
+..    ``if p then y else x`` are equivalent.
+..
+..    ::
+..
+..      >>> p = True
+..      >>> x = "bar"
+..      >>> y = "foo"
+..      >>> bool x y p == if p then y else x
+..      True
+..      >>> let p = False
+..      >>> bool x y p == if p then y else x
+..      True

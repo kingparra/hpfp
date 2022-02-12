@@ -2,10 +2,11 @@
  Chapter 9 Outline
 *******************
 
+-- Chapter 9 spans from pages 299 to 346, for a total of 47 pages.
+
 * 9.1 Lists
 
   * p1. Lists may be used to represent a finite collection or infinite sequence of values.
-
   * p2. Learning objectives.
 
 * 9.2 The list datatype
@@ -187,7 +188,7 @@
 
       * f6.
 
-  * 9.7.2 Exercises: Comprehend thy lists
+  * 9.7.2 Exercises: Comprehend thy lists :comment:`DONE`
 
     * p1.
 
@@ -216,7 +217,7 @@
 
       * f5.
 
-  * 9.7.4 Exercises: Square Cube
+  * 9.7.4 Exercises: Square Cube :comment:`DONE`
 
     * p1.
 
@@ -228,18 +229,13 @@
 
 * 9.8 Spines and non-strict evaluation
 
-  * p1. The structure that connects values together in
-    composite datatypes is known as the spine.
+  * p1. The structure that connects values together in composite datatypes is known as the spine.
 
-    * f1. An ASCII art representation of the list
-      ``[1,2]`` as a tree of data constructors and
-      their term-level arguments.
+    * f1. An ASCII art representation of the list ``[1,2]`` as a tree of data constructors and their term-level arguments.
 
   * p2.
 
-  * p3. Evaluation proceeds down the spine (left to
-    right), but construction proceeds up the spine
-    (right to left).
+  * p3. Evaluation proceeds down the spine (left to right), but construction proceeds up the spine (right to left).
 
   * p4.
 
@@ -320,9 +316,7 @@
     * p10.
     * p11.
 
-      * f8. The spine of a list that isn't spine strict
-        and is awaiting something to force the evaluation.
-        (The first cons cells, no arguments evaluated.)
+      * f8. The spine of a list that isn't spine strict and is awaiting something to force the evaluation.  (The first cons cells, no arguments evaluated.)
 
     * p12.
     * p13.
@@ -331,13 +325,10 @@
 
     * p14.
 
-      * f9. Tree representation of the spine of an
-        unevaluated list with two elements.
-
+      * f9. Tree representation of the spine of an unevaluated list with two elements.
     * p15.
 
-      * f10. GHCi ``x = [1,undefined]; length x``
-        returns ``2``.
+      * f10. GHCi ``x = [1,undefined]; length x`` returns ``2``.
 
     * p16.
 
@@ -349,21 +340,15 @@
 
     * p18.
 
-      * f12. A complicated tree representation showing
-        forced cons constructors, with unevaluated
-        arguments.
+      * f12. A complicated tree representation showing forced cons constructors, with unevaluated arguments.
 
     * p19.
 
-      * f13. Demonstration of applying ``length`` to a
-        list with ``undefined`` in the spine.
+      * f13. Demonstration of applying ``length`` to a list with ``undefined`` in the spine.
 
-    * p20. Printing the list fails, but it gets as far
-      as printing the first ``[1***``.
-    * p21. It's possible to write functions that will
-      force both the spine and the values.
-    * p22. We'll write our own sum function for the
-      sake of demonstration:
+    * p20. Printing the list fails, but it gets as far as printing the first ``[1***``.
+    * p21. It's possible to write functions that will force both the spine and the values.
+    * p22. We'll write our own sum function for the sake of demonstration:
 
       * f14. Source code for ``mySum``.
 
@@ -382,7 +367,120 @@
 
 * 9.9 Transforming lists of values
 
+  -- page 326
+
+  * p1. HOFs are use more often than primitive recursion to transform data.
+  * p2. The ``map`` function applies a function to every element of a list. ``fmap`` does the same, but for any type that implements ``Foldable``.
+
+  -- page 327
+
+    * f1. Examples of using ``map`` and ``fmap`` in GHCi.
+
+  * p3. The types of ``map`` and ``fmap`` respectively are:
+
+    * f2.
+
+  * p4.
+
+    * f3.
+
+  * p5.
+
+    * f4. ``:t map (+1)``
+
+  * p6.
+  * p7.
+
+    * f5.
+
+  -- page 328
+
+  * p8.
+
+    * f6. ``:t fmap (+1)``
+
+  * p9.
+
+    * f7. The definition of ``map`` from the ``base`` package, heavily annotated. Spans pages 328 and 329.
+
+  -- page 329
+
+  * p10.
+
+    * f8. ``map (+1) [1, 2, 3]``
+
+  * p11.
+
+    * f9. ``map (+1) (1 : (2 : (3 : [])))``
+
+  * p12.
+
+    * f10. Shows one step of the evaluation process for ``map (+1) [1,2,3]``.
+
+  * p13.
+
+    * f11.
+
+  * p14.
+
+    * f12.
+
+  -- page 330
+
+  * p15.
+
+    * f13.
+
+  * p16. "Finishing the reduction of the expression:"
+
+    * f14.
+
+  * p17. "Using the syntactic sugar of list, here's an approximation of what map is doing for us:"
+
+    * f15.
+
+  * p18.
+
+    * f16.
+
+  * p19.
+
+    * f17.
+
+.. TODO I left off here. Continue from this point on.
+
+  -- page 331
+
+  * p20.
+
+    * f18.
+
+  * p21.
+
+    * f19.
+
+  * p22.
+  * p23.
+
+  -- page 332
+
+  * p24.
+
+    * f20.
+
+  * p25.
+
+    * f21.
+
+  * p26.
+
+    * f22. ``Prelude> map (\x -> if x == 3 then (-x) else (x)) [1..10]``
+
+  * p27.
+
   * 9.9.1 Exercises: More bottoms
+
+.. TODO Rewrite 9.10.1
 
 * 9.10 Filtering lists of values
 
