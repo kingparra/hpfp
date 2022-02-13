@@ -1,0 +1,2 @@
+map  ::              (a -> b) -> [a] -> [b]
+fmap :: Functor f => (a -> b) -> f a -> f b

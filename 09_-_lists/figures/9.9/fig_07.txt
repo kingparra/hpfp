@@ -1,0 +1,52 @@
+Here's how ``map`` is defined in ``base``::
+
+    map  :: (a -> b) -> [a] -> [b]
+    map   _  [ ]   =  [ ]
+    --    ^   ^        ^
+    --    1   2        3
+    map   f (x:xs) =  f x : map f xs
+    --    ^   ^       ^ ^   ^^^^^^^^
+    --    4   5       6 7      8
+
+
+1. ``_`` is used here to ignore the function argument,
+   because we don't need it.
+
+2. We are pattern matching on the ``[]``, or empty list
+   case, because the list datatype is a sum type with
+   two cases, and we must handle both every time we
+   pattern match or case on a list value.
+
+3. We return the ``[]`` empty list value, because when
+   there are no values, it's the only correct thing we
+   can do. If you attempt to do anything else, the type
+   checker will swat you.
+
+4. We bind the function argument to the name ``f``, as
+   it merits no name more specific than this. ``f`` and
+   ``g`` are common names for non-specific function
+   values in Haskell. This is the function we are
+   mapping over the list value with map.
+
+5. We do not leave the entire list argument bound as a
+   single name.  Since we've already pattern matched
+   the ``[]`` empty list case, we know there must be at
+   least one value in the list. Here we pattern match
+   into the ``:``, the second data constructor of the
+   list, which is a product. ``x`` is the single value
+   of the cons product. ``xs`` is the rest of the list.
+
+6. We apply our function ``f`` to the single value
+   ``x``. This part of the map function is what applies
+   the function argument to the contents of the list.
+
+7. We "cons" the value returned by the expression ``f
+   x`` with the ``:`` operator onto the head of the
+   result of applying map to the rest of the list.
+   Data is immutable in Haskell. When we map, we do not
+   mutate the existing list but build a new list with
+   the values that result from applying the function.
+
+8. We call ``map`` itself applied to ``f`` and ``xs``.
+   This expression is the rest of the list with the
+   function ``f`` applied to each value.

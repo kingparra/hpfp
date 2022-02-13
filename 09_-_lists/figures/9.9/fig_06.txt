@@ -1,0 +1,2 @@
+·∾ :type fmap (+1)
+fmap (+1) :: (Functor f, Num b) => f b -> f b

@@ -1,0 +1,13 @@
+·∾ (+1) undefined
+*** Exception: Prelude.undefined
+
+·∾ (1,undefined)
+(1,*** Exception: Prelude.undefined
+
+·∾ badList = [1,2,undefined]
+
+·∾ map (+1) badList 
+[2,3,*** Exception: Prelude.undefined
+
+·∾ take 2 $ map (+1) badList
+[2,3]

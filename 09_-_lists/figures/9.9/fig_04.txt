@@ -1,0 +1,2 @@
+·∾ :type map (+1)
+map (+1) :: Num b => [b] -> [b]
