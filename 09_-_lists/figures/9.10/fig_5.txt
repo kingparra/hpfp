@@ -1,0 +1,5 @@
+·∾ filter (\x -> x `elem` "aeiou") "abracadabra"
+"aaaaa"
+
+·∾ [ x | x <- "abracadabra", x `elem` "aeiou" ]
+"aaaaa"
