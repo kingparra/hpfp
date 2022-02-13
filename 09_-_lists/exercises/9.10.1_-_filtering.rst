@@ -1,24 +1,30 @@
 9.10.1 Exercises: Filtering
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-1. Something like this::
+1. Given the following example, from figure 5:
 
-    Prelude> filter (\x -> x `rem` 3 == 0) [1..100]
-    [3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57,60,63,66,69,72,75,78,81,84,87,90,93,96,99]
+   .. include:: figures/9.10/fig_5.txt
+      :code:
 
-2. Just apply length to the result of the last expression::
+   How might we write a filter function that will give
+   us all the multiples of 3 out of a list from 1..30?
 
-    Prelude> length $ filter (\x -> x `rem` 3 == 0) [1..100]
-    33
+2. Recalling what we learned about function
+   composition, how could we compose the above
+   function with the length function to tell
+   us how many multiples of 3 there are between
+   1 and 30?
 
-   Or like this::
+3. Next, we're going to work on removing all articles
+   ("the", "a", and "an") from sentences. You want to
+   get to something that works like this::
 
-    Prelude> length . filter (\x -> x `rem` 3 == 0) $ [1..100]
-    33
+     Prelude> myFilter "the brown dog was a goof"
+     ["brown","dog","was","goof"]
 
-3. Ok, let's do this::
-
-    Prelude> articles = ["the","a","an"]
-    Prelude> myFilter s = filter (\x -> (x `elem` articles) /= True) (words s)
-    Prelude> myFilter "the brown dog was a goof"
-    ["brown","dog","was","goof"]
-
+   You may recall that earlier in this chapter, we
+   asked you to write a function that separates a
+   string into a list of strings by separating them
+   at spaces. That is a standard library function
+   called words.  You may consider starting this
+   exercise by using words (or your own version, of
+   course).
