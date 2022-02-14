@@ -8,18 +8,32 @@
    How might we write a filter function that will give
    us all the multiples of 3 out of a list from 1..30?
 
+   A quick attempt in GHCi::
+
+     ·∾ filter (\x -> x `mod` 3 == 0) [1..30]
+     [3,6,9,12,15,18,21,24,27,30]
+
 2. Recalling what we learned about function
    composition, how could we compose the above
    function with the length function to tell
    us how many multiples of 3 there are between
    1 and 30?
 
+   A quick attempt in GHCi::
+
+     ·∾ length $ filter (\x -> x `mod` 3 == 0) [1..30]
+     10
+
 3. Next, we're going to work on removing all articles
    ("the", "a", and "an") from sentences. You want to
    get to something that works like this::
 
-     Prelude> myFilter "the brown dog was a goof"
-     ["brown","dog","was","goof"]
+     ·∾ myFilter "the brown dog was a goof"
+     [ "brown"
+     , "dog"
+     , "was"
+     , "goof"
+     ]
 
    You may recall that earlier in this chapter, we
    asked you to write a function that separates a
@@ -28,3 +42,20 @@
    called words.  You may consider starting this
    exercise by using words (or your own version, of
    course).
+
+   A super quick implementation in GHCi::
+
+     ·∾ :{
+      ⋮ myFilter l =
+      ⋮   filter (not . flip elem articles) w
+      ⋮   where
+      ⋮     w = words l
+      ⋮     articles = ["the","a","an"]
+      ⋮ :}
+
+     ·∾ myFilter "the brown dog was a goof"
+     ["brown","dog","was","goof"]
+
+   I'm in a rush today. I'll have to make a stack
+   project with a more complete solution for this
+   later.
