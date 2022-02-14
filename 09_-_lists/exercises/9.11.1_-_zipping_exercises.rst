@@ -1,8 +1,15 @@
-Zipping exercises
-^^^^^^^^^^^^^^^^^
-1. ``zip' x y = [(a,b) | a <- x, b <- y]`` This doesn't work... ``Prelude> zip'
-   [1..3] [3..99]`` should stop evaluating the second list after three elements,
-   but keeps on going to the end.
-2.
-3.
+9.11.1 Zipping exercises
+^^^^^^^^^^^^^^^^^^^^^^^^
+1. Write your own version ``zip``, and ensure it
+   behaves the same as the original::
 
+    zip :: [a] -> [b] -> [(a,b)]
+    zip = undefined
+
+2. Do what you did for zip but now for ``zipWith``::
+
+    zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+    zipWith = undefined
+
+3. Rewrite your ``zip`` in terms of the ``zipWith`` you
+   wrote.

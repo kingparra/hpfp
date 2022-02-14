@@ -198,6 +198,8 @@ The function is applied to the values you force out of the list one by one.
 9.11 Zipping lists
 ------------------
 
+.. include:: exercises/9.11.1_-_zipping_exercises.rst
+
 
 9.12 Chapter Exercises
 ----------------------
