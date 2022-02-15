@@ -1,0 +1,11 @@
+---
+name: standard-functions
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+tests:
+  standard-functions-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [standard-functions, hspec, QuickCheck, deepseq]
