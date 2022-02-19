@@ -1,26 +1,21 @@
 9.12.3 Writing your own standard functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Below are the outlines of some standard functions.
-The goal here is to write your own versions of
-these to gain a deeper understanding of recursion
-over lists and how to make functions flexible enough
-to accept a variety of inputs. You could figure out
-how to look up the answers, but you won't do that,
-because you know you'd only be cheating yourself
-out of the knowledge.  Right?
+Below are the outlines of some standard
+functions. The goal here is to write your
+own versions of these to gain a deeper
+understanding of recursion over lists and how
+to make functions flexible enough to accept a
+variety of inputs. You could figure out how
+to look up the answers, but you won't do
+that, because you know you'd only be cheating
+yourself out of the knowledge. Right?
 
-Let's look at an example of what we're after here. The
-``and2`` function takes a list of ``Bool`` values and
-returns ``True`` if and only if no values in the list
-are ``False.`` Here's how you might write your own
-version of it:
-
-2 Note that if you're using GHC 7.10 or newer, the
-functions and, any, and all have been abstracted from
-being usable only with lists to being usable with any
-datatype that has an instance of the type class
-Foldable. It still works with lists, the same as it did
-before. Proceed assured that we'll cover this later.
+Let's look at an example of what we're after
+here.  The ``and`` function takes a list of
+``Bool`` values and returns ``True`` if and
+only if no values in the list are ``False.``
+Here's how you might write your own version
+of it:
 
 ::
 
@@ -28,9 +23,10 @@ before. Proceed assured that we'll cover this later.
   myAnd :: [Bool] -> Bool
   myAnd [] = True
   myAnd (x:xs) =
-    if x == False
-    then False
-    else myAnd xs
+    if    x == False
+    then  False
+    else  myAnd xs
+
 
   -- direct recursion, using (&&)
   myAnd :: [Bool] -> Bool
@@ -39,14 +35,15 @@ before. Proceed assured that we'll cover this later.
 
 And now the fun begins:
 
-1. ``myOr`` returns ``True`` if any ``Bool`` in the
-   list is ``True``::
+1. ``myOr`` returns ``True`` if any ``Bool``
+   in the list is ``True``::
 
      myOr :: [Bool] -> Bool
      myOr = undefined
 
-2. ``myAny`` returns ``True`` if ``a -> Bool`` applied
-   to any of the values in the list returns ``True``::
+2. ``myAny`` returns ``True`` if ``a -> Bool``
+   applied to any of the values in the list
+   returns ``True``::
 
      myAny :: (a -> Bool) -> [a] -> Bool
      myAny = undefined
@@ -59,15 +56,24 @@ And now the fun begins:
      Prelude> myAny odd [1, 3, 5]
      True
 
-3. After you write the recursive ``myElem``, write
-   another version that uses ``any``. The built-in
-   version of ``elem`` in GHC 7.10 and newer has a type
-   that uses ``Foldable`` instead of the list type,
-   specifically. You can ignore that and write the
-   concrete version that works only for lists::
+3. After you write the recursive ``myElem``,
+   write another version that uses ``any``.
+   The built-in version of ``elem`` in GHC
+   7.10 and newer has a type that uses
+   ``Foldable`` instead of the list type,
+   specifically.
+
+   You can ignore that and write the concrete
+   version that works only for lists:
+
+   ::
 
      myElem :: Eq a => a -> [a] -> Bool
-     342
+
+   Here's an example of ``myElem``'s use in
+   GHCi:
+
+   ::
 
      Prelude> myElem 1 [1..10]
      True
@@ -75,10 +81,14 @@ And now the fun begins:
      Prelude> myElem 1 [2..10]
      False
 
-4. Implement ``myReverse``::
+4. Implement ``myReverse``:
+
+   Function stub::
 
      myReverse :: [a] -> [a]
      myReverse = undefined
+
+   Example use::
 
      Prelude> myReverse "blah"
      "halb"
@@ -86,33 +96,41 @@ And now the fun begins:
      Prelude> myReverse [1..5]
      [5,4,3,2,1]
 
-5. ``squish`` flattens a list of lists into a list::
+5. ``squish`` flattens a list of lists into a
+   list::
 
      squish :: [[a]] -> [a]
      squish = undefined
 
-6. ``squishMap`` maps a function over a list and
-   concatenates the results::
+6. ``squishMap`` maps a function over a list
+   and concatenates the results.
+
+   Function stub::
 
      squishMap :: (a -> [b]) -> [a] -> [b]
      squishMap = undefined
+
+   Demonstration of use in GHCi::
 
      Prelude> squishMap (\x -> [1, x, 3]) [2]
      [1,2,3]
      Prelude> squishMap (\x -> "WO "++[x]++" HOO ") "123"
      "WO 1 HOO WO 2 HOO WO 3 HOO "
 
-7. ``squishAgain`` flattens a list of lists into a list.
-   This time, re-use the ``squishMap`` function::
+7. ``squishAgain`` flattens a list of lists
+   into a list.  This time, re-use the
+   ``squishMap`` function::
 
      squishAgain :: [[a]] -> [a]
      squishAgain = undefined
 
-8. ``myMaximumBy`` takes a comparison function and a
-   list and returns the greatest element of the list
-   based on the last value that the comparison returns
-   ``GT`` for. If you import ``maximumBy`` from
-   ``Data.List``, you'll see that the type is::
+8. ``myMaximumBy`` takes a comparison
+   function and a list and returns the
+   greatest element of the list based on the
+   last value that the comparison returns
+   ``GT`` for. If you import ``maximumBy``
+   from ``Data.List``, you'll see that the
+   type is::
 
      Foldable t => (a -> a -> Ordering) -> t a -> a
 
@@ -125,28 +143,37 @@ And now the fun begins:
      myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
      myMaximumBy = undefined
 
+   Demonstration::
+
      Prelude> xs = [1, 53, 9001, 10]
      Prelude> myMaximumBy compare xs
      9001
 
-9. ``myMinimumBy`` takes a comparison function and a
-   list and returns the least element of the list based
-   on the last value that the comparison returns ``LT``
-   for::
+9. ``myMinimumBy`` takes a comparison
+   function and a list and returns the least
+   element of the list based on the last
+   value that the comparison returns ``LT``
+   for.
+
+   Function stub::
 
      myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
      myMinimumBy = undefined
+
+   Demonstration::
 
      Prelude> xs = [1, 53, 9001, 10]
      Prelude> myMinimumBy compare xs
      1
 
-10. Using the ``myMinimumBy`` and ``myMaximumBy``
-    functions, write your own versions of maximum and
-    minimum. If you have GHC 7.10 or newer, you'll see
-    a type constructor that wants a ``Foldable``
-    instance instead of a list, as has been the case
-    for many functions so far::
+10. Using the ``myMinimumBy`` and
+    ``myMaximumBy`` functions, write your 
+    own versions of maximum and minimum. 
+    If you have GHC 7.10 or newer, you'll 
+    see a type constructor that wants a 
+    ``Foldable`` instance instead of a list,
+    as has been the case for many functions
+    so far::
 
       myMaximum :: (Ord a) => [a] -> a
       myMaximum = undefined
