@@ -1,0 +1,7 @@
+·∾ import Data.Char (chr, ord)
+
+·∾ :type chr
+chr :: Int -> Char
+
+·∾ :type ord
+ord :: Char -> Int

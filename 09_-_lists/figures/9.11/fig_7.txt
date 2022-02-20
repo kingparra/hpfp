@@ -1,0 +1,19 @@
+::
+
+  zipWith :: (a -> b -> c)
+  --         ^^^^^^^^^^^^^
+  --               1
+          -> [a] -> [b] -> [c]
+  --         ^^^    ^^^    ^^^
+  --          2      3      4
+
+1. A function with two arguments. Notice how the type
+   variables of the arguments and result align with the
+   type variables in the lists.
+
+2. The first input list.
+
+3. The second input list.
+
+4. The output list created by applying the function to
+   the values in the input lists.

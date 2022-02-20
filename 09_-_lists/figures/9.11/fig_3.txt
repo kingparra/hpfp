@@ -1,0 +1,3 @@
+·∾ :set -XNumericUnderscores 
+·∾ zip [] [1..1_000_000_000_000_000_000]
+[]

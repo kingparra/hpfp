@@ -157,4 +157,3 @@ expect "·∾"; send -- "-- p24. We'll return to the topic of Haskell's evaluati
 expect "·∾"; send -- "--      strategy at various points in the book. It's a\n"
 expect "·∾"; send -- "--      complex topic, and it's better to approach it in\n"
 expect "·∾"; send -- "--      stages.\n"
-expect "·∾"; send "\n"
