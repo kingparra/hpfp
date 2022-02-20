@@ -230,10 +230,10 @@ And now the fun begins:
      :end-before: -- Question 10
 
 10. Using the ``myMinimumBy`` and
-    ``myMaximumBy`` functions, write your 
-    own versions of maximum and minimum. 
-    If you have GHC 7.10 or newer, you'll 
-    see a type constructor that wants a 
+    ``myMaximumBy`` functions, write your
+    own versions of maximum and minimum.
+    If you have GHC 7.10 or newer, you'll
+    see a type constructor that wants a
     ``Foldable`` instance instead of a list,
     as has been the case for many functions
     so far::
@@ -245,9 +245,8 @@ And now the fun begins:
       myMinimum = undefined
 
     Here is my attempt:
- 
+
     .. include:: exercises/9.12.3_-_writing_your_own_standard_functions.rst.d/standard-functions/src/Lib.hs
       :code:
       :start-after: -- Question 10
-      :end-before: -- Question 11
- 
+
