@@ -1,15 +1,37 @@
 9.11.1 Zipping exercises
 ^^^^^^^^^^^^^^^^^^^^^^^^
-1. Write your own version ``zip``, and ensure it
-   behaves the same as the original::
+1. Write your own version ``zip``, and ensure it behaves the same as the original:
 
-    zip :: [a] -> [b] -> [(a,b)]
-    zip = undefined
+   ::
 
-2. Do what you did for zip but now for ``zipWith``::
+     zip :: [a] -> [b] -> [(a,b)]
+     zip = undefined
 
-    zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-    zipWith = undefined
+   Here is my attempt:
 
-3. Rewrite your ``zip`` in terms of the ``zipWith`` you
-   wrote.
+   .. include:: exercises/9.11.1_-_zipping_exercises.rst.d/zipping-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
+2. Do what you did for zip but now for ``zipWith``:
+
+   ::
+
+     zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+     zipWith = undefined
+
+   Here is my attempt:
+
+   .. include:: exercises/9.11.1_-_zipping_exercises.rst.d/zipping-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
+3. Rewrite your ``zip`` in terms of the ``zipWith`` you wrote.
+
+   Here is my attempt:
+
+   .. include:: exercises/9.11.1_-_zipping_exercises.rst.d/zipping-exercises/src/Lib.hs
+      :code:
+      :start-after: -- Question 3

@@ -85,11 +85,11 @@
 |             |                                                 |           |
 +-------------+-------------------------------------------------+-----------+
 |             |                                                 |           |
-|  9.11.1     |  Zipping exercises                              |           |
+|  9.11.1     |  Zipping exercises                              |   Done    |
 |             |                                                 |           |
-|  9.11.1.1   |  * 1. Write your own ``zip``.                   |           |
-|  9.11.1.2   |  * 2. Write your own ``zipWith``.               |           |
-|  9.11.1.3   |  * 3. Rewrite ``zip`` in terms of ``zipWith``   |           |
+|  9.11.1.1   |  * 1. Write your own ``zip``.                   |   Done    |
+|  9.11.1.2   |  * 2. Write your own ``zipWith``.               |   Done    |
+|  9.11.1.3   |  * 3. Rewrite ``zip`` in terms of ``zipWith``   |   Done    |
 |             |                                                 |           |
 +-------------+-------------------------------------------------+-----------+
 |             |                                                 |           |
