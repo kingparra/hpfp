@@ -207,3 +207,5 @@ The function is applied to the values you force out of the list one by one.
 .. include:: exercises/9.12.1_-_Data.Char.rst
 
 .. include:: exercises/9.12.2_-_ciphers.rst
+
+.. include:: exercises/9.12.3_-_writing_your_own_standard_functions.rst

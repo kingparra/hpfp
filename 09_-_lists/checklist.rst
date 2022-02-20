@@ -91,7 +91,6 @@
 |  9.11.1.2   |  * 2. Write your own ``zipWith``.               |           |
 |  9.11.1.3   |  * 3. Rewrite ``zip`` in terms of ``zipWith``   |           |
 |             |                                                 |           |
-|             |                                                 |           |
 +-------------+-------------------------------------------------+-----------+
 |             |                                                 |           |
 |  9.12       |  Chapter exercises                              |           |
@@ -105,9 +104,9 @@
 |  9.12.1.5   |  * 5.                                           |           |
 |  9.12.1.6   |  * 6.                                           |           |
 |             |                                                 |           |
-|  9.12.2     |  Ciphers                                        |           |
+|  9.12.2     |  Ciphers                                        |   Done    |
 |             |                                                 |           |
-|  9.12.3     |  Writing your own standard functions            |   Done    |
+|  9.12.3     |  Writing your own standard functions            |           |
 |             |                                                 |           |
 |  9.12.3.1   |  * 1. ``myOr``                                  |   Done    |
 |  9.12.3.2   |  * 2. ``myAny``                                 |   Done    |
