@@ -1,6 +1,6 @@
-**************************
- Chapter 9 Brief Contents
-**************************
+********************
+ Chapter 9 Contents
+********************
 
 * 9.1 Lists
 * 9.2 The list datatype
