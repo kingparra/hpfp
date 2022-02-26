@@ -1,2 +1,2 @@
-Prelude> takeWhile (=='a') "abracadabra"
+·∾ takeWhile (=='a') "abracadabra"
 "a"

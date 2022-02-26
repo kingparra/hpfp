@@ -1,2 +1,2 @@
-Prelude> takeWhile (>6) [1..10]
+·∾ takeWhile (>6) [1..10]
 []

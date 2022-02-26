@@ -38,6 +38,7 @@ Contents
 
    09_-_lists/outline
    09_-_lists/notes
+   09_-_lists/questions
 
    10_-_folds/notes
 

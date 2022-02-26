@@ -1,11 +1,11 @@
-Prelude> dropWhile (<3) [1..10]
+·∾ dropWhile (<3) [1..10]
 [3,4,5,6,7,8,9,10]
 
-Prelude> dropWhile (<8) (enumFromTo 5 15)
+·∾ dropWhile (<8) (enumFromTo 5 15)
 [8,9,10,11,12,13,14,15]
 
-Prelude> dropWhile (>6) [1..10]
+·∾ dropWhile (>6) [1..10]
 [1,2,3,4,5,6,7,8,9,10]
 
-Prelude> dropWhile (=='a') "abracadabra"
+·∾ dropWhile (=='a') "abracadabra"
 "bracadabra"
