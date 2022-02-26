@@ -11,13 +11,13 @@
 
    Here is the answer to all three questions:
 
-   .. include:: exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/src/Lib.hs
+   .. include:: exercises/9.6.1_-_thy_fearful_symmetry.rst.d/thy-fearful-symmetry/src/Lib.hs
       :code:
 
    Some tests:
 
-   .. include:: exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/tests/Spec.hs
+   .. include:: exercises/9.6.1_-_thy_fearful_symmetry.rst.d/thy-fearful-symmetry/tests/Spec.hs
       :code:
 
-   Navigate to ``exercises/9.6.1_-_thy_fearful_symmetry.d/thy-fearful-symmetry/`` and run ``stack
+   Navigate to ``exercises/9.6.1_-_thy_fearful_symmetry.rst.d/thy-fearful-symmetry/`` and run ``stack
    test`` for proof it works. (I did not use the ``main`` function in the textbook.)
