@@ -6,7 +6,7 @@
 
 * 9.1 Lists
 
-  * p1. Lists may be used to represent a finite collection or infinite sequence of values.
+  * p1. What lists are used to represent.
   * p2. Learning objectives.
 
 * 9.2 The list datatype
@@ -51,7 +51,7 @@
 
     * f6. ``:info Maybe``
 
-  * p8. "Rewriting myTail to use Maybe is fairly straightforward:"
+  * p8. "Rewriting ``myTail`` to use ``Maybe`` is fairly straightforward:"
 
     * f7. Definition of ``safeTail``.
 
@@ -188,7 +188,7 @@
 
       * f6.
 
-  * 9.7.2 Exercises: Comprehend thy lists :comment:`DONE`
+  * 9.7.2 Exercises: Comprehend thy lists
 
     * p1.
 
@@ -217,7 +217,7 @@
 
       * f5.
 
-  * 9.7.4 Exercises: Square Cube :comment:`DONE`
+  * 9.7.4 Exercises: Square Cube
 
     * p1.
 
@@ -229,7 +229,7 @@
 
 * 9.8 Spines and non-strict evaluation
 
-  * p1. The structure that connects values together in composite datatypes is known as the spine.
+  * p1. The structure that connects elements together in composite datatypes is known as the spine.
 
     * f1. An ASCII art representation of the list ``[1,2]`` as a tree of data constructors and their term-level arguments.
 
@@ -405,7 +405,7 @@
 
   -- page 329
 
-  * p10.
+  * p10. "How do we write out what ``map f`` does?"
 
     * f8. ``map (+1) [1, 2, 3]``
 
@@ -447,11 +447,9 @@
 
     * f17.
 
-.. TODO I left off here. Continue from this point on.
-
   -- page 331
 
-  * p20.
+  * p20. Map is not applied to every element at once. Each element is mapped if and when its evaluation is forced.
 
     * f18.
 
@@ -478,23 +476,152 @@
 
   * p27.
 
+-- page 332
+
   * 9.9.1 Exercises: More bottoms
 
-.. TODO Rewrite 9.10.1
+    * 1
+    * 2
+    * 3
+
+-- page 333
+
+    * 4
+    * 5
+
+      * a
+      * b
+      * c
+
+    * 6
 
 * 9.10 Filtering lists of values
 
+  * p1. We showed a few examples of ``filter`` earlier.
+
+    * f1. ``filter even [1..10]``
+
+  * p2. Filter has the following definition:
+
+-- page 334
+
+    * f2. The definition of filter.
+
+  * p3. Filter takes a predicate function and a list and returns a list containing only the elements that satisfy the predicate.
+  * p4. Examples of ``filter`` that we've already seen.
+
+    * f3. ``filter (== 'a') "abracadabra"``
+
+  * p5. The following examples does the same thing as filter even, but with a lambda as input.
+
+    * f4.
+
+  * p6. We covered list comprehensions as a way of filtering lists, as well. Compare the following:
+
+    * f5. Example of filter vs a guarded list comprehension.
+
+  * p7.
+  * p8. **We recommend at this point that you try writing some filter functions of your own to get comfortable with the pattern.**
+
+-- page 335
+
   * 9.10.1 Exercises: Filtering
 
+    * 1
+    * 2
+    * 3
+
 * 9.11 Zipping lists
+
+  * p1.
+  * p2.
+
+    * f1.
+
+  * p3.
+
+    * f2.
+
+  * p4.
+
+    * f3.
+
+  * p5.
+
+    * f4.
+
+  * p6. "We can use unzip to recover the lists as they were before they were zipped:"
+
+    * f5.
+
+  * p7. "Be aware that information can be list in this process, because zip must stop on the
+    shortest list:"
+
+    * f6.
+
+  * p8. "We can also use zipWith to apply a function to the values of two lists in parallel:"
+
+    * f7. zipWith
+
+  * p9. "A brief demonstration of how ``zipWith`` works:"
+
+    * f8.
 
   * 9.11.1 Zipping exercises
 
 * 9.12 Chapter exercises
 
+  * p1.
+
   * 9.12.1 Data.Char
+
+    * p1.
+
+      * 1
+      * 2
+      * 3
+      * 4
+      * 5
+      * 6
+
   * 9.12.2 Ciphers
+
+    * p1. Save these exercises in a module named ``Cipher``, since we'll be coming back to them later.
+    * p2. The Caesar cipher shift by :math:`n` numbers forward in the alphabet.
+    * p3. Write a basic Caesar cipher.
+    * p4. Try to implement the cipher before googling a solution.
+    * p5. The first lines should look like:
+
+      * f1. A module header and import statement for ``Cipher``.
+
+    * p6. ``ord`` and ``chr`` may be useful to you.
+
+      * f2. A GHCi session where the types of ``chr`` and ``ord`` are queried.
+
+    * p7. You want your shift to wrap back around the alphabet.
+    * p8. Also, write an ``unCeasar`` cipher.
+
   * 9.12.3 Writing your own standard functions
+
+    * p1.
+    * p2.
+
+    -- page 341
+
+      * f1. myAnd
+
+    * p3. "And now the fun begins:"
+
+      * 1
+      * 2
+      * 3
+      * 4
+      * 5
+      * 6
+      * 7
+      * 8
+      * 9
+      * 10
 
 * 9.13 Definitions
 
