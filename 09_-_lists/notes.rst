@@ -5,6 +5,65 @@
 
 9.1 Lists
 ---------
+..
+   Things you can't know about a list before
+   you patern match on it:
+
+   * the length
+   * whether it's empty or not
+   * whether is's infinite or finite
+   * whether part of the spine is undefined or not
+   * the index of an element
+
+   Things you _can_ know about a list before
+   you pattern match on it:
+
+   * the type of the elements within it
+
+   Things you can know about a (finite) list
+   without evaluating the elements:
+
+   * whether the spine has undefined in it
+   * the length of the list (number of cons
+     data constructors)
+
+   Efficient operations:
+
+   * in-order sequential access of elements
+   * prepending an element using cons
+   * poping an element from the head of the list
+
+   Inefficient operations:
+
+   * out-of-order access (or random access)
+     to elements within the list
+   * repeated access of elements (the spine
+     has to be traversed every time)
+   * modification of elements (this has CoW
+     sementics, so elements are not mutated
+     in-place, an entier new list is
+     constructed instead. The head of the
+     list up until the modified element can
+     be reused, though.)
+
+   * Use cases for lists as an abstract
+     datatype.
+
+     * Iterator
+     * Infinite stream
+     * Collection of values
+     * Stack
+
+   How does referential transparency restrict
+   the way collections of values are updated?
+
+In this chapter, we will:
+
+* Explain the list datatype and how to pattern match on lists.
+* Practice many standard library functions for operating on lists.
+* Learn about the underlying representations of lists.
+* See what that representation means for their evaluation.
+* And do a whole bunch of exercises!
 
 
 9.2 The list datatype
@@ -117,7 +176,9 @@
    succeed. As usual, in bindings in list comprehensions
    can shadow those in outer scopes; for example:
 
-   ``[ x | x <- x, x <- x ]`` ≡ ``[ z | y <- x, z <- y]``
+   ::
+
+     [ x | x <- x, x <- x ] ≡ [ z | y <- x, z <- y]
 
    Variables bound by ``let`` have fully polymorphic
    types while those defined by ``<-`` are lambda
@@ -142,7 +203,10 @@ list, it's the succession of nested cons data
 constructors (and the final empty list data
 constructor), like so: ``_ : _ : _ : []``.
 
-Lists aren't constructed until they're consumed.
+Lists aren't constructed until they're
+consumed. Until a value is consumed, there is
+a series of placeholders as a blueprint of the
+lists that can be constructed when it's needed.
 
 Also, functions can traverse the spine of a list
 without forcing evaluation of the values within
@@ -152,6 +216,10 @@ Another way of phrasing this is: You can evaluate
 the cons data constructors in a spine without
 forcing evaluation of the arguments to those
 constructors.
+
+Evaluation of the spine proceeds down the
+spine. However, constructing the list (when
+that is necessary) proceeds up the spine.
 
 9.8.1 Using GHCi's :sprint command
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -164,6 +232,11 @@ form by default.
 Weak head normal form means the expression is only
 evaluated as far as is necessary to reach a data
 constructor or a lambda awaiting an argument.
+
+Also, since Haskell uses an outermost
+reduction strategy, the subexpressions within
+the lambda or data constructor don't need to
+be evaluated.
 
 **To determine if something is in WHNF we only have
 to look at the outermost part of the expression.
@@ -183,8 +256,10 @@ force evaluation of each value.
 
 9.9 Transforming lists of values
 --------------------------------
-Map doesn't traverse the whole list and apply the function immediately.
-The function is applied to the values you force out of the list one by one.
+Map doesn't traverse the whole list and apply
+the function immediately. The function is
+applied to the values you force out of the
+list one by one.
 
 .. include:: exercises/9.9.1_-_more_bottoms.rst
 

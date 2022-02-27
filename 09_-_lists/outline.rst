@@ -74,71 +74,87 @@
 
 * 9.6 Extracting portions of lists
 
-  * p1.
+  * p1. Let's first look at ``take``, ``drop``, and ``splitAt``.
 
     * f1. Type signatures of ``take``, ``drop``, and ``splitAt``.
 
   * p2.
   * p3.
 
-    * f2. Demonstration of ``take`` in GHCi.
+    * f2. ``take`` applied to finite lists
 
   * p4.
 
-    * f3. Adding ``enumFrom`` to the demonstration.
+    * f3. ``take`` applied to an infinite list
 
   * p5.
 
-    * f4. Demonstrating ``drop`` on lists created with range syntax.
+    * f4. ``drop`` applied to finite lists
 
   * p6.
 
-    * f5. Demonstrating ``splitAt``.
+    * f5. ``splitAt`` applied to finite lists
 
-  * p7.
+  * p7. Next we'll look at ``takeWhile`` and ``dropWhile``
 
     * f6. Type signatures of ``takeWhile`` and ``dropWhile``.
 
-  * p8.
+  * p8. These functions will take or drop elements that meet the condition and then
+    stop when it meets the first element that doesn't satisfy the predicate function.
+
   * p9.
 
-    * f7. Demonstrating ``takeWhile``
+    * f7. Take while the elements are less than 3
 
   * p10.
 
-    * f8.
+    * f8. Take while the elements are less than 8
 
   * p11.
 
-    * f9. Demonstrating ``takeWhile`` with a predicate that is never met.
+    * f9. ``takeWhile`` produces an empty list when the first element does not
+      meet the predicate.
 
   * p12. **"In the final example below, why does it only return a single a?"**
 
     * f10. ``takeWhile (=='a') "abracadabra"``
 
-  * p13. Next we'll look at ``dropWhile``.
+    -- (The second element evaluates to ``False`` in our predicate function, so
+    ``takeWhile`` stops taking elements after the first element.)
 
-    * f11. Examples of ``dropWhlie`` applied to different arguments in GHCi.
+  * p13. Now we'll look at ``dropWhile``.
+
+    * f11. Examples of ``dropWhlie`` applied to finite lists
 
   * 9.6.1 Exercises: Thy Fearful Symmetry
 
     * 1
 
       * p1.
-      * f1.
+
+        * f1.
 
     * 2
 
       * p1.
-      * f1. The ``PoemLines`` module.
+
+        * f1. The ``PoemLines`` module.
+
       * p2.
-      * f2. The result that ``putStrLn sentences`` should print.
+
+        * f2. The result that ``putStrLn sentences`` should print.
+
       * p3.
-      * f3. Stub for the ``myLines`` function.
+
+        * f3. Stub for the ``myLines`` function.
+
       * p4.
-      * f4. A list named ``shouldEqual`` that ``myLines sentences`` should produce.
+
+        * f4. A list named ``shouldEqual`` that ``myLines sentences`` should produce.
+
       * p5.
-      * f5. A small test.
+
+        * f5. A small test implemented as a ``main`` function.
 
     * 3
 
@@ -146,14 +162,17 @@
 
 * 9.7 List comprehensions
 
-  * p1.
+  * p1. List comprehensions are a language construct inspired by set builder
+    notation in mathematics. You use them to create new lists from an existing
+    generator list, which may be filtered along the way by a guard.
+
   * p2.
 
-    * f1. A simple comprehension, ``[ x^2 | x <- [1..10]``, followed by a lot of explanatory text.
+    * f1. A simple comprehension, ``[ x^2 | x <- [1..10]]``, followed by a lot of explanatory text.
 
   * p3.
 
-    * f2. ``[ x^2 | x <- [1..10]``,
+    * f2. ``[ x^2 | x <- [1..10]``
 
   * 9.7.1 Adding predicates
 
