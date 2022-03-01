@@ -197,6 +197,9 @@ In this chapter, we will:
 
 9.8 Spines and nonstrict evaluation
 -----------------------------------
+The spine is the structure of a collection type that
+arranges values in some order.
+
 The spine is the connective structure that links a
 composite data-structure together. In the case of a
 list, it's the succession of nested cons data
@@ -266,6 +269,13 @@ list one by one.
 
 9.10 Filtering lists of values
 ------------------------------
+::
+
+  filter :: (a -> Bool) -> [a] -> [a]
+  filter _ []        = []
+  filter pred (x:xs)
+    | pred x         = x : filter pred xs
+    | otherwise      = filter pred xs
 
 .. include:: exercises/9.10.1_-_filtering.rst
 
