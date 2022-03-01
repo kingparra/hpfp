@@ -2,7 +2,9 @@ Why does Haskell use lists so much, even when they seem inappropriate, sometimes
 
 https://www.imn.htwk-leipzig.de/~waldmann/etc/untutorial/list-or-not-list/
 
-How are updates to lists handled with regards to referential transparency?
+**How are updates to lists handled with regards to referential transparency?**
+
+.. Check Intro to FP through LC, Chapter 1 for some hints.
 
 Under which circumstances are lists slow?
 
@@ -57,4 +59,12 @@ What is GHCs "list deforestation" compiler optimization? What is GHCs "list fusi
 
 https://wiki.haskell.org/GHC_optimisations
 
-Is it possible to add invariants to lists that are known statically?
+Is it possible to add invariants to lists that are known statically (such as the length, whether it is a finite or infinite list, etc)?
+
+What sections did I find most valuable?
+
+Which sections didn't I get anything out of?
+
+What surprised me in the chapter?
+
+Which sections were straight-forward, and which were not?
