@@ -1,0 +1,21 @@
+9.12.2 Ciphers
+^^^^^^^^^^^^^^
+Your goal in this exercise is to write a basic Caesar cipher that
+shifts rightward.
+
+You want your shift to wrap back around to the beginning of the
+alphabet, so that if you have a rightward shift of three from 'z', you
+end up back at 'c' and not somewhere in the vast Unicode hinterlands.
+
+You should include an ``unCaesar`` function that will decipher your
+text, as well. In a later chapter, we will test it.
+
+Here is my attempt:
+
+.. include:: exercises/9.12.2_-_ciphers.rst.d/ciphers/src/Lib.hs
+   :code:
+
+Here are some tests:
+
+.. include:: exercises/9.12.2_-_ciphers.rst.d/ciphers/test/Spec.hs
+   :code:
