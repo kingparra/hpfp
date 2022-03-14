@@ -5,9 +5,83 @@
 
 9.1 Lists
 ---------
+
+.. 'Recursion has been described as the curious process of reaching ones goal by walking backward towards it.'
+
+.. Programming is all about combining primitive operations into larger expressions to acheive the outcome you want.
+
+   What primitive operations does the list type provide?
+
+   I'll do a case analysis here based on the data constructors and pattern matching to try and puzzle it out...
+
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  Name    |        Code         |  Description                                                         |
+   +==========+=====================+======================================================================+
+   |  cons    |  ``((:) x xs)``     |  Produce a new list by prepending an element to an existing list.    |
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  visit   |  ``(_:_)``          |  Visit a cons cell, ignoring both the elements value and next cell.  |
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  head    |  ``(x:_)``          |  Retrieve the left-most element.                                     |
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  tail    |  ``(_:xs)``         |  Retrieve the list after the left-most element.                      |
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  uncons  |  ``(x:xs)``         |  Retrieve the left-most element and the list the follows.            |
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  nill    |  ``(stream : [])``  |  End a list.                                                         |
+   +----------+---------------------+----------------------------------------------------------------------+
+   |  empty   |  ``[]``             |  Create an empty list.                                               |
+   +----------+---------------------+----------------------------------------------------------------------+
+
+   But I really think of it more like this...
+
+   Core operations: cons, head, tail.
+
+   All three operations are provided by (:), or pattern matching on it.
+
+   So, I guess that I should consider pattern matching when designing my own interfaces.
+
+.. Which ideas are necessarily part of a list and which ideas are merely present in it?
+
+   Necessary:
+
+   * The data constructors cons and nil.
+   * The order in which they are arranged.
+   * Following these two things, the fact that there is no direct access to an element.
+
+.. What are lists used for, and how are they different from other datastructures?
+
+   Like arrays, vectors, and records, lists represent a collection of elements in a fixed linear order.
+
+   Unlike Arrays,
+   * lists do not have a fixed length. They can be added to or taken from at any point during program execution.
+   * in Haskell particularly, lists may be infinite!
+   * lists aren't layed out contiguously in memory, but may be spread out across different addresses.
+   * lists don't have a static index. Operations that refer to elements in a list by index number have to
+     traverse the spine every time and count the number of cons cells to find the index number.
+   * you can evaluate the spine without forcing evaluation of the elements.
+   * updates to elements change the element and every element that follows, sharing the preceeding
+     elements. Arrays, in contrast, allow direct mutation of an element at a given index.
+
+   Unlike Sets,
+   * lists allow duplicate elements, and care about the order of elements
+
+   Unlike Streams,
+   * lists can end
+
+   Unlike doubly-linked lists,
+   * updates to elements can share the prefix, since referential transparency doesn't require
+     rewriting of the previous-node pointer in a cons cell, which would cascade into a requirement
+     for all of the structure to be rewritten.
+
+   Unlike lists in Python,
+
+   * lists can only contain elements of one type
+   * lists can be infinite
+   * lists have many advanced operations defined for them in the form of typeclasses
+   * lists are referentially transparent
+
 ..
-   Things you can't know about a list before
-   you patern match on it:
+   Things you can't know about a list before you patern match on it:
 
    * the length
    * whether it's empty or not
@@ -15,13 +89,11 @@
    * whether part of the spine is undefined or not
    * the index of an element
 
-   Things you _can_ know about a list before
-   you pattern match on it:
+   Things you _can_ know about a list before you pattern match on it:
 
    * the type of the elements within it
 
-   Things you can know about a (finite) list
-   without evaluating the elements:
+   Things you can know about a (finite) list without evaluating the elements:
 
    * whether the spine has undefined in it
    * the length of the list (number of cons
@@ -70,35 +142,35 @@ In this chapter, we will:
 ---------------------
 ::
 
-  --    The binary infix data constructor (:), used to
-  --  construct nested cells of a list, pronounced "cons".
-  --  Cons is right associative, and has a precedence of 5,
-  --   which is lower than the default of precedence of 9
-  --     for regular left associative prefix functions.
-  --               vvvvvvv
+  --#   The binary infix data constructor (:), used to
+  --# construct nested cells of a list, pronounced "cons".
+  --# Cons is right associative, and has a precedence of 5,
+  --#  which is lower than the default of precedence of 9
+  --#    for regular left associative prefix functions.
+  --#              vvvvvvv
   data [] a = [] | a : [a]
-  --          ^^
-  --  The empty list data constructor, [], pronounced "nill".
-  --
-  -- Since the [] type constructor only takes one type argument,
-  -- a, lists must be homogenous in Haskell.
-  --
-  -- Because of non-strict evaluation, lists can be infinite, and
-  -- are often used similarly to iterators generated by range()
-  -- in python.
+  --#         ^^
+  --#  The empty list data constructor, [], pronounced "nill".
+  --#
+  --# Since the [] type constructor only takes one type argument,
+  --# a, lists must be homogenous in Haskell.
+  --#
+  --# Because of non-strict evaluation, lists can be infinite, and
+  --# are often used similarly to iterators generated by range()
+  --# in python.
 
   instance Eq   a => Eq          [a]
   instance Ord  a => Ord         [a]
   instance Show a => Show        [a]
   instance Read a => Read        [a]
   instance           Semigroup   [a]
-  instance           Monoid      [a]  -- Depends on Semigroup.
-  instance           Foldable    []   -- (foldMap) depends on Monoid.
+  instance           Monoid      [a]  --# Depends on Semigroup.
+  instance           Foldable    []   --# (foldMap) depends on Monoid.
   instance           Functor     []
-  instance           Traversable []   -- Depends on Functor and Foldable.
-  instance           Applicative []   -- Depends on Functor.
-  instance           Monad       []   -- Depends on Applicative.
-  instance           MonadFail   []   -- Depends on Monad.
+  instance           Traversable []   --# Depends on Functor and Foldable.
+  instance           Applicative []   --# Depends on Functor.
+  instance           Monad       []   --# Depends on Applicative.
+  instance           MonadFail   []   --# Depends on Monad.
 
 .. from Will Kurts book: "If you get stuck on a topic
    in Haskell, it's almost always helpful to turn back
@@ -114,6 +186,17 @@ In this chapter, we will:
 
 9.4 List's syntactic sugar
 --------------------------
+In both Lisp and Haskell, lists are implemented as linked records with two fields - one field
+contains the elements value, and the other field contains a link to the next record or Nil
+(end-of-list). These records are called *cons cells* in lisp.
+
+More generally, for other data structures, linked records are instead called nodes. Nodes may have
+many fields, including the possibility of multiple links to other nodes. Data may be arranged into
+arbitrary structures this way.
+
+The *spine* refers to the entire succession of nested cons cells that comprise a list. (Or linked
+nodes that comprise some other data structure.) The field of a cons cell that contains the value is
+not considered part of the spine.
 
 
 9.5 Using ranges to construct lists
