@@ -37,6 +37,7 @@ Contents
    08_-_recursion/overkill
 
    09_-_lists/outline
+   09_-_lists/summary
    09_-_lists/notes
    09_-_lists/questions
 
