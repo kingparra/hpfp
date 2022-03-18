@@ -6,6 +6,27 @@ https://www.imn.htwk-leipzig.de/~waldmann/etc/untutorial/list-or-not-list/
 
 .. Check Intro to FP through LC, Chapter 1 for some hints.
 
+..
+	1.5 Data structures in functional languages
+
+	In FP, because there is no assignment,
+	substructures in data structure cannot be
+	changed one at a time. Instead, it is
+	necessary to write down a whole structure
+	with explicit change to the appropriate
+	substructure.
+
+	 **Functional languages provide explicit
+	representations for data structres.**
+
+	Functional languages do not provide arrays
+	because without assignment there is no easy
+	way to access an arbitrary element. Writing
+	out an entire array with a change to one
+	element would be ludicrously unwieldy.
+	Instead, nested data structures like lists
+	are provided.
+
 Under which circumstances are lists slow?
 
 What is a good rule of thumb for picking the right collection type - such as Array, Map, Set, Sequence, finger trees, tuples, or the list type?
@@ -68,3 +89,40 @@ Which sections didn't I get anything out of?
 What surprised me in the chapter?
 
 Which sections were straight-forward, and which were not?
+
+Why did Chris decide to discuss the cardinality of the list type
+in section 9.2? How is it relevant to the learning objectives?
+What does knowing this allow us to do that we couldn't before?
+
+  * Cardinality of [a]: ``1 + a * a^a``.
+
+  * https://codewords.recurse.com/issues/three/algebra-and-calculus-of-algebraic-data-types
+
+How are lists in other languages different from Haskell?
+
+  * https://www2.cs.arizona.edu/~collberg/Teaching/372/2005/Html/Html-6/
+
+  * compare and contrast arrays vs singly-linked list datatype representations operationally
+
+Which sections or points seemed like they were intended for
+complete beginners, and which points seem to be intended for
+programmers with experience in other languages?
+
+What is a list?
+
+  A list is a structure that is used to arrange elements in a linear order.
+
+  Within a list, there can be multiple occurrences of any element.
+
+  Every member of a list must have the same type.
+
+  Each element is attached to a cons cell within the list. Cons
+  cells are represented as the cons data constructor which has
+  two arguments: the elements value, and a link to the next cons
+  data constructor or end-of-list data constructor.
+
+  In order to get to the :math:`{n}th` element of a list, each
+  cons cell before it must be traversed.
+
+  The elements within the cons cells do not have to be evaluated
+  along the way, though.
