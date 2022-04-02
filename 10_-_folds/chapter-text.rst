@@ -580,7 +580,7 @@ become. ~ Edsger Dijkstra
 3a) We can also use the same trick we used to see the associativity of ``foldr`` to see the associativity of ``foldl``:
 
 .. 10.5, Figure 2, page 359
-.. NOTE This diverges from the book.
+.. NOTE I wrote this differently than the example in the book. It bothered me.
 ::
 
   ·∾ f x y = "(" ++ x ++ "+" ++ y ++ ")"
@@ -595,7 +595,7 @@ become. ~ Edsger Dijkstra
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 360
 
-5b) of the fold. We can compare ``scanr`` and ``scanl`` to their accompanying folds to see the difference in evaluation:
+5c) of the fold. We can compare ``scanr`` and ``scanl`` to their accompanying folds to see the difference in evaluation:
 
 
 .. 10.5, Figure 3, page 360
