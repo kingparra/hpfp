@@ -11,9 +11,9 @@ our terminology, the more explicitly thinking is
 taught, the more of a scientist the programmer will
 become. ~ Edsger Dijkstra
 
-
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 348
-.. {{{
+
+
 10.1 Folds
 ----------
 1a) Folding is a concept that extends in usefulness and importance beyond lists, but lists are often how they are introduced.
@@ -30,8 +30,8 @@ become. ~ Edsger Dijkstra
 2d) * Detail the evaluation processes of folds.
 2e) * Walk through writing folding functions.
 2f) * Introduce scans, functions that are related to folds.
-.. }}}
-.. {{{
+
+
 10.2 Bringing you into the fold
 -------------------------------
 1a) Let's start with a quick look at ``foldr``, short for "fold right."
@@ -103,9 +103,9 @@ become. ~ Edsger Dijkstra
                1 + (2 + (3 + 0))
 
 5a) Where map applies a function to each member of a list and returns a list, a fold replaces the cons constructors with the function and reduces the list.
-.. }}}
+
 ..  CHAPTER 10. DATA STRUCTURE ORIGAMI 350
-.. {{{
+
 
 10.3 Recursive patterns
 -----------------------
@@ -165,9 +165,7 @@ become. ~ Edsger Dijkstra
 6a) Also, each of them has a main function with a recursive pattern that associates to the right.
 6b) The head of the list gets evaluated, set aside, and then the function moves to the right, evaluates the next head, and so on.
 
-.. NOTE I've proof read up to this point.
-.. }}}
-.. {{{
+
 10.4 Fold right
 ---------------
 1a) We call ``foldr`` the "right fold," because the fold is right associative, that is, it associates to the right.
@@ -185,9 +183,7 @@ become. ~ Edsger Dijkstra
 2c) The ``z`` is the zero of our fold.
 2d) It provides a fallback value for the empty list case and a second argument to begin our fold with.
 2e) The zero is often the identity for whatever function we're folding with, such as ``0`` for ``+`` and ``1`` for ``*``.
-.. }}}
 
-.. {{{
 10.4.1 How ``foldr`` evaluates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 1a) We're going to rejigger our definition of ``foldr`` a little bit.
@@ -329,7 +325,8 @@ become. ~ Edsger Dijkstra
   6
 
 14a) And now we're done, with the result of ``6``.
-14b) We can also use a trick popularized by some helpful users in the Haskell IRC community to see how the fold associates:
+
+15a) We can also use a trick popularized by some helpful users in the Haskell IRC community to see how the fold associates:
 
 .. 10.4.1, Figure 13, page 354
 ::
@@ -337,7 +334,7 @@ become. ~ Edsger Dijkstra
   xs = map show [1..5]
   y = foldr (\x y -> concat ["(",x,"+",y,")"]) "0" xs
 
-15a) When we call y in the REPL, we can see how ``foldr`` evaluates:
+16a) When we call y in the REPL, we can see how ``foldr`` evaluates:
 
 .. 10.4.1, Figure 14, page 354
 ::
@@ -345,12 +342,12 @@ become. ~ Edsger Dijkstra
   Prelude> y
   "(1+(2+(3+(4+(5+0)))))"
 
-16a) One initially non-obvious aspect of folding is that it happens in two stages, traversal and folding.
-16b) Traversal is the stage in which the fold recurses over the spine.
-16c) Folding refers to the evaluation or reduction of the folding function applied to the values.
-16d) All folds recurse over the spine in the same direction; the difference between left folds and right folds is in the association, or parenthesization, of the folding function and, thus, in which direction the folding or reduction proceeds.
+17a) One initially non-obvious aspect of folding is that it happens in two stages, traversal and folding.
+17b) Traversal is the stage in which the fold recurses over the spine.
+17c) Folding refers to the evaluation or reduction of the folding function applied to the values.
+17d) All folds recurse over the spine in the same direction; the difference between left folds and right folds is in the association, or parenthesization, of the folding function and, thus, in which direction the folding or reduction proceeds.
 
-17a) With ``foldr``, the rest of our fold is an argument to the function we're folding with:
+18a) With ``foldr``, the rest of our fold is an argument to the function we're folding with:
 
 .. 10.4.1, Figure 15, page 354
 ::
@@ -363,10 +360,10 @@ become. ~ Edsger Dijkstra
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 355
 
-18a) Given this two-stage process and non-strict evaluation, if ``f`` doesn't evaluate its second argument (the rest of the fold), no more of the spine will be forced.
-18b) One of the consequences of this is that ``foldr`` can avoid evaluating not only some or all of the values in the list, but some or all of the list's spine, as well!
-18c) For this reason, ``foldr`` can be used with lists that are potentially infinite.
-18d) For example, compare the following sets of results (recall that ``+`` will unconditionally evaluate the entire spine and all of the values):
+19a) Given this two-stage process and non-strict evaluation, if ``f`` doesn't evaluate its second argument (the rest of the fold), no more of the spine will be forced.
+19b) One of the consequences of this is that ``foldr`` can avoid evaluating not only some or all of the values in the list, but some or all of the list's spine, as well!
+19c) For this reason, ``foldr`` can be used with lists that are potentially infinite.
+19d) For example, compare the following sets of results (recall that ``+`` will unconditionally evaluate the entire spine and all of the values):
 
 .. 10.4.1, Figure 16, page 355
 ::
@@ -374,8 +371,8 @@ become. ~ Edsger Dijkstra
   Prelude> foldr (+) 0 [1..5]
   15
 
-19a) While you cannot use ``foldr`` with addition on an infinite list, you can use functions that are not strict in both arguments and therefore do not require evaluation of every value in order to return a result.
-19b) The function ``myAny``, for example, can return a ``True`` result as soon as it finds one ``True``:
+20a) While you cannot use ``foldr`` with addition on an infinite list, you can use functions that are not strict in both arguments and therefore do not require evaluation of every value in order to return a result.
+20b) The function ``myAny``, for example, can return a ``True`` result as soon as it finds one ``True``:
 
 .. 10.4.1, Figure 17, page 355
 ::
@@ -384,7 +381,7 @@ become. ~ Edsger Dijkstra
   myAny f xs =
   foldr (\x b -> f x || b) False xs
 
-20a) The following should work despite being an infinite list:
+21a) The following should work despite being an infinite list:
 
 .. 10.4.1, Figure 18, page 355
 ::
@@ -392,16 +389,16 @@ become. ~ Edsger Dijkstra
   Prelude> myAny even [1..]
   True
 
-21a) The following, however, will never finish evaluating, because it's always an odd number:
+22a) The following, however, will never finish evaluating, because it's always an odd number:
 
 .. 10.4.1, Figure 19, page 355
 ::
 
   Prelude> myAny even (repeat 1)
 
-22a) Another term we use - and that we've seen before — for this never ending evaluation is bottom or ``undefined``.
-22b) There's no guarantee that a fold of an infinite list will finish evaluating even if you use ``foldr``, as it often depends on the input data and the fold function you supply to operate on it.
-22c) Let us consider some more examples with a less inconvenient bottom:
+23a) Another term we use - and that we've seen before — for this never ending evaluation is bottom or ``undefined``.
+23b) There's no guarantee that a fold of an infinite list will finish evaluating even if you use ``foldr``, as it often depends on the input data and the fold function you supply to operate on it.
+23c) Let us consider some more examples with a less inconvenient bottom:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 356
 
@@ -431,9 +428,9 @@ become. ~ Edsger Dijkstra
   ·∾ foldr (+) 0 xs
   10
 
-23a) By taking only the first four elements, we stop the recursive folding process after the fourth value, so our addition function does not run into bottom, and that works whether undefined is one of the values or part of the spine.
+24a) By taking only the first four elements, we stop the recursive folding process after the fourth value, so our addition function does not run into bottom, and that works whether undefined is one of the values or part of the spine.
 
-24a) The length function behaves differently; it evaluates the spine unconditionally but not the values:
+25a) The length function behaves differently; it evaluates the spine unconditionally but not the values:
 
 .. 10.4.1, Figure 21, page 356
 ::
@@ -444,7 +441,7 @@ become. ~ Edsger Dijkstra
   Prelude> length ([1, 2, 3, 4] ++ undefined)
   *** Exception: Prelude.undefined
 
-25a) However, if we drop the part of the spine that includes the bottom before we use length, we can get an expression that works:
+26a) However, if we drop the part of the spine that includes the bottom before we use length, we can get an expression that works:
 
 .. 10.4.1, Figure 22, page 356
 ::
@@ -453,9 +450,9 @@ become. ~ Edsger Dijkstra
   Prelude> length (take 4 xs)
   4
 
-The take function is non-strict like everything else you've seen so far, and in this case, it only returns as much list as you ask for.
-The difference in what it does is that it stops returning elements from a list when it hits the given length limit.
-Consider this:
+27a) The take function is non-strict like everything else you've seen so far, and in this case, it only returns as much list as you ask for.
+27b) The difference in what it does is that it stops returning elements from a list when it hits the given length limit.
+27c) Consider this:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 357
 
@@ -466,9 +463,10 @@ Consider this:
   Prelude> length $ take 2 $ take 4 xs
   2
 
-It doesn't matter that take 4 could have hit the bottom!
-Nothing forced it to because of the take 2 between it and length.
-Now that we've seen how the recursive second argument to ``foldr``'s folding function works, let's consider the first argument:
+28a) It doesn't matter that take 4 could have hit the bottom!
+28b) Nothing forced it to because of the take 2 between it and length.
+
+29a) Now that we've seen how the recursive second argument to ``foldr``'s folding function works, let's consider the first argument:
 
 .. 10.4.1, Figure 24, page 357
 ::
@@ -478,12 +476,12 @@ Now that we've seen how the recursive second argument to ``foldr``'s folding fun
   foldr f z (x:xs)  = f x (foldr f z xs)
   --                    ^-- first argument
 
-The first argument, noted above, involves a pattern match that is strict by default—the f only applies to x if there is an x value and not just an empty list.
-This means that foldr must force an initial cons cell in order to discriminate between the [] and the (x:xs) cases, so the first cons cell *cannot* be undefined.
+30a) The first argument, noted above, involves a pattern match that is strict by default—the ``f`` only applies to ``x`` if there is an ``x`` value and not just an empty list.
+30b) This means that ``foldr`` must force an initial cons cell in order to discriminate between the ``[]`` and the ``(x:xs)`` cases, so the first cons cell *cannot* be undefined.
 
-Now, we're going to try something unusual to demonstrate that the first bit of the spine must be evaluated by ``foldr``.
-We have a somewhat silly, anonymous function that will ignore all of its arguments and return a value of ``9001``.
-We're using it with ``foldr``, because it will never force evaluation of any of its arguments, so we can have a bottom as a value or as part of the spine, and it will not force an evaluation:
+31a) Now, we're going to try something unusual to demonstrate that the first bit of the spine must be evaluated by ``foldr``.
+31b) We have a somewhat silly, anonymous function that will ignore all of its arguments and return a value of ``9001``.
+31c) We're using it with ``foldr``, because it will never force evaluation of any of its arguments, so we can have a bottom as a value or as part of the spine, and it will not force an evaluation:
 
 .. 10.4.1, Figure 25, page 357
 ::
@@ -499,7 +497,7 @@ We're using it with ``foldr``, because it will never force evaluation of any of 
   ·∾ foldr (\_ _ -> 9001) 0 xs
   9001
 
-Everything is fine unless the first cons cell of the spine is bottom:
+32a) Everything is fine unless the first cons cell of the spine is bottom:
 
 .. 10.4.1, Figure 26, page 357
 ::
@@ -520,12 +518,12 @@ Everything is fine unless the first cons cell of the spine is bottom:
   Prelude> foldr (\_ _ -> 9001) 0 xs
   9001
 
-The final two examples work, because it isn't the first cons cell that is bottom—the undefined values are inside the cons cells, not in the spine itself.
-Put differently, the cons cells contain bottom values but are not themselves bottom.
-We will experiment later with non-strictness and strictness to see how they affect the way our programs evaluate.
+33a) The final two examples work, because it isn't the first cons cell that is bottom—the undefined values are inside the cons cells, not in the spine itself.
+33b) Put differently, the cons cells contain bottom values but are not themselves bottom.
+33c) We will experiment later with non-strictness and strictness to see how they affect the way our programs evaluate.
 
-Traversing the rest of the spine doesn't occur unless the function asks for the result of having folded the rest of the list.
-In the following examples, we don't force traversal of the spine, because ``const`` throws away its second argument, which is the rest of the fold:
+34a) Traversing the rest of the spine doesn't occur unless the function asks for the result of having folded the rest of the list.
+34b) In the following examples, we don't force traversal of the spine, because ``const`` throws away its second argument, which is the rest of the fold:
 
 .. 10.4.1, Figure 27, page 358
 ::
@@ -549,8 +547,8 @@ In the following examples, we don't force traversal of the spine, because ``cons
 35a) Now that we've seen how ``foldr`` evaluates, we're going to look at ``foldl`` before we move on to learning how to write and use folds.
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 359
-.. }}}}}}
-.. {{{
+
+
 10.5 Fold left
 --------------
 1a) Because of the way lists work, folds must first recurse over the spine of the list from beginning to end.
@@ -623,7 +621,6 @@ In the following examples, we don't force traversal of the spine, because ``cons
 
 7a) Each fold will return the same result for this operation, but we can see from the scans that they arrive at that result in a different order, due to the different associativity.
 7b) We'll talk more about scans later.
-.. }}}
 
 10.5.1 Associativity and folding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -849,7 +846,7 @@ Exercises: Understanding folds
 
      foldl (flip (*)) 1 [1..3]
 
-3. One difference between foldr and foldl is:
+3. One difference between ``foldr`` and ``foldl`` is:
 
    a) ``foldr``, but not ``foldl``, traverses the spine of a list from right to left.
    b) ``foldr``, but not ``foldl``, always forces the rest of the fold.
