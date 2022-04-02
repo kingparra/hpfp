@@ -4,43 +4,43 @@
 -- Pages 347 to 384, 37 pages total.
 
 * Epigraph
-* Folds
-* Bringing you into the fold
-* Recursive patterns
-* Fold right
+* 10.1 Folds
+* 10.2 Bringing you into the fold
+* 10.3 Recursive patterns
+* 10.4 Fold right
 
-  * How ``foldr`` evaluates
+  * 10.4.1 How ``foldr`` evaluates
 
-* Fold left
+* 10.5 Fold left
 
-  * Associativity and folding
-  * Exercises: Understanding folds
-  * Unconditional spine recursion
+  * 10.5.1 Associativity and folding
+  * 10.5.2 Exercises: Understanding folds
+  * 10.5.3 Unconditional spine recursion
 
-* How to write fold functions
+* 10.6 How to write fold functions
 
-  * Exercises: Database processing
+  * 10.6.1 Exercises: Database processing
 
-* Folding and evaluation
-* Summary
+* 10.7 Folding and evaluation
+* 10.8 Summary
 
-  * ``foldr``
-  * ``foldl``
+  * 10.8.1 ``foldr``
+  * 10.8.2 ``foldl``
 
-* Scans
+* 10.9 Scans
 
-  * Getting the Fibonacci number we want
+  * 10.9.1 Getting the Fibonacci number we want
 
-* Chapter Exercises
+* 10.10 Chapter Exercises
 
-  * Warm-up and review
-  * Rewriting functions using folds
+  * 10.10.1 Warm-up and review
+  * 10.10.2 Rewriting functions using folds
 
-* Definitions
+* 10.11 Definitions
 
-  * fold
-  * catamorphism
-  * tail call
-  * tail recursion
+  * 10.11.1 fold
+  * 10.11.2 catamorphism
+  * 10.11.3 tail call
+  * 10.11.4 tail recursion
 
-* Follow-up resources
+* 10.12 Follow-up resources
