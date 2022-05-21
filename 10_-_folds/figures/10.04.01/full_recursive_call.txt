@@ -1,10 +1,13 @@
 -- The entire evaluation process of
--- ·∾  foldr (+) 0 [1,2,3]
+--
+--   ·∾  foldr (+) 0 [1,2,3]
+--
 -- so that every call is substituted for foldr's definition
--- where all occurences of a parameter is replaced with its
+-- where all occurences of a parameter are replaced with its
 -- corresponding argument value.
 --
--- This recursive call is spread across figures 1-10 on pages 351-353 in the book.
+-- This recursive call is spread across 
+-- figures 1-10 on pages 351-353 in the book.
 
 
 foldr (+) 0 [1,2,3] =
@@ -28,6 +31,7 @@ foldr (+) 0 [1,2,3] =
                                                (x:xs) ->
                                                   f x (foldr f z xs)))))
 --    ((+) 1 ((+) 2 ((+) 3 0)))
+
 
 
 -- With the extraneous parts of each definition removed.
