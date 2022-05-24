@@ -1,38 +1,342 @@
-10.5.2 Exercises: Understanding Folds
+10.5.2 Exercises: Understanding folds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-1. ``foldr (*) 1 [1..5]`` will return the same result as which of the following:
+.. CHAPTER 10. DATA STRUCTURE ORIGAMI 365
+
+.. What would an ideal solution to these multiple-choice problems look like?
+   The solution should contain...
+     * guess
+     * rationale
+     * an experiment to prove whether my guess is correct or incorrect
+     * the experiment results
+     * a description of the results
+     * an argument of whether the results support my guess
+     * there should be an easy way to reproduce the experiment results
+       * **A button you can click on to run the tests.**
+   guess, rationale, test, analysis of test results, button to reproduce test
+
+1. ``foldr (*) 1 [1..5]`` Will return the same result as which of the following?
 
    a) ``flip (*) 1 [1..5]``
+
+      This isn't equivalent.
+      There isn't even a fold involved.
+      Let's see what happens when I run it, anyways.
+
+      ::
+
+        ·∾ :set -XFlexibleContexts
+
+        ·∾ flip (*) 1 [1,2,3,4,5]
+        <interactive>:5:1: error:
+            • No instance for (Num [Integer]) arising from a use of ‘ it’
+            • In the first argument of ‘print’, namely ‘it’
+              In a stmt of an interactive GHCi command: print it
+
+      We get a type error.
+      The desugared expressions looks like this.
+
+      ::
+
+        -- flip (*) 1 [1,2,3,4,5]
+
+        -- (\f x y -> y `f` x) (*) 1 [1,2,3,4,5]
+
+        -- (\x y -> y * x) 1 [1,2,3,4,5]
+
+        -- (\y -> y * 1) [1,2,3,4,5]
+
+        -- [1,2,3,4,5] * 1
+
+      Now let's look at the type signature for ``(*)``.
+
+      ::
+
+        ·∾ :type (*)
+        (*) :: Num a => a -> a -> a
+
+      As you can see, ``(*)`` requires two arguments.
+      Each argument must be of the same type, ``a``.
+      The type of each argument must also have an instance of the typeclass ``Num``.
+
+      If we run ``[1,2,3,4,5] * 1`` we get an error,
+      because the types of
+      ``[1,2,3,4,5]``
+      and ``1``
+      are not the same.
+
+      ::
+
+         ·∾ [1,2,3,4,5] * 1
+
+         <interactive>:1:1: error:
+             • Non type-variable argument in the constraint: Num [a]
+               (Use FlexibleContexts to permit this)
+             • When checking the inferred type
+                 it :: forall a. (Num a, Num [a]) => [a]
+
+      I found this error message hard to read, so I asked about it on IRC.
+
+        ``justsomguy`` |
+
+        I have this expression [1,2,3,4,5] * 1. Since the *
+        function takes two arguments of the same type, and
+        [1,2,3,4,5] and 1 have different types, I get a
+        type error. The error is Non type-variable argument
+        in the constraint: Num [a]. I understand the "non
+        type-variable argument" part, but what's this about
+        a constraint?
+
+        ``geekosaur`` | :t (*)
+        ``lambdabot`` | Num a => a -> a -> a
+
+        ``geekosaur`` |
+
+        **Basically, instead of simply failing it as incompatible types,
+        ghc tries to promote 1
+        (numeric literals are wrapped in fromInteger or fromRational by the compiler)
+        to the type of the other parameter.**
+
+        But then hits that error unless you turn on
+        FlexibleContexts and then would hit the nonexistence
+        of a Num instance for lists by default.
+
+        Num is involved twice: once as a constraint on the
+        type of (*), and a second time as a constraint on
+        the type of fromInteger
+
+        ``geekosaur`` | :t fromInteger
+        ``lambdabot`` | Num a => Integer -> a
+
+        The behavior of numeric literals and the Num
+        instance are documented in the Language Report;
+        it's not a ghc-specific thing.
+        https://www.haskell.org/onlinereport/haskell2010/haskellch6.html#x13-1360006.4.1
+        and various links from that.
+
+      If I use concrete types for the arguments to ``*``,
+      instead of leaving GHC to infer the types,
+      the type mismatch error is easier to read.
+
+      ::
+
+        ·∾ ([1,2,3,4,5] :: [Int]) * (1 :: Int)
+
+        <interactive>:9:27: error:
+            • Couldn't match expected type ‘[Int]’ with actual type ‘Int’
+            • In the second argument of ‘(*)’, namely ‘(1 :: Int)’
+              In the expression: ([1, 2, 3, 4, 5] :: [Int]) * (1 :: Int)
+              In an equation for ‘it’:
+                  it = ([1, 2, 3, 4, ....] :: [Int]) * (1 :: Int)
+
+
    b) **foldl (flip (*)) 1 [1..5]**
+
+      The evaluation is parenthesized differently, but
+      because the result of ``x * y`` is equivalent to
+      ``y * x``, this expression also produces ``120``.
+
+      Parenthesization
+
+      ::
+
+        f x y = "(" ++ x ++ "*" ++ y ++ ")"
+        foldr    f     "i" ["1","2","3","4","5"]  ==>  "(1*(2*(3*(4*(5*i)))))"
+        foldl    f     "i" ["1","2","3","4","5"]  ==>  "(((((i*1)*2)*3)*4)*5)"
+        foldl (flip f) "i" ["1","2","3","4","5"]  ==>  "(5*(4*(3*(2*(1*i)))))"
+
+      Result in GHCi::
+
+        ·∾ foldl (flip (*)) 1 [1,2,3,4,5]
+        120
+
    c) **foldl (*) 1 [1..5]**
 
-   Proof::
+      Yes, this is equivalent.
+      Here's proof:
 
-     ·∾ foldr (*) 1 [1..5]
-     120
+      ::
 
-     ·∾ foldl (flip (*)) 1 [1..5]
-     120
+         ·∾ foldr (*) 1 [1..5]
+         120
 
-     ·∾ foldl (*) 1 [1..5]
-     120
+         ·∾ foldl (flip (*)) 1 [1..5]
+         120
 
-   This is only true because the ``(*)`` operator is mathematically associative.
+         ·∾ foldl (*) 1 [1..5]
+         120
 
-.. include:: exercises/10.5.2_-_understanding_folds.rst.d/2.rst
+2. Write out the evaluation steps for::
+
+     foldl (flip (*)) 1 [1..3]
+
+     foldl (flip (*)) 1 [1,2,3]
+
+     foldl (\x y -> y * x) 1 [1,2,3]
+
+     foldl :: (b -> a -> b) -> b [a] -> b
+     foldl f acc [] = acc
+     foldl f acc (x:xs) = foldl f (f acc x) xs
+
+     foldl f acc (x:xs) =
+       foldl f (f acc x) xs
+
+     foldl (\x y -> y*x) 1 (1:[2,3]) =
+       foldl
+         (\x y -> y*x)
+         ((\x y -> y*x) 1 1)
+         [2,3]
+
+     foldl (\x y -> y*x) ((\x y -> y*x) 1 1) (2:[3]) =
+       foldl
+         (\x y -> y*x)
+         ((\x y -> y*x) ((\x y -> y*x) 1 1) 2)
+         [3]
+
+     foldl (\x y -> y*x) ((\x y -> y*x) ((\x y -> y*x) 1 1) 2) (3:[]) =
+       foldl
+         (\x y -> y*x)
+         ((\x y -> y*x) ((\x y -> y*x) ((\x y -> y*x) 1 1) 2) 3)
+         []
+
+     The base case for [] is triggered
+
+     foldl (\x y -> y*x) ((\x y -> y*x) ((\x y -> y*x) ((\x y -> y*x) 1 1) 2) 3) [] =
+         ((\x y -> y*x) ((\x y -> y*x) ((\x y -> y*x) 1 1) 2) 3)
+
+     So we are left with...
+
+     ((\x y -> y*x) ((\x y -> y*x) ((\x y -> y*x) 1 1) 2) 3)
+
+     outermost reduction, parameter binding and head elimination are one step
+
+     ((\x y -> y*x)
+      ((\x y -> y*x) ((\x y -> y*x) 1 1) 2)
+      3)
+
+     ((\y -> y*((\x y -> y*x) ((\x y -> y*x) 1 1) 2))
+      3)
+
+     3*((\x y -> y*x)
+        ((\x y -> y*x) 1 1)
+        2)
+
+     3*((\y -> y*((\x y -> y*x) 1 1))
+        2)
+
+     3*(2*(
+       (\x y -> y*x)
+       1
+       1))
+
+     3*(2*(
+      (\y -> y*1)
+      1)))
+
+     3*(2*(1*1))
+
+     3*(2*1)
+
+     3*2
+
+     6
 
 3. One difference between ``foldr`` and ``foldl`` is:
 
-   a) ``foldr``, but not ``foldl``, traverses the spine of a list from right to left
-   b) ``foldr``, but not ``foldl``, always forces the rest of the fold
-   c) **foldr, but not foldl, associates to the right**
-   d) ``foldr``, but not ``foldl``, is recursive
+   a) ``foldr``, but not ``foldl``, traverses the spine of a list from right to left.
 
-4. Folds are catamorphisms, which means they are generally used to
+      False. Both functions traverse the spine in the same direction.
 
-   a) **reduce structure**
-   b) expand structure
-   c) render you catatonic
-   d) generate infinite data structures
+      10.4.1 How foldr evaluates, paragraph 17, says:
 
-.. include:: exercises/10.5.2_-_understanding_folds.rst.d/5.rst
+        17a) **One initially non-obvious aspect of folding is that it happens in two stages, traversal and folding.**
+        17b) **Traversal is the stage in which the fold recurses over the spine.**
+        17c) **Folding refers to the evaluation or reduction of the folding function applied to the values.**
+        17d) **All folds recurse over the spine in the same direction;
+        the difference between left folds and right folds
+        is in the association, or parenthesization, of the folding function
+        and, thus, in which direction the folding or reduction proceeds.**
+
+
+      10.5 Fold left, paragraph 1, sentence b says:
+
+        1b) **Left folds traverse the spine in the same direction as right folds, but their folding
+        process is left associative and proceeds in the opposite direction as that of ``foldr``.**
+
+      How do I *prove* this is true, though?
+      Can I create an experiment that demonstrates this to be true?
+      What about an argument from the function definition?
+
+   b) ``foldr``, but not ``foldl``, always forces the rest of the fold.
+
+      This is false.
+      Here is a counter-example.
+
+      ::
+
+        ·∾ foldr (\_ _ -> 9001) 0 [1..]
+        9001
+
+      The values ``2:3:4:n`` are not evaluated.
+
+   c) **foldr, but not foldl, associates to the right.**
+
+      Yes, here's proof!
+
+      ::
+
+        ·∾  f x y = "(" ++ x ++ "*" ++ y ++ ")"
+
+        ·∾  foldr f "1" ["1","2","3","4","5"]
+        "(1*(2*(3*(4*(5*1)))))"
+
+        ·∾  foldl f "1" ["1","2","3","4","5"]
+        "(((((1*1)*2)*3)*4)*5)"
+
+   d) ``foldr``, but not ``foldl``, is recursive.
+
+      No. Both functions must be recursive in order to traverse the spine of the list.
+
+4. Folds are catamorphisms, which means they are generally used to:
+
+   a) **Reduce structure.**
+   b) Expand structure.
+   c) Render you catatonic.
+   d) Generate infinite data structures.
+
+5. The following are simple folds very similar to what you've already seen,
+   but each has at least one error.
+   Please fix and test them in your REPL:
+
+   a) ``foldr (++) ["woot", "WOOT", "woot"]``
+
+      ::
+
+        ·∾ foldr (++) ["woot","WOOT","woot"]
+        <interactive>:1:1: error:
+            • No instance for (Show ([[String]] -> [String]))
+                arising from a use of ‘print’
+                (maybe you haven't applied a function to enough argumens?)
+            • In a stmt of an interactive GHCi command: print it
+
+        ·∾ -- This fold was missing an identity value
+
+        ·∾ foldr (++) "" ["woot","WOOT","woot"]
+        "wootWOOTwoot"
+
+   b) ``foldr max [] "fear is the little death"``
+   c) ``foldr and True [False, True]``
+   d) This one is more subtle than the previous.
+
+      ::
+
+        foldr (||) True [False, True]
+
+      Can it ever return a different answer?
+
+   e) ``foldl ((++) . show) "" [1..5]``
+   f) ``foldr const 'a' [1..5]``
+   g) ``foldr const 0 "tacos"``
+   h) ``foldl (flip const) 0 "burritos"``
+   i) ``foldl (flip const) 'z' [1..5]``
+
+.. CHAPTER 10. DATA STRUCTURE ORIGAMI 366
