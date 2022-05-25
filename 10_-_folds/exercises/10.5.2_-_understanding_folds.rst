@@ -3,16 +3,7 @@
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 365
 
 .. What would an ideal solution to these multiple-choice problems look like?
-   The solution should contain...
-     * guess
-     * rationale
-     * an experiment to prove whether my guess is correct or incorrect
-     * the experiment results
-     * a description of the results
-     * an argument of whether the results support my guess
-     * there should be an easy way to reproduce the experiment results
-       * **A button you can click on to run the tests.**
-   guess, rationale, test, analysis of test results, button to reproduce test
+   guess, rationale, test, analysis of test results, button to reproduce test, revision of rationale
 
 1. ``foldr (*) 1 [1..5]`` Will return the same result as which of the following?
 
@@ -25,7 +16,6 @@
       ::
 
         ·∾ :set -XFlexibleContexts
-
         ·∾ flip (*) 1 [1,2,3,4,5]
         <interactive>:5:1: error:
             • No instance for (Num [Integer]) arising from a use of ‘ it’
@@ -38,13 +28,9 @@
       ::
 
         -- flip (*) 1 [1,2,3,4,5]
-
         -- (\f x y -> y `f` x) (*) 1 [1,2,3,4,5]
-
         -- (\x y -> y * x) 1 [1,2,3,4,5]
-
         -- (\y -> y * 1) [1,2,3,4,5]
-
         -- [1,2,3,4,5] * 1
 
       Now let's look at the type signature for ``(*)``.
@@ -65,7 +51,6 @@
       ::
 
          ·∾ [1,2,3,4,5] * 1
-
          <interactive>:1:1: error:
              • Non type-variable argument in the constraint: Num [a]
                (Use FlexibleContexts to permit this)
