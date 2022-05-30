@@ -1,0 +1,9 @@
+-- GHC 7.8 and older
+foldr :: (a -> b -> b) -> b -> [a] -> b
+
+-- GHC 7.10 and newer
+foldr :: Foldable t
+      => (a -> b -> b)
+      -> b
+      -> t a
+      -> b

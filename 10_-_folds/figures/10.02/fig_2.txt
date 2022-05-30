@@ -1,0 +1,3 @@
+foldr :: Foldable t =>
+         (a -> b -> b) -> b -> t  a -> b
+foldr :: (a -> b -> b) -> b -> [] a -> b

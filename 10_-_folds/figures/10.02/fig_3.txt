@@ -1,0 +1,10 @@
+·∾ :{
+ ⋮ let listFoldr :: (a -> b -> b)
+ ⋮               -> b
+ ⋮               -> [] a
+ ⋮               -> b
+ ⋮     listFoldr = foldr
+ ⋮ :}
+
+·∾ :type listFoldr
+listFoldr :: (a -> b -> b) -> b -> [a] -> b

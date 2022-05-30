@@ -1,0 +1,10 @@
+·∾ foldr (\_ _ -> 9001) 0 undefined
+*** Exception: Prelude.undefined
+
+·∾ xs = [1,undefined]
+·∾ foldr (\_ _ -> 9001) 0 xs
+9001
+
+·∾ xs = [undefined,undefined]
+·∾ foldr (\_ _ -> 9001) 0 xs
+9001

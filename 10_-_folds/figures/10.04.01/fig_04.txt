@@ -1,0 +1,5 @@
+foldr (+) 0 [1, 2, 3] =
+  case [1, 2, 3] of
+    []     -> 0
+    (x:xs) ->
+      f x (foldr f z xs) -- <--- this one

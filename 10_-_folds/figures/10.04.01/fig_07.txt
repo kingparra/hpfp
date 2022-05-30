@@ -1,0 +1,5 @@
+foldr (+) 0 [3] =
+  case [3] of
+    []       ->
+      0 -- this doesn't match again
+    (3 : []) -> (+) 3 (foldr (+) 0 [])

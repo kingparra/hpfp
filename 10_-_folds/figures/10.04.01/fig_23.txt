@@ -1,0 +1,3 @@
+·∾ xs = [1,2] ++ undefined
+·∾ length $ take 2 $ take 4 xs
+2

@@ -1,0 +1,12 @@
+-- Again, there is a different type in
+-- GHC 7.10 and newer.
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f acc []     = acc
+foldl f acc (x:xs) = foldl f (f acc x) xs
+
+-- Given the list
+foldl (+)  0  (1  : 2  : 3 : [])
+
+-- foldl associates like this
+         ((0 + 1) + 2) + 3

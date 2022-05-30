@@ -1,0 +1,3 @@
+last (scanl f z xs) ≡ foldl f z xs
+
+head (scanr f z xs) ≡ foldr f z xs

@@ -1,0 +1,5 @@
+·∾ length [1,2,3,4,undefined]
+5
+
+·∾ length ([1,2,3,4] ++ undefined)
+*** Exception: Prelude.undefined

@@ -1,0 +1,19 @@
+·∾ -- Here, we give an undefined value.
+
+·∾ foldr (+) 0 [1,2,3,4,undefined]
+*** Exception: Prelude.undefined
+
+·∾ xs = take 4 [1,2,3,4,undefined]
+·∾ foldr (+) 0 xs
+10
+
+
+·∾ -- Here, undefined is part of the spine.
+
+·∾ xs = [1,2,3,4] ++ undefined
+·∾ foldr (+) 0 xs
+*** Exception: Prelude.undefined
+
+·∾ xs = take 4 ([1,2,3,4]++undefined)
+·∾ foldr (+) 0 xs
+10

@@ -1,0 +1,2 @@
+·∾ myAny even (repeat 1)
+^CInterrupted.

@@ -1,0 +1,6 @@
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f z xs =
+  case xs of
+    [] -> z
+    (x:xs) ->
+      f x (foldr f z xs)

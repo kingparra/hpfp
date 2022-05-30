@@ -1,0 +1,6 @@
+foldr (+) 0 [] =
+  case [] of
+    []       ->
+      0 -- <-- This one finally matches
+    -- ignore the other case,
+    -- it doesn't happen

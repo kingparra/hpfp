@@ -1,0 +1,19 @@
+·∾ -- Figure 27
+
+·∾ const 1 2
+1
+
+·∾ const 2 1
+2
+
+·∾ foldr const 0 [1,2,3,4,5]
+1
+
+·∾ foldr const 0 [1,undefined]
+1
+
+·∾ foldr const 0 ([1,2] ++ undefined)
+1
+
+·∾ foldr const 0 [undefined,2]
+*** Exception: Prelude.undefined

@@ -1,0 +1,7 @@
+product :: [Integer] -> Integer
+product []     = 1
+product (x:xs) = x * product xs
+
+concat :: [[a]] -> [a]
+concat []     = []
+concat (x:xs) = x ++ concat xs
