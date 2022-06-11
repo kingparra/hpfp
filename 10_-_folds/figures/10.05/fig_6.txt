@@ -1,0 +1,29 @@
+.. topic:: Figure 6
+
+   ::
+
+     foldr :: (a -> b -> b) -> b -> [a] -> b
+     --       [1]  [2]  [3]
+     foldl :: (b -> a -> b) -> b -> [a] -> b
+     --       [4]  [5]  [6]
+
+   1. The parameter of type a represents one of the list
+      element arguments the folding function of ``foldr``
+      is applied to.
+
+   2. The parameter of type ``b`` will either be the
+      start value or the result of the fold accumulated
+      so far, depending on how far you are into the fold.
+
+   3. The final result of having combined the list
+      element and the start value or fold so far to
+      compute the fold.
+
+   4. The start value or fold accumulated so far is the
+      first argument to ``foldl``'s folding function.
+
+   5. The list element is the second argument to ``foldl``'s
+      folding function.
+
+   6. The final result of ``foldl``'s fold function is of
+      type ``b``, like that of ``foldr``.
