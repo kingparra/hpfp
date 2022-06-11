@@ -1,0 +1,141 @@
+1. ``foldr (*) 1 [1..5]`` Will return the same result as which of the following?
+
+   a) ``flip (*) 1 [1..5]``
+
+      This isn't equivalent to ``foldr (*) [1..5]``. There isn't even
+      a fold involved. Let's see what happens when I run it, anyways.
+
+      ::
+
+        ·∾ :set -XFlexibleContexts
+        ·∾ flip (*) 1 [1,2,3,4,5]
+        <interactive>:5:1: error:
+            • No instance for (Num [Integer]) arising from a use of ‘ it’
+            • In the first argument of ‘print’, namely ‘it’
+              In a stmt of an interactive GHCi command: print it
+
+      We get a type error.
+
+      The evaluation process for this expression should be similar to this:
+
+      ::
+
+        -- flip (*) 1 [1,2,3,4,5]
+        -- (\f x y -> y `f` x) (*) 1 [1,2,3,4,5]
+        -- (\x y -> y * x) 1 [1,2,3,4,5]
+        -- (\y -> y * 1) [1,2,3,4,5]
+        -- [1,2,3,4,5] * 1
+
+      Now let's look at the type signature for ``(*)``.
+
+      ::
+
+        ·∾ :type (*)
+        (*) :: Num a => a -> a -> a
+
+      As you can see, ``(*)`` requires two arguments.
+      Each of its argument must be of the same type, ``a``.
+      The type of each argument must also have an instance of the typeclass ``Num``.
+
+      If we run ``[1,2,3,4,5] * 1`` we get an error,
+      because the types of ``[1,2,3,4,5]`` and ``1`` are not the same,
+      and there is no instance of the ``(*)`` function in ``Num`` that
+      operates on an entire list of numbers at once
+      ``[1,2,3,4,5] :: Num a => [a]``.
+
+      ::
+
+         ·∾ [1,2,3,4,5] * 1
+         <interactive>:1:1: error:
+             • Non type-variable argument in the constraint: Num [a]
+               (Use FlexibleContexts to permit this)
+             • When checking the inferred type
+                 it :: forall a. (Num a, Num [a]) => [a]
+
+      I found this error message hard to read, so I asked about it on IRC.
+
+          **justsomguy** I have this expression ``[1,2,3,4,5] * 1``.
+          Since the ``*`` function takes two arguments of the same
+          type, and ``[1,2,3,4,5]`` and ``1`` have different types, I
+          get a type error.  The error is ``Non type-variable argument
+          in the constraint: Num [a]``.  I understand the "non
+          type-variable argument" part, but what's this about a
+          constraint?
+
+          **geekosaur** ``:t (*)``
+
+          **lambdabot** ``Num a => a -> a -> a``
+
+          **geekosaur** Basically, instead of simply failing it as
+          incompatible types, ghc tries to promote ``1`` (numeric
+          literals are wrapped in ``fromInteger`` or ``fromRational``
+          by the compiler) to the type of the other parameter.
+
+          But then hits that error unless you turn on
+          ``-XFlexibleContexts`` and then would hit the nonexistence of
+          a ``Num`` instance for lists by default.
+
+          ``Num`` is involved twice: once as a constraint on the type
+          of ``(*)``, and a second time as a constraint on the type of
+          ``fromInteger``
+
+          **geekosaur**  ``:t fromInteger``
+
+          **lambdabot**  ``Num a => Integer -> a``
+
+          **geekosaur** The behavior of numeric literals and the
+          ``Num`` instance are documented in the Language Report;
+          it's not a ghc-specific thing.
+          https://www.haskell.org/onlinereport/haskell2010/haskellch6.html#x13-1360006.4.1
+          and various links from that.
+
+      If I use concrete types for the arguments to ``*``,
+      instead of leaving GHC to infer the types,
+      the type mismatch error is more obvious.
+
+      ::
+
+        ·∾ ([1,2,3,4,5] :: [Int]) * (1 :: Int)
+
+        <interactive>:9:27: error:
+            • Couldn't match expected type ‘[Int]’ with actual type ‘Int’
+            • In the second argument of ‘(*)’, namely ‘(1 :: Int)’
+              In the expression: ([1, 2, 3, 4, 5] :: [Int]) * (1 :: Int)
+              In an equation for ‘it’:
+                  it = ([1, 2, 3, 4, ....] :: [Int]) * (1 :: Int)
+
+   b) **foldl (flip (*)) 1 [1..5]**
+
+      The evaluation is parenthesized differently, but
+      because the result of ``x * y`` is equivalent to
+      ``y * x``, this expression also produces ``120``.
+
+      Parenthesization
+
+      ::
+
+        f x y = "(" ++ x ++ "*" ++ y ++ ")"
+        foldr    f     "i" ["1","2","3","4","5"]  ==>  "(1*(2*(3*(4*(5*i)))))"
+        foldl    f     "i" ["1","2","3","4","5"]  ==>  "(((((i*1)*2)*3)*4)*5)"
+        foldl (flip f) "i" ["1","2","3","4","5"]  ==>  "(5*(4*(3*(2*(1*i)))))"
+
+      Result in GHCi::
+
+        ·∾ foldl (flip (*)) 1 [1,2,3,4,5]
+        120
+
+   c) **foldl (*) 1 [1..5]**
+
+      Yes, this is equivalent.
+      Here's proof:
+
+      ::
+
+         ·∾ foldr (*) 1 [1..5]
+         120
+
+         ·∾ foldl (flip (*)) 1 [1..5]
+         120
+
+         ·∾ foldl (*) 1 [1..5]
+         120

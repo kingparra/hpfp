@@ -1,0 +1,63 @@
+3. One difference between ``foldr`` and ``foldl`` is:
+
+   a) ``foldr``, but not ``foldl``, traverses the spine of a list from right to left.
+
+      False. Both functions traverse the spine in the same direction.
+
+      10.4.1 How foldr evaluates, paragraph 17, says:
+
+        17a) **One initially non-obvious aspect of folding is that it happens in two stages, traversal and folding.**
+        17b) **Traversal is the stage in which the fold recurses over the spine.**
+        17c) **Folding refers to the evaluation or reduction of the folding function applied to the values.**
+        17d) **All folds recurse over the spine in the same direction;
+        the difference between left folds and right folds
+        is in the association, or parenthesization, of the folding function
+        and, thus, in which direction the folding or reduction proceeds.**
+
+
+      10.5 Fold left, paragraph 1, sentence b says:
+
+        1b) **Left folds traverse the spine in the same direction as right folds, but their folding
+        process is left associative and proceeds in the opposite direction as that of ``foldr``.**
+
+      From 10.5.1 Associativity and folding:
+
+      1b) **As we've said, both folds traverse the spine in the
+      same direction.**
+
+      3d) **Right folds have to traverse the list outside-in, but
+      the folding itself starts from the end of the list.**
+
+      How do I *prove* this is true, though?
+      Can I create an experiment that demonstrates this to be true?
+      What about an argument from the function definition?
+
+   b) ``foldr``, but not ``foldl``, always forces the rest of the fold.
+
+      This is false.
+      Here is a counter-example.
+
+      ::
+
+        ·∾ foldr (\_ _ -> 9001) 0 [1..]
+        9001
+
+      The values ``2:3:4:n`` are not evaluated.
+
+   c) **foldr, but not foldl, associates to the right.**
+
+      Yes, here's proof!
+
+      ::
+
+        ·∾  f x y = "(" ++ x ++ "*" ++ y ++ ")"
+
+        ·∾  foldr f "1" ["1","2","3","4","5"]
+        "(1*(2*(3*(4*(5*1)))))"
+
+        ·∾  foldl f "1" ["1","2","3","4","5"]
+        "(((((1*1)*2)*3)*4)*5)"
+
+   d) ``foldr``, but not ``foldl``, is recursive.
+
+      No. Both functions must be recursive in order to traverse the spine of the list.

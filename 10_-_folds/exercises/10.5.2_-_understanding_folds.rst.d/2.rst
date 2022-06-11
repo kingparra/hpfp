@@ -1,26 +1,43 @@
-2. Write out the evaluation steps for ``foldl (flip (*)) 1 [1..3]``
+2. Write out the evaluation steps for ``foldl (flip (*)) 1 [1..3]``:
 
-   First I'll do the entire thing in one step mentally, I've rearranged ``(flip
-   (*))`` to be on the right side, but the parenthesization is the same:
+   |  foldl :: (b -> a -> b) -> b -> [a] -> b
+   |  foldl f acc l =
+   |    case l of
+   |     [] -> acc
+   |     (x:xs) -> foldl f (f acc x) xs
+   |
+   |  foldl (flip (*)) 1 [1,2,3] =
+   |    case [1,2,3] of
+   |     [] -> 1
+   |     (1:[2,3]) ->
+   |       foldl (flip (*)) **((flip (*)) acc 1)** [2,3] =
+   |         case [2,3] of
+   |           [] -> 1
+   |           (2:[3]) ->
+   |             foldl (flip (*)) **((flip (*)) ((flip (*)) acc 1) 2)** [3] =
+   |               case [3] of
+   |                 [] -> 1
+   |                 (3:[]) ->
+   |                     foldl (flip (*)) **((flip (*)) ((flip (*)) ((flip (*)) acc 1) 2) 3)** [] =
+   |                       case [] of
+   |                         [] -> **1**
+   |
 
-     **(**\ **(**\ **(**\ (flip (*)) 1 1\ **)** (flip (*)) 2\ **)** (flip (*)) 3\ **)**
+   The fully accumulated expression looks like this...
 
-   Now I'll write out each step explicitly by hand, this will take a lot of
-   horizontal space for nested function calls, so be sure to scroll:
 
-   .. include:: exercises/10.5.2_-_understanding_folds.rst.d/foldl_reduction.txt
-      :code:
+   **((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3)**
 
-   Proof that it's right::
+   If we write our function infix, the association is easier to see
 
-     ·∾ foldl (flip (*)) 1 [1,2,3]
-     6
+   | let
+   |   f = flip (*)
+   | in
+   |   ((((1 \`f` 1) \`f` 2) \`f` 3)
 
-   Proof that the final redex for ``z`` is correct::
+   We can reduce this to normal form, now, if we want...
 
-     ·∾ f x y = concat ["(","(flip (*))"," ",x," ",y,")"]
-     ·∾ foldl f "0" (map show [1,2,3])
-     "((flip (*)) ((flip (*)) ((flip (*)) 0 1) 2) 3)"
-
-   Also, `here is a website like pythontutor <http://ideas.cs.uu.nl/HEE/>`_
-   where you can copy-paste an expression and see the evaluation steps.
+   |     ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3)
+   |                    ((flip (*)) ((flip (*)) 1 2) 3)
+   |                                   ((flip (*)) 2 3)
+   |                                                 6

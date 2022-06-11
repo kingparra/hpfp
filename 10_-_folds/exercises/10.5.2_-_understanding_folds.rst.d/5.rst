@@ -1,79 +1,339 @@
 5. The following are simple folds very similar to what you've already seen,
-   but each has at least one error. Please fix them and test in your REPL.
-
-   First a terminal recording.
-
-   .. raw:: html
-
-      <script id="asciicast-2B3tTdZBGzYOmUlNUtbxQxP3V"
-       src="https://asciinema.org/a/2B3tTdZBGzYOmUlNUtbxQxP3V.js"
-       async></script>
+   but each has at least one error. Please fix and test them in your REPL:
 
    a) ``foldr (++) ["woot", "WOOT", "woot"]``
 
-     This is missing the ``z`` parameter, ``foldr (++) "" ["woot", "WOOT",
-     "woot"]`` should work.
+      ::
 
-     Proof::
+        ·∾ foldr (++) ["woot","WOOT","woot"]
+        <interactive>:1:1: error:
+            • No instance for (Show ([[String]] -> [String]))
+                arising from a use of ‘print’
+                (maybe you haven't applied a function to enough argumens?)
+            • In a stmt of an interactive GHCi command: print it
 
-       ·∾ foldr (++) "" ["woot","WOOT","woot"]
-       "wootWOOTwoot"
+        ·∾ -- This fold was missing an identity value
+
+        ·∾ foldr (++) "" ["woot","WOOT","woot"]
+        "wootWOOTwoot"
 
    b) ``foldr max [] "fear is the little death"``
 
-     Our input function operates on ``Char``'s, but the accumulator is a list,
-     ``foldr max (minBound :: Char) "fear is the little death"`` should fix it.
+      The function ``max`` will try to produce the character with the smallest ordinal value.
+      But the accumulator parameter is set to the empty list, ``[]``, instead of a character.
+      So there will be a type error.
 
-     ::
+      ::
 
-       ·∾ foldr max (minBound :: Char) "fear is the little death"
-       't'
+          ·∾ foldr max [] "fear is the little death"
+
+          <interactive>:1:14: error:
+              • Couldn't match type ‘Char’ with ‘[a]’
+                Expected type: [[a]]
+                  Actual type: [Char]
+              • In the third argument of ‘foldr’, namely
+                  ‘"fear is the little death"’
+                In the expression: foldr max [] "fear is the little death"
+                In an equation for ‘it’:
+                    it = foldr max [] "fear is the little death"
+              • Relevant bindings include it :: [a] (bound at <interactive>:1:1)
+
+      In order to fix this, we should make the accumulator a character.
+      I've picked the char with the lowest ordinal value so it doesn't become the result.
+
+      ::
+
+         ·∾ foldr max (minBound :: Char) "fear is the little death"
+         't'
 
    c) ``foldr and True [False, True]``
 
-      Since ``and`` operates on ``[Bool]``, but receives ``Bool``, we would get a
-      type error. We probably want ``(&&)`` instead. ``foldr (&&) True [False,
-      True]`` should work.
+      I don't remember what ``and`` does, let me look it up.
 
-   d) This one is more subtle than the previous. Can it ever return a different
-      answer? ``foldr (||) True [False, True]``
+      ::
 
-      No, we should change the ``z`` parameter to ``False``.
+        ·∾ :type and
+        and :: Foldable t => t Bool -> Bool
+
+      So it takes a collection of bools and returns a bool.
+      ``bool`` only takes one argument, but the input function to
+      ``foldr`` must be of two arguments.  So this won't work.
+
+      ::
+
+         ·∾ foldr and True [False,True]
+
+         <interactive>:14:7: error:
+             • Couldn't match type ‘Bool’ with ‘Bool -> Bool’
+               Expected type: t0 Bool -> Bool -> Bool
+                 Actual type: t0 Bool -> Bool
+             • In the first argument of ‘foldr’, namely ‘and’
+               In the expression: foldr and True [False, True]
+               In an equation for ‘it’: it = foldr and True [False, True]
+
+         <interactive>:14:17: error:
+             • Couldn't match expected type ‘t0 Bool’ with actual type ‘Bool’
+             • In the expression: False
+               In the third argument of ‘foldr’, namely ‘[False, True]’
+               In the expression: foldr and True [False, True]
+
+         <interactive>:14:23: error:
+             • Couldn't match expected type ‘t0 Bool’ with actual type ‘Bool’
+             • In the expression: True
+               In the third argument of ‘foldr’, namely ‘[False, True]’
+               In the expression: foldr and True [False, True]
+
+      So, I'll write a new input function that takes two arguments, instead.
+
+      ::
+
+        ·∾ foldr (\x y -> x && y) True [False,True]
+        False
+
+   d) This one is more subtle than the previous.
+
+      ::
+
+        foldr (||) True [False, True]
+
+      Can it ever return a different answer?
+
+      This function will always return True,
+      since the z value is True,
+      and ``((||) False True)`` returns True.
+
+      ::
+
+        ·∾ foldr (||) True [False,True]
+        True
+        ·∾ foldr (||) True [False,False,False]
+        True
+        ·∾ foldr (||) True [True,True,True]
+        True
+
+      If we change the z value to False, then it's possible for
+      this expression to return False, given the right input
+      list.
+
+      ::
+
+        ·∾ foldr (||) False [True,True,True]
+        True
+        ·∾ foldr (||) False [True,True,False]
+        True
+        ·∾ foldr (||) False [False,False,False]
+        False
 
    e) ``foldl ((++) . show) "" [1..5]``
 
-      The problem here is that only the first argument to ``((++) . show)`` is
-      rendered to a string, and ``foldl`` makes ``""`` the first argument. If we
-      change use ``foldr`` instead then ``""`` will replace the ``[]``
-      constructor at the end of the list, and it will work::
+       The arguments to our input function are reversed.
+       Using ``foldr`` instead of ``foldl`` will have the intended effect.
 
-        ·∾ foldr ((++) . show) "" [1..5]
-        "12345"
+       ::
+
+          ·∾ foldl ((++) . show) "" [1,2,3,4,5]
+          <interactive>:31:25: error:
+              • No instance for (Num [Char]) arising from the literal ‘1’
+              • In the expression: 1
+                In the third argument of ‘foldl’, namely ‘[1, 2, 3, 4, ....]’
+                In the expression: foldl ((++) . show) "" [1, 2, 3, 4, ....]
+
+          ·∾ ((++) . show) "" [1,2,3,4]
+          <interactive>:33:19: error:
+              • No instance for (Num Char) arising from the literal ‘1’
+              • In the expression: 1
+                In the second argument of ‘(++) . show’, namely ‘[1, 2, 3, 4]’
+                In the expression: ((++) . show) "" [1, 2, 3, 4]
+
+          ·∾ ((++) . show) [1,2,3,4] ""
+          "[1,2,3,4]"
+
+          ·∾ foldr ((++) . show) "" [1,2,3,4,5]
+          "12345"
+
+          ·∾ foldl (flip ((++) . show)) "" [1,2,3,4,5]
+          "54321"
 
    f) ``foldr const 'a' [1..5]``
 
+      The type signature of ``foldr`` is...
+
       ::
 
-        ·∾ foldl const 'a' [1..5]
+        foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+
+      The ``b`` type variable is determined by the argument value we
+      supply to our ``z`` parameter, ``'a'``.
+
+
+      The value ``'a'`` is a character.
+
+      ::
+
+        ·∾ :type 'a'
+        'a' :: Char
+
+      Therefore, the input function bound to ``f`` must return a
+      character.
+
+      But the first argument to our input function ``const`` is the
+      first element of the list, ``1``.
+
+      The full expression would be
+      ``const 1 (const 2 (const 3 (const 4 (const 5 'a'))))``.
+
+      ``const`` always returns its first argument.
+
+      The return value of ``1 :: Num a => a`` does not match the
+      expected return type of ``Char``. So we get a type error
+      when GHC tries to infer a type that is both a ``Char``,
+      and has an instance of ``Num``.
+
+      ::
+
+        ·∾ foldr const 'a' [1,2,3,4,5]
+
+        <interactive>:52:18: error:
+            • No instance for (Num Char) arising from the literal ‘1’
+            • In the expression: 1
+              In the third argument of ‘foldr’, namely ‘[1, 2, 3, 4, ....]’
+              In the expression: foldr const 'a' [1, 2, 3, 4, ....]
+
+      To fix this, we can change the ``'a'`` to ``0``.
+
+      ::
+
+        ·∾ foldr const 0 [1,2,3,4,5]
+        1
+
+      Or we can flip const, so that it receives ``'a'`` as it's first argument.
+
+      ::
+
+        ·∾ foldr (flip const) 'a' [1,2,3,4,5]
         'a'
+
+      Which evaluates like this
+
+      ::
+
+        (flip const)
+          1
+          ((flip const) 2 ((flip const) 3 ((flip const) 4 ((flip const) 5 'a' ))))
+
+        (flip const)
+          1
+          ((flip const) 2 ((flip const) 3 ((flip const) 4 'a')))
+
+        (flip const)
+          1
+          ((flip const) 2 ((flip const) 3 'a'))
+
+        (flip const)
+          1
+          ((flip const) 2 'a')
+
+        (flip const) 1 'a'
+
+        'a'
+
 
    g) ``foldr const 0 "tacos"``
 
-      ::
+     Let's look at the type signature for foldr again.
 
-        ·∾ foldl const 0 "tacos"
-        0
+     ::
+
+       ·∾ :type foldr
+        foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+
+     Now I'll examine the types of each argument.
+
+     ::
+
+        ·∾ :type const
+        const :: a -> b -> a
+
+        ·∾ :type 0
+        0 :: Num p => p
+
+        ·∾ :type "tacos"
+        "tacos" :: [Char]
+
+     If I plug in the types to foldr's type signature by hand, I get this.
+
+     ::
+
+       foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+
+       -- First I'll line it up
+
+       foldr const 0 "tacos" ::     const :: (a -> b -> a)
+                             ->         0 :: Num b => b
+                             ->   "tacos" :: [Char]
+
+       -- Now I'll plug in the types so that all occurences of them are substituted in
+       -- a ~ Char
+       -- b ~ Num b => b
+       -- Foldable t => t ~ []
+       foldr const 0 "tacos" ::
+         Num b
+         =>  (b -> Char -> b)
+         ->  b
+         ->  [Char]
+
+     So looking at this type signature, ``const`` *must* return a
+     ``Num a => a``.  The second argument to ``const`` must also
+     be a ``Char``.  But the accumulator, which serves as the
+     second argument to ``const``, is a ``Char``, instead.
+
+     So I should get a type error when I run this, that tells me
+     that ``Char`` does not have an instance of the ``Num``
+     typeclass. Let me try.
+
+     ::
+
+       ·∾ :type foldr const 0 "tacos"
+
+       <interactive>:1:13: error:
+           • No instance for (Num Char) arising from the literal ‘0’
+           • In the second argument of ‘foldr’, namely ‘0’
+             In the expression: foldr const 0 "tacos"
+            value
+
+    So now we have two options: implement an instance of
+    ``Num`` for ``Char``, or we can ``flip const``.
+
+    ::
+
+      ·∾ foldr (flip const) 0 "tacos"
+      0
 
    h) ``foldl (flip const) 0 "burritos"``
 
+      Now we need to unflip const :)
+
       ::
 
-        ·∾ foldr (flip const) 0 "burritos"
+        ·∾ foldl (flip const) 0 "burritos"
+
+        <interactive>:31:20: error:
+            • No instance for (Num Char) arising from the literal ‘0’
+            • In the second argument of ‘foldl’, namely ‘0’
+              In the expression: foldl (flip const) 0 "burritos"
+              In an equation for ‘it’: it = foldl (flip const) 0 "burritos"
+        ·∾ foldl const 0 "burritos"
         0
 
    i) ``foldl (flip const) 'z' [1..5]``
 
       ::
 
-        ·∾ foldr (flip const) 'z' [1..5]
+        ·∾ foldl (flip const) 'z' [1..5]
+        <interactive>:34:25: error:
+            • No instance for (Num Char) arising from the literal ‘1’
+            • In the expression: 1
+              In the third argument of ‘foldl’, namely ‘[1 .. 5]’
+              In the expression: foldl (flip const) 'z' [1 .. 5]
+        ·∾ foldl const 'z' [1..5]
         'z'
