@@ -11,12 +11,7 @@
 
 .. include:: exercises/10.5.2_-_understanding_folds.rst.d/3.rst
 
-4. Folds are catamorphisms, which means they are generally used to:
-
-   a) **Reduce structure.**
-   b) Expand structure.
-   c) Render you catatonic.
-   d) Generate infinite data structures.
+.. include:: exercises/10.5.2_-_understanding_folds.rst.d/4.rst
 
 .. include:: exercises/10.5.2_-_understanding_folds.rst.d/5.rst
 

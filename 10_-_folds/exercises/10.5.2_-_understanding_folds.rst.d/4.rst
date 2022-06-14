@@ -1,0 +1,64 @@
+4. Folds are catamorphisms, which means they are generally used to:
+
+   a) **Reduce structure.**
+
+      At least, that's what the book says. Let me be specific. Here are some excerpts.
+
+      10.1 Folds
+
+      1b) **Folds as a general concept are called catamorphisms.**
+      1c) **You're familiar with the root "morphism" from polymorphism.**
+      1d) **"Cata-" means "down" or "against," as in "catacombs."**
+      1e) **Catamorphisms are a means of deconstructing data.**
+      1f) **If the spine of a list is the structure of a list, then a fold is what can reduce that structure.** 1
+
+      [1] **Note that a catamorphism can break down the structure but that structure might be rebuilt, so to speak, during evaluation.**
+
+      10.11.2 Catamorphism
+
+      1a) **A catamorphism is a generalization of folds to arbitrary datatypes.**
+      1b) **Where a fold allows you to break down a list into an arbitrary datatype, a catamorphism is a means of breaking down the structure of any datatype.**
+      1c) **The ``bool :: a -> a -> Bool -> a`` function in ``Data.Bool`` is an example of a simple catamorphism for a simple, non-collection datatype.**
+      1d) **Similarly, ``maybe :: b -> (a -> b) -> Maybe a -> b`` is the catamorphism for Maybe.**
+      1e) **See if you can notice a pattern:**
+
+      ::
+
+        data Bool = False | True
+        bool :: a -> a -> Bool -> a
+
+        data Maybe a = Nothing | Just a
+        maybe :: b -> (a -> b) -> Maybe a -> b
+
+        data Either a b = Left a | Right b
+        either :: (a -> c) -> (b -> c) -> Either a b -> c
+
+      However, wikipedia gives a different definition.
+
+      **In category theory the concept of catamorphism denotes the uniques homomorphism from an
+      initial algebra into some other algebra.**
+
+      If I follow the link for **homomorphism** I get...
+
+      **A homomorphism is a structure-preserving map between two algebraic structures of the same
+      type, that preserves the operations of the structures.**
+
+      So, wikipedia says that catamorphisms preserve structure, and HPFP says that they "are
+      generally **used** to reduce structure", but "that structure might be rebuilt during
+      evaluation".
+
+      I personally consider the input function as another kind of structure, that
+      replaces the list constructor ``(:)`` structure.
+
+      However, I don't think there's anything about folding functions that forces us to use an input
+      function that preserves the operations of the list of elements. I suppose it's possible to
+      argue that since the output must have the same type as the list elements, the operations of
+      the type of those elements are retained.
+
+      But, does it even make sense to characterize folding functions as catamorphisms in the first
+      place?
+
+   b) Expand structure.
+   c) Render you catatonic.
+   d) Generate infinite data structures.
+

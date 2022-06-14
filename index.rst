@@ -41,7 +41,9 @@ Contents
    09_-_lists/notes
    09_-_lists/questions
 
+   10_-_folds/contents
    10_-_folds/notes
+   10_-_folds/questions
 
    11_-_algebraic_datatypes/notes
 
