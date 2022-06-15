@@ -1020,15 +1020,17 @@ Here's a breakdown:
 
 9a) This will already type check and work, but it doesn't match the semantics we ask for:
 
+.. Figure 7
 ::
 
   Prelude> :{
   *Main| let pab =
-  *Main|
-  ["Pizza", "Apple", "Banana"]
+  *Main|    ["Pizza", "Apple", "Banana"]
   *Main| :}
+
   Prelude> foldr (\a b -> take 3 a) "" pab
   "Piz"
+
   Prelude> foldl (\b a -> take 3 a) "" pab
   "Ban"
 
@@ -1037,7 +1039,7 @@ Here's a breakdown:
 10a) We're only getting the first three letters of the first or the last string, depending on whether we do a right or left fold.
 10b) Note the argument naming order, due to the difference in the types of ``foldr`` and ``foldl``:
 
-.. Figure 7
+.. Figure 8
 ::
 
   foldr :: (a -> b -> b) -> b -> [a] -> b
@@ -1046,6 +1048,7 @@ Here's a breakdown:
 11a) The problem here is that right now, we're not folding the list.
 11b) We're only mapping our take 3 over the list and selecting the first or last result:
 
+.. Figure 9
 ::
 
   Prelude> map (take 3) pab
@@ -1061,6 +1064,7 @@ Here's a breakdown:
 12b) Remember, the ``b`` is the start value.
 12c) Technically, we could use ``concat`` on the result of having mapped take ``3`` over the list (or its reverse, if we want to simulate ``foldl``):
 
+.. Figure 10
 ::
 
   Prelude> concat $ map (take 3) pab
@@ -1073,6 +1077,7 @@ Here's a breakdown:
 
 13a) But we need an excuse to play with ``foldr`` and ``foldl``, so we'll pretend none of this happened!
 
+.. Figure 11
 ::
 
   Prelude> f = (\a b -> take 3 a ++ b)
@@ -1087,6 +1092,7 @@ Here's a breakdown:
 14a) Here, we are concatenating the result of having taken three elements from the string value in our input list onto the front of the string we're accumulating.
 14b) If we want to be explicit, we can assert types for the values:
 
+.. Figure 12
 ::
 
   Prelude> :{
@@ -1099,6 +1105,7 @@ Here's a breakdown:
 
 15a) If we assert something that isn't true, the type checker catches us:
 
+.. Figure 13
 ::
 
   Prelude> :{
