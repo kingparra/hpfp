@@ -885,6 +885,7 @@ Here's a breakdown:
 1c) Having a function that doesn't force evaluation of either of its arguments won't change anything.
 1d) Let's review ``const``:
 
+.. 10.5.2 Unconditional spine recursion, Figure 1, page 366
 ::
 
   ·∾ const 1 undefined
@@ -898,6 +899,7 @@ Here's a breakdown:
 
 2a) Now compare:
 
+.. 10.5.2 Unconditional spine recursion, Figure 2, page 366
 ::
 
   ·∾ xs = [1..5] ++ undefined
@@ -920,12 +922,14 @@ Here's a breakdown:
 3a) However, while ``foldl`` unconditionally evaluates the spine, you can still selectively evaluate the values in the list.
 3b) This will throw an error, because the bottom is part of the spine, and ``foldl`` must evaluate the spine:
 
+.. 10.5.2 Unconditional spine recursion, Figure 3, page 366
 ::
 
   Prelude> xs = [1..5] ++ undefined
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 367
 
+.. 10.5.2 Unconditional spine recursion, Figure 4, page 367
 ::
 
   Prelude> foldl (\_ _ -> 5) 0 xs
@@ -933,6 +937,7 @@ Here's a breakdown:
 
 4a) But this is OK, because bottom is a value here:
 
+.. 10.5.2 Unconditional spine recursion, Figure 5, page 367
 ::
 
   Prelude> xs = [1..5] ++ [undefined]
@@ -962,6 +967,7 @@ Here's a breakdown:
 3a) Let's say we want to write a function to take the first three letters of each String value in a list of strings and concatenate that result into a final String.
 3b) The type of the right fold for lists is:
 
+.. Figure 1
 ::
 
   foldr :: (a -> b -> b) -> b -> [a] -> b
@@ -970,34 +976,52 @@ Here's a breakdown:
 
 4a) First, we'll set up the beginnings of our expression:
 
+..  Figure 2
 ::
 
   foldr (\a b -> undefined) []
-  ["Pizza", "Apple", "Banana"]
+    ["Pizza", "Apple", "Banana"]
 
 5a) We used an empty list as the start value, but since we plan to return a String as our result, we could be a little more explicit about our intent to build a String and make a small syntactic change:
 
+..  Figure 3
 ::
 
   foldr (\a b -> undefined) ""
-  ["Pizza", "Apple", "Banana"]
-  Of course, because a String is a list, these are the same value:
+    ["Pizza", "Apple", "Banana"]
+
+6a) Of course, because a String is a list, these are the same value:
+
+.. Figure 4
+::
+
   Prelude> "" == []
   True
-  But "" signals intent with respect to the types involved:
+
+7a) But "" signals intent with respect to the types involved:
+
+.. Figure 5
+::
+
   Prelude> :t ""
   "" :: [Char]
+
   Prelude> :t []
   [] :: [t]
 
-6a) Moving along, we next want to work on the function. We already know how to take the first three elements from a list, and we can reuse this for a String:
+8a) Moving along, we next want to work on the function. 
+8b) We already know how to take the first three elements from a list, and we can reuse this for a String:
 
+.. Figure 6
 ::
 
   foldr (\a b -> take 3 a) ""
   ["Pizza", "Apple", "Banana"]
-  This will already type check and work, but it doesn't match the
-  semantics we ask for:
+
+9a) This will already type check and work, but it doesn't match the semantics we ask for:
+
+::
+
   Prelude> :{
   *Main| let pab =
   *Main|
@@ -1010,39 +1034,44 @@ Here's a breakdown:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 369
 
-7a) We're only getting the first three letters of the first or the last string, depending on whether we do a right or left fold.
-7b) Note the argument naming order, due to the difference in the types of ``foldr`` and ``foldl``:
+10a) We're only getting the first three letters of the first or the last string, depending on whether we do a right or left fold.
+10b) Note the argument naming order, due to the difference in the types of ``foldr`` and ``foldl``:
 
+.. Figure 7
 ::
 
   foldr :: (a -> b -> b) -> b -> [a] -> b
   foldl :: (b -> a -> b) -> b -> [a] -> b
 
-8a) The problem here is that right now, we're not folding the list.
-8b) We're only mapping our take 3 over the list and selecting the first or last result:
+11a) The problem here is that right now, we're not folding the list.
+11b) We're only mapping our take 3 over the list and selecting the first or last result:
 
 ::
 
   Prelude> map (take 3) pab
   ["Piz","App","Ban"]
+
   Prelude> head $ map (take 3) pab
   "Piz"
+
   Prelude> last $ map (take 3) pab
   "Ban"
 
-9a) So, let us make this a proper fold and accumulate the result by making use of the ``b`` argument.
-9b) Remember, the ``b`` is the start value.
-9c) Technically, we could use ``concat`` on the result of having mapped take ``3`` over the list (or its reverse, if we want to simulate ``foldl``):
+12a) So, let us make this a proper fold and accumulate the result by making use of the ``b`` argument.
+12b) Remember, the ``b`` is the start value.
+12c) Technically, we could use ``concat`` on the result of having mapped take ``3`` over the list (or its reverse, if we want to simulate ``foldl``):
 
 ::
 
   Prelude> concat $ map (take 3) pab
   "PizAppBan"
+
   Prelude> rpab = reverse pab
+
   Prelude> concat $ map (take 3) rpab
   "BanAppPiz"
 
-10a) But we need an excuse to play with ``foldr`` and ``foldl``, so we'll pretend none of this happened!
+13a) But we need an excuse to play with ``foldr`` and ``foldl``, so we'll pretend none of this happened!
 
 ::
 
@@ -1055,8 +1084,8 @@ Here's a breakdown:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 370
 
-11a) Here, we are concatenating the result of having taken three elements from the string value in our input list onto the front of the string we're accumulating.
-11b) If we want to be explicit, we can assert types for the values:
+14a) Here, we are concatenating the result of having taken three elements from the string value in our input list onto the front of the string we're accumulating.
+14b) If we want to be explicit, we can assert types for the values:
 
 ::
 
@@ -1068,7 +1097,7 @@ Here's a breakdown:
   Prelude> foldr f "" pab
   "PizAppBan"
 
-If we assert something that isn't true, the type checker catches us:
+15a) If we assert something that isn't true, the type checker catches us:
 
 ::
 
@@ -1088,7 +1117,7 @@ If we assert something that isn't true, the type checker catches us:
   f a b = take 3 (a :: String)
   ++ (b :: [String])
 
-This can be useful for checking that your mental model of the code is accurate.
+15b) This can be useful for checking that your mental model of the code is accurate.
 
 Exercises: Database processing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
