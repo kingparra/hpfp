@@ -1081,9 +1081,12 @@ Here's a breakdown:
 ::
 
   Prelude> f = (\a b -> take 3 a ++ b)
+
   Prelude> foldr f "" pab
   "PizAppBan"
+
   Prelude> f' = (\b a -> take 3 a ++ b)
+
   Prelude> foldl f' "" pab
   "BanAppPiz"
 
@@ -1100,6 +1103,7 @@ Here's a breakdown:
   *Prelude|             (a :: String) ++
   *Prelude|             (b :: String)
   *Prelude| :}
+
   Prelude> foldr f "" pab
   "PizAppBan"
 
@@ -1110,21 +1114,21 @@ Here's a breakdown:
 
   Prelude> :{
   *Prelude| let f a b = take 3 (a :: String)
-  *Prelude|
-  ++ (b :: [String])
+  *Prelude|             ++ (b :: [String])
   *Prelude| :}
-  • Couldn't match type ‘[Char]' with ‘Char'
-  Expected type: [Char]
-  Actual type: [String]
-  • In the second argument of ‘(++)', namely
-  ‘(b :: [String])'
-  In the expression: take 3 (a :: String)
-  ++ (b :: [String])
-  In an equation for ‘f':
-  f a b = take 3 (a :: String)
-  ++ (b :: [String])
 
-15b) This can be useful for checking that your mental model of the code is accurate.
+  • Couldn't match type ‘[Char]' with ‘Char'
+    Expected type: [Char]
+      Actual type: [String]
+  • In the second argument of ‘(++)', namely
+      ‘(b :: [String])'
+    In the expression: take 3 (a :: String)
+      ++ (b :: [String])
+    In an equation for ‘f':
+      f a b = take 3 (a :: String)
+        ++ (b :: [String])
+
+16a) This can be useful for checking that your mental model of the code is accurate.
 
 Exercises: Database processing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
