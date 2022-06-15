@@ -5,11 +5,9 @@ Chapter 10 Folding Lists
 
 .. 347
 
-The explicit teaching of thinking is no trivial task,
-but who said that the teaching of programming is? In
-our terminology, the more explicitly thinking is
-taught, the more of a scientist the programmer will
-become. ~ Edsger Dijkstra
+The explicit teaching of thinking is no trivial task, but who said that the teaching of programming is?
+In our terminology, the more explicitly thinking is taught, the more of a scientist the programmer will become.
+~ Edsger Dijkstra
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 348
 
@@ -60,7 +58,7 @@ become. ~ Edsger Dijkstra
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 349
 
-.. 10.2, Figure 1, page 349
+.. 10.2, Figure 2, page 349
 ::
 
   foldr :: Foldable t =>
@@ -70,7 +68,7 @@ become. ~ Edsger Dijkstra
 3a) For now, all you need to know is that GHC 7.10 abstracted out the list-specific part of folding into a type class that lets you reuse the same folding functions for any datatype that can be folded—not just lists.
 3b) We can even recover the more concrete type, because we can always make a type more concrete, but never more generic:
 
-.. Figure 3, page 349
+.. 10.2, Figure 3, page 349
 ::
 
   ·∾ :{
@@ -379,7 +377,7 @@ become. ~ Edsger Dijkstra
 
   myAny :: (a -> Bool) -> [a] -> Bool
   myAny f xs =
-  foldr (\x b -> f x || b) False xs
+    foldr (\x b -> f x || b) False xs
 
 21a) The following should work despite being an infinite list:
 
@@ -699,42 +697,42 @@ Here's a breakdown:
   [3,2,1]
 
 8a) We must use flip with foldl.
-8b) Let's examine why.
-8c) Like a right fold, a left fold cannot perform magic and go to the end of the list instantly; it must start from the beginning of the list.
 
-9a) However, the parentheses dictate how our code evaluates.
-9b) The type of the argument to the folding function changes in addition to the associativity:
+9a) Let's examine why.
+9b) Like a right fold, a left fold cannot perform magic and go to the end of the list instantly; it must start from the beginning of the list.
+9c) However, the parentheses dictate how our code evaluates.
+9d) The type of the argument to the folding function changes in addition to the associativity:
 
 .. 10.5.1, Figure 6, page 362
 .. topic:: Figure 6
 
-  ::
+   ::
 
-    foldr :: (a -> b -> b) -> b -> [a] -> b
-    --       [1]  [2]  [3]
-    foldl :: (b -> a -> b) -> b -> [a] -> b
-    --       [4]  [5]  [6]
+     foldr :: (a -> b -> b) -> b -> [a] -> b
+     --       [1]  [2]  [3]
+     foldl :: (b -> a -> b) -> b -> [a] -> b
+     --       [4]  [5]  [6]
 
-  1. The parameter of type a represents one of the list
-     element arguments the folding function of ``foldr``
-     is applied to.
+   1. The parameter of type a represents one of the list
+      element arguments the folding function of ``foldr``
+      is applied to.
 
-  2. The parameter of type ``b`` will either be the
-     start value or the result of the fold accumulated
-     so far, depending on how far you are into the fold.
+   2. The parameter of type ``b`` will either be the
+      start value or the result of the fold accumulated
+      so far, depending on how far you are into the fold.
 
-  3. The final result of having combined the list
-     element and the start value or fold so far to
-     compute the fold.
+   3. The final result of having combined the list
+      element and the start value or fold so far to
+      compute the fold.
 
-  4. The start value or fold accumulated so far is the
-     first argument to ``foldl``'s folding function.
+   4. The start value or fold accumulated so far is the
+      first argument to ``foldl``'s folding function.
 
-  5. The list element is the second argument to ``foldl``'s
-     folding function.
+   5. The list element is the second argument to ``foldl``'s
+      folding function.
 
-  6. The final result of ``foldl``'s fold function is of
-     type ``b``, like that of ``foldr``.
+   6. The final result of ``foldl``'s fold function is of
+      type ``b``, like that of ``foldr``.
 
 10a) The type of : requires that a value be the first argument and a list be the second argument:
 
@@ -748,7 +746,7 @@ Here's a breakdown:
 12a) In the following examples, the tilde means "is equivalent or equal to."
 12b) If we write a right fold that has the cons constructor as our f and the empty list as our z, we get:
 
-.. 10.5.1, Figure 7, page 362
+.. 10.5.1, Figure 8, page 362
 ::
 
   -- foldr f z [1, 2, 3]
@@ -766,7 +764,7 @@ Here's a breakdown:
 14c) This is the opposite of what : expects if we're accumulating a list.
 14d) Trying to fold the identity of the list as above but with ``foldl`` would give us a type error, because the reconstructing process for ``foldl`` would look like this:
 
-.. 10.5.1, Figure 8, page 362
+.. 10.5.1, Figure 9, page 362
 ::
 
   foldl f z [1, 2, 3]
@@ -778,7 +776,7 @@ Here's a breakdown:
 15b) Enter ``flip``, which takes backwards arguments and turns that frown upside-down.
 15c) It will flip each set of arguments around for us, like this:
 
-.. 10.5.1, Figure 9, page 363
+.. 10.5.1, Figure 10, page 363
 ::
 
   foldl f z [1, 2, 3]
@@ -798,7 +796,7 @@ Here's a breakdown:
 17b) When we fold ``const`` over a list, it will take as its first pair of arguments the ``acc`` value and a value from the list—which value it takes first depends on which type of fold it is.
 17c) We'll show you how it evaluates for the first example:
 
-.. 10.5.1, Figure 10, page 364
+.. 10.5.1, Figure 11, page 364
 ::
 
   ·∾ foldr const 0 [1,2,3,4,5]
@@ -810,7 +808,7 @@ Here's a breakdown:
 18c) Now, let's look at the effect of flipping the arguments.
 18d) The ``0`` result is because zero is our accumulator value here, so it's the first (or last) value of the list:
 
-.. 10.5.1, Figure 11, page 364
+.. 10.5.1, Figure 12, page 364
 ::
 
   ·∾ foldr (flip const) 0 [1,2,3,4,5]
@@ -819,12 +817,12 @@ Here's a breakdown:
 19a) Next, let's look at what happens when we use the same functions but this time with ``foldl``.
 19b) Take a few moments to understand the evaluation process that leads to these results:
 
-.. 10.5.1, Figure 12, page 364
+.. 10.5.1, Figure 13, page 364
 ::
 
-  Prelude> foldl (flip const) 0 [1..5]
+  ·∾ foldl (flip const) 0 [1,2,3,4,5]
   5
-  Prelude> foldl const 0 [1..5]
+  ·∾ foldl const 0 [1,2,3,4,5]
   0
 
 20a) This is the effect of left associativity.
@@ -832,8 +830,8 @@ Here's a breakdown:
 20c) Depending on your folding function, however, a left fold can lead to a different result than a right fold of the same list.
 
 
-Exercises: Understanding folds
-------------------------------
+10.5.2 Exercises: Understanding folds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 365
 
 1. ``foldr (*) 1 [1..5]`` Will return the same result as which of the following?
@@ -867,56 +865,60 @@ Exercises: Understanding folds
    b) ``foldr max [] "fear is the little death"``
    c) ``foldr and True [False, True]``
    d) This one is more subtle than the previous. Can it ever return a different answer?
+
       ::
 
         foldr (||) True [False, True]
 
    e) ``foldl ((++) . show) "" [1..5]``
    f) ``foldr const 'a' [1..5]``
+   g) ``foldr const 0 "tacos"``
+   h) ``foldl (flip const) 0 "burritos"``
+   i) ``foldl (flip const) 'z' [1..5]``
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 366
 
-   g) foldr const 0 "tacos"
-   h) foldl (flip const) 0 "burritos"
-   i) foldl (flip const) 'z' [1..5]
-
-Unconditional spine recursion
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-An important difference between ``foldr`` and ``foldl`` is that a left fold has the successive steps of the fold as its first argument.
-The next recursion of the spine isn't intermediated by the folding function as it is in ``foldr``, which also means recursion of the spine is unconditional.
-Having a function that doesn't force evaluation of either of its arguments won't change anything.
-Let's review ``const``:
-
+10.5.2 Unconditional spine recursion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1a) An important difference between ``foldr`` and ``foldl`` is that a left fold has the successive steps of the fold as its first argument.
+1b) The next recursion of the spine isn't intermediated by the folding function as it is in ``foldr``, which also means recursion of the spine is unconditional.
+1c) Having a function that doesn't force evaluation of either of its arguments won't change anything.
+1d) Let's review ``const``:
 
 ::
 
-  Prelude> const
+  ·∾ const 1 undefined
   1
-  Prelude> (flip
-  *** Exception:
-  Prelude> (flip
-  1
-  1 undefined
-  const) 1 undefined
-  Prelude.undefined
-  const) undefined 1
-  Now compare:
-  Prelude> xs = [1..5] ++ undefined
-  Prelude> foldr const 0 xs
-  1
-  Prelude> foldr (flip const) 0 xs
-  *** Exception: Prelude.undefined
-  Prelude> foldl
-  *** Exception:
-  Prelude> foldl
-  *** Exception:
-  const 0 xs
-  Prelude.undefined
-  (flip const) 0 xs
-  Prelude.undefined
 
-However, while ``foldl`` unconditionally evaluates the spine, you can still selectively evaluate the values in the list.
-This will throw an error, because the bottom is part of the spine, and ``foldl`` must evaluate the spine:
+  ·∾ (flip const) 1 undefined
+  *** Exception: Prelude.undefined
+
+  ·∾ (flip const) undefined 1
+  1
+
+2a) Now compare:
+
+::
+
+  ·∾ xs = [1..5] ++ undefined
+
+  ·∾ foldr const 0 xs
+  1
+
+  ·∾ foldr (flip const) 0 xs
+  *** Exception: Prelude.undefined
+
+  ·∾ foldr (flip const) 0 xs
+  *** Exception: Prelude.undefined
+
+  ·∾ foldl const 0 xs
+  *** Exception: Prelude.undefined
+
+  ·∾ foldl (flip const) 0 xs
+  *** Exception: Prelude.undefined
+
+3a) However, while ``foldl`` unconditionally evaluates the spine, you can still selectively evaluate the values in the list.
+3b) This will throw an error, because the bottom is part of the spine, and ``foldl`` must evaluate the spine:
 
 ::
 
@@ -928,32 +930,37 @@ This will throw an error, because the bottom is part of the spine, and ``foldl``
 
   Prelude> foldl (\_ _ -> 5) 0 xs
   *** Exception: Prelude.undefined
-  But this is OK, because bottom is a value here:
+
+4a) But this is OK, because bottom is a value here:
+
+::
+
   Prelude> xs = [1..5] ++ [undefined]
   Prelude> foldl (\_ _ -> 5) 0 xs
   5
 
-This feature means that ``foldl`` is generally inappropriate with lists that are or could be infinite, but the combination of the forced spine evaluation with non-strictness means that it is also usually inappropriate even for long lists, as the forced evaluation of the spine affects performance negatively.
-Because ``foldl`` must evaluate its whole spine before it starts evaluating values in each cell, it accumulates a pile of unevaluated values as it traverses the spine.
+5a) This feature means that ``foldl`` is generally inappropriate with lists that are or could be infinite, but the combination of the forced spine evaluation with non-strictness means that it is also usually inappropriate even for long lists, as the forced evaluation of the spine affects performance negatively.
+5b) Because ``foldl`` must evaluate its whole spine before it starts evaluating values in each cell, it accumulates a pile of unevaluated values as it traverses the spine.
 
-In most cases, when you need a left fold, you should use ``foldl'``.
-This function, called "fold-l-prime," works the same way, except it is strict.
-In other words, it forces evaluation of the values inside the cons cells as it traverses the spine, rather than accumulating unevaluated expressions for each element of a list.
-The strict evaluation here means it has less negative effect on performance over long lists.
+6a) In most cases, when you need a left fold, you should use ``foldl'``.
+6b) This function, called "fold-l-prime," works the same way, except it is strict.
+6c) In other words, it forces evaluation of the values inside the cons cells as it traverses the spine, rather than accumulating unevaluated expressions for each element of a list.
+6d) The strict evaluation here means it has less negative effect on performance over long lists.
 
 
 10.6 How to write fold functions
 --------------------------------
-When we write folds, we begin by thinking about what our start value for the fold is.
-This is usually the identity value for the function.
-When we sum the elements of a list, the identity of summation is ``0``.
-When we multiply the elements of the list, the identity is ``1``.
-This start value is also our fallback in case the list is empty.
-Next, we consider our arguments.
-A folding function takes two arguments, ``a`` and ``b``, where ``a`` is always going to be one of the elements of the list, and ``b`` is either the start value or the value accumulated as the list is being processed.
+1a) When we write folds, we begin by thinking about what our start value for the fold is.
+1b) This is usually the identity value for the function.
+1c) When we sum the elements of a list, the identity of summation is ``0``.
+1d) When we multiply the elements of the list, the identity is ``1``.
+1e) This start value is also our fallback in case the list is empty.
 
-Let's say we want to write a function to take the first three letters of each String value in a list of strings and concatenate that result into a final String.
-The type of the right fold for lists is:
+2a) Next, we consider our arguments.
+2b) A folding function takes two arguments, ``a`` and ``b``, where ``a`` is always going to be one of the elements of the list, and ``b`` is either the start value or the value accumulated as the list is being processed.
+
+3a) Let's say we want to write a function to take the first three letters of each String value in a list of strings and concatenate that result into a final String.
+3b) The type of the right fold for lists is:
 
 ::
 
@@ -961,14 +968,14 @@ The type of the right fold for lists is:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 368
 
-First, we'll set up the beginnings of our expression:
+4a) First, we'll set up the beginnings of our expression:
 
 ::
 
   foldr (\a b -> undefined) []
   ["Pizza", "Apple", "Banana"]
 
-We used an empty list as the start value, but since we plan to return a String as our result, we could be a little more explicit about our intent to build a String and make a small syntactic change:
+5a) We used an empty list as the start value, but since we plan to return a String as our result, we could be a little more explicit about our intent to build a String and make a small syntactic change:
 
 ::
 
@@ -983,7 +990,7 @@ We used an empty list as the start value, but since we plan to return a String a
   Prelude> :t []
   [] :: [t]
 
-Moving along, we next want to work on the function. We already know how to take the first three elements from a list, and we can reuse this for a String:
+6a) Moving along, we next want to work on the function. We already know how to take the first three elements from a list, and we can reuse this for a String:
 
 ::
 
@@ -1003,16 +1010,16 @@ Moving along, we next want to work on the function. We already know how to take 
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 369
 
-We're only getting the first three letters of the first or the last string, depending on whether we do a right or left fold.
-Note the argument naming order, due to the difference in the types of ``foldr`` and ``foldl``:
+7a) We're only getting the first three letters of the first or the last string, depending on whether we do a right or left fold.
+7b) Note the argument naming order, due to the difference in the types of ``foldr`` and ``foldl``:
 
 ::
 
   foldr :: (a -> b -> b) -> b -> [a] -> b
   foldl :: (b -> a -> b) -> b -> [a] -> b
 
-The problem here is that right now, we're not folding the list.
-We're only mapping our take 3 over the list and selecting the first or last result:
+8a) The problem here is that right now, we're not folding the list.
+8b) We're only mapping our take 3 over the list and selecting the first or last result:
 
 ::
 
@@ -1023,9 +1030,9 @@ We're only mapping our take 3 over the list and selecting the first or last resu
   Prelude> last $ map (take 3) pab
   "Ban"
 
-So, let us make this a proper fold and accumulate the result by making use of the ``b`` argument.
-Remember, the ``b`` is the start value.
-Technically, we could use ``concat`` on the result of having mapped take ``3`` over the list (or its reverse, if we want to simulate ``foldl``):
+9a) So, let us make this a proper fold and accumulate the result by making use of the ``b`` argument.
+9b) Remember, the ``b`` is the start value.
+9c) Technically, we could use ``concat`` on the result of having mapped take ``3`` over the list (or its reverse, if we want to simulate ``foldl``):
 
 ::
 
@@ -1035,7 +1042,7 @@ Technically, we could use ``concat`` on the result of having mapped take ``3`` o
   Prelude> concat $ map (take 3) rpab
   "BanAppPiz"
 
-But we need an excuse to play with ``foldr`` and ``foldl``, so we'll pretend none of this happened!
+10a) But we need an excuse to play with ``foldr`` and ``foldl``, so we'll pretend none of this happened!
 
 ::
 
@@ -1048,17 +1055,15 @@ But we need an excuse to play with ``foldr`` and ``foldl``, so we'll pretend non
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 370
 
-Here, we are concatenating the result of having taken three elements from the string value in our input list onto the front of the string we're accumulating.
-If we want to be explicit, we can assert types for the values:
+11a) Here, we are concatenating the result of having taken three elements from the string value in our input list onto the front of the string we're accumulating.
+11b) If we want to be explicit, we can assert types for the values:
 
 ::
 
   Prelude> :{
   *Prelude| let f a b = take 3
-  *Prelude|
-  (a :: String) ++
-  *Prelude|
-  (b :: String)
+  *Prelude|             (a :: String) ++
+  *Prelude|             (b :: String)
   *Prelude| :}
   Prelude> foldr f "" pab
   "PizAppBan"
@@ -1090,52 +1095,77 @@ Exercises: Database processing
 Let's write some functions to process the following data:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 371
+..
 
   ::
 
     import Data.Time
-    data DatabaseItem = DbString String | DbNumber Integer | DbDate UTCTime deriving (Eq, Ord, Show)
+
+    data DatabaseItem = DbString String
+                      | DbNumber Integer
+                      | DbDate UTCTime
+                      deriving (Eq, Ord, Show)
+
     theDatabase :: [DatabaseItem]
-    theDatabase = [ DbDate (UTCTime (fromGregorian 1911 5 1) (secondsToDiffTime 34123))
-                  , DbNumber 9001
-                  , DbString "Hello, world!"
-                  , DbDate (UTCTime (fromGregorian 1921 5 1) (secondsToDiffTime 34123))
-                  ]
+    theDatabase =
+      [ DbDate (UTCTime
+                (fromGregorian 1911 5 1)
+                (secondsToDiffTime 34123))
+      , DbNumber 9001
+      , DbString "Hello, world!"
+      , DbDate (UTCTime
+                (fromGregorian 1921 5 1)
+                (secondsToDiffTime 34123))
+      ]
 
   1. Write a function that filters for DbDate values and returns a list of the UTCTime values inside them:
 
-      filterDbDate :: [DatabaseItem] -> [UTCTime]
-      filterDbDate = undefined
+     ::
+
+       filterDbDate :: [DatabaseItem] -> [UTCTime]
+       filterDbDate = undefined
 
   2. Write a function that filters for DbNumber values and returns a list of the Integer values inside them:
 
-       filterDbNumber :: [DatabaseItem] -> [Integer]
-       filterDbNumber = undefined
+     ::
+
+        filterDbNumber :: [DatabaseItem] -> [Integer]
+        filterDbNumber = undefined
 
   3. Write a function that gets the most recent date:
 
-      mostRecent :: [DatabaseItem] -> UTCTime
-      mostRecent = undefined
+     ::
+
+       mostRecent :: [DatabaseItem] -> UTCTime
+       mostRecent = undefined
 
   4. Write a function that sums all of the DbNumber values:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 372
+..
 
-     sumDb :: [DatabaseItem] -> Integer
-     sumDb = undefined
+    ::
+
+       sumDb :: [DatabaseItem] -> Integer
+       sumDb = undefined
 
   5. Write a function that gets the average of the DbNumber values:
 
-     -- You'll probably need to use fromIntegral
-     -- to get from Integer to Double.
-     avgDb :: [DatabaseItem] -> Double
-     avgDb = undefined
+     ::
+
+       -- You'll probably need to use fromIntegral
+       -- to get from Integer to Double.
+       avgDb :: [DatabaseItem] -> Double
+       avgDb = undefined
+
 
 10.7 Folding and evaluation
 ---------------------------
-What differentiates ``foldr`` and ``foldl`` is associativity.
-The right associativity of ``foldr`` means the folding function evaluates from the innermost cons cell to the outermost (the head).
-On the other hand, ``foldl`` recurses unconditionally to the end of the list through self-calls, and then the folding function evaluates from the outermost cons cell to the innermost:
+1a) What differentiates ``foldr`` and ``foldl`` is associativity.
+1b) The right associativity of ``foldr`` means the folding function evaluates from the innermost cons cell to the outermost (the head).
+1c) On the other hand, ``foldl`` recurses unconditionally to the end of the list through self-calls, and then the folding function evaluates from the outermost cons cell to the innermost:
+
+.. 10.7 Folding and evaluation, Figure 1, page 372
 
 ::
 
@@ -1147,16 +1177,20 @@ On the other hand, ``foldl`` recurses unconditionally to the end of the list thr
   Prelude> take 3 $ lcf xs
   *** Exception: Prelude.undefined
 
-Let's dive into our const example a little more carefully:
+2a) Let's dive into our const example a little more carefully:
+
+.. 10.7 Folding and evaluation, Figure 2, page 372
 
 ::
 
   foldr const 0 [1..5]
 
-With ``foldr``, you'll evaluate const 1 (...), but const ignores the rest of the fold that would have occurred from the end of the list up to the number 1, so this returns 1 without having evaluated any more of the values or the spine.
-One way you could examine this for yourself would be:
+3a) With ``foldr``, you'll evaluate const 1 (...), but const ignores the rest of the fold that would have occurred from the end of the list up to the number 1, so this returns 1 without having evaluated any more of the values or the spine.
+3b) One way you could examine this for yourself would be:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 373
+
+.. 10.7 Folding and evaluation, Figure 3, page 373
 
 ::
 
@@ -1167,22 +1201,28 @@ One way you could examine this for yourself would be:
   Prelude> tail ([1] ++ undefined)
   *** Exception: Prelude.undefined
 
-Similarly for foldl:
+4a) Similarly for foldl:
+
+.. 10.7 Folding and evaluation, Figure 4, page 373
 
 ::
 
   foldl (flip const) 0 [1..5]
 
-Here, ``foldl`` will recurse to the final cons cell, evaluate ``(flip const) (...) 5``, ignore the rest of the fold that would occur from the beginning up to the number ``5``, and return ``5``.
+5a) Here, ``foldl`` will recurse to the final cons cell, evaluate ``(flip const) (...) 5``, ignore the rest of the fold that would occur from the beginning up to the number ``5``, and return ``5``.
 
-The relationship between foldr and foldl is such that:
+6a) The relationship between foldr and foldl is such that:
+
+.. 10.7 Folding and evaluation, Figure 5, page 373
 
 ::
 
   foldr f z xs =
   foldl (flip f) z (reverse xs)
 
-But only for finite lists! Consider:
+7a) But only for finite lists! Consider:
+
+.. 10.7 Folding and evaluation, Figure 6, page 373
 
 ::
 
@@ -1195,7 +1235,9 @@ But only for finite lists! Consider:
   ^CInterrupted.
   -- ^^ bottom.
 
-If we flip our folding function f and reverse the list xs, foldr and foldl will return the same result:
+8a) If we flip our folding function f and reverse the list xs, foldr and foldl will return the same result:
+
+.. 10.7 Folding and evaluation, Figure 7, page 373
 
 ::
 
@@ -1208,6 +1250,8 @@ If we flip our folding function f and reverse the list xs, foldr and foldl will 
   [1,2,3,4,5]
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 374
+
+.. 10.7 Folding and evaluation, Figure 7c, page 373
 
 ::
 
@@ -1315,68 +1359,67 @@ First, we must see how scanl is defined.
 We're going to show you a version of it from a slightly older base library for GHC Haskell.
 The differences don't change anything important for us here:
 
-scanl :: (a -> b -> a) -> a -> [b] -> [a]
-scanl f q ls =
-q : (case ls of
-[]
--> []
-x:xs -> scanl f (f q x) xs)
-In an earlier chapter, we wrote a recursive function that returns
-the nth Fibonacci number. You can use a scan function to return a list
-of Fibonacci numbers. We're going to do this in a source file, because
-it will, in this state, return an infinite list (feel free to try loading it
-into your REPL and running it, but be quick with the Ctrl-C):
-fibs = 1 : scanl (+) 1 fibs
+::
+
+  scanl :: (a -> b -> a) -> a -> [b] -> [a]
+  scanl f q ls = q : (case ls of [] -> [] x:xs -> scanl f (f q x) xs)
+
+In an earlier chapter, we wrote a recursive function that returns the nth Fibonacci number.
+You can use a scan function to return a list of Fibonacci numbers.
+We're going to do this in a source file, because it will, in this state, return an infinite list (feel free to try loading it into your REPL and running it, but be quick with the Ctrl-C):
+
+::
+
+  fibs = 1 : scanl (+) 1 fibs
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 377
-We start with a value of 1 and cons that onto the front of the list
-generated by our scan. The list itself has to be recursive, because, as
-we saw previously, the idea of Fibonacci numbers is that each one is
-the sum of the previous two in the sequence; scanning the results of
-+ over a non-recursive list of numbers whose start value is 1 would
-give us this:
+
+We start with a value of 1 and cons that onto the front of the list generated by our scan.
+The list itself has to be recursive, because, as we saw previously, the idea of Fibonacci numbers is that each one is the sum of the previous two in the sequence; scanning the results of + over a non-recursive list of numbers whose start value is 1 would give us this:
+
 scanl (+) 1 [1..3]
 [1, 1 + 1, (1 + 1) + 2, ((1 + 1) + 2) + 3]
 [1,2,4,7]
+
 Instead of the [1, 1, 2, 3, 5, ...] that we're looking for.
+
 Getting the Fibonacci number we want
-But we don't really want an infinite list of Fibonacci numbers; that
-isn't very useful. We need a method to either take some number
-of elements from that list or find the nth element as we did before.
-Fortunately, that's the easy part. We'll use the "bang bang" operator,
-!!, to find the nth element. This operator is a way to index into a list,
-and indexing in Haskell starts from 0. That is, the first value in your
-list is indexed as 0. But, otherwise, the operator is straightforward:
+But we don't really want an infinite list of Fibonacci numbers; that isn't very useful.
+We need a method to either take some number of elements from that list or find the nth element as we did before.
+Fortunately, that's the easy part.
+We'll use the "bang bang" operator, !!, to find the nth element.
+This operator is a way to index into a list, and indexing in Haskell starts from 0.
+That is, the first value in your list is indexed as 0.
+But, otherwise, the operator is straightforward:
 (!!) :: [a] -> Int -> a
-It needs a list as its first argument, an Int as its second argument,
-and it returns one element from the list. Which item it returns is
-the value that is in the nth spot, where n is our Int. Let's modify our
-source file:
-fibs
-= 1 : scanl (+) 1 fibs
+It needs a list as its first argument, an Int as its second argument, and it returns one element from the list.
+Which item it returns is the value that is in the nth spot, where n is our Int.
+Let's modify our source file:
+
+fibs = 1 : scanl (+) 1 fibs
 fibsN x = fibs !! x
-Once we load the file into our REPL, we can use fibsN to return
-the nth element of our scan:
+
+Once we load the file into our REPL, we can use fibsN to return the nth element of our scan:
+
 Prelude> fibsN 0
 1
 Prelude> fibsN 2
 2
 Prelude> fibsN 6
 13
+
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 378
-Now, you can modify your source code to use the take or takeWhile
-functions or to filter it in any way you like. One note: filtering without
-also taking won't work too well, because you're still getting an infinite
-list. It's a filtered infinite list, sure, but still infinite.
+Now, you can modify your source code to use the take or takeWhile functions or to filter it in any way you like.
+One note: filtering without also taking won't work too well, because you're still getting an infinite list.
+It's a filtered infinite list, sure, but still infinite.
+
 Scans exercises
-1. Modify your fibs function to only return the first 20 Fibonacci
-numbers.
-2. Modify fibs to return the Fibonacci numbers that are less than
-100.
+1. Modify your fibs function to only return the first 20 Fibonacci numbers.
+2. Modify fibs to return the Fibonacci numbers that are less than 100.
 3. Try to write the factorial function from Chapter 8 as a scan.
-You'll want scanl again, and your start value will be 1. Warning:
-this will also generate an infinite list, so you may want to pass it
-through a take function or similar.
+
+You'll want scanl again, and your start value will be 1.
+Warning: this will also generate an infinite list, so you may want to pass it through a take function or similar.
 
 
 .. NOTE Pay special attention to the paragraph layout in the chapter exercises.
@@ -1386,9 +1429,8 @@ through a take function or similar.
 10.10.1 Warm-up and review
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 For the following set of exercises, you are not expected to use folds.
-These are intended to review material from previous chapters. Feel
-free to use any syntax or structure from previous chapters that seems
-appropriate.
+These are intended to review material from previous chapters.
+Feel free to use any syntax or structure from previous chapters that seems appropriate.
 
 1. Given the following sets of consonants and vowels:
 
@@ -1397,7 +1439,8 @@ appropriate.
      stops = "pbtdkg"
      vowels = "aeiou"
 
-a) Write a function that takes inputs from stops and vowels and makes 3-tuples of all possible stop-vowel-stop combinations. These will not all correspond to real words in English, although the stop-vowel-stop pattern is common enough that many of them will.
+a) Write a function that takes inputs from stops and vowels and makes 3-tuples of all possible stop-vowel-stop combinations.
+   These will not all correspond to real words in English, although the stop-vowel-stop pattern is common enough that many of them will.
 
 b) Modify that function so that it only returns the combinations that begin with a p.
 
@@ -1405,199 +1448,285 @@ b) Modify that function so that it only returns the combinations that begin with
 
 c) Now set up lists of nouns and verbs (instead of stops and vowels), and modify the function to make tuples representing possible noun-verb-noun sentences.
 
-2. What does the following mystery function do? What is its type? Try to get a good sense of what it does before you test it in the REPL to verify it:
+2. What does the following mystery function do?
+   What is its type?
+   Try to get a good sense of what it does before you test it in the REPL to verify it:
 
-seekritFunc x =
-div (sum (map length (words x)))
-(length (words x))
+   ::
 
-3. We'd really like the answer to be more precise. Can you rewrite that using fractional division?
+      seekritFunc x =
+      div (sum (map length (words x)))
+      (length (words x))
+
+3. We'd really like the answer to be more precise.
+   Can you rewrite that using fractional division?
 
 10.10.2 Rewriting functions using folds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In the previous chapter, you wrote these functions using direct recursion over lists. The goal now is to rewrite them using folds. Where possible, to gain a deeper understanding of folding, try rewriting the fold version so that it is point-free. Point-free versions of these functions written with a fold should look like this:
-myFunc = foldr f z
+In the previous chapter, you wrote these functions using direct recursion over lists.
+The goal now is to rewrite them using folds.
+Where possible, to gain a deeper understanding of folding, try rewriting the fold version so that it is point-free.
+Point-free versions of these functions written with a fold should look like this:
+
+::
+
+  myFunc = foldr f z
+
 So, for example, with the and function:
--- direct recursion, not using &&
-myAnd :: [Bool] -> Bool
-myAnd [] = True
-myAnd (x:xs) =
-if x == False
-then False
-else myAnd xs
--- direct recursion, using &&
-myAnd :: [Bool] -> Bool
-myAnd [] = True
-myAnd (x:xs) = x && myAnd xs
+
+::
+
+  -- direct recursion, not using &&
+  myAnd :: [Bool] -> Bool
+  myAnd [] = True
+  myAnd (x:xs) =
+    if x == False
+    then False
+    else myAnd xs
+
+  -- direct recursion, using &&
+  myAnd :: [Bool] -> Bool
+  myAnd [] = True
+  myAnd (x:xs) = x && myAnd xs
+
+  -- fold, not point-free
+  myAnd :: [Bool] -> Bool
+  myAnd = foldr
+    (\a b ->
+      if a == False
+      then False
+      else b) True
+
+  -- fold, both myAnd and the folding
+  -- function are point-free now
+  myAnd :: [Bool] -> Bool
+  myAnd = foldr (&&) True
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 380
 
--- fold, not point-free
-myAnd :: [Bool] -> Bool
-myAnd = foldr
-(\a b ->
-if a == False
-then False
-else b) True
--- fold, both myAnd and the folding
--- function are point-free now
-myAnd :: [Bool] -> Bool
-myAnd = foldr (&&) True
 The goal here is to converge on the final version where possible.
-You don't need to write all variations for each example, but the
-more variations you write, the deeper your understanding of these
-functions will become.
+You don't need to write all variations for each example, but the more variations you write, the deeper your understanding of these functions will become.
+
 1. myOr returns True if any Bool in the list is True:
-myOr :: [Bool] -> Bool
-myOr = undefined
-2. myAny returns True if a -> Bool applied to any of the values in the
-list returns True:
-myAny :: (a -> Bool) -> [a] -> Bool
-myAny = undefined
-Example for validating myAny:
-Prelude> myAny even [1, 3, 5]
-False
-Prelude> myAny odd [1, 3, 5]
-True
-3. Write two versions of myElem. One version should use folding
-and the other should use any:
-myElem :: Eq a => a -> [a] -> Bool
+
+   ::
+
+     myOr :: [Bool] -> Bool
+     myOr = undefined
+
+2. myAny returns True if a -> Bool applied to any of the values in the list returns True:
+
+   ::
+
+     myAny :: (a -> Bool) -> [a] -> Bool
+     myAny = undefined
+
+   Example for validating myAny:
+
+   ::
+
+     Prelude> myAny even [1, 3, 5]
+     False
+     Prelude> myAny odd [1, 3, 5]
+     True
+
+3. Write two versions of myElem.
+   One version should use folding and the other should use any:
+
+   ::
+
+     myElem :: Eq a => a -> [a] -> Bool
+
+     Prelude> myElem 1 [1..10]
+     True
+     Prelude> myElem 1 [2..10]
+     False
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 381
-
-Prelude> myElem 1 [1..10]
-True
-Prelude> myElem 1 [2..10]
-False
 4. Implement myReverse. Don't worry about trying to make it lazy:
-myReverse :: [a] -> [a]
-myReverse = undefined
-Prelude> myReverse "blah"
-"halb"
-Prelude> myReverse [1..5]
-[5,4,3,2,1]
-5. Write myMap in terms of foldr. It should have the same behavior
-as the built-in map:
-myMap :: (a -> b) -> [a] -> [b]
-myMap = undefined
-6. Write myFilter in terms of foldr. It should have the same behav-
-ior as the built-in filter:
-myFilter :: (a -> Bool) -> [a] -> [a]
-myFilter = undefined
+
+   ::
+
+     myReverse :: [a] -> [a]
+     myReverse = undefined
+
+     Prelude> myReverse "blah"
+     "halb"
+     Prelude> myReverse [1..5]
+     [5,4,3,2,1]
+
+5. Write myMap in terms of foldr.
+   It should have the same behavior as the built-in map:
+
+   ::
+
+     myMap :: (a -> b) -> [a] -> [b]
+     myMap = undefined
+
+6. Write myFilter in terms of foldr. It should have the same behavior as the built-in filter:
+
+   ::
+
+     myFilter :: (a -> Bool) -> [a] -> [a]
+     myFilter = undefined
+
 7. squish flattens a list of lists into a list:
-squish :: [[a]] -> [a]
-squish = undefined
+
+   ::
+
+     squish :: [[a]] -> [a]
+     squish = undefined
+
 8. squishMap maps a function over a list and concatenates the result:
-squishMap :: (a -> [b]) -> [a] -> [b]
-squishMap = undefined
-Prelude>
-[1,2,3]
-Prelude>
-Prelude>
-"WO b OT
-squishMap (\x -> [1, x, 3]) [2]
-f x = "WO " ++ [x] ++ " OT "
-squishMap f "blah"
-WO l OT WO a OT WO h OT "
+
+   ::
+
+     squishMap :: (a -> [b]) -> [a] -> [b]
+     squishMap = undefined
+
+     Prelude> squishMap (\x -> [1, x, 3]) [2]
+     [1,2,3]
+     Prelude> f x = "WO " ++ [x] ++ " OT "
+     Prelude> squishMap f "blah"
+     "WO b OT WO l OT WO a OT WO h OT "
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 382
 
-9. squishAgain flattens a list of lists into a list. This time, re-use the
-squishMap function:
-squishAgain :: [[a]] -> [a]
-squishAgain = undefined
-10. myMaximumBy takes a comparison function and a list and returns
-the greatest element of the list based on the last value that the
-comparison returns GT for:
-myMaximumBy :: (a -> a -> Ordering)
--> [a]
--> a
-myMaximumBy = undefined
-Prelude> myMaximumBy (\_ _ -> GT) [1..10]
-1
-Prelude> myMaximumBy (\_ _ -> LT) [1..10]
-10
-Prelude> myMaximumBy compare [1..10]
-10
-11. myMinimumBy takes a comparison function and a list and returns
-the least element of the list based on the last value that the
-comparison returns LT for:
-myMinimumBy :: (a -> a -> Ordering)
--> [a]
--> a
-myMinimumBy = undefined
-Prelude> myMinimumBy (\_ _ -> GT) [1..10]
-10
-Prelude> myMinimumBy (\_ _ -> LT) [1..10]
-1
-Prelude> myMinimumBy compare [1..10]
-1
+9. squishAgain flattens a list of lists into a list.
+   This time, re-use the squishMap function:
+
+   ::
+
+      squishAgain :: [[a]] -> [a]
+      squishAgain = undefined
+
+10. myMaximumBy takes a comparison function and a list and returns the greatest element of the list based on the last value that the comparison returns GT for:
+
+    ::
+
+      myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+      myMaximumBy = undefined
+
+      Prelude> myMaximumBy (\_ _ -> GT) [1..10]
+      1
+      Prelude> myMaximumBy (\_ _ -> LT) [1..10]
+      10
+      Prelude> myMaximumBy compare [1..10]
+      10
+
+11. myMinimumBy takes a comparison function and a list and returns the least element of the list based on the last value that the comparison returns LT for:
+
+    ::
+
+      myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+      myMinimumBy = undefined
+
+      Prelude> myMinimumBy (\_ _ -> GT) [1..10]
+      10
+      Prelude> myMinimumBy (\_ _ -> LT) [1..10]
+      1
+      Prelude> myMinimumBy compare [1..10]
+      1
+
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 383
 
 
 10.11 Definitions
 -----------------
-1. A fold is a higher-order function which, given a function to accumulate the results and a
-   recursive data structure, returns the built up value. Usually a "start value" for the
-   accumulation is provided along with a function that can combine the type of values in the data
-   structure with the accumulation. The term fold is typically used with reference to collections of
-   values referenced by a recursive datatype. For a generalization of "breaking down structure," see
-   catamorphism.
+.. NOTE I formatted this section into subsections that don't exist in the source text.
 
-2. A catamorphism is a generalization of folds to arbitrary datatypes.  Where a fold allows you to
-   break down a list into an arbitrary datatype, a catamorphism is a means of breaking down the
-   structure of any datatype. The bool :: a -> a -> Bool -> a func- tion in Data.Bool is an example
-   of a simple catamorphism for a simple, non-collection datatype. Similarly, maybe :: b -> (a -> b)
-   -> Maybe a -> b is the catamorphism for Maybe. See if you can notice a pattern:
+fold
+^^^^
+A fold is a higher-order function which, given a function to accumulate the results and a recursive data structure, returns the built up value.
+ Usually a "start value" for the accumulation is provided along with a function that can combine the type of values in the data structure with the accumulation.
+ The term fold is typically used with reference to collections of values referenced by a recursive datatype.
+ For a generalization of "breaking down structure," see catamorphism.
 
-     data Bool = False | True
-     bool :: a -> a -> Bool -> a
-     data Maybe a = Nothing | Just a
-     maybe :: b -> (a -> b) -> Maybe a -> b
-     data Either a b = Left a | Right b
-     either :: (a -> c) -> (b -> c) -> Either a b -> c
+catamorphism
+^^^^^^^^^^^^
+A catamorphism is a generalization of folds to arbitrary datatypes.
+Where a fold allows you to break down a list into an arbitrary datatype, a catamorphism is a means of breaking down the structure of any datatype.
+The ``bool :: a -> a -> Bool -> a`` function in ``Data.Bool`` is an example of a simple catamorphism for a simple, non-collection datatype.
+Similarly, ``maybe :: b -> (a -> b) -> Maybe a -> b`` is the catamorphism for Maybe.
+See if you can notice a pattern:
 
-3. A tail call is the final result of a function. Some examples of tail
-calls in Haskell functions:
+  ::
 
-::
+    data Bool = False | True
+    bool :: a -> a -> Bool -> a
 
-f x y z = h (subFunction x y z)
-where subFunction x y z = g x y z
--- the "tail call" is
--- h (subFunction x y z)
--- or, more precisely, h
+    data Maybe a = Nothing | Just a
+    maybe :: b -> (a -> b) -> Maybe a -> b
+
+    data Either a b = Left a | Right b
+    either :: (a -> c) -> (b -> c) -> Either a b -> c
+
+tail call
+^^^^^^^^^
+A tail call is the final result of a function.
+Some examples of tail calls in Haskell functions:
+
+  ::
+
+    f x y z = h (subFunction x y z)
+      where subFunction x y z = g x y z
+
+    -- the "tail call" is
+    -- h (subFunction x y z)
+    -- or, more precisely, h
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 384
 
-4. Tail recursion occurs in a function whose tail calls are recursive
-invocations of itself. This is distinguished from functions that
-call other functions in their tail call. For example:
+tail recursion
+^^^^^^^^^^^^^^
+Tail recursion occurs in a function whose tail calls are recursive invocations of itself.
+This is distinguished from functions that call other functions in their tail call.
+For example:
 
-f x y z = h (subFunction x y z)
-where subFunction x y z = g x y z
+::
+
+  f x y z = h (subFunction x y z)
+  where subFunction x y z = g x y z
 
 The above is not tail recursive, since it calls h, not itself.
 
-f x y z = h (f (x - 1) y z)
+::
 
-Still not tail recursive. f is invoked again but not in the tail call of f. It's an argument to the tail call, h:
+   f x y z = h (f (x - 1) y z)
 
-f x y z = f (x - 1) y z
+Still not tail recursive.
+``f`` is invoked again but not in the tail call of ``f``.
+It's an argument to the tail call, ``h``:
 
-This is tail recursive. f is calling itself directly with no intermediaries.
+::
 
-foldr f z [] = z
-foldr f z (x:xs) = f x (foldr f z xs)
+  f x y z = f (x - 1) y z
 
-Not tail recursive—we give up control to the combining function f before continuing through the list. foldr's recursive calls will bounce between foldr and f.
+This is tail recursive.
+f is calling itself directly with no intermediaries.
 
-foldl f z [] = z
-foldl f z (x:xs) = foldl f (f z x) xs
+::
 
-Tail recursive. foldl invokes itself recursively. The combining function is only an argument to the recursive fold.
+  foldr f z [] = z
+  foldr f z (x:xs) = f x (foldr f z xs)
+
+Not tail recursive—we give up control to the combining function ``f`` before continuing through the list.
+``foldr``'s recursive calls will bounce between ``foldr`` and ``f``.
+
+::
+
+  foldl f z [] = z
+  foldl f z (x:xs) = foldl f (f z x) xs
+
+Tail recursive.
+``foldl`` invokes itself recursively.
+The combining function is only an argument to the recursive fold.
+
 
 10.12 Follow-up resources
 -------------------------
-1. Antoni Diller. Introduction to Haskell. Unit 6.  http://www.cantab.net/users/antoni.diller/haskell/haskell.html
-2. Graham Hutton. A tutorial on the universality and expressiveness of fold.  http://www.cs.nott.ac.uk/~gmh/fold.pdf.
+1. Antoni Diller. Introduction to Haskell. Unit 6.
+   http://www.cantab.net/users/antoni.diller/haskell/haskell.html
+
+2. Graham Hutton. A tutorial on the universality and expressiveness of fold.
+   http://www.cs.nott.ac.uk/~gmh/fold.pdf.
