@@ -45,7 +45,7 @@ In this chapter, we will:
 --------------
 .. paragraphs 1-20
 
-.. include:: 10.5.2_-_understanding_folds.rst
+.. include:: exercises/10.5.2_-_understanding_folds.rst
 
 
 10.6 How to write fold functions
