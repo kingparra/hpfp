@@ -1,4 +1,4 @@
-module Lib 
+module Lib
   ( DatabaseItem
   , theDatabase
   , filterDbDate
@@ -11,7 +11,7 @@ where
 import Data.Time
 
 
-data DatabaseItem = 
+data DatabaseItem =
   DbString String | DbNumber Integer | DbDate UTCTime
   deriving (Eq, Ord, Show)
 
@@ -32,9 +32,9 @@ theDatabase =
 
 
 filterDbDate :: [DatabaseItem] -> [UTCTime]
-filterDbDate l = 
+filterDbDate l =
   map fromDbDate $ filter isDbDate l
-  where 
+  where
     fromDbDate (DbDate date) = date
     isDbDate e = case e of
       DbDate (UTCTime _ _) -> True
@@ -45,7 +45,7 @@ filterDbDate l =
 filterDbNumber :: [DatabaseItem] -> [Integer]
 filterDbNumber l =
   map fromDbNumber $ filter isDbNumber l
-  where 
+  where
     fromDbNumber (DbNumber num) = num
     isDbNumber e = case e of
       DbNumber _ -> True
@@ -54,10 +54,11 @@ filterDbNumber l =
 
 
 mostRecent :: [DatabaseItem] -> UTCTime
-mostRecent = undefined
+mostRecent =
 -- What if the list of DatabaseItems is empty?
 -- Should I change this to work on NonEmpty lists,
 -- or return a Maybe UTCTime, instead?
+  maximum . filterDbDate
 
 
 
