@@ -5,7 +5,7 @@ import Lib
   , theDatabase
   , filterDbDate
   , filterDbNumber
-  -- , mostRecent
+  , mostRecent
   -- , sumDb
   -- , avgDb
   )
@@ -13,7 +13,6 @@ import Lib
 main = hspec $ do
 
   describe "filterDbDate"$ do
-
     it "returns args to DbDate constructor" $ do
       filterDbDate theDatabase `shouldBe`
         [ (UTCTime
@@ -28,3 +27,10 @@ main = hspec $ do
     it "returns args to DbNumber constructor" $ do
       filterDbNumber theDatabase `shouldBe` ([9001] :: [Integer])
 
+  describe "mostRecent"$ do
+    it "returns most recent date in theDatabase" $ do
+      mostRecent theDatabase `shouldBe`
+        [ (UTCTime
+           (fromGregorian 1921 5 1)
+           (secondsToDiffTime 34123))
+        ]
