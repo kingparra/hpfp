@@ -322,6 +322,7 @@
             • In the second argument of ‘foldl’, namely ‘0’
               In the expression: foldl (flip const) 0 "burritos"
               In an equation for ‘it’: it = foldl (flip const) 0 "burritos"
+
         ·∾ foldl const 0 "burritos"
         0
 

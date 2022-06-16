@@ -33,11 +33,11 @@
    | let
    |   f = flip (*)
    | in
-   |   ((((1 \`f` 1) \`f` 2) \`f` 3)
+   |   (((1 \`f` 1) \`f` 2) \`f` 3)
 
    We can reduce this to normal form, now, if we want...
 
-   |     ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3)
-   |                    ((flip (*)) ((flip (*)) 1 2) 3)
-   |                                   ((flip (*)) 2 3)
-   |                                                 6
+   |     ((flip (*)) ((flip (*)) **((flip (*)) 1 1)** 2) 3)
+   |                    ((flip (*)) **((flip (*)) 1 2)** 3)
+   |                                   **((flip (*)) 2 3)**
+   |                                                 **6**

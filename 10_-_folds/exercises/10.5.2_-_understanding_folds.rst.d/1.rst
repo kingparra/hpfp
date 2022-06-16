@@ -2,17 +2,19 @@
 
    a) ``flip (*) 1 [1..5]``
 
-      This isn't equivalent to ``foldr (*) [1..5]``. There isn't even
-      a fold involved. Let's see what happens when I run it, anyways.
+      This isn't equivalent to ``foldr (*) [1..5]``.
+
+      There isn't even a fold involved.
+      Let's see what happens when I run it, anyways.
 
       ::
 
-        ·∾ :set -XFlexibleContexts
-        ·∾ flip (*) 1 [1,2,3,4,5]
-        <interactive>:5:1: error:
-            • No instance for (Num [Integer]) arising from a use of ‘ it’
-            • In the first argument of ‘print’, namely ‘it’
-              In a stmt of an interactive GHCi command: print it
+        ·∾ flip (*) 1 [1..5]
+        <interactive>:1:1: error:
+            • Non type-variable argument in the constraint: Num [a]
+              (Use FlexibleContexts to permit this)
+            • When checking the inferred type
+                it :: forall a. (Num a, Num [a], Enum a) => [a]
 
       We get a type error.
 
@@ -20,28 +22,18 @@
 
       ::
 
-        -- flip (*) 1 [1,2,3,4,5]
-        -- (\f x y -> y `f` x) (*) 1 [1,2,3,4,5]
-        -- (\x y -> y * x) 1 [1,2,3,4,5]
-        -- (\y -> y * 1) [1,2,3,4,5]
-        -- [1,2,3,4,5] * 1
+        flip (*) 1 [1,2,3,4,5]
 
-      Now let's look at the type signature for ``(*)``.
+        (\f x y -> y `f` x) (*) 1 [1,2,3,4,5]
 
-      ::
+        (\x y -> y * x) 1 [1,2,3,4,5]
 
-        ·∾ :type (*)
-        (*) :: Num a => a -> a -> a
+        (\y -> y * 1) [1,2,3,4,5]
 
-      As you can see, ``(*)`` requires two arguments.
-      Each of its argument must be of the same type, ``a``.
-      The type of each argument must also have an instance of the typeclass ``Num``.
+        [1,2,3,4,5] * 1
 
-      If we run ``[1,2,3,4,5] * 1`` we get an error,
-      because the types of ``[1,2,3,4,5]`` and ``1`` are not the same,
-      and there is no instance of the ``(*)`` function in ``Num`` that
-      operates on an entire list of numbers at once
-      ``[1,2,3,4,5] :: Num a => [a]``.
+
+      Let's try running the partially reduced expression.
 
       ::
 
@@ -51,6 +43,20 @@
                (Use FlexibleContexts to permit this)
              • When checking the inferred type
                  it :: forall a. (Num a, Num [a]) => [a]
+
+      If we run ``[1,2,3,4,5] * 1`` we get an error,
+      because the types signature of ``(*)``.
+
+      ::
+
+        ·∾ :type (*)
+        (*) :: Num a => a -> a -> a
+
+      As we can see, both arguments to ``(*)`` have to be of the same type,
+      and they both have to have an instance of ``Num``.
+
+      ``[1,2,3,4,5]`` and ``1`` are not the same type, and ``:: Num a => [a]`` does not have an
+      instance of ``Num`` (though the elements *within* the list do have an instance of ``Num``).
 
       I found this error message hard to read, so I asked about it on IRC.
 
@@ -106,9 +112,12 @@
 
    b) **foldl (flip (*)) 1 [1..5]**
 
+      This is equivalent.
+
       The evaluation is parenthesized differently, but
       because the result of ``x * y`` is equivalent to
-      ``y * x``, this expression also produces ``120``.
+      ``y * x``, this expression also produces ``120``,
+      just like our original expression.
 
       Parenthesization
 

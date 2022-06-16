@@ -1,0 +1,12 @@
+---
+name: database-processing
+dependencies: base >= 4.7 && < 5
+library:
+  source-dirs: src
+  dependencies: [time]
+tests:
+  database-processing-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: [-threaded, -rtsopts, -with-rtsopts=-N]
+    dependencies: [database-processing, hspec, time]

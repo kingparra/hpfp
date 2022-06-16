@@ -1,0 +1,36 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           database-processing
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_database_processing
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , time
+  default-language: Haskell2010
+
+test-suite database-processing-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_database_processing
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , database-processing
+    , hspec
+    , time
+  default-language: Haskell2010
