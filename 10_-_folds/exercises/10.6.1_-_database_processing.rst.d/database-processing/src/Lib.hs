@@ -4,7 +4,7 @@ module Lib
   , filterDbDate
   , filterDbNumber
   , mostRecent
-  -- , sumDb
+  , sumDb
   -- , avgDb
   )
 where
@@ -62,8 +62,8 @@ mostRecent xs = maximum . filterDbDate $ xs
 
 
 
--- sumDb :: [DatabaseItem] -> Integer
--- sumDb = undefined
+sumDb :: [DatabaseItem] -> Integer
+sumDb = sum . filterDbNumber
 
 
 

@@ -7,7 +7,7 @@ import Lib
   , filterDbDate
   , filterDbNumber
   , mostRecent
-  -- , sumDb
+  , sumDb
   -- , avgDb
   )
 
@@ -34,3 +34,6 @@ main = hspec $ do
            (secondsToDiffTime 34123))
     it "throws an error for empty lists" $ do
       evaluate (mostRecent []) `shouldThrow` anyException
+  describe "sumDb" $ do
+    it "sums DbNumbers in theDatabase" $ do
+      sumDb theDatabase `shouldBe` 9001
