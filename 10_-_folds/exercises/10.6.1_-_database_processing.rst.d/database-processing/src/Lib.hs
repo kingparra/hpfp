@@ -54,11 +54,11 @@ filterDbNumber l =
 
 
 mostRecent :: [DatabaseItem] -> UTCTime
-mostRecent =
 -- What if the list of DatabaseItems is empty?
 -- Should I change this to work on NonEmpty lists,
 -- or return a Maybe UTCTime, instead?
-  maximum . filterDbDate
+mostRecent [] = error "empty list"
+mostRecent xs = maximum . filterDbDate $ xs
 
 
 

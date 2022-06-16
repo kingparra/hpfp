@@ -1,5 +1,6 @@
 import Test.Hspec
 import Data.Time
+import Control.Exception (evaluate)
 import Lib
   ( DatabaseItem(..)
   , theDatabase
@@ -23,7 +24,7 @@ main = hspec $ do
         ]
   describe "filterDbNumber"$ do
     it "returns args to DbNumber constructor" $ do
-      filterDbNumber theDatabase `shouldBe` 
+      filterDbNumber theDatabase `shouldBe`
         ([9001] :: [Integer])
   describe "mostRecent"$ do
     it "returns most recent date in theDatabase" $ do
@@ -31,4 +32,5 @@ main = hspec $ do
         (UTCTime
            (fromGregorian 1921 5 1)
            (secondsToDiffTime 34123))
-
+    it "throws an error for empty lists" $ do
+      evaluate (mostRecent []) `shouldThrow` anyException
