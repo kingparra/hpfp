@@ -3,9 +3,9 @@ module Lib
   , theDatabase
   , filterDbDate
   , filterDbNumber
-  , mostRecent
-  , sumDb
-  , avgDb
+  -- , mostRecent
+  -- , sumDb
+  -- , avgDb
   )
 where
 import Data.Time
@@ -14,6 +14,7 @@ import Data.Time
 data DatabaseItem = 
   DbString String | DbNumber Integer | DbDate UTCTime
   deriving (Eq, Ord, Show)
+
 
 
 theDatabase :: [DatabaseItem]
@@ -29,6 +30,7 @@ theDatabase =
   ]
 
 
+
 filterDbDate :: [DatabaseItem] -> [UTCTime]
 filterDbDate l = 
   map fromDbDate $ filter isDbDate l
@@ -39,19 +41,29 @@ filterDbDate l =
       _                    -> False
 
 
+
 filterDbNumber :: [DatabaseItem] -> [Integer]
-filterDbNumber = undefined
+filterDbNumber l =
+  map fromDbNumber $ filter isDbNumber l
+  where 
+    fromDbNumber (DbNumber num) = num
+    isDbNumber e = case e of
+      DbNumber _ -> True
+      _          -> False
 
 
-mostRecent :: [DatabaseItem] -> UTCTime
-mostRecent = undefined
+
+-- mostRecent :: [DatabaseItem] -> UTCTime
+-- mostRecent = undefined
 
 
-sumDb :: [DatabaseItem] -> Integer
-sumDb = undefined
+
+-- sumDb :: [DatabaseItem] -> Integer
+-- sumDb = undefined
 
 
--- You'll probably need to use fromIntegral to get from
--- Integer to Double.
-avgDb :: [DatabaseItem] -> Double
-avgDb = undefined
+
+-- -- You'll probably need to use fromIntegral to get from
+-- -- Integer to Double.
+-- avgDb :: [DatabaseItem] -> Double
+-- avgDb = undefined
