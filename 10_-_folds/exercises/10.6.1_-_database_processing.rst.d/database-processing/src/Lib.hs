@@ -3,7 +3,7 @@ module Lib
   , theDatabase
   , filterDbDate
   , filterDbNumber
-  -- , mostRecent
+  , mostRecent
   -- , sumDb
   -- , avgDb
   )
@@ -53,8 +53,11 @@ filterDbNumber l =
 
 
 
--- mostRecent :: [DatabaseItem] -> UTCTime
--- mostRecent = undefined
+mostRecent :: [DatabaseItem] -> UTCTime
+mostRecent = undefined
+-- What if the list of DatabaseItems is empty?
+-- Should I change this to work on NonEmpty lists,
+-- or return a Maybe UTCTime, instead?
 
 
 
