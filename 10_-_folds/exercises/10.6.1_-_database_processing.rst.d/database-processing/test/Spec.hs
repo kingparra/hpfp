@@ -8,7 +8,7 @@ import Lib
   , filterDbNumber
   , mostRecent
   , sumDb
-  -- , avgDb
+  , avgDb
   )
 
 main = hspec $ do
@@ -37,3 +37,9 @@ main = hspec $ do
   describe "sumDb" $ do
     it "sums DbNumbers in theDatabase" $ do
       sumDb theDatabase `shouldBe` 9001
+  describe "avgDb" $ do
+    it "averages DbNumbers in theDatabase" $ do
+      avgDb theDatabase `shouldBe` 9001
+    it "averages DbNumbers in [1..20]" $ do
+      avgDb [DbNumber 20, DbNumber 30, DbNumber 90] 
+        `shouldBe` 46.666666666666664

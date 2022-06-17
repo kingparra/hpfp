@@ -1,11 +1,11 @@
 module Lib
-  ( DatabaseItem
+  ( DatabaseItem(..)
   , theDatabase
   , filterDbDate
   , filterDbNumber
   , mostRecent
   , sumDb
-  -- , avgDb
+  , avgDb
   )
 where
 import Data.Time
@@ -67,7 +67,9 @@ sumDb = sum . filterDbNumber
 
 
 
--- -- You'll probably need to use fromIntegral to get from
--- -- Integer to Double.
--- avgDb :: [DatabaseItem] -> Double
--- avgDb = undefined
+avgDb :: [DatabaseItem] -> Double
+avgDb db =
+  dbSum / dbLen
+  where
+    dbLen = fromIntegral (length $ filterDbNumber db)
+    dbSum = fromIntegral (sumDb db)
