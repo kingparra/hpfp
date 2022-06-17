@@ -18,18 +18,13 @@ What is a calculus?
   something.
 * You can think of a calculus as a miniature
   language for reasoning, or maybe a game.
-* A calculus is just a bunch of rules for
-  manipulating symbols. One can give meaning
-  to the symbols (semantics), but that's not
-  part of the calculus (pure syntax). One can
-  associate meanings to expressions in a way
-  that corresponds to computations (functional
+* A calculus is just a bunch of rules for manipulating symbols. One can give meaning
+  to the symbols (semantics), but that's not part of the calculus (pure syntax). One can
+  associate meanings to expressions in a way that corresponds to computations (functional
   programs).
 
-  Formalizing a method means ascribing a
-  calculus to it, which then has meaning
-  assigned to syntactic constructs, and
-  defining transformation rules, as well as
+  Formalizing a method means ascribing a calculus to it, which then has meaning
+  assigned to syntactic constructs, and defining transformation rules, as well as
   demonstrating how they are performed.
 
 
@@ -131,7 +126,7 @@ How does this apply to Haskell?
 .. There is currently much research effort
 .. towards finding efficient realizations of
 .. stateful algorithms in functional languages
-.. while maintaining the purity.
+.. while maintaining purity.
 
 .. Without a formal definition of purity, we
 .. can't determine the correctness of these
@@ -162,38 +157,13 @@ functional vs imperative
 -----------------------
 * A function is a relation between a set of possible inputs and a set of
   possible outputs.
-* In math parlance, an "input set" is a domain, an "output set" is a co-domain,
-  and a "the set of possible outputs for a specific input" is an image.
+* In math parlance, an "input set" is a domain, an "output set" is a co-domain, and a "the set of
+  possible outputs for a specific input" is an image. The particular input is the pre-image.
 * The same function, given the same values to evaluate, will always return the
   same result. This is known as referential transparency.
-* Valid: {1,2,3} -> {A,B,C}. Not valid : {1,1,2} -> {X,Y,Z}. Also valid: {1,2,3}
-  -> {A,A,A}.
-
-.. What are some other ways to describe a function?
-
-   Everything in a pure functional program is an expression.
-
-   Each expression is (or reduces to) a single value.
-
-   An expression may denote its value literally.
-
-   An expression may instead contain a name (or names) within its definition.
-
-   A name stands for an expression.
-
-   An association between a name and the expression it stands for is known as a name binding.
-
-   Names who have an expression are bound.
-
-   Names without an expression are unbound.
-
-   Unbound names cannot be resolved to an expression.
-
-   Bound names can be resolved to the expression they stand for.
-
-   A function is an expression with a parameter.
-
-   In order to simplify a function we must bind some other expression to the name it introduces.
+* Valid: {1,2,3} -> {A,B,C}.
+  Not valid : {1,1,2} -> {X,Y,Z}.
+  Also valid: {1,2,3} -> {A,A,A}.
 
 .. All functions in Haskell follow three rules that force them to behave like functions in math:
 
@@ -283,9 +253,7 @@ Free variables
 * An expression that contains no free
   variables is said to be closed.
 * An enclosing function that closes open
-  bindings by providing values for them, by
-  introducing new parameters that correspond
-  to the open names, for example, is called a
+  bindings by providing values for them is called a
   closure.
 * In the following example the single
   occurrence of ``x`` in the expression is
@@ -306,10 +274,16 @@ Free variables
 
 1.7 Evaluation is simplification
 --------------------------------
+* Program execution in LC corresponds to evaluating expressions by reducing them to a simpler form.
+* Reducing an expression means to apply one of the derivation rules of the language so that there
+  are fewer possible rule applications.
 * A **redex**, or reducible expression, refers to
   sub-terms that can be reduced by one of the reduction rules.
 * The expression to which a redex reduces is called a **reduct**.
-* There are multiple normal forms in the lambda calculus.
+* When an expression has been completely reduced, so that there are no more possible derivation
+  rule applications, that expression is said to be in **normal form** for that rule.
+* There are multiple normal forms in the lambda calculus, categorized by different notions of  what
+  is considered "fully reduced" as well as the derivation rule you're reducing with.
 * Beta normal form is when you cannot beta reduce (apply lambdas to arguments)
   the terms any further.
 * This corresponds to a fully evaluated expression, or in programming, a fully
