@@ -16,7 +16,6 @@ data DatabaseItem =
   deriving (Eq, Ord, Show)
 
 
-
 theDatabase :: [DatabaseItem]
 theDatabase =
   [ DbDate (UTCTime
@@ -30,7 +29,7 @@ theDatabase =
   ]
 
 
-
+-- Question 1
 filterDbDate :: [DatabaseItem] -> [UTCTime]
 filterDbDate l =
   map fromDbDate $ filter isDbDate l
@@ -41,7 +40,7 @@ filterDbDate l =
       _                    -> False
 
 
-
+-- Question 2
 filterDbNumber :: [DatabaseItem] -> [Integer]
 filterDbNumber l =
   map fromDbNumber $ filter isDbNumber l
@@ -52,7 +51,7 @@ filterDbNumber l =
       _          -> False
 
 
-
+-- Question 3
 mostRecent :: [DatabaseItem] -> UTCTime
 -- What if the list of DatabaseItems is empty?
 -- Should I change this to work on NonEmpty lists,
@@ -61,12 +60,13 @@ mostRecent [] = error "empty list"
 mostRecent xs = maximum . filterDbDate $ xs
 
 
-
+-- Question 4
 sumDb :: [DatabaseItem] -> Integer
 sumDb = sum . filterDbNumber
 
 
 
+-- Question 5
 avgDb :: [DatabaseItem] -> Double
 avgDb db =
   dbSum / dbLen

@@ -50,3 +50,5 @@ In this chapter, we will:
 
 10.6 How to write fold functions
 --------------------------------
+
+.. include:: exercises/10.6.1_-_database_processing.rst

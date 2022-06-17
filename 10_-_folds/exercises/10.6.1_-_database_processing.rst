@@ -31,6 +31,11 @@ Let's write some functions to process the following data:
      filterDbDate :: [DatabaseItem] -> [UTCTime]
      filterDbDate = undefined
 
+   .. include::  exercises/10.6.1_-_database_processing.rst.d/database-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
 2. Write a function that filters for ``DbNumber`` values and
    returns a list of the Integer values inside them.
 
@@ -39,6 +44,11 @@ Let's write some functions to process the following data:
      filterDbNumber :: [DatabaseItem] -> [Integer]
      filterDbNumber = undefined
 
+   .. include::  exercises/10.6.1_-_database_processing.rst.d/database-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
 3. Write a function that gets the most recent date.
 
    ::
@@ -46,12 +56,22 @@ Let's write some functions to process the following data:
      mostRecent :: [DatabaseItem] -> UTCTime
      mostRecent = undefined
 
+   .. include::  exercises/10.6.1_-_database_processing.rst.d/database-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
+
 4. Write a function that sums all of the ``DbNumber`` values.
 
-  ::
+   ::
 
-     sumDb :: [DatabaseItem] -> Integer
-     sumDb = undefined
+      sumDb :: [DatabaseItem] -> Integer
+      sumDb = undefined
+
+   .. include::  exercises/10.6.1_-_database_processing.rst.d/database-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
 
 5. Write a function that gets the average of the ``DbNumber``
    values.
@@ -62,3 +82,7 @@ Let's write some functions to process the following data:
      -- to get from Integer to Double.
      avgDb :: [DatabaseItem] -> Double
      avgDb = undefined
+
+   .. include::  exercises/10.6.1_-_database_processing.rst.d/database-processing/src/Lib.hs
+      :code:
+      :start-after: -- Question 5
