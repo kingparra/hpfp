@@ -71,5 +71,5 @@ avgDb :: [DatabaseItem] -> Double
 avgDb db =
   dbSum / dbLen
   where
-    dbLen = fromIntegral (length $ filterDbNumber db)
     dbSum = fromIntegral (sumDb db)
+    dbLen = fromIntegral (length $ filterDbNumber db)
