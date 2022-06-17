@@ -7,15 +7,15 @@
 * 1.3 What is a function?
 * 1.4 The structure of lambda expressions
 
-  * Alpha equivalence
+  * 1.4.1 Alpha equivalence
 
 * 1.5 Beta reduction
 
-  * Free variables
+  * 1.5.1 Free variables
 
 * 1.6 Multiple arguments
 
-  * Intermission: Equivalence exercises -- page 13
+  * 1.6.1 Intermission: Equivalence exercises
 
     * 1
     * 2
@@ -27,7 +27,7 @@
 * 1.10 Summary
 * 1.11 Chapter exercises
 
-  * Combinators
+  * 1.11.1 Combinators
 
     * 1
     * 2
@@ -35,13 +35,13 @@
     * 4
     * 5
 
-  * Normal form or diverge?
+  * 1.11.2 Normal form or diverge?
 
     * 1
     * 2
     * 3
 
-  * Beta reduce
+  * 1.11.3 Beta reduce
 
     * 1
     * 2
