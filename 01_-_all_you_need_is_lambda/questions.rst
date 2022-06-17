@@ -2,6 +2,9 @@
  Chapter 1 Questions
 *********************
 
+* Why did the author choose to write about LC for chapter 1?
+* How is LC relevant to programming in haskell?
+* What abilities do you gain from the chapter that are relevant to functional programming?
 * **How should I explain lambda calculus to my mom over the phone?**
 
 * What are the codomain, image, and range of a function, and how do they differ?
@@ -56,6 +59,7 @@
   * Something about the way it's written. It doesn't do a good job of motivating the
     subject, and introduces a lot of jargon right away, in the first paragraph. There
     are no learning objective listed, and the target audience isn't clear, either.
+    Why doesn't the author explain *why lambda calculus is useful*?
 
 * What is functional programming?
 
@@ -120,7 +124,7 @@
 
   "A [function is a] mathematical object that sets up an input-output relationship."
 
-  FP is all about treating programs are expressions.
+  FP is all about treating programs as expressions.
 
   .. The essential characteristic of a function
   .. is that it can be applied. Functions
