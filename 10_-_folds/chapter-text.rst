@@ -878,7 +878,7 @@ Here's a breakdown:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 366
 
-10.5.2 Unconditional spine recursion
+10.5.3 Unconditional spine recursion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 1a) An important difference between ``foldr`` and ``foldl`` is that a left fold has the successive steps of the fold as its first argument.
 1b) The next recursion of the spine isn't intermediated by the folding function as it is in ``foldr``, which also means recursion of the spine is unconditional.
@@ -925,14 +925,14 @@ Here's a breakdown:
 .. 10.5.2 Unconditional spine recursion, Figure 3, page 366
 ::
 
-  Prelude> xs = [1..5] ++ undefined
+  ·∾ xs = [1..5] ++ undefined
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 367
 
 .. 10.5.2 Unconditional spine recursion, Figure 4, page 367
 ::
 
-  Prelude> foldl (\_ _ -> 5) 0 xs
+  ·∾ foldl (\_ _ -> 5) 0 xs
   *** Exception: Prelude.undefined
 
 4a) But this is OK, because bottom is a value here:
@@ -940,8 +940,9 @@ Here's a breakdown:
 .. 10.5.2 Unconditional spine recursion, Figure 5, page 367
 ::
 
-  Prelude> xs = [1..5] ++ [undefined]
-  Prelude> foldl (\_ _ -> 5) 0 xs
+  ·∾ xs = [1..5] ++ [undefined]
+
+  ·∾ foldl (\_ _ -> 5) 0 xs
   5
 
 5a) This feature means that ``foldl`` is generally inappropriate with lists that are or could be infinite, but the combination of the forced spine evaluation with non-strictness means that it is also usually inappropriate even for long lists, as the forced evaluation of the spine affects performance negatively.
@@ -1009,7 +1010,7 @@ Here's a breakdown:
   Prelude> :t []
   [] :: [t]
 
-8a) Moving along, we next want to work on the function. 
+8a) Moving along, we next want to work on the function.
 8b) We already know how to take the first three elements from a list, and we can reuse this for a String:
 
 .. Figure 6
@@ -1130,8 +1131,8 @@ Here's a breakdown:
 
 16a) This can be useful for checking that your mental model of the code is accurate.
 
-Exercises: Database processing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10.6.1 Exercises: Database processing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Let's write some functions to process the following data:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 371
@@ -1209,15 +1210,17 @@ Let's write some functions to process the following data:
 
 ::
 
-  Prelude> rcf = foldr (:) []
-  Prelude> xs = [1, 2, 3] ++ undefined
-  Prelude> take 3 $ rcf xs
+  ·∾ xs = [1,2,3] ++ undefined
+
+  ·∾ rcf = foldr (:) []
+  ·∾ take 3 $ rcf xs
   [1,2,3]
-  Prelude> lcf = foldl (flip (:)) []
-  Prelude> take 3 $ lcf xs
+
+  ·∾ lcf = foldl (flip (:)) []
+  ·∾ take 3 $ lcf xs
   *** Exception: Prelude.undefined
 
-2a) Let's dive into our const example a little more carefully:
+2a) Let's dive into our ``const`` example a little more carefully:
 
 .. 10.7 Folding and evaluation, Figure 2, page 372
 
@@ -1225,7 +1228,7 @@ Let's write some functions to process the following data:
 
   foldr const 0 [1..5]
 
-3a) With ``foldr``, you'll evaluate const 1 (...), but const ignores the rest of the fold that would have occurred from the end of the list up to the number 1, so this returns 1 without having evaluated any more of the values or the spine.
+3a) With ``foldr``, you'll evaluate ``const 1 (...)``, but ``const`` ignores the rest of the fold that would have occurred from the end of the list up to the number ``1``, so this returns ``1`` without having evaluated any more of the values or the spine.
 3b) One way you could examine this for yourself would be:
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 373
@@ -1234,20 +1237,23 @@ Let's write some functions to process the following data:
 
 ::
 
-  Prelude> foldr const 0 ([1] ++ undefined)
+  ·∾ foldr const 0 ([1] ++ undefined)
   1
-  Prelude> head ([1] ++ undefined)
+
+  ·∾ head ([1] ++ undefined)
   1
-  Prelude> tail ([1] ++ undefined)
+
+  ·∾ tail ([1] ++ undefined)
   *** Exception: Prelude.undefined
 
-4a) Similarly for foldl:
+4a) Similarly for ``foldl``:
 
 .. 10.7 Folding and evaluation, Figure 4, page 373
 
 ::
 
-  foldl (flip const) 0 [1..5]
+  ·∾ foldl (flip const) 0 [1..5]
+  5
 
 5a) Here, ``foldl`` will recurse to the final cons cell, evaluate ``(flip const) (...) 5``, ignore the rest of the fold that would occur from the beginning up to the number ``5``, and return ``5``.
 
@@ -1258,7 +1264,7 @@ Let's write some functions to process the following data:
 ::
 
   foldr f z xs =
-  foldl (flip f) z (reverse xs)
+    foldl (flip f) z (reverse xs)
 
 7a) But only for finite lists! Consider:
 
@@ -1346,12 +1352,16 @@ little weary of folds right now. So what's the executive summary?
 
 10.9 Scans
 ----------
-Scans, which we have mentioned above, work similarly to maps and also to folds. Like folds, they accumulate values instead of keeping a list's individual values separate. Like maps, they return a list of results. In this case, the list of results shows the intermediate stages of evaluation, that is, the values that accumulate as the function is doing its work.
+Scans, which we have mentioned above, work similarly to maps and also to folds.
+Like folds, they accumulate values instead of keeping a list's individual values separate.
+Like maps, they return a list of results.
+In this case, the list of results shows the intermediate stages of evaluation, that is, the values that accumulate as the function is doing its work.
 
-Scans are not used as frequently as folds, and once you under- stand the basic mechanics of folding, there isn't a whole lot new to understand. Still, it is useful to know about them and get an idea of why you might need them.3
+Scans are not used as frequently as folds, and once you under- stand the basic mechanics of folding, there isn't a whole lot new to understand.
+Still, it is useful to know about them and get an idea of why you might need them. 3
 
-First, let's take a look at the types. We'll do a direct comparison of
-the types of folds and scans, so the differences are clear:
+First, let's take a look at the types.
+We'll do a direct comparison of the types of folds and scans, so the differences are clear:
 
 ::
 
@@ -1423,7 +1433,8 @@ scanl (+) 1 [1..3]
 
 Instead of the [1, 1, 2, 3, 5, ...] that we're looking for.
 
-Getting the Fibonacci number we want
+10.9.1 Getting the Fibonacci number we want
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 But we don't really want an infinite list of Fibonacci numbers; that isn't very useful.
 We need a method to either take some number of elements from that list or find the nth element as we did before.
 Fortunately, that's the easy part.
@@ -1431,7 +1442,9 @@ We'll use the "bang bang" operator, !!, to find the nth element.
 This operator is a way to index into a list, and indexing in Haskell starts from 0.
 That is, the first value in your list is indexed as 0.
 But, otherwise, the operator is straightforward:
+
 (!!) :: [a] -> Int -> a
+
 It needs a list as its first argument, an Int as its second argument, and it returns one element from the list.
 Which item it returns is the value that is in the nth spot, where n is our Int.
 Let's modify our source file:
@@ -1449,11 +1462,13 @@ Prelude> fibsN 6
 13
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 378
+
 Now, you can modify your source code to use the take or takeWhile functions or to filter it in any way you like.
 One note: filtering without also taking won't work too well, because you're still getting an infinite list.
 It's a filtered infinite list, sure, but still infinite.
 
-Scans exercises
+10.9.2 Scans exercises
+^^^^^^^^^^^^^^^^^^^^^^
 1. Modify your fibs function to only return the first 20 Fibonacci numbers.
 2. Modify fibs to return the Fibonacci numbers that are less than 100.
 3. Try to write the factorial function from Chapter 8 as a scan.
@@ -1462,7 +1477,6 @@ You'll want scanl again, and your start value will be 1.
 Warning: this will also generate an infinite list, so you may want to pass it through a take function or similar.
 
 
-.. NOTE Pay special attention to the paragraph layout in the chapter exercises.
 10.10 Chapter exercises
 -----------------------
 
