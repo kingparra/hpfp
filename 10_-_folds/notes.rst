@@ -47,26 +47,7 @@ In this chapter, we will:
 
 10.5 Fold left
 --------------
-.. paragraphs 1-20
-
 .. include:: exercises/10.5.2_-_understanding_folds.rst
-
-``foldl`` must traverse the entire spine before it can
-evaluate the accumulator, which is built up from the
-innermost to the outermost cell.
-
-5b) Because ``foldl`` must evaluate its whole spine before
-it starts evaluating values in each cell, it accumulates a
-pile of unevaluated values as it traverses the spine.
-
-6a) In most cases, when you need a left fold, you should use
-``foldl'``.
-
-10.5.1 Associativity and folding
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-With ``foldr``, we're replacing the cons with ``f``
-and nill with ``z``:
-``1 `f` (2 `f` (3 `f` z))`` ≡ ``foldr f z [] [1,2,3]``.
 
 
 10.6 How to write fold functions
