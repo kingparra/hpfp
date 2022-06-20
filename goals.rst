@@ -1,13 +1,12 @@
 ************************
  Goals for each chapter
 ************************
-Here are a activities I came up with as a
+Here are some tasks I came up with as a
 result of facing two problems while reading
 this book.
 
 The first problem is following a line of
-reasoning in the face of frequent
-interruptions.
+reasoning in the face of frequent interruptions.
 
 The second problem is coming up with a way
 to prove that I really understand what I've
@@ -20,14 +19,14 @@ chapter::
   figures/
   resources/
 
-  chapter-text.rst
-  interrogation.rst
+  chapter-text.rst  -- Source text, all paragraphs and sentences are numbered
+  interrogation.rst -- Detailed analysis of the source text
 
-  checklist.rst
-  contents.rst
+  checklist.rst     -- Checklist of exercises
+  contents.rst      -- ToC at a high level
 
   notes.rst
-  outline.rst
+  outline.rst       -- A granular outline of the chapters structure
   questions.rst
 
 Each file listed above is related to one of
@@ -36,7 +35,7 @@ the following goals or activities.
 * First, create an outline of the chapter
   that is granular enough to enumerate every
   section, subsection, paragraph, question,
-  and figure. (``chapter-text.rst``) I use
+  and figure. (``outline.rst``) I use
   this to refresh my memory quickly so I can
   return to a section after being
   interrupted. Paragraphs get a one-sentence
@@ -65,8 +64,9 @@ the following goals or activities.
   each ``ghci`` example in the chapter. If
   it's a long terminal session, script it
   with ``expect``. This helps me prove that
-  I've tried the examples myself, to see what
-  really happens.
+  I've tried the examples myself, to
+  experience what really happens when I run
+  the code, and experiment with variations.
 
 * Compile general questions about the
   chapter, and attempt to answer them. This
@@ -75,21 +75,20 @@ the following goals or activities.
   interesting and related in some way go
   here.
 
-* For difficult to understand passage,
-  number the paragraphs and sentences in
-  ``chapter-text.rst`` so I can ask
-  questions about the passage at the
-  sentence level, in different orders than
-  the source text, and also contrast
-  different sentences. These detailed
-  questions and analysis live in
-  ``interrogation.rst``.
+* For difficult to understand passage, number
+  the paragraphs and sentences in
+  ``chapter-text.rst`` so I can ask questions
+  about the passage at the sentence level, in
+  different orders than the source text, and
+  also contrast different sentences. These
+  detailed questions and analysis live in
+  ``interrogation.rst``. I only do this when
+  needed, it's a lot of effort.
 
 * Write a cheat sheet of the main points of
   each section, and provide concise
-  examples.  This goes into ``notes.rst``.
+  examples. This goes into ``notes.rst``.
   The notes should be more like a summary
   than a narrative re-explanation of the
-  chapter contents. But, honestly, do
-  whatever helps you understand the
-  subject.
+  chapter contents. But, honestly, I don't
+  follow my own advice, here.
