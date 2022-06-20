@@ -1,47 +1,31 @@
--- This figure illustartes the entire evaluation process of
---
---   ·∾  foldr (+) 0 [1,2,3]
---
--- so that every call is substituted for foldr's definition
--- where all occurences of each parameter are replaced with
--- their corresponding argument value.
---
--- This recursive call chain is spread across twelve
--- different figures on pages 351-353 in the book,
--- which are interspersed through paragraphs 1-14
--- of section "10.4.1 How foldr evaluates".
+This figure illustartes the entire evaluation process of foldr (+) 0 [1,2,3].
+Every function call is substituted for foldr's definition, with every occurence
+of a parameter replaced by its corresponding argument value.
 
+This chain of function calls is spread across twelve different figures on pages
+351-353 of the book, which are interspersed throughout paragraphs 1-14 of section
+10.4.1 "How foldr evaluates".
 
 foldr (+) 0 [1,2,3] =
   case [1,2,3] of
     [] -> 0
     (1:[2,3]) ->
---    ((+) 1 ...
-      ((+) 1 (foldr (+) 1 [2,3] =
-                case [2,3] of
-                  [] -> 0
-                  (2:[3]) ->
---    ((+) 1       ((+) 2 ...
-                    (+) 2 (foldr (+) 2 [3] =
-                             case [3] of
-                               [] -> 0
-                               (3:[]) ->
---    ((+) 1       ((+) 2          ((+) 3 ...
-                                    (+) 3 (foldr (+) 0 [1,2,3] =
-                                             case [1,2,3] of
---    ((+) 1       ((+) 2          ((+) 3            0)))
-                                               [] -> 0
-                                               (x:xs) ->
-                                                  f x (foldr f z xs)))))
+      ((+) 1 ⎛foldr (+) 1 [2,3] =                                         ⎞
+             ⎜  case [2,3] of                                             ⎟
+             ⎜    [] -> 0                                                 ⎟
+             ⎜    (2:[3]) ->                                              ⎟
+             ⎜      (+) 2 ⎛foldr (+) 2 [3] =                            ⎞ ⎟
+             ⎜            ⎜  case [3] of                                ⎟ ⎟
+             ⎜            ⎜    [] -> 0                                  ⎟ ⎟
+             ⎜            ⎜    (3:[]) ->                                ⎟ ⎟
+             ⎜            ⎜         (+) 3 ⎛foldr (+) 0 [1,2,3] =      ⎞ ⎟ ⎟
+             ⎜            ⎜               ⎜  case [1,2,3] of          ⎟ ⎟ ⎟
+             ⎜            ⎜               ⎜     [] -> 0               ⎟ ⎟ ⎟
+             ⎜            ⎜               ⎜     (x:xs) ->             ⎟ ⎟ ⎟
+             ⎜            ⎜               ⎝        f x (foldr f z xs) ⎠ ⎟ ⎟
+             ⎜            ⎝                                             ⎠ ⎟
+             ⎝                                                            ⎠
 
-
--- With the extraneous structure of each definition removed.
-foldr (+) 0 [1,2,3]  =  (+) 1 ((+) 2 ((+) 3  0))
-
-
--- Rearranged to use infix notation.
-foldr (+) 0 [1,2,3]  =  1 + (2 + (3 + 0))
-
-
--- Reduced.
-foldr (+) 0 [1,2,3]  =  6
+With the extraneous strcture of each definition removed:   (+) 1 ((+) 2 ((+) 3  0))
+Rearranged to use infix notation:                                 1 + (2 + (3 + 0))
+Reduced:                                                                        6
