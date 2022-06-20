@@ -13,8 +13,12 @@ quantitatively limited powers of reasoning?"**
 
 10.1 Folds
 ----------
-.. Can I come up with a better name than "fold"? Reconstruct : con- "together" + struere "to pile
-   up". Rejoin : "unite again, unite after separation". Reassemble. Recombine. Respine.
+.. Can I come up with a better name than "fold"?
+   Reconstruct.   con- "together" + struere "to pile up".
+   Rejoin.       "unite again, unite after separation".
+   Reassemble.   "bring or put together again, gather anew,"
+   Recombine.     com "with, together" + bini "two by two"
+   Respine.
 
 In this chapter, we will:
 
@@ -32,7 +36,7 @@ In this chapter, we will:
 ---------------
 
 10.4.1 How ``foldr`` evaluates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. paragraphs 1-14
 
 .. include:: figures/10.04.01/full_recursive_call.txt
@@ -46,6 +50,23 @@ In this chapter, we will:
 .. paragraphs 1-20
 
 .. include:: exercises/10.5.2_-_understanding_folds.rst
+
+``foldl`` must traverse the entire spine before it can
+evaluate the accumulator, which is built up from the
+innermost to the outermost cell.
+
+5b) Because ``foldl`` must evaluate its whole spine before
+it starts evaluating values in each cell, it accumulates a
+pile of unevaluated values as it traverses the spine.
+
+6a) In most cases, when you need a left fold, you should use
+``foldl'``.
+
+10.5.1 Associativity and folding
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+With ``foldr``, we're replacing the cons with ``f``
+and nill with ``z``:
+``1 `f` (2 `f` (3 `f` z))`` ≡ ``foldr f z [] [1,2,3]``.
 
 
 10.6 How to write fold functions
