@@ -17,7 +17,7 @@
   * 10.5.2 Exercises: Understanding folds   364-366
   * 10.5.3 Unconditional spine recursion    366-367   6p   4f
 
-* 10.6 How to write fold functions          367-370
+* 10.6 How to write fold functions          367-370  16p  13f
 
   * 10.6.1 Exercises: Database processing   370-372
 
