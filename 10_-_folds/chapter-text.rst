@@ -1,8 +1,6 @@
 Chapter 10 Folding Lists
 ************************
 
-.. TODO Proof read this document, number the paragraphs, and then transcribe all the figures - most of them are garbled.
-
 .. 347
 
 The explicit teaching of thinking is no trivial task, but who said that the teaching of programming is?
@@ -254,11 +252,11 @@ In our terminology, the more explicitly thinking is taught, the more of a scient
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 353
 
-7a)There is a ``(+)`` 1 implicitly wrapped around this continuation of the recursive fold.
-7b)``+`` is not only strict in both of its arguments, but it's unconditionally so, so we're going to proceed to the next recursion of ``foldr``.
-7c)Note that the function calls bounce between our folding function f and ``foldr``.
-7d)This bouncing back and forth gives more control to the folding function.
-7e)A hypothetical folding function, such as ``const``, which doesn't need the second argument, has the opportunity to do less work by not evaluating its second argument, which is "more of the fold."
+7a) There is a ``(+)`` 1 implicitly wrapped around this continuation of the recursive fold.
+7b) ``+`` is not only strict in both of its arguments, but it's unconditionally so, so we're going to proceed to the next recursion of ``foldr``.
+7c) Note that the function calls bounce between our folding function f and ``foldr``.
+7d) This bouncing back and forth gives more control to the folding function.
+7e) A hypothetical folding function, such as ``const``, which doesn't need the second argument, has the opportunity to do less work by not evaluating its second argument, which is "more of the fold."
 
 8a) ``(+) 1 ((+) 2 ...)`` is implicitly wrapped around this next step of the recursive fold:
 
@@ -1307,8 +1305,9 @@ Let's write some functions to process the following data:
 
 10.8 Summary
 ------------
-We presented a lot of material in this chapter. You might be feeling a
-little weary of folds right now. So what's the executive summary?
+We presented a lot of material in this chapter.
+You might be feeling a little weary of folds right now.
+So what's the executive summary?
 
 ``foldr``
 ^^^^^^^^^
@@ -1352,16 +1351,16 @@ little weary of folds right now. So what's the executive summary?
 
 10.9 Scans
 ----------
-Scans, which we have mentioned above, work similarly to maps and also to folds.
-Like folds, they accumulate values instead of keeping a list's individual values separate.
-Like maps, they return a list of results.
-In this case, the list of results shows the intermediate stages of evaluation, that is, the values that accumulate as the function is doing its work.
+1a) Scans, which we have mentioned above, work similarly to maps and also to folds.
+1b) Like folds, they accumulate values instead of keeping a list's individual values separate.
+1c) Like maps, they return a list of results.
+1d) In this case, the list of results shows the intermediate stages of evaluation, that is, the values that accumulate as the function is doing its work.
 
-Scans are not used as frequently as folds, and once you under- stand the basic mechanics of folding, there isn't a whole lot new to understand.
-Still, it is useful to know about them and get an idea of why you might need them. 3
+2a) Scans are not used as frequently as folds, and once you under- stand the basic mechanics of folding, there isn't a whole lot new to understand.
+2b) Still, it is useful to know about them and get an idea of why you might need them. 3
 
-First, let's take a look at the types.
-We'll do a direct comparison of the types of folds and scans, so the differences are clear:
+3a) First, let's take a look at the types.
+3b) We'll do a direct comparison of the types of folds and scans, so the differences are clear:
 
 ::
 
@@ -1370,13 +1369,13 @@ We'll do a direct comparison of the types of folds and scans, so the differences
   foldl :: (b -> a -> b) -> b -> [a] -> b
   scanl :: (b -> a -> b) -> b -> [a] -> [b]
 
-The primary difference is that the final result is a list (a fold can return a list as a result, as well, but they don't always).
-This means that they are not catamorphisms and, in an important sense, aren't folds at all.
-But no matter!
-The type signatures are similar, and the routes of spine traversal and evaluation are similar.
-This does mean that you can use scans in places where you can't use a fold, precisely because you return a list of results rather than reducing the spine of the list.
+4a) The primary difference is that the final result is a list (a fold can return a list as a result, as well, but they don't always).
+4b) This means that they are not catamorphisms and, in an important sense, aren't folds at all.
+4c) But no matter!
+4d) The type signatures are similar, and the routes of spine traversal and evaluation are similar.
+4e) This does mean that you can use scans in places where you can't use a fold, precisely because you return a list of results rather than reducing the spine of the list.
 
-The results that scans produce can be represented like this:
+5a) The results that scans produce can be represented like this:
 
 ::
 
@@ -1391,32 +1390,37 @@ The results that scans produce can be represented like this:
 
   [1 + (2 + (3 + 0)), 2 + (3 + 0), 3 + 0, 0]
   [6, 5, 3, 0]
+
   scanl (+) 0 [1..3]
   [0, 0 + 1,0 + 1 + 2, 0 + 1 + 2 + 3]
   [0, 1, 3, 6]
+
   scanl (+) 1 [1..3]
+
+
   -- unfolding the
   -- definition of scanl
   = [ 1, 1 + 1
-  , (1 + 1) + 2
-  , ((1 + 1) + 2) + 3
-  ]
+    , (1 + 1) + 2
+    , ((1 + 1) + 2) + 3
+    ]
+
   -- evaluating addition
   = [1, 2, 4, 7]
 
-Then, to make this more explicit and properly equational, we can follow along with how scanl expands for this expression based on the definition.
-First, we must see how scanl is defined.
-We're going to show you a version of it from a slightly older base library for GHC Haskell.
-The differences don't change anything important for us here:
+6a) Then, to make this more explicit and properly equational, we can follow along with how scanl expands for this expression based on the definition.
+6b) First, we must see how scanl is defined.
+6c) We're going to show you a version of it from a slightly older base library for GHC Haskell.
+6d) The differences don't change anything important for us here:
 
 ::
 
   scanl :: (a -> b -> a) -> a -> [b] -> [a]
   scanl f q ls = q : (case ls of [] -> [] x:xs -> scanl f (f q x) xs)
 
-In an earlier chapter, we wrote a recursive function that returns the nth Fibonacci number.
-You can use a scan function to return a list of Fibonacci numbers.
-We're going to do this in a source file, because it will, in this state, return an infinite list (feel free to try loading it into your REPL and running it, but be quick with the Ctrl-C):
+7a) In an earlier chapter, we wrote a recursive function that returns the nth Fibonacci number.
+7b) You can use a scan function to return a list of Fibonacci numbers.
+7c) We're going to do this in a source file, because it will, in this state, return an infinite list (feel free to try loading it into your REPL and running it, but be quick with the Ctrl-C):
 
 ::
 
@@ -1424,56 +1428,68 @@ We're going to do this in a source file, because it will, in this state, return 
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 377
 
-We start with a value of 1 and cons that onto the front of the list generated by our scan.
-The list itself has to be recursive, because, as we saw previously, the idea of Fibonacci numbers is that each one is the sum of the previous two in the sequence; scanning the results of + over a non-recursive list of numbers whose start value is 1 would give us this:
+8a) We start with a value of 1 and cons that onto the front of the list generated by our scan.
+8b) The list itself has to be recursive, because, as we saw previously, the idea of Fibonacci numbers is that each one is the sum of the previous two in the sequence; scanning the results of ``+`` over a non-recursive list of numbers whose start value is 1 would give us this:
 
-scanl (+) 1 [1..3]
-[1, 1 + 1, (1 + 1) + 2, ((1 + 1) + 2) + 3]
-[1,2,4,7]
+::
 
-Instead of the [1, 1, 2, 3, 5, ...] that we're looking for.
+  scanl (+) 1 [1..3]
+  [1, 1 + 1, (1 + 1) + 2, ((1 + 1) + 2) + 3]
+  [1,2,4,7]
+
+9a) Instead of the [1, 1, 2, 3, 5, ...] that we're looking for.
 
 10.9.1 Getting the Fibonacci number we want
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-But we don't really want an infinite list of Fibonacci numbers; that isn't very useful.
-We need a method to either take some number of elements from that list or find the nth element as we did before.
-Fortunately, that's the easy part.
-We'll use the "bang bang" operator, !!, to find the nth element.
-This operator is a way to index into a list, and indexing in Haskell starts from 0.
-That is, the first value in your list is indexed as 0.
-But, otherwise, the operator is straightforward:
+1a) But we don't really want an infinite list of Fibonacci numbers; that isn't very useful.
+1b) We need a method to either take some number of elements from that list or find the nth element as we did before.
+1c) Fortunately, that's the easy part.
+1d) We'll use the "bang bang" operator, ``!!``, to find the nth element.
+1e) This operator is a way to index into a list, and indexing in Haskell starts from 0.
+1f) That is, the first value in your list is indexed as 0.
+1g) But, otherwise, the operator is straightforward:
 
-(!!) :: [a] -> Int -> a
+::
 
-It needs a list as its first argument, an Int as its second argument, and it returns one element from the list.
-Which item it returns is the value that is in the nth spot, where n is our Int.
-Let's modify our source file:
+  (!!) :: [a] -> Int -> a
 
-fibs = 1 : scanl (+) 1 fibs
-fibsN x = fibs !! x
+2a) It needs a list as its first argument, an Int as its second argument, and it returns one element from the list.
+2b) Which item it returns is the value that is in the nth spot, where n is our Int.
+2c) Let's modify our source file:
 
-Once we load the file into our REPL, we can use fibsN to return the nth element of our scan:
+::
 
-Prelude> fibsN 0
-1
-Prelude> fibsN 2
-2
-Prelude> fibsN 6
-13
+  fibs = 1 : scanl (+) 1 fibs
+  fibsN x = fibs !! x
+
+3a) Once we load the file into our REPL, we can use ``fibsN`` to return the nth element of our scan:
+
+::
+
+  Prelude> fibsN 0
+  1
+
+  Prelude> fibsN 2
+  2
+
+  Prelude> fibsN 6
+  13
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 378
 
-Now, you can modify your source code to use the take or takeWhile functions or to filter it in any way you like.
-One note: filtering without also taking won't work too well, because you're still getting an infinite list.
-It's a filtered infinite list, sure, but still infinite.
+4a) Now, you can modify your source code to use the take or ``takeWhile`` functions or to filter it in any way you like.
+4b) One note: filtering without also taking won't work too well, because you're still getting an infinite list.
+4c) It's a filtered infinite list, sure, but still infinite.
 
 10.9.2 Scans exercises
 ^^^^^^^^^^^^^^^^^^^^^^
-1. Modify your fibs function to only return the first 20 Fibonacci numbers.
-2. Modify fibs to return the Fibonacci numbers that are less than 100.
+1. Modify your ``fibs`` function to only return the first 20 Fibonacci numbers.
+
+2. Modify ``fibs`` to return the Fibonacci numbers that are less than 100.
+
 3. Try to write the factorial function from Chapter 8 as a scan.
 
-You'll want scanl again, and your start value will be 1.
+You'll want ``scanl`` again, and your start value will be ``1``.
 Warning: this will also generate an infinite list, so you may want to pass it through a take function or similar.
 
 
@@ -1520,6 +1536,7 @@ c) Now set up lists of nouns and verbs (instead of stops and vowels), and modify
 In the previous chapter, you wrote these functions using direct recursion over lists.
 The goal now is to rewrite them using folds.
 Where possible, to gain a deeper understanding of folding, try rewriting the fold version so that it is point-free.
+
 Point-free versions of these functions written with a fold should look like this:
 
 ::
@@ -1559,6 +1576,7 @@ So, for example, with the and function:
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 380
 
 The goal here is to converge on the final version where possible.
+
 You don't need to write all variations for each example, but the more variations you write, the deeper your understanding of these functions will become.
 
 1. myOr returns True if any Bool in the list is True:
@@ -1692,9 +1710,9 @@ You don't need to write all variations for each example, but the more variations
 fold
 ^^^^
 A fold is a higher-order function which, given a function to accumulate the results and a recursive data structure, returns the built up value.
- Usually a "start value" for the accumulation is provided along with a function that can combine the type of values in the data structure with the accumulation.
- The term fold is typically used with reference to collections of values referenced by a recursive datatype.
- For a generalization of "breaking down structure," see catamorphism.
+Usually a "start value" for the accumulation is provided along with a function that can combine the type of values in the data structure with the accumulation.
+The term fold is typically used with reference to collections of values referenced by a recursive datatype.
+For a generalization of "breaking down structure," see catamorphism.
 
 catamorphism
 ^^^^^^^^^^^^
@@ -1724,7 +1742,6 @@ Some examples of tail calls in Haskell functions:
 
     f x y z = h (subFunction x y z)
       where subFunction x y z = g x y z
-
     -- the "tail call" is
     -- h (subFunction x y z)
     -- or, more precisely, h
