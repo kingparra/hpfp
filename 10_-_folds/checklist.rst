@@ -7,7 +7,7 @@
 |  Section     |            Section Title          | Status |
 +==============+===================================+========+
 |              |                                   |        |
-|  10.5.2      |  Exercises: Understanding folds   |        |
+|  10.5.2      |  Exercises: Understanding folds   |  DONE  |
 |              |                                   |        |
 |  10.5.2.1    |    * 1                            |  DONE  |
 |              |                                   |        |
