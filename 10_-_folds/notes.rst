@@ -44,6 +44,15 @@ In this chapter, we will:
 
 .. paragraphs 15-x
 
+Each recursive call to ``foldr`` is conditional on ``f``.
+
+However, the first cons cell is always evaluated because of
+the pattern match ``(x:xs) -> f x (foldr f z xs)``.
+
+If ``f`` hits a base case, then it can stop evaluation
+instead of consuming the next call to ``foldr`` as its
+second argument.
+
 
 10.5 Fold left
 --------------
