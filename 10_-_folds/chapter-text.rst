@@ -472,7 +472,7 @@ In our terminology, the more explicitly thinking is taught, the more of a scient
   foldr f z (x:xs)  = f x (foldr f z xs)
   --                    ^-- first argument
 
-30a) The first argument, noted above, involves a pattern match that is strict by default—the ``f`` only applies to ``x`` if there is an ``x`` value and not just an empty list.
+30a) The first argument, noted above, involves a pattern match that is strict by default — the ``f`` only applies to ``x`` if there is an ``x`` value and not just an empty list.
 30b) This means that ``foldr`` must force an initial cons cell in order to discriminate between the ``[]`` and the ``(x:xs)`` cases, so the first cons cell *cannot* be undefined.
 
 31a) Now, we're going to try something unusual to demonstrate that the first bit of the spine must be evaluated by ``foldr``.
