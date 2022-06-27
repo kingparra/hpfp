@@ -8,6 +8,17 @@ Can I define ``foldl`` from memory?
 
 How would I define ``scanl`` and ``scanr``?
 
+::
+
+  scanl f z []     = []
+  scanl f z (x:xs) = z : scanl f (f z x) xs
+
+  foldl f z []     = []
+  foldl f z (x:xs) =     foldl f (f z x) xs
+
+  scanr f z []     = [z]
+  scanr f z (x:xs) = f x xs : (scanr f z xs)
+
 Can I write out the evaluation steps for ``foldr``, ``foldl``,
 ``scanr``, and ``scanl``?
 
@@ -32,3 +43,7 @@ Can I remember how the sections are arranged?
 What prior material does each section depend on?
 
 What abilities does the reader gain by learning the contents of this chapter?
+
+What programming constructs are analogous to folds?
+
+* How do I do a foldr/foldl/foldl' in javascript and python.

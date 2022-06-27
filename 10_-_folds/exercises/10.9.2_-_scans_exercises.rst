@@ -1,10 +1,21 @@
 10.9.2 Scans exercises
 ^^^^^^^^^^^^^^^^^^^^^^
+::
+
+  fibs = 1 : scanl (+) 1 fibs
+
 1. Modify your ``fibs`` function to only return the first 20 Fibonacci numbers.
 
 2. Modify ``fibs`` to return the Fibonacci numbers that are less than 100.
 
 3. Try to write the factorial function from Chapter 8 as a scan.
 
-You'll want ``scanl`` again, and your start value will be ``1``. 
-Warning: this will also generate an infinite list, so you may want to pass it through a take function or similar.
+   You'll want ``scanl`` again, and your start value will be ``1``.
+   Warning: this will also generate an infinite list, so you may want
+   to pass it through a take function or similar.
+
+I feel tired and unmotivated, so here's the whole thing in one file, without
+any explanation.
+
+.. include:: exercises/10.9.2_-_scans_exercises.rst.d/Scans.hs
+   :code:

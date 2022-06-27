@@ -63,3 +63,9 @@ second argument.
 --------------------------------
 
 .. include:: exercises/10.6.1_-_database_processing.rst
+
+
+10.9 Scans
+----------
+
+.. include:: exercises/10.9.2_-_scans_exercises.rst
