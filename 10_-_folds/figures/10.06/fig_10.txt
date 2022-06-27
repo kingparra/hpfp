@@ -1,0 +1,7 @@
+Prelude> concat $ map (take 3) pab
+"PizAppBan"
+                                    
+Prelude> rpab = reverse pab
+                                    
+Prelude> concat $ map (take 3) rpab
+"BanAppPiz"

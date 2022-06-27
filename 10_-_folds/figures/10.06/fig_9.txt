@@ -1,0 +1,8 @@
+Prelude> map (take 3) pab
+["Piz","App","Ban"]
+                                 
+Prelude> head $ map (take 3) pab
+"Piz"
+                                 
+Prelude> last $ map (take 3) pab
+"Ban"

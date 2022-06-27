@@ -1,0 +1,8 @@
+Prelude> :{
+*Prelude| let f a b = take 3
+*Prelude|             (a :: String) ++
+*Prelude|             (b :: String)
+*Prelude| :}
+
+Prelude> foldr f "" pab
+"PizAppBan"

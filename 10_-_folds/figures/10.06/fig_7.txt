@@ -1,0 +1,10 @@
+Prelude> :{
+*Main| let pab =
+*Main|    ["Pizza", "Apple", "Banana"]
+*Main| :}
+                                         
+Prelude> foldr (\a b -> take 3 a) "" pab
+"Piz"
+                                         
+Prelude> foldl (\b a -> take 3 a) "" pab
+"Ban"

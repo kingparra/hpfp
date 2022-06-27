@@ -1,0 +1,15 @@
+Prelude> :{
+*Prelude| let f a b = take 3 (a :: String)
+*Prelude|             ++ (b :: [String])
+*Prelude| :}
+
+• Couldn't match type ‘[Char]' with ‘Char'
+  Expected type: [Char]
+    Actual type: [String]
+• In the second argument of ‘(++)', namely
+    ‘(b :: [String])'
+  In the expression: take 3 (a :: String)
+    ++ (b :: [String])
+  In an equation for ‘f':
+    f a b = take 3 (a :: String)
+      ++ (b :: [String])

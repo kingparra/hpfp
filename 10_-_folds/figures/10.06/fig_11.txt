@@ -1,0 +1,9 @@
+Prelude> f = (\a b -> take 3 a ++ b)
+
+Prelude> foldr f "" pab
+"PizAppBan"
+
+Prelude> f' = (\b a -> take 3 a ++ b)
+
+Prelude> foldl f' "" pab
+"BanAppPiz"

@@ -1,0 +1,2 @@
+foldr (\a b -> undefined) ""
+  ["Pizza", "Apple", "Banana"]

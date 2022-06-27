@@ -1,0 +1,5 @@
+Prelude> :t ""
+"" :: [Char]
+               
+Prelude> :t []
+[] :: [t]

@@ -1,0 +1,2 @@
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldl :: (b -> a -> b) -> b -> [a] -> b

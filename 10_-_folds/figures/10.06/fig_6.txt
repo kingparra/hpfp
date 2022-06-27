@@ -1,0 +1,2 @@
+foldr (\a b -> take 3 a) ""
+  ["Pizza", "Apple", "Banana"]
