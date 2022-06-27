@@ -1585,21 +1585,21 @@ The goal here is to converge on the final version where possible.
 
 You don't need to write all variations for each example, but the more variations you write, the deeper your understanding of these functions will become.
 
-1. myOr returns True if any Bool in the list is True:
+1. ``myOr`` returns True if any Bool in the list is True:
 
    ::
 
      myOr :: [Bool] -> Bool
      myOr = undefined
 
-2. myAny returns True if a -> Bool applied to any of the values in the list returns True:
+2. ``myAny`` returns ``True`` if ``a -> Bool`` applied to any of the values in the list returns ``True``:
 
    ::
 
      myAny :: (a -> Bool) -> [a] -> Bool
      myAny = undefined
 
-   Example for validating myAny:
+   Example for validating ``myAny``:
 
    ::
 
@@ -1608,8 +1608,8 @@ You don't need to write all variations for each example, but the more variations
      Prelude> myAny odd [1, 3, 5]
      True
 
-3. Write two versions of myElem.
-   One version should use folding and the other should use any:
+3. Write two versions of ``myElem``.
+   One version should use folding and the other should use ``any``:
 
    ::
 
@@ -1621,7 +1621,7 @@ You don't need to write all variations for each example, but the more variations
      False
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 381
-4. Implement myReverse. Don't worry about trying to make it lazy:
+4. Implement ``myReverse``. Don't worry about trying to make it lazy:
 
    ::
 
@@ -1633,29 +1633,29 @@ You don't need to write all variations for each example, but the more variations
      Prelude> myReverse [1..5]
      [5,4,3,2,1]
 
-5. Write myMap in terms of foldr.
-   It should have the same behavior as the built-in map:
+5. Write ``myMap`` in terms of ``foldr``.
+   It should have the same behavior as the built-in ``map``:
 
    ::
 
      myMap :: (a -> b) -> [a] -> [b]
      myMap = undefined
 
-6. Write myFilter in terms of foldr. It should have the same behavior as the built-in filter:
+6. Write ``myFilter`` in terms of ``foldr``. It should have the same behavior as the built-in ``filter``:
 
    ::
 
      myFilter :: (a -> Bool) -> [a] -> [a]
      myFilter = undefined
 
-7. squish flattens a list of lists into a list:
+7. ``squish`` flattens a list of lists into a list:
 
    ::
 
      squish :: [[a]] -> [a]
      squish = undefined
 
-8. squishMap maps a function over a list and concatenates the result:
+8. ``squishMap`` maps a function over a list and concatenates the result:
 
    ::
 
@@ -1670,15 +1670,15 @@ You don't need to write all variations for each example, but the more variations
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 382
 
-9. squishAgain flattens a list of lists into a list.
-   This time, re-use the squishMap function:
+9. ``squishAgain`` flattens a list of lists into a list.
+   This time, re-use the ``squishMap`` function:
 
    ::
 
       squishAgain :: [[a]] -> [a]
       squishAgain = undefined
 
-10. myMaximumBy takes a comparison function and a list and returns the greatest element of the list based on the last value that the comparison returns GT for:
+10. ``myMaximumBy`` takes a comparison function and a list and returns the greatest element of the list based on the last value that the comparison returns ``GT`` for:
 
     ::
 
@@ -1692,7 +1692,7 @@ You don't need to write all variations for each example, but the more variations
       Prelude> myMaximumBy compare [1..10]
       10
 
-11. myMinimumBy takes a comparison function and a list and returns the least element of the list based on the last value that the comparison returns LT for:
+11. ``myMinimumBy`` takes a comparison function and a list and returns the least element of the list based on the last value that the comparison returns ``LT`` for:
 
     ::
 
