@@ -1015,7 +1015,7 @@ Here's a breakdown:
 ::
 
   foldr (\a b -> take 3 a) ""
-  ["Pizza", "Apple", "Banana"]
+    ["Pizza", "Apple", "Banana"]
 
 9a) This will already type check and work, but it doesn't match the semantics we ask for:
 
