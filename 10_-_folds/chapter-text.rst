@@ -1321,7 +1321,7 @@ So what's the executive summary?
    ::
 
       foldr :: (a -> b -> b) -> b -> [a] -> b
-      -- ^
+      --             ^
 
    That ``b`` we're pointing at in ``(a -> b -> b)`` is the rest of the fold.
    Evaluating that evaluates the next application of ``foldr``.
@@ -1332,7 +1332,7 @@ So what's the executive summary?
 
    ::
 
-     Prelude> foldr const 0 [1..]
+     ·∾ foldr const 0 [1..]
      1
 
 4. Is a good default choice whenever you want to transform data structures, be they finite or infinite.
@@ -1347,7 +1347,8 @@ So what's the executive summary?
 
 .. CHAPTER 10. DATA STRUCTURE ORIGAMI 375
 
-4. Is nearly useless and should almost always be replaced with foldl' for reasons we'll explain later when we talk about writing efficient Haskell programs.
+4. Is nearly useless and should almost always be replaced with ``foldl'`` for reasons we'll explain later when we talk about writing efficient Haskell programs.
+
 
 10.9 Scans
 ----------
@@ -1366,6 +1367,7 @@ So what's the executive summary?
 
   foldr :: (a -> b -> b) -> b -> [a] -> b
   scanr :: (a -> b -> b) -> b -> [a] -> [b]
+
   foldl :: (b -> a -> b) -> b -> [a] -> b
   scanl :: (b -> a -> b) -> b -> [a] -> [b]
 
@@ -1416,7 +1418,10 @@ So what's the executive summary?
 ::
 
   scanl :: (a -> b -> a) -> a -> [b] -> [a]
-  scanl f q ls = q : (case ls of [] -> [] x:xs -> scanl f (f q x) xs)
+  scanl f q ls =
+    q : (case ls of
+           [] -> []
+           (x:xs) -> scanl f (f q x) xs)
 
 7a) In an earlier chapter, we wrote a recursive function that returns the nth Fibonacci number.
 7b) You can use a scan function to return a list of Fibonacci numbers.
