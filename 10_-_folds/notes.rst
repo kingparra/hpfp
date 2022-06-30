@@ -13,12 +13,50 @@ quantitatively limited powers of reasoning?"**
 
 10.1 Folds
 ----------
-.. Can I come up with a better name than "fold"?
-   Reconstruct.   con- "together" + struere "to pile up".
-   Rejoin.       "unite again, unite after separation".
-   Reassemble.   "bring or put together again, gather anew,"
+.. topic::  Can I come up with a better name than "fold"?
+
+
    Recombine.     com "with, together" + bini "two by two"
+
+   Reconstruct.   con- "together" + struere "to pile up"
+
+   Reassemble.   "bring or put together again, gather anew"
+
+   Rejoin.       "unite again, unite after separation"
+
    Respine.
+
+   Meld.         "to blend together, merge, unite"
+
+.. topic:: What the heck is a catamorphism?
+
+   Here is an explanation of what catamorhpism means, from
+   `John Chandler Burnhams notes
+   <https://www.johnchandlerburnham.com/projects/hpfp/10/>`_.
+
+   Okay, so here’s the thing about the term “catamorphism”:
+
+   “Kata” in Greek means “down”. The opposite of “kata” is “ana”
+   which means “up”.
+
+   So we have “catamorphisms” and “anamorphisms”. Remember that
+   “morph” means “form”, so a “catamorphism” is a “down-form
+   thing” and an “anamorphism” is an “up-form thing”.
+
+   But what the heck do “up” and “down” have to do with “forms”.
+   There’s a metaphor that recurs (so to speak) again and again
+   in functional programming between height and complexity:
+   Things that have more structure are upwards and things that
+   have less structure are downwards. It’s like a tall building:
+   the more structure you have the higher you go.
+
+   So an ``Integer`` is pretty simple, and is downwards of
+   ``[Integer]`` or ``Maybe Integer`` or ``Map String Integer``.
+
+   Functions that go “upwards” in this complexity-space, like
+   from ``Integer -> [Integer]`` are, roughly speaking,
+   anamorphisms.  Functions that go “downwards” are
+   catamorphisms.
 
 In this chapter, we will:
 
@@ -65,7 +103,18 @@ second argument.
 .. include:: exercises/10.6.1_-_database_processing.rst
 
 
+10.7 Folding and evaluation
+---------------------------
+The relationship between ``foldr`` and ``foldl`` is such that
+``foldr f z xs`` ≡ ``foldl (flip f) z (reverse xs)``, but only
+for finite lists.
+
+
 10.9 Scans
 ----------
 
 .. include:: exercises/10.9.2_-_scans_exercises.rst
+
+
+10.10 Chapter exercises
+-----------------------
