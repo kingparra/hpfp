@@ -1,0 +1,2 @@
+·∾ foldl (flip const) 0 [1..5]
+5

@@ -1,0 +1,1 @@
+foldr const 0 [1..5]

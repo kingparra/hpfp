@@ -1,0 +1,8 @@
+·∾ foldr const 0 ([1] ++ undefined)
+1
+                                    
+·∾ head ([1] ++ undefined)
+1
+                                    
+·∾ tail ([1] ++ undefined)
+*** Exception: Prelude.undefined

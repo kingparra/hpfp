@@ -1,0 +1,9 @@
+·∾ xs = [1,2,3] ++ undefined
+                                 
+·∾ rcf = foldr (:) []
+·∾ take 3 $ rcf xs
+[1,2,3]
+                                 
+·∾ lcf = foldl (flip (:)) []
+·∾ take 3 $ lcf xs
+*** Exception: Prelude.undefined
