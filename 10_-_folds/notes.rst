@@ -15,8 +15,7 @@ quantitatively limited powers of reasoning?"**
 ----------
 .. topic::  Can I come up with a better name than "fold"?
 
-
-   Recombine.     com "with, together" + bini "two by two"
+   Recombine.     com- "with, together" + bini "two by two"
 
    Reconstruct.   con- "together" + struere "to pile up"
 
@@ -118,3 +117,5 @@ for finite lists.
 
 10.10 Chapter exercises
 -----------------------
+
+.. include:: exercises/10.10.1_-_warm-up_and_review.rst
