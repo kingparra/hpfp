@@ -14,3 +14,4 @@ _templates
 Makefile
 dist-*
 dist
+resources
