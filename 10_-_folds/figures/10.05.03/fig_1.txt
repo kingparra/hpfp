@@ -1,0 +1,8 @@
+·∾ const 1 undefined
+1
+
+·∾ (flip const) 1 undefined
+*** Exception: Prelude.undefined
+
+·∾ (flip const) undefined 1
+1

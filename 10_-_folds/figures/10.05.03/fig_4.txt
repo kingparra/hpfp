@@ -1,0 +1,2 @@
+·∾ foldl (\_ _ -> 5) 0 xs
+*** Exception: Prelude.undefined

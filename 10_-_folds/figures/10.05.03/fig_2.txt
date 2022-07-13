@@ -1,0 +1,16 @@
+·∾ xs = [1..5] ++ undefined
+                                 
+·∾ foldr const 0 xs
+1
+                                 
+·∾ foldr (flip const) 0 xs
+*** Exception: Prelude.undefined
+                                 
+·∾ foldr (flip const) 0 xs
+*** Exception: Prelude.undefined
+                                 
+·∾ foldl const 0 xs
+*** Exception: Prelude.undefined
+                                 
+·∾ foldl (flip const) 0 xs
+*** Exception: Prelude.undefined
