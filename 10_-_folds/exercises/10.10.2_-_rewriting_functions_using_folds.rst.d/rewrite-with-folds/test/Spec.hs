@@ -31,3 +31,11 @@ main = hspec $ do
                 :: Int -> [Int] -> Expectation)
       ((\n l -> myMap (+n) l `shouldBe` map (+n) l)
                 :: Int -> [Int] -> Expectation)
+
+  describe "Question 6: myFilter" $ do
+    it "simple test cases" $ do
+      myFilter (\x -> x == 'a') "thearwhat" `shouldBe` "aa"
+
+  describe "Question 7: squish" $ do
+    it "simple test cases" $ do
+      squish ["this","and","that"] `shouldBe` "thisandthat"

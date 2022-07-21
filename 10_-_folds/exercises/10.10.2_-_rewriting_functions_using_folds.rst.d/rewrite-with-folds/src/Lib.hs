@@ -19,3 +19,14 @@ myReverse = foldl (flip (:)) []
 
 myMap :: (a -> b) -> [a] -> [b]
 myMap f = foldr ((:) . f) []
+
+
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter f =
+  foldr (\x xs -> if f x == True
+                  then x : xs
+                  else xs) []
+
+
+squish :: [[a]] -> [a]
+squish = foldr (++) []
