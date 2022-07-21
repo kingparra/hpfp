@@ -30,3 +30,7 @@ myFilter f =
 
 squish :: [[a]] -> [a]
 squish = foldr (++) []
+
+
+squishMap :: (a -> [b]) -> [a] -> [b]
+squishMap f = squish . myMap f

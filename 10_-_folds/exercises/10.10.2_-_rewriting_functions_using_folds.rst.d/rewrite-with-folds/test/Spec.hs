@@ -39,3 +39,9 @@ main = hspec $ do
   describe "Question 7: squish" $ do
     it "simple test cases" $ do
       squish ["this","and","that"] `shouldBe` "thisandthat"
+
+  describe "Question 8: squishMap" $ do
+    it "simple test cases" $ do
+      squishMap (take 3) [[1..], [10..], [100..], [1000..]]
+        `shouldBe` [1,2,3,10,11,12,100,101,102,1000,1001,1002]
+      squishMap (take 3) [[1..]] `shouldBe` [1,2,3]
