@@ -1,0 +1,8 @@
+Prelude> fibsN 0
+1
+
+Prelude> fibsN 2
+2
+
+Prelude> fibsN 6
+13
