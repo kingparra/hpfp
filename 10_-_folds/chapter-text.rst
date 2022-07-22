@@ -63,7 +63,7 @@ In our terminology, the more explicitly thinking is taught, the more of a scient
            (a -> b -> b) -> b -> t  a -> b
   foldr :: (a -> b -> b) -> b -> [] a -> b
 
-3a) For now, all you need to know is that GHC 7.10 abstracted out the list-specific part of folding into a type class that lets you reuse the same folding functions for any datatype that can be folded—not just lists.
+3a) For now, all you need to know is that GHC 7.10 abstracted out the list-specific part of folding into a type class that lets you reuse the same folding functions for any datatype that can be folded — not just lists.
 3b) We can even recover the more concrete type, because we can always make a type more concrete, but never more generic:
 
 .. 10.2, Figure 3, page 349
