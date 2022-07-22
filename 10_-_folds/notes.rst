@@ -35,25 +35,28 @@ quantitatively limited powers of reasoning?"**
 
    Okay, so here’s the thing about the term “catamorphism”:
 
-   “Kata” in Greek means “down”. The opposite of “kata” is “ana”
-   which means “up”.
+   “Kata” in Greek means “down”. The opposite of “kata” is
+   “ana” which means “up”.
 
-   So we have “catamorphisms” and “anamorphisms”. Remember that
-   “morph” means “form”, so a “catamorphism” is a “down-form
-   thing” and an “anamorphism” is an “up-form thing”.
+   So we have “catamorphisms” and “anamorphisms”. Remember
+   that “morph” means “form”, so a “catamorphism” is a
+   “down-form thing” and an “anamorphism” is an “up-form
+   thing”.
 
-   But what the heck do “up” and “down” have to do with “forms”.
-   There’s a metaphor that recurs (so to speak) again and again
-   in functional programming between height and complexity:
-   Things that have more structure are upwards and things that
-   have less structure are downwards. It’s like a tall building:
-   the more structure you have the higher you go.
+   But what the heck do “up” and “down” have to do with
+   “forms”?  There’s a metaphor that recurs (so to speak)
+   again and again in functional programming between height
+   and complexity: Things that have more structure are
+   upwards and things that have less structure are downwards.
+   It’s like a tall building: the more structure you have
+   the higher you go.
 
    So an ``Integer`` is pretty simple, and is downwards of
-   ``[Integer]`` or ``Maybe Integer`` or ``Map String Integer``.
+   ``[Integer]`` or ``Maybe Integer`` or ``Map String
+   Integer``.
 
-   Functions that go “upwards” in this complexity-space, like
-   from ``Integer -> [Integer]`` are, roughly speaking,
+   Functions that go “upwards” in this complexity-space,
+   like from ``Integer -> [Integer]`` are, roughly speaking,
    anamorphisms.  Functions that go “downwards” are
    catamorphisms.
 
@@ -119,3 +122,5 @@ for finite lists.
 -----------------------
 
 .. include:: exercises/10.10.1_-_warm-up_and_review.rst
+
+.. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst
