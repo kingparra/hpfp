@@ -1,0 +1,5 @@
+scanl :: (a -> b -> a) -> a -> [b] -> [a]
+scanl f q ls =
+q : (case ls of
+       [] -> []
+       (x:xs) -> scanl f (f q x) xs)

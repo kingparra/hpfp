@@ -1,0 +1,1 @@
+fibs = 1 : scanl (+) 1 fibs
