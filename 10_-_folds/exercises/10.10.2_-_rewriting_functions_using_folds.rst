@@ -56,6 +56,13 @@ of these functions will become.
      myOr :: [Bool] -> Bool
      myOr = undefined
 
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 1
+      :end-before: -- Question 2
+
 2. ``myAny`` returns ``True`` if ``a -> Bool`` applied to
    any of the values in the list returns ``True``:
 
@@ -73,6 +80,13 @@ of these functions will become.
      Prelude> myAny odd [1, 3, 5]
      True
 
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 2
+      :end-before: -- Question 3
+
 3. Write two versions of ``myElem``. One version should use
    folding and the other should use ``any``:
 
@@ -84,6 +98,14 @@ of these functions will become.
      True
      Prelude> myElem 1 [2..10]
      False
+
+
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 3
+      :end-before: -- Question 4
 
 4. Implement ``myReverse``. Don't worry about trying to make
    it lazy:
@@ -98,6 +120,13 @@ of these functions will become.
      Prelude> myReverse [1..5]
      [5,4,3,2,1]
 
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 4
+      :end-before: -- Question 5
+
 5. Write ``myMap`` in terms of ``foldr``. It should have the
    same behavior as the built-in ``map``:
 
@@ -105,6 +134,13 @@ of these functions will become.
 
      myMap :: (a -> b) -> [a] -> [b]
      myMap = undefined
+
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 5
+      :end-before: -- Question 6
 
 6. Write ``myFilter`` in terms of ``foldr``. It should have the
    same behavior as the built-in ``filter``:
@@ -114,12 +150,26 @@ of these functions will become.
      myFilter :: (a -> Bool) -> [a] -> [a]
      myFilter = undefined
 
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 6
+      :end-before: -- Question 7
+
 7. ``squish`` flattens a list of lists into a list:
 
    ::
 
      squish :: [[a]] -> [a]
      squish = undefined
+
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 7
+      :end-before: -- Question 8
 
 8. ``squishMap`` maps a function over a list and concatenates the result:
 
@@ -136,6 +186,13 @@ of these functions will become.
      Prelude> squishMap f "blah"
      "WO b OT WO l OT WO a OT WO h OT "
 
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 8
+      :end-before: -- Question 9
+
 9. ``squishAgain`` flattens a list of lists into a list.
    This time, re-use the ``squishMap`` function:
 
@@ -143,6 +200,13 @@ of these functions will become.
 
       squishAgain :: [[a]] -> [a]
       squishAgain = undefined
+
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 9
+      :end-before: -- Question 10
 
 10. ``myMaximumBy`` takes a comparison function and a list
     and returns the greatest element of the list based on
@@ -160,6 +224,13 @@ of these functions will become.
       Prelude> myMaximumBy compare [1..10]
       10
 
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 10
+      :end-before: -- Question 11
+
 11. ``myMinimumBy`` takes a comparison function and a list
     and returns the least element of the list based on the
     last value that the comparison returns ``LT`` for:
@@ -175,3 +246,10 @@ of these functions will become.
       1
       Prelude> myMinimumBy compare [1..10]
       1
+
+   Here is my attempt:
+
+   .. include:: exercises/10.10.2_-_rewriting_functions_using_folds.rst.d/rewrite-with-folds/src/Lib.hs
+      :code:
+      :start-after: -- Question 11
+      :end-before: -- Question 12
