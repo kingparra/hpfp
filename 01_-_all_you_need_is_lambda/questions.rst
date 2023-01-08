@@ -3,6 +3,24 @@
 *********************
 
 * Why did the author choose to write about LC for chapter 1?
+
+  * To show off the power of functions: they can do anything, and
+    in LC, they do everything.
+
+  * To cause a perspective shift.
+
+    In FP programs can be thought of as a system of equations
+    with a rewrite scheme. There are no assumptions about the
+    order of rewrites and no shared memory.
+   
+    In imperative programs, the machinery of execution is
+    front-and-center. Instructions are performed one after
+    another in sequence ordered by time, with an implicit shared
+    mutable memory space.
+
+  * To introduce some vocabulary that will be useful when talking
+    to other people in the functional programming community.
+
 * How is LC relevant to programming in haskell?
 * What abilities do you gain from the chapter that are relevant to functional programming?
 * **How should I explain lambda calculus to my mom over the phone?**
@@ -120,7 +138,7 @@
 
   A function is a way to express the idea of *change*.
 
-  A function doesn't express change, it only relates an input to an output.
+  A function doesn't express change, it only relates an input to an output. The relationship doesn't change.
 
   "A [function is a] mathematical object that sets up an input-output relationship."
 
@@ -135,8 +153,7 @@
 
   FP languages are based on an execution model
   similar to how LC evaluates expressions into
-  values using text substitution. Languages
-  that execute things
+  values using text substitution.
 
 
 * Is it possible to tell if two functions are equal?
@@ -156,6 +173,7 @@
 * I want to explicitly represent reduction steps. What is a good notation to use for that?
 * What are operational semantics and denotational semantics?
 * Can an algorithm exists separately of a model of computation?
+* Can a single model of computation have multiple possible abstract machines?
 * How are common data types represented?
 * What particular lambda calculus is the Core type an implementation of?
 * What problems or events motivated Church to create the lambda calculus?

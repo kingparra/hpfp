@@ -1,0 +1,24 @@
+
+
+1.2 What is functional programming?
+-----------------------------------
+1a) Functional programming is a computer programming paradigm that relies on functions modeled on mathematical functions.
+1b) The essence of functional programming is that programs are a combination of expressions.
+1c) Expressions include concrete values, variables, and also functions.
+1d) Functions have a more specific definition: they are expressions that are applied to an argument or input and, once applied, can be reduced or evaluated.
+1e) In Haskell, and in functional programming more generally, functions are first-class: they can be used as values or passed as arguments, or inputs, to yet more functions.
+1f) We'll define these terms more carefully as we progress through the chapter.
+
+2a) Functional programming languages are all based on the lambda calculus.
+2b) Some languages in this general category incorporate features that aren't translatable into lambda expressions.
+2c) Haskell is a pure functional language, because it does not.
+2c) We'll further address this notion of purity later in the book, but it isn't a judgment of the moral worth of other languages.
+
+3a) The word purity in functional programming is sometimes also used to mean what is more properly called referential transparency.
+3b) Referential transparency means that the same function, given the same values to evaluate, will always return the same result in pure functional programming, as they do in math.
+
+4a) Haskell's pure functional basis also lends it a high degree of abstraction and composability.
+4b) Abstraction allows you to write shorter, more concise programs by factoring common, repeated structures into more generic code that can be reused.
+4c) Haskell programs are built from separate, independent functions, kind of like LEGO®: the functions are bricks that can be assembled and reassembled.
+
+5a) These features also make Haskell's syntax rather minimalist, as you'll soon see.

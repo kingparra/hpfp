@@ -1,0 +1,145 @@
+
+
+1.6 Multiple arguments
+----------------------
+1a) Each lambda can only bind one parameter and can only accept one argument.
+1b) Functions that require multiple arguments have multiple, nested heads.
+1c) When you apply it once and eliminate the first (leftmost) head, the next one is applied and so on.
+1d) This formulation was originally discovered by Moses Schönfinkel in the 1920s but was later rediscovered and named after Haskell Curry and is commonly called currying.
+
+2a) What we mean by this description is that the following:
+
+..
+  figure 1
+
+::
+
+  λxy.xy
+
+..
+  end figure 1
+
+3a) Is a convenient shorthand for two nested lambdas (one for each argument, x and y):
+
+..
+  figure 2
+
+::
+
+  λx.(λy.xy)
+
+..
+  end figure 2
+
+4a) When you apply the first argument, you're binding x, eliminating the outer lambda, and have λy.xy with x being whatever the outer lambda was bound to.
+
+5a) To try to make this a little more concrete, let's suppose that we apply these lambdas to specific values.
+5b) First, a simple example with the identity function:
+
+..
+  figure 3
+
+1. λx.x
+2. (λx.x) 1
+3. [x ∶= 1]
+4. 1
+
+..
+  end figure 3
+
+6a) Now let's look at a "multiple" argument lambda:
+
+.. figure 4
+
+1. λxy.xy
+2. (λxy.xy) 1 2
+3. (λx.(λy.xy)) 1 2
+4. [x ∶= 1]
+5. (λy.1y) 2
+6. [y ∶= 2]
+7. 1 2
+
+..
+  end figure 4
+
+7a) That wasn't too interesting, because it's like nested identity functions!
+7b) We can't meaningfully apply a 1 to a 2.
+7c) Let's try something different:
+
+..
+  figure 5
+
+1. λxy.xy
+2. (λxy.xy)(λz.a) 1
+3. (λx.(λy.xy))(λz.a) 1
+4. [x ∶= (λz.a)]
+5. (λy.(λz.a)y) 1
+6. [y ∶= 1]
+7. (λz.a) 1
+
+   We still can apply this one more time.
+
+8. [z ∶= 1]
+
+   But there is no z in the body of the function, so there is nowhere to put a 1.
+   We eliminate the head, and the final result is:
+
+9. a
+
+..
+  end figure 5
+
+8a) It's more common in academic lambda calculus materials to refer to abstract variables rather than concrete values.
+8b) The process of beta reduction is the same, regardless.
+8c) The lambda calculus is a process or method, like a game with a few simple rules for transforming lambdas but no specific meaning.
+8d) We've introduced concrete values to make the reduction somewhat easier to see.
+
+9b) The next example uses only abstract variables.
+9c) Due to alpha equivalence, you sometimes see expressions in lambda calculus literature such as:
+
+..
+  figure 6
+
+::
+
+  (λxy.xxy)(λx.xy)(λx.xz)
+
+..
+  end figure 6
+
+10a) The substitution process can become a tangle of x variables that are not the same x, because each is bound by a different head.
+10b) To help make the reduction easier to read, we're going to use different variables in each abstraction, but it's worth emphasizing that the name of the variable (the letter) has no meaning or significance:
+
+..
+  figure 7
+
+1. (λxyz.xz(yz))(λmn.m)(λp.p)
+2. (λx.λy.λz.xz(yz))(λm.λn.m)(λp.p)
+
+   We haven't reduced or applied anything here, only made the currying explicit.
+
+3. (λy.λz.(λm.λn.m)z(yz))(λp.p)
+
+   Our first reduction step was to apply the outermost lambda, which was binding the x, to the first argument, (λm.λn.m).
+
+4. λz.(λm.λn.m)(z)((λp.p)z)
+
+   We applied the y and replaced the single occurrence of y with the next argument, the term λp.p.
+   The outermost lambda binding z is, at this point, irreducible, because it has no argument to apply to.
+   What remains is to go inside the terms one layer at a time until we find something reducible.
+
+5. λz.(λn.z)((λp.p)z)
+
+   We can apply the lambda binding m to the argument z.
+   We keep searching for terms we can apply.
+   The next thing we can apply is the lambda binding n to the lambda term ((λp.p)z).
+
+6. λz.z
+
+   In the final step, the reduction takes a turn that might look slightly odd.
+   Here, the outermost, leftmost reducible term is λn.z applied to the entirety of ((λp.p)z).
+   As we saw in an example above, it doesn't matter what n got bound to—λn.z unconditionally tosses the argument and returns z.
+   So, we are left with an irreducible lambda expression.
+
+..
+  end figure 7

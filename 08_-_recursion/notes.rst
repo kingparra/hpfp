@@ -172,6 +172,9 @@ case.
 .. Maybe it's called the "base case" because it forms the *basis* of any inductive reasoning steps
 .. describe in the recursive case.
 
+.. "Every proof by induction consists of two parts, the basis and the induction step." ~ Theory of
+   Computation, Sipser, page 23, ch 0: Introduction, 0.4 Types of proof, proof by induction.
+
 ..  Base cases are instances of problems that can be solved without carrying out recursive calls.
 
 Base cases are where a functions output value can be obtained without

@@ -16,6 +16,8 @@ it.*
 
 11.1 Algebraic datatypes
 ------------------------
+This chapter's purpose is to explain how to construct your own datatypes.
+
 This chapter introduces a few new ways to declare types, including record
 types, type aliases using ``type``, and wrapper types using ``newtype``.
 Along the way, examples of how to calculate the number of term-level
@@ -24,7 +26,7 @@ inhabitants (or cardinality) of a type are discussed.
 
 11.2 Data declarations review
 -----------------------------
-::
+Let's look at the anatomy of a data declaration::
 
   --    type         data
   -- constructor  constructor
@@ -33,40 +35,34 @@ inhabitants (or cardinality) of a type are discussed.
   -- ^
   -- keyword
   --
-  -- In this examples both constructors are constants,
-  -- since they take no arguments.
 
-  -- Constructors may also take arguments.
-  --
+In this examples both constructors are constants,
+since they take no arguments.
+
+
+But, constructors may also take arguments. Here's what that looks
+like::
+
+
   --          type variable   term-level placholder
   --                |         for a value of type a
   --                v                 v
   data UnaryTypeCon a = UnaryValueCon a
-  --
-  -- There is no requirement to use type constructor
-  -- parameters as arguments to your data constructors;
-  -- They can be phantom (lacking a term-level witness),
-  -- instead.
 
-.. In any realistic program, you'll need to define your own data
-.. types to capture the specific requirements of the problem you're
-.. solving and the specific forms of data you’re working with. Not
-.. only that, but there's a significant payoff to thinking carefully
-.. about the design of data types: the more precisely types capture
-.. the requirements of a problem, the more closely type errors will
-.. mirror errors in reasoning. (Paraphrased from Type-Driven
-.. Development with Idris by Edwin Brady)
+There is no requirement to use type constructor parameters as
+arguments to your data constructors; They can be phantom (lacking a
+term-level witness), instead.
 
 
 11.3 Data and type constructors
 -------------------------------
 Type constructors are used only at the type level. Data constructors
-construct values at the term level. Type and data constructors that take no
-arguments (like Bool, and True/False) are constants.
+construct values at the term level. Type and data constructors that
+take no arguments (like Bool, and True/False) are constants.
 
-Sometimes constructors take arguments. In those cases, it's like a function
-in at least one sense -- it must be applied to become a concrete type or
-value.
+Sometimes constructors take arguments. In those cases, it's like a
+function in at least one sense -- it must be applied to become a
+concrete type or value.
 
 When writing a type it's possible to create parameters for the type
 constructor, called type variables. These parameters are placeholders for

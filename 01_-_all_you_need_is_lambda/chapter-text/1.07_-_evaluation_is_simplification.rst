@@ -1,0 +1,39 @@
+
+
+1.7 Evaluation is simplification
+--------------------------------
+1a) There are multiple normal forms in lambda calculus, but when we refer to normal form here, we mean beta normal form.
+1b) Beta normal form is when you cannot beta reduce (apply lambdas to arguments) the terms any further.
+1c) This corresponds to a fully evaluated expression, or, in programming, a fully executed program.
+1d) This is important, because it's how you know that you're done evaluating an expression.
+1e) It's also valuable to have an appreciation for evaluation as a form of simplification when you get to Haskell code, as well.
+
+2a) Don't be intimidated by calling the reduced form of an expression its normal form.
+2b) When you want to say 2, do you say 2000 / 1000 each time, or do you say 2?
+2c) The expression 2000 / 1000 is not fully evaluated.
+2d) The division function has been fully applied to two arguments, but it hasn't yet been reduced or evaluated.
+2e) In other words, there's a simpler form it can be reduced to—the number two.
+2f) The normal form, therefore, is 2.
+
+3a) The point is that if you have a function, such as division — or / — and that function is "saturated" (it's been applied to all of its arguments), but you haven't yet simplified it to the final result, then it is not fully evaluated, only applied.
+3b) Application is what makes evaluation/simplification possible.
+
+4a) Similarly, the normal form of the following is 600:
+
+..
+  figure 1
+
+::
+
+  (10 + 2) ∗ 100/2
+
+..
+  end figure 1
+
+5a) We cannot reduce the number 600 any further.
+5b) There are no more functions that we can beta reduce.
+5c) Normal form means there is nothing left that can be reduced.
+
+6a) The identity function, λx.x, is fully reduced (that is, in normal form), because it hasn't yet been applied to anything.
+6b) However, (λx.x)z is not in beta normal form, because the identity function has been applied to a free variable z and hasn't been reduced.
+6c) If we did reduce it, the final result in beta normal form would be z.

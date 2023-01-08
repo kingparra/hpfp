@@ -1,0 +1,153 @@
+
+
+1.5 Beta reduction
+------------------
+1a) When we apply a function to an argument, we substitute the input expression for all instances of bound variables within the body of the abstraction.
+1b) You also eliminate the head of the abstraction, since its only purpose is to bind a variable.
+1c) This process is called beta reduction.
+
+2a) Let's use the function we had above:
+
+..
+  figure 1
+
+::
+
+  λx.x
+
+..
+  end figure 1
+
+3a) We'll do our first beta reduction using a number[2].
+3b) We apply the function above to 2, substitute 2 for each bound variable in the body of the function, and eliminate the head:
+
+..
+  figure 2
+
+::
+
+  (λx.x) 2
+  2
+
+..
+  end figure 2
+
+4a) The only bound variable is the single x, so applying this function to 2 returns 2.
+4b) This function is the identity function[3].
+4c) All it does is accept a single argument x and return that same argument.
+4d) The x has no inherent meaning, but, because it is bound in the head of this function, when the function is applied to an argument, all instances of x within the function body must have the same value.
+
+
+  [2]: The lambda calculus can derive numbers from lambda abstractions, rather than using the numerals we are familiar with, but the applications can become quite cumbersome and difficult to read.
+
+  [3]: Note that this is the same as the identity function in mathematical notation: f(x) = x.
+  One difference is that f(x) = x is a declaration involving a function named f, while the above lambda abstraction is a function.
+
+5a) Let's use an example that mixes some arithmetic into our lambda calculus.
+5d) We use the parentheses here to clarify that the body expression is x + 1.
+5c) In other words, we are not applying the function to the value 1:
+
+..
+  figure 3
+
+::
+
+  (λx.x + 1)
+
+..
+  end figure 3
+
+6a) What is the result if we apply this abstraction to 2?
+6b) How about to 10?
+
+7a) Beta reduction is this process of applying a lambda term to an argument, replacing the bound variables with the value of the argument, and eliminating the head.
+7b) Eliminating the head tells you the function has been applied.
+
+8a) We can also apply our identity function to another lambda abstraction:
+
+..
+  figure 4
+
+::
+
+  (λx.x)(λy.y)
+
+..
+  end figure 4
+
+9a) In this case, we'd substitute the entire abstraction for x.
+9b) We'll use a new syntax here, [x ∶= z], to indicate that z will be substituted for all occurrences of x (here z is the function λy.y).
+9c) We reduce this application like this:
+
+..
+  figure 5
+
+::
+
+   (λx.x)(λy.y)
+   [x ∶= (λy.y)]
+   λy.y
+
+..
+  end figure 5
+
+10a) Our final result is another identity function.
+10b) There is no argument to apply it to, so we have nothing to reduce.
+
+11a) Once more, but this time we'll add another argument:
+
+..
+  figure 6
+
+::
+
+  (λx.x)(λy.y)z
+
+..
+  end figure 6
+
+12a) Applications in the lambda calculus are left associative.
+12b) Unless specific parentheses suggest otherwise, they associate, or group, to the left.
+12c) So, this:
+
+.. figure 7
+
+::
+
+  (λx.x)(λy.y)z
+
+..
+  end figure 7
+
+13a) Can be rewritten as:
+
+.. figure 8
+
+::
+
+  ((λx.x)(λy.y))z
+
+..
+  end figure 8
+
+14a) Onward with the reduction:
+
+.. figure 9
+
+::
+
+  ((λx.x)(λy.y))z
+  [x ∶= (λy.y)]
+  (λy.y)z
+  [y ∶= z]
+  z
+
+..
+  end figure 9
+
+15a) We can't reduce this any further, as there is nothing left to apply, and we know nothing about z.
+
+16a) We'll look at functions below that have multiple heads and also free variables (that is, variables in the body that are not bound by the head), but the basic process will remain the same.
+16b) Beta reduction stops when there are no longer unevaluated functions applied to arguments.
+16c) A computation consists of an initial lambda expression plus a finite sequence of lambda terms, each deduced from the preceding term by one application of beta reduction.
+16d) We keep following the rules of application, substituting arguments for bound variables until there are no more heads left to evaluate or no more arguments to apply them to.

@@ -2,25 +2,53 @@
  Chapter 10 Questions
 **********************
 
-Can I define ``foldr`` from memory?
-
-Can I define ``foldl`` from memory?
-
-How would I define ``scanl`` and ``scanr``?
+How would I define ``foldr`` from memory?
 
 ::
 
-  scanl f z []     = []
-  scanl f z (x:xs) = z : scanl f (f z x) xs
+  foldr f z []     = z
+  foldr f z (x:xs) = f x (foldr f z xs)
 
-  foldl f z []     = []
-  foldl f z (x:xs) =     foldl f (f z x) xs
+How would I define ``foldl`` from memory?
 
-  scanr f z []     = [z]
-  scanr f z (x:xs) = f x xs : (scanr f z xs)
+::
 
-Can I write out the evaluation steps for ``foldr``, ``foldl``,
-``scanr``, and ``scanl``?
+  foldl f z []     = z
+  foldl f z (x:xs) = foldl f (f z x) xs
+
+How would I define ``scanl`` from memory?
+
+::
+
+  scanl f z [] =
+  scanl f z (x:xs) =
+
+How would I define ``scanr`` from memory?
+
+::
+
+  scanr f z [] = [z]
+  scanr f z (x:xs) = foldr f z (x:xs) : scanr f z xs
+
+Can I write out the evaluation steps for ``foldr``?
+
+Can I write out the evaluation steps for ``scanr``?
+
+Can I write out the evaluation steps for ``foldl``?
+
+::
+
+  ·∾ {-
+   ⋮ foldl (+) 0 [1,2,3]
+   ⋮ ((+) z 1)
+   ⋮ ((+) ((+) z 1) 2)
+   ⋮ ((+) ((+) ((+) z 1) 2) 3)
+   ⋮ ((+) ((+) ((+) 0 1) 2) 3)
+   ⋮ -}
+
+Can I write out the evaluation steps for ``scanl``?
+
+Can I write out the evaluation steps for ``foldl'``?
 
 Why will ``foldr`` always evaluate the first cons cell?
 
@@ -46,4 +74,4 @@ What abilities does the reader gain by learning the contents of this chapter?
 
 What programming constructs are analogous to folds?
 
-* How do I do a foldr/foldl/foldl' in javascript and python.
+How do I do a ``foldr``/``foldl``/``foldl'`` in JavaScript and Python?

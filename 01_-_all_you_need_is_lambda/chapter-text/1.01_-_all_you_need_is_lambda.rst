@@ -1,0 +1,17 @@
+
+
+1.1 All You Need is Lambda
+--------------------------
+1a) This chapter provides a very brief introduction to the lambda calculus, a model of computation devised in the 1930s by Alonzo Church.
+1b) A calculus is a method of calculation or reasoning; the lambda calculus is one process for formalizing a method.
+1c) Like Turing machines, the lambda calculus formalizes the concept of effective computability, thus determining which problems, or classes of problems, can be solved.
+
+2a) You may be wondering where the Haskell is.
+2b) You may be contemplating skipping this chapter.
+2c) You may feel tempted to leap ahead to the fun stuff where we build a project.
+
+3a) DON'T.
+
+4a) We're starting from first principles here, so that when we get around to building projects, you know what you're doing.
+4b) You don't start building a house from the attic down; you start from the foundation.
+4c) Lambda calculus is your foundation, because Haskell is a lambda calculus.

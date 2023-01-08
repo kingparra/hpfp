@@ -256,7 +256,7 @@ Personally I find this enough of a foot-gun to avoid using tuples.
 
 Here are some useful functions for tuples, which come from ``Data.Tuple``::
 
-  
+
   ·∾ :type fst
   fst :: (a, b) -> a
   ·∾ fst (1,2)
@@ -272,12 +272,12 @@ Here are some useful functions for tuples, which come from ``Data.Tuple``::
   ·∾ curry fst 1 2
   1
 
-  ·∾ :type uncurry 
+  ·∾ :type uncurry
   uncurry :: (a -> b -> c) -> (a, b) -> c
   ·∾ uncurry (+) (1,2)
   3
 
-  ·∾ import Data.Tuple 
+  ·∾ import Data.Tuple
   ·∾ :type swap
   swap :: (a, b) -> (b, a)
   ·∾ swap (1,2)

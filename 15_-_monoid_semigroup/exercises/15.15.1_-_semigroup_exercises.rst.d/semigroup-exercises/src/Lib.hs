@@ -66,16 +66,31 @@ instance (Semigroup a, Semigroup b, Semigroup c) =>
     Three (a <> x) (b <> y) (c <> z)
 
 
--- I'm skipping Q5
+-- Question 5
+data Four a b c d = Four a b c d deriving (Eq, Show)
+
+instance (Semigroup a, Semigroup b, Semigroup c, Semigroup d) =>
+  Semigroup (Four a b c d) where
+  (<>) (Four a b c d) (Four x y z l) =
+    Four (a <> x) (b <> y) (c <> z) (d <> l)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c,
+          Arbitrary d) => Arbitrary (Four a b c d) where
+  arbitrary = do
+    x <- arbitrary
+    y <- arbitrary
+    z <- arbitrary
+    l <- arbitrary
+    return (Four x y z l)
 
 
 -- Question 6
 newtype BoolConj = BoolConj Bool deriving (Eq, Show)
 
-instance Arbitrary BoolConj where
+instance (Eq a) => Arbitrary BoolConj where
   arbitrary = do
     x <- arbitrary :: Gen Bool
     return (BoolConj x)
 
-instance Semigroup BoolConj where
+instance (Eq x, Eq y) => Semigroup BoolConj where
   (<>) (BoolConj x) (BoolConj y) = (BoolConj (x && y))

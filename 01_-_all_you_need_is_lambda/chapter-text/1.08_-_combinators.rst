@@ -1,0 +1,42 @@
+
+
+1.8 Combinators
+---------------
+1a) A combinator is a lambda term with no free variables.
+1b) Combinators, as the name suggests, serve only to combine the arguments they are given.
+
+2a) So, the following are combinators, because every term in the body occurs in the head:
+
+
+..
+   figure 1
+
+1. λx.x
+
+   x is the only variable and is bound, because it is bound by the enclosing lambda.
+
+2. λxy.x
+
+3. λxyz.xz(yz)
+
+..
+  end figure 1
+
+3a) And the following are not, because they contain free variables:
+
+..
+  figure 2
+
+1. λy.x
+
+   Here, y is bound (it's in the head of the lambda), but x is free.
+
+2. λx.xz
+
+   x is bound and is used in the body, but z is free.
+
+..
+  end figure 2
+
+4a) We won't have a lot to say about combinators, per se.
+4b) The point is to call out a special class of lambda expressions that can only combine the arguments they are given, without introducing any new values or random data.

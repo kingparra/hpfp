@@ -1,0 +1,114 @@
+
+
+1.3 What is a function?
+-----------------------
+1a) If we step back from using the word "lambda", you most likely already know what a function is.
+1b) A function is a relation between a set of possible inputs and a set of possible outputs.
+1c) The function itself defines and represents that relationship.
+1d) When you apply a function such as addition to two inputs, it maps those two inputs to an output — the sum of those numbers.
+
+2a) For example, let's imagine a function named f that defines the following relations where the first value is the input and the second is the output:
+
+..
+   figure 1
+
+::
+
+  f(1) = A
+  f(2) = B
+  f(3) = C
+
+..
+  end figure 1
+
+3a) The input set is {1, 2, 3}, and the output set is {A, B, C}.
+3b) A crucial point about how these relations are defined: our hypothetical function will always return the value A given the input 1 — no exceptions!
+
+  [1]: For those who would like precise terminology, the input set is known as the domain.
+  The set of possible outputs for the function is called the codomain.
+  Domains and codomain are sets of unique values.
+  The subset of the codomain that contains possible outputs of the function is known as the image.
+  The mapping between the domain and the image or codomain need not be one-to-one; in some cases, multiple input values will map to the same value in the image, as when a function returns either "true" or "false," so that many different inputs map to each of those output values.
+  However, a given input should not map to multiple outputs.
+
+4a) In contrast, the following is not a valid function:
+
+..
+   figure 2
+
+::
+
+  f(1) = X
+  f(1) = Y
+  f(2) = Z
+
+..
+  end figure 2
+
+5a) This gets back to the notion of referential transparency we mentioned earlier: given the same input, the output should be predictable.
+
+6a) Is the following function valid?
+
+..
+   figure 3
+
+::
+
+  f(1) = A
+  f(2) = A
+  f(3) = A
+
+..
+  end figure 3
+
+7a) Yes, having the same output for more than one input is valid.
+7b) Imagine, for example, that you need a function that tests a positive integer for being less than 10.
+7c) You'd want it to return "true" when the input is less than 10 and "false" for all other cases.
+7d) In that case, several different inputs will result in the output "true"; many more will give a result of "false."
+7e) Different inputs can lead to the same output.
+
+8a) What matters here is that the relationship of inputs and outputs is defined by the function and that the output is predictable when you know the input and the function definition.
+
+9a) In the above examples, we didn't demonstrate a relationship between the inputs and outputs.
+9b) Let's look at an example that does define the relationship.
+9c) This function is again named f:
+
+..
+   figure 4
+
+::
+
+  f(x) = x + 1
+
+..
+  end figure 4
+
+10a) This function takes one argument, which we have named x.
+10b) The relationship between the input, x, and the output is described in the function body.
+10c) It will add 1 to whatever value x is and return that result.
+10d) When we apply this function to a value, such as 1, we substitute the value for x:
+
+..
+  figure 5
+
+::
+
+  f(1) = 1 + 1
+
+..
+  end figure 5
+
+11a) f applied to 1 equals 1 + 1.
+11b) That tells us how to map the input to an output: 1 added to 1 becomes 2:
+
+..
+  figure 6
+
+::
+
+  f(1) = 2
+
+..
+  end figure 6
+
+12a) Understanding functions in this way — as a mapping of a set of inputs to a set of outputs — is crucial to understanding functional programming.

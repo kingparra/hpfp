@@ -26,8 +26,8 @@ This chapter will include:
 
 15.2 What we talk about when we talk about algebras
 ---------------------------------------------------
-An algebra refers to some operations and the set they
-operate over. These operations must adhere to laws.
+An algebra refers to some operations and the set they operate
+over. These operations may have laws associated with them.
 
 .. topic:: What does "operate over" mean?
 

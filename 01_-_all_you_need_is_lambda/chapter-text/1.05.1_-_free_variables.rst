@@ -1,0 +1,52 @@
+
+1.5.1 Free variables
+^^^^^^^^^^^^^^^^^^^^
+1a) The purpose of the head of the function is to tell us which variables to replace when we apply our function, that is, to bind the variables.
+1b) A bound variable must have the same value throughout the expression.
+
+2a) But sometimes, the body expression has variables that are not named in the head.
+2b) We call those variables free variables.
+2c) In the following expression:
+
+..
+   figure 1
+
+::
+
+  λx.xy
+
+..
+   end figure 1
+
+3a) The x in the body is a bound variable, because it is named in the head of the function, while the y is a free variable, because it is not.
+3b) When we apply this function to an argument, nothing can be done with the y.
+3c) It remains irreducible.
+
+4a) That whole abstraction can be applied to an argument, z, like this: (λx.xy)z.
+4b) We'll show an intermediate step, using the := syntax we introduced above, that most lambda calculus literature does not show:
+
+..
+  figure 2
+
+1. (λx.xy)z
+
+   We apply the lambda to the argument z.
+
+2. (λ[x ∶= z].xy)
+
+   Since x is the bound variable, all instances of x in the body of the
+   function will be replaced with z. The head will be eliminated,
+   and we replace any x in the body with a z.
+
+3. zy
+
+   The head has been applied away, and there are no more heads
+   or bound variables. Since we know nothing about z or y, we can
+   reduce this no further.
+
+..
+  end figure 2
+
+5a) Note that alpha equivalence does not apply to free variables.
+5b) That is, λx.xz and λx.xy are not equivalent, because z and y might be different things.
+5c) However, λxy.yx and λab.ba are equivalent due to alpha equivalence, as are λx.xz and λy.yz, because the free variable is left alone.

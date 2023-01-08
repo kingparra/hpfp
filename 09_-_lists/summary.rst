@@ -16,7 +16,7 @@ Short summaries of each section, as well as the overall chapter.
 
       c : a succession of repetitions of a melodic phrase or harmoic pattern each in a new position
       d : a set of elements ordered so that they can be labeled with the positive integers
-   3 
+   3
     a : order of succession
     b : an arrangement of th tenses of successive verbs in a sentence designed to express a coherent relationship especially between main and subordinate parts
 
@@ -51,7 +51,7 @@ Short summaries of each section, as well as the overall chapter.
 
    "to continue, endure"
 
-.. Intersting words: plantigrade, perigrinate, mundivagant, celerity.
+.. Intersting words: plantigrade, perigrinate, perambulate, propinquity, mundivagant, celerity.
 .. What is a top-level declaration? Something that starts with "type", "data", "newtype", "instance", "foreign", or name-bindings like variable names or pattern bindings.
 .. user-defined: type, newtype, data. overloading: class, instance, default. nested declarations:
    value bindings, type signatures, fixity declarations.
@@ -81,7 +81,8 @@ right argument to (:) is a type argument (*list-of-a* ``[a]``) rather than the n
 (*end-of-list* ``[]``), even though they're written similarly.
 
 Paragraph three discusses the relationship between the arguments belonging to each data constructor
-and the number of term-level values that it can construct.
+and the number of term-level values that it can construct. The number of values that the list type
+can construct is a sum of all possible values that each data constructor can construct.
 
 .. Why is this subject being discussed?
    Why is it useful to know that list is a sum type?
@@ -89,6 +90,30 @@ and the number of term-level values that it can construct.
    Why do we care how many values the list type can construct?
    How does this paragraph advance the reader towards acheiving the learning objectives?
    Which learning objective is this even relevant to?
+
+.. The Algebra (and Calculus!) of Algebraic Data Types
+
+   +-------------------------------------+---------------+----------------------------------+
+   |            declaration              |  cardinality  |  explanation                     |
+   +=====================================+===============+==================================+
+   | data void                           |    0          |  Needs LANGUAGE EmptyDataDecls   |
+   +-------------------------------------+---------------+----------------------------------+
+   | data Unit = Unit                    |    1          |  The type with just one term     |
+   +-------------------------------------+---------------+----------------------------------+
+   | data Bool = True | False            |    1 + 1      |                                  |
+   +-------------------------------------+---------------+----------------------------------+
+   | data Maybe a = Just a | Nothing     |    a + 1      |  Read "+" as "Or"                |
+   +-------------------------------------+---------------+----------------------------------+
+   | data Either a b = Left a | Right b  |    a + b      |                                  |
+   +-------------------------------------+---------------+----------------------------------+
+   | data (a,b) = (a,b)                  |    a * b      |  Read "*" as "And"               |
+   +-------------------------------------+---------------+----------------------------------+
+   | a -> b                              |    b^a        |                                  |
+   +-------------------------------------+---------------+----------------------------------+
+
+   ``Either a b`` has as many  as ``a`` and ``b`` combined.
+   ``(a,b)`` has an nhabitant for each combination of ``a``'s and ``b``'s, ``a * b``.
+   ``a -> b`` has b^a.
 
 Paragraph four and its accompanying figure explains how to read each part of the data declaration.
 

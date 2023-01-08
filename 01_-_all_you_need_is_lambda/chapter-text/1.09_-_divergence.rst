@@ -1,0 +1,32 @@
+
+
+1.9 Divergence
+--------------
+1a) Not all reducible lambda terms reduce to a normal form.
+1b) This isn't because they're already fully reduced, but because they diverge.
+1c) Divergence here means that the reduction process never terminates or ends.
+1d) Reducing terms should ordinarily converge to beta normal form, and divergence is the opposite of convergence, or normal form.
+1e) Here's an example of a lambda term called omega that diverges:
+
+..
+  figure 1
+
+1. (λx.xx)(λx.xx)
+
+   x in the first lambda's head becomes the second lambda.
+
+2. ([x ∶= (λx.xx)]xx)
+
+   Using [var ∶= expr] to denote what x has been bound to.
+
+3. (λx.xx)(λx.xx)
+
+   Substituting (λx.xx) for each occurrence of x.
+   We're back to where we started, and this reduction process never ends—we can say in this case that omega diverges.
+
+..
+  end figure 1
+
+2a) This matters in programming, because terms that diverge are terms that don't produce an answer or meaningful result.
+2b) Understanding what will terminate means understanding what programs will do useful work and return the answer we want.
+2c) We'll cover this idea later.

@@ -1,0 +1,67 @@
+
+
+1.4 The structure of lambda expressions
+---------------------------------------
+1a) The lambda calculus has three basic components, or lambda terms: expressions, variables, and abstractions.
+1b) The word expression refers to a superset of all those things: an expression can be a variable name, an abstraction, or a combination of those things.
+1c) The simplest expression is a single variable.
+1d) Variables here have no meaning or value; they are only names for potential inputs to functions.
+
+2a) An abstraction is a function.
+2b) It is a lambda term that has a head (a lambda) and a body and is applied to an argument.
+2c) An argument is an input value.
+
+3a) Abstractions consist of two parts: the head and the body.
+3b) The head of the function is a λ (lambda) followed by a variable name.
+3c) The body of the function is another expression.
+3d) So, a simple function might look like this:
+
+..
+  figure 1
+
+::
+
+  λx.x
+
+..
+  end figure 1
+
+4a) The variable named in the head is the parameter and binds all instances of that same variable in the body of the function.
+4b) That means, when we apply this function to an argument, each x in the body of the function will have the value of that argument.
+4c) We'll demonstrate this in the next section.
+4d) The act of applying a lambda function to an argument is called application, and application is the lynchpin of the lambda calculus.
+
+5a) In the previous section, we were talking about functions called f, but the lambda abstraction λx.x has no name.
+5b) It is an anonymous function.
+5c) A named function can be called by name by another function; an anonymous function cannot.
+
+6a) Let's break down the basic structure:
+
+..
+  figure 2
+
+::
+
+  λ x . x
+  ^─┬─^
+    └───── extent of the head of the lambda.
+
+  λ x . x
+    ^───── the single parameter of the
+           function. This binds any
+           variables with the same name
+           in the body of the function.
+
+  λ x . x
+        ^── body, the expression the lambda
+            returns when applied. This is a
+            bound variable.
+
+..
+  end figure 2
+
+7a) The dot (.) separates the parameters of the lambda from the function body.
+
+8a) The abstraction as a whole has no name, but the reason we call it an abstraction is that it is a generalization, or abstraction, from a concrete instance of a problem, and it abstracts through the introduction of names.
+8b) The names stand for particular values, but by using named variables, we allow for the possibility of applying the general function to different values (or, perhaps even values of different types, as we'll see later).
+8c) When we apply the abstraction to arguments, we replace the names with values, making it concrete.

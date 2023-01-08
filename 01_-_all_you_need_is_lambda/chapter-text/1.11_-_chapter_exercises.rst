@@ -1,0 +1,37 @@
+
+
+1.11 Chapter exercises
+----------------------
+We're going to do the following exercises differently than what you'll see in the rest of the book.
+Unlike in subsequent chapters, here we provide some answers and explanations for the questions below.
+
+Combinators
+^^^^^^^^^^^
+Determine whether each of the following functions are combinators or not:
+
+1. λx.xxx
+2. λxy.zx
+3. λxyz.xy(zx)
+4. λxyz.xy(zxy)
+5. λxy.xy(zxy)
+
+Normal form or diverge?
+^^^^^^^^^^^^^^^^^^^^^^^
+Determine whether each of the following expressions can be reduced to a normal form or if they diverge:
+
+1. λx.xxx
+2. (λz.zz)(λy.yy)
+3. (λx.xxx)z
+
+Beta reduce
+^^^^^^^^^^^
+Evaluate (that is, beta reduce) each of the following expressions to normal form.
+We strongly recommend writing out the steps on paper with a pen or pencil:
+
+1. (λabc.cba)zz(λwv.w)
+2. (λx.λy.xyy)(λa.a)b
+3. (λy.y)(λx.xx)(λz.zq)
+4. (λz.z)(λz.zz)(λz.zy)
+5. (λx.λy.xyy)(λy.y)y
+6. (λa.aa)(λb.ba)c
+7. (λxyz.xz(yz))(λx.z)(λx.a) 18

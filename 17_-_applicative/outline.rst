@@ -5,7 +5,7 @@
 * 17.1 Applicative
 * 17.2 Defining Applicative
 * 17.3 Functor vs. Applicative
-* 17.4 Applicative functor are monoidal functors
+* 17.4 Applicative functors are monoidal functors
 
   * 17.4.1 Show me the monoids
   * 17.4.2 Tuple Monoid and Applicative side by side

@@ -7,7 +7,7 @@
   So, I have this idea that it's impossible to plan for change, so the best I can
   do is make it easy to rewrite things. I should try to make components replaceable.
 
-  Every time I write a function I try to ask myself 
+  Every time I write a function I try to ask myself
 
   * "Can I reason about this independently?",
   * "What context is necessary to understand this code?",
@@ -54,3 +54,26 @@
 
 * What are some examples of compiler optimizations that type type system allows
   us to do?
+
+::
+
+  romesrf> Can anyone point me to literature on the `newtype`. Is it zero cost?
+
+  <ski> romesrf : given `newtype Foo = MkFoo Bar', `MkFoo myBar' is represented in the same way as `myBar', yes
+
+  <romesrf> ski: truly amazing :)
+
+  <ski> this means that `MkFoo' is strict (iow `MkFoo _|_ = _|_'), is a no-op, and matching on it is also a no-op
+
+  <justsomeguy> What is the cost of creating a new datatype using the data keyword, anywys?
+                Does it exist in memory, even if it isn't used?
+
+  <geekosaur>   justsomeguy, just declaring it costs only some memory during compilation, and an
+                info table at runtime which tells the garbage collector how to deal with any values
+                of that type it finds
+
+  <ski> (as opposed to `data Foo = MkFoo !Bar', where `MkFoo' is also strict, but matching on it is not a no-op)
+
+  <geekosaur> justsomeguy, just declaring it costsonly some memory during compilation, and an
+              info table at runtime which tells the garbage collector how to deal with any values of
+              that type it finds. The info table is small and shared among all valuesof that type.

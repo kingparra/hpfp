@@ -45,11 +45,20 @@ main = hspec $ do
          -> Three (Sum Int) (Sum Int) (Sum Int)
          -> Three (Sum Int) (Sum Int) (Sum Int)
          -> Bool)
-  -- I'm skipping Q5
+  -- Question 5
+  describe "Four a b c d" $ do
+    context "Semigroup laws" $ do
+      prop "(<>) is associative for Four"
+        ((\a b c d -> a <> (b <> (c <> d)) == ((a <> b) <> c) <> d)
+         :: Four (Sum Int) (Sum Int) (Sum Int) (Sum Int)
+         -> Four (Sum Int) (Sum Int) (Sum Int) (Sum Int)
+         -> Four (Sum Int) (Sum Int) (Sum Int) (Sum Int)
+         -> Four (Sum Int) (Sum Int) (Sum Int) (Sum Int)
+         -> Bool)
   -- Question 6
   {- For some reason I'm getting hairy type errors from this test -}
-  -- describe "BoolConj" $ do
-  --   context "True && True is True" $ do
-  --     (BoolConj True) <> (BoolConj True) `shouldBe` (BoolConj True)
-  --   context "True && False is True" $ do
-  --     (BoolConj True) <> (BoolConj False) `shouldBe` (BoolConj False)
+  describe "BoolConj" $ do
+    context "True && True is True" $ do
+      (BoolConj True) <> (BoolConj True) `shouldBe` (BoolConj True)
+    context "True && False is False" $ do
+      (BoolConj True) <> (BoolConj False) `shouldBe` (BoolConj False)

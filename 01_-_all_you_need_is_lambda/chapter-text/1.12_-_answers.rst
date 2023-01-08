@@ -1,0 +1,123 @@
+
+
+1.12 Answers
+------------
+Please note: this is the only chapter in the book for which we have provided answers.
+We do so, because it is important that you are able to check your understanding of this material and also due to the relative difficulty of checking answers that you probably wrote by hand in a notebook.
+
+Equivalence exercises
+^^^^^^^^^^^^^^^^^^^^^
+1. b
+2. c
+3. b
+
+Combinators
+^^^^^^^^^^^
+1. λx.xxx is indeed a combinator.
+   The function refers only to the variable x, which is introduced as an argument.
+
+2. λxy.zx is not a combinator.
+   The variable z was not introduced as an argument and is thus a free variable.
+
+3. λxyz.xy(zx) is a combinator, as all terms are bound.
+   The head is λxyz, and the body is xy(zx).
+   None of the arguments in the head have been applied, so it's irreducible.
+   The variables x, y, and z are all bound in the head and are not free.
+   This makes the lambda a combinator—there are no occurrences of free variables.
+
+4. λxyz.xy(zxy) is a combinator.
+   The lambda has as its head λxyz, and its body is xy(zxy).
+   Again, none of the arguments have been applied, so it's irreducible.
+   All that is different is that the bound variable y is referenced twice rather than once.
+   There are still no free variables, so this is also a combinator.
+
+5. λxy.xy(zxy) is not a combinator, because z is free.
+   Note that z isn't bound in the head.
+
+Normal form or diverge?
+^^^^^^^^^^^^^^^^^^^^^^^
+1. λx.xxx doesn't diverge and has no further reduction steps.
+   If it had been applied to itself, it would diverge, but by itself it does not, as it is already in normal form.
+
+2. (λz.zz)(λy.yy) diverges: it never reaches a point where the reduction is complete.
+   This is the omega term we showed you earlier, with different names for the bindings.
+   It's alpha-equivalent to (λx.xx)(λx.xx).
+
+3. (λx.xxx)z doesn't diverge, it reduces to zzz.
+   Beta reduce The following expressions are evaluated in normal order, whereby terms in the outer-most and left-most positions get evaluated (applied) first.
+   This means that if all terms are in the outermost position (none are nested), then it's left-to-right application order:
+
+1.
+  | (λabc.cba)zz(λwv.w)
+  | (λa.λb.λc.cba)(z)z(λw.λv.w)
+  | (λb.λc.cbz)(z)(λw.λv.w)
+  | (λc.czz)(λw.λv.w)
+  | (λw.λv.w)(z)z
+  | (λv.z)(z)
+  | z
+
+2.
+  | (λx.λy.xyy)(λa.a)b
+  | (λy.(λa.a)yy)(b)
+  | (λa.a)(b)b
+  | bb
+
+3.
+  | (λy.y)(λx.xx)(λz.zq)
+  | (λx.xx)(λz.zq)
+  | (λz.zq)(λz.zq)
+  | (λz.zq)(q)
+  | qq
+
+4.
+  | (λz.z)(λz.zz)(λz.zy)
+  | (λz.zz)(λz.zy)
+  | (λz.zy)(λz.zy)
+  | (λz.zy)(y)
+  | yy
+
+5.
+  | (λx.λy.xyy)(λy.y)y
+  | (λy.(λy.y)yy)(y)
+  | (λy.y)(y)y
+  | yy
+
+6.
+  | (λa.aa)(λb.ba)c
+  | (λb.ba)(λb.ba)c
+  | (λb.ba)(a)c
+  | aac
+
+7. Steps we took:
+
+a) (λxyz.xz(yz))(λx.z)(λx.a)
+b) (λx.λy.λz.xz(yz))(λx.z)(λx.a)
+c) (λy.λz1.(λx.z)z1(yz1))(λx.a)
+d) (λz1.(λx.z)(z1)((λx.a)z1))
+e) (λz1.z((λx.a)(z1)))
+f) (λz1.za)
+
+The z1 notation allows us to distinguish two variables named z that came from different places.
+One is bound by the first head; the second is a free variable in the second lambda expression.
+
+How we got there, step by step:
+
+a) The expression we'll reduce.
+
+b) Add the implied lambdas to introduce each argument.
+
+c) Apply the leftmost x, and bind it to (λx.z).
+   Rename the leftmost z to z1 for clarity, to avoid confusion with the other z.
+   Hereafter, "z" is exclusively the z in (λx.z).
+
+d) Apply y, it gets bound to (λx.a).
+
+e) Can't apply z1 to anything, and our evaluation strategy is normal order, so leftmost outermost is the order of the day.
+   Our leftmost, outermost lambda has no remaining arguments to be applied, so we now examine the terms nested within to see if they are in normal form.
+   (λx.z) gets applied to z1, tosses the z1 away, and returns z.
+   z is now being applied to ((λx.a)(z1)).
+
+f) We cannot reduce z further — it's free, and we know nothing, so we go inside yet another nesting and reduce ((λx.a)(z1)).
+   λx.a gets applied to z1 but tosses it away and returns the free variable a.
+   The a is now part of the body of that expression.
+   All of our terms are in normal order now.

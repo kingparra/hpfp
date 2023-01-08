@@ -1,0 +1,19 @@
+
+
+1.10 Summary
+------------
+1a) The main points you should take away from this chapter are:
+
+* 1b) Functional programming is based on expressions that include variables or constant values, expressions combined with other expressions, and functions.
+* 1c) Functions have a head and a body and are those expressions that can be applied to arguments and reduced, or evaluated, to a final result.
+* 1d) Variables may be bound in the function declaration, and every time a bound variable shows up in a function, it has the same value.
+* 1e) All functions take one argument and return one result.
+* 1f) Functions are a mapping of a set of inputs to a set of outputs.
+  1g) Given the same input, they always return the same result.
+
+2a) These things all apply to Haskell, as they do to any purely functional language, because, semantically, Haskell is a lambda calculus.
+2b) Actually, Haskell is a typed lambda calculus — more on types later — with a lot of surface-level decoration sprinkled on top, to make it easier for humans to write, but the semantics of the core language are the same as the lambda calculus.
+2c) That is, the meaning of Haskell programs is centered around evaluating expressions rather than executing instructions, although Haskell has a way to execute instructions, too.
+2d) We will still be making reference to the lambda calculus when we come later to the apparently very complex topics: function composition, monads, parser combinators, etc.
+2e) Don't worry if you don't know those words yet.
+2f) If you understood this chapter, you have the foundation you need to understand them all.

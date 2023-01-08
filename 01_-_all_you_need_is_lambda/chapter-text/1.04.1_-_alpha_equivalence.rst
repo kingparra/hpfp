@@ -1,0 +1,33 @@
+
+1.4.1 Alpha equivalence
+^^^^^^^^^^^^^^^^^^^^^^^
+1a) Often, when people express this function in lambda calculus, you'll see something like this:
+
+.. figure 1
+
+::
+
+  λx.x
+
+..
+  end figure 1
+
+2a) The variable x here is not semantically meaningful except in its role in that single expression.
+2b) Because of this, there's a form of equivalence between lambda terms called alpha equivalence.
+2c) This is a way of saying that the following expressions all mean the same thing:
+
+..
+  figure 2
+
+::
+
+  λx.x
+  λd.d
+  λz.z
+
+..
+  end figure 2
+
+3a) In principle, they're all the same function.
+
+4a) Let's look next at what happens when we apply this abstraction to a value.
