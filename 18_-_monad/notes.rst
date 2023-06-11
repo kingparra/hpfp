@@ -5,6 +5,9 @@
 
 18.1 Monad
 ----------
+.. p2 Monads are applicative functors, but they have something special about them that makes them different from and more powerful than either <*> or fmap alone.
+.. Ok, what is an applicative functor, wikipedia?
+.. Apparently applicative functors are just Applicative.
 In this chapter, we:
 
 * define Monad, its operations and laws;
@@ -22,13 +25,27 @@ In this chapter, we:
 
 18.2 Sorry -- a monad is not a burrito
 --------------------------------------
-A monad is an applicative functor with
-some unique features that make it a bit
-more powerful than either alone.
+A monad is a pattern of function application.
 
-You can think of monad as another way of
-applying functions over structure, with
-a couple of additional features.
+When learning monads, Stephen Dhiel says to
+keep in mind: "A monad is just its algebraic
+laws. Nothing more, nothing less. Analogies
+or metaphors will not lead to understanding.
+Only using monads in code will."
+
+.. In paragraph 2 sentence b ...; an applicative maps a
+   function contained in some structure over some other
+   structure and then combines the two layers of
+   structure like mappend.
+
+   I feel pretty lost after reading this sentence.
+   What does the "combines the two layers of structure
+   like mappend" bit mean?
+
+   I don't think applicative does that. It makes a new
+   structure, with functions distributed to terms.
+   There is no intermediary nested structure. I'm
+   really pretty confused after reading that.
 
 First let's take a look at the type class
 definition:
@@ -119,6 +136,8 @@ It also isn't ``(>>)``. And it also isn't
 The type of ``(>>=)`` is visibly similar to
 that of ``fmap`` and ``(<*>)``, which makes
 sense since monads are applicative functors.
+
+.. No that doesn't make any fucking sense.
 
 For the sake of making this maximally
 similar, we're going to change the *m* of

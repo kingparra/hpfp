@@ -28,27 +28,28 @@ Laws::
               associativity
   m >>= (\x -> k x >>= h) ≡  (m >>= k)
 
-The monad laws can be phrased in terms of map and join::
+The monad laws can be phrased in terms of map and join. (Join is
+like a generalized version of the ``concat`` list function.)::
 
-  -- First we'll define map and join in terms of bind and return.
+
   map :: (a -> b) -> (m a -> m b)
   map f m = m >>= (\a -> return (f a))
 
-  -- Join is like the monad version of Data.List.concat
   join :: m (m a) -> m a
   join z = z >>= (\m -> m)
 
-  -- laws
-  map id ≡ id
-  map (f . g) ≡ map f . map g
 
-  map f . return      ≡  return . f
-  map f . join        ≡  join . map (map f)
+  -- ------------- laws ----------------------
+               map id ≡ id
+          map (f . g) ≡ map f . map g
+
+      map f . return  ≡  return . f
+      map f . join    ≡  join . map (map f)
 
   join . return       ≡  id
   join . map return   ≡  id
   join . map join     ≡  join . join
-  m >>= k             ≡  join (map k m)
+             m >>= k  ≡  join (map k m)
 
 
 Notice the resemblance between these two operations::
@@ -56,11 +57,14 @@ Notice the resemblance between these two operations::
 
   -- this _almost_ looks like map!
   flip (>>=)    :: Monad m => (a -> m b) -> m a -> m b
-  Data.List.map ::            (a -> b)   -> [a] ->  [b]
+  Data.List.map ::            (a -> b)   -> [a] -> [b]
+
   -- let's change our b to [b] and see if we can get closer
   Data.List.map ::〈b := [b]〉(a -> [b]) -> [a] -> [[b]]
+
   -- now we need to collapse the return value to match the signature
   concat        :: [[a]] -> [a]
+
   -- putting it all together
   concat . map  ::            (a -> [b]) -> [a] ->  [b]
 
@@ -90,5 +94,5 @@ Do blocks and their equivalent expressions::
      cs b
 
 In the above code, the <- symbol in the do
-notation represents the binding of a monadic
-value to a variable.
+notation represents taking some value out
+of a monadic constructor and assigning it.
