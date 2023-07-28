@@ -23,6 +23,11 @@ Install stack by following the directions on their `website
    I've also omitted directions on verifying the binary and making
    sure ``$PATH`` is sane.
 
+.. topic:: The difference between stack and cabal
+
+  Here is a short summary of the difference between stack and cabal:
+  https://gist.github.com/merijn/8152d561fb8b011f9313c48d876ceb07
+
 Stack manages the entire tool-chain that you'll typically use for a
 project in an isolated way. Right now we're only interested in it
 because it will provide a compiler to execute our code with.
