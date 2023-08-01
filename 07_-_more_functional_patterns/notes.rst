@@ -422,6 +422,35 @@ I'll call these  *arms*, instead.
 
 .. include:: exercises/7.5.1_-_case_practice.rst
 
+Did you know case expressions can contain guards?
+This is a bad example, but it shows the correct syntax.
+Note that we are using ``->`` rather than ``=`` to terminate the guard.
+
+::
+
+  justPositiveOver12 mx =
+    case mx of
+      Just x | x > 12  -> Just x
+             | x <= 12 -> Nothing
+      _              -> Nothing
+
+BNF of case expression taken from the 2010 Haskell Report, 3.13::
+
+  lexp   -> case exp of { alts }
+  alts   -> alt₁; ... ; altₙ           (n >= 1)
+  alt    -> pat -> exp [where decls]
+          | pat gdpat [where decls]
+          |                            (empty alternative)
+  gdpat  -> guards -> exp [gdpat]
+  guards -> | guard₁, ..., guardₙ      (n >= 1)
+  guard  -> pat <- infixexp            (pattern guard)
+          | let decls                  (local declaration)
+          | infixexp
+
+Apparently, you can have ``let`` expressions within guards. Neat.
+If you don't know BNF, I can recommend this guide to learn it:
+https://www.ics.uci.edu/~pattis/ICS-33/lectures/ebnf.pdf.
+
 
 7.6 Higher-order functions
 --------------------------
@@ -522,7 +551,8 @@ Another one::
   ·∾ f "abracadabra"
   5
 
-This style can be 
+Whenever I write pointfree code, it feels satisfying. But when I read other people
+pointfree code, I hate it. 
 
 7.11 Chapter Exercises
 ----------------------
