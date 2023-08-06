@@ -31,24 +31,20 @@ theDatabase =
 
 -- Question 1
 filterDbDate :: [DatabaseItem] -> [UTCTime]
-filterDbDate l =
-  map fromDbDate $ filter isDbDate l
+filterDbDate = foldr dbDateToUTC []
   where
-    fromDbDate (DbDate date) = date
-    isDbDate e = case e of
-      DbDate (UTCTime _ _) -> True
-      _                    -> False
+    dbDateToUTC (DbDate t) b = t : b
+    dbDateToUTC _          b = b
+
 
 
 -- Question 2
 filterDbNumber :: [DatabaseItem] -> [Integer]
-filterDbNumber l =
-  map fromDbNumber $ filter isDbNumber l
-  where
-    fromDbNumber (DbNumber num) = num
-    isDbNumber e = case e of
-      DbNumber _ -> True
-      _          -> False
+filterDbNumber = foldr dbNumToI []
+  where 
+    dbNumToI (DbNumber i) b = i : b
+    dbNumToI _            b = b
+
 
 
 -- Question 3
