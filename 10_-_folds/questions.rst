@@ -1,54 +1,9 @@
 **********************
  Chapter 10 Questions
 **********************
+How would I define ``foldr``, ``foldl``, ``foldl'``, ``scanr``, and ``scanl`` from memory?
 
-How would I define ``foldr`` from memory?
-
-::
-
-  foldr f z []     = z
-  foldr f z (x:xs) = f x (foldr f z xs)
-
-How would I define ``foldl`` from memory?
-
-::
-
-  foldl f z []     = z
-  foldl f z (x:xs) = foldl f (f z x) xs
-
-How would I define ``scanl`` from memory?
-
-::
-
-  scanl f z [] =
-  scanl f z (x:xs) =
-
-How would I define ``scanr`` from memory?
-
-::
-
-  scanr f z [] = [z]
-  scanr f z (x:xs) = foldr f z (x:xs) : scanr f z xs
-
-Can I write out the evaluation steps for ``foldr``?
-
-Can I write out the evaluation steps for ``scanr``?
-
-Can I write out the evaluation steps for ``foldl``?
-
-::
-
-  ·∾ {-
-   ⋮ foldl (+) 0 [1,2,3]
-   ⋮ ((+) z 1)
-   ⋮ ((+) ((+) z 1) 2)
-   ⋮ ((+) ((+) ((+) z 1) 2) 3)
-   ⋮ ((+) ((+) ((+) 0 1) 2) 3)
-   ⋮ -}
-
-Can I write out the evaluation steps for ``scanl``?
-
-Can I write out the evaluation steps for ``foldl'``?
+Can I write out the evaluation steps for ``foldr``, ``scanr``, ``foldl`` and ``scanl``?
 
 Why will ``foldr`` always evaluate the first cons cell?
 

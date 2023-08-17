@@ -70,37 +70,56 @@ In this chapter, we will:
 
 10.2 Bringing you into the fold
 -------------------------------
+::
+
+  foldr :: (a -> b -> b) -> b -> [a] -> b
 
 
 10.4 Fold right
 ---------------
+::
+
+  foldr f z l =
+    case l of
+      [] -> z
+      (x:xs) -> f x (foldr f z xs)
+
+  foldr (+) 0 [1,2,3] ≡ ((+) 1 ((+) 2 ((+) 3 0)))
 
 10.4.1 How ``foldr`` evaluates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. paragraphs 1-14
+One initially non-obvious aspect of folding is that it happens in two stages, traversal and folding.
+Traversal is the stage in which the fold recurses over the spine.
+Folding refers to the evaluation or reduction of the folding function applied to the values.
+
+For ``foldr``, traversal of the spine is conditional on ``f``, and can stop early.
+Except for the first cons cell, which is forced because of the pattern match ``(x:xs) -> f x (foldr f z xs)``.
+
+Our input function, ``f``, has the type ``(a -> b -> b)``, where ``b`` represents the "rest of the fold".
 
 .. include:: figures/10.04.01/full_recursive_call.txt
    :code:
 
-.. paragraphs 15-x
-
-Each recursive call to ``foldr`` is conditional on ``f``.
-
-However, the first cons cell is always evaluated because of
-the pattern match ``(x:xs) -> f x (foldr f z xs)``.
-
-If ``f`` hits a base case, then it can stop evaluation
-instead of consuming the next call to ``foldr`` as its
-second argument.
-
 
 10.5 Fold left
 --------------
+::
+
+  foldl f z l =
+    case l of
+      [] -> z
+      (x:xs) -> foldl f (f z x) xs
+
+  foldl (+) 0 [1,2,3] ≡ ((+) ((+) ((+) 0 1) 2) 3)
+
+``foldl`` forces traversal of the entire spine before
+it returns a value.
+
+Our input function ``f`` has the type signature
+``(b -> a -> b)``, where our first argument ``b``
+represents the "rest of the fold".
+
 .. include:: exercises/10.5.2_-_understanding_folds.rst
-
-
-10.6 How to write fold functions
---------------------------------
 
 .. include:: exercises/10.6.1_-_database_processing.rst
 
@@ -114,6 +133,17 @@ for finite lists.
 
 10.9 Scans
 ----------
+::
+
+  scanr f z l =
+    case l of
+      [] -> [z]
+      (x:xs) -> foldr f z l : scan f z xs
+
+  scanl f z l =
+    z : (case l of
+          [] -> z
+          (x:xs) -> scanl f (f z x) xs)
 
 .. include:: exercises/10.9.2_-_scans_exercises.rst
 
