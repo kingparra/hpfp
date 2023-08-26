@@ -39,7 +39,7 @@ postorder (Node left a right) = (postorder left) ++ (postorder right) ++ [a]
 
 foldTree :: (a -> b -> b) -> b -> BinaryTree a -> b
 foldTree f z Leaf = z
-foldTree f z (Node left a right) = f a (f a (foldTree f z left)) -- wrong but type checks
+foldTree f z t = foldr f z (inorder t)
 
 
 main :: IO ()
@@ -78,3 +78,4 @@ main = hspec $ do
   describe "foldTree" $ do
     it "a" $ do
       foldTree (+) 0 testTree `shouldBe` 6
+      foldTree (+) 0 (insert' 10 (insert' 25 (insert' 30 Leaf))) `shouldBe` 65
