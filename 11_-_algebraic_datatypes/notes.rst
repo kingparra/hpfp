@@ -267,3 +267,9 @@ Yes, I know that.
 ----------------
 .. include:: exercises/BinaryTree.hs
    :code:
+
+
+11.18 Chapter exercises
+-----------------------
+.. inclue:: exercises/Ciphers.hs
+   :code:
