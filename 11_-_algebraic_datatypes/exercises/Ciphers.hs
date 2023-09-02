@@ -8,11 +8,9 @@ import Data.Maybe (fromJust)
 import Control.Exception (evaluate)
 
 idx :: Char -> Int
-idx c = case elemIndex c ['a'..'z'] of
+idx c = case elemIndex (toLower c) ['a'..'z'] of
           Just x -> x
-          Nothing -> case elemIndex c ['A'..'Z'] of
-                       Just x -> x
-                       Nothing -> 0
+          Nothing -> 0
 
 alpha = ['a'..'z']
 ualpha = ['A'..'Z']
@@ -21,15 +19,15 @@ ce :: Int -> Char -> Char
 ce n c
   | not $ c `elem` (alpha ++ ualpha) = c
   | c `elem` alpha =
-      (cycle alpha) !! (idx c + n `mod` length alpha)
+      alpha !! (idx c + n `mod` length alpha)
   | c `elem` ualpha =
-      (cycle ualpha) !! (idx c + n `mod` length ualpha)
+      ualpha !! (idx c + n `mod` length ualpha)
 
 calc :: Char -> Char -> Int
 calc c k
-  | c `elem` alpha =
+  | c `elem` alpha = 
       (idx k - idx c) `mod` length alpha
-  | c `elem` ualpha =
+  | c `elem` ualpha = 
       (idx k - idx c) `mod` length ualpha
   | otherwise = 0 -- set shift to 0 for non-alpha chars
 
