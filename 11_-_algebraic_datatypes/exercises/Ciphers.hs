@@ -7,6 +7,13 @@ import Data.List (elemIndex, lookup)
 import Data.Maybe (fromJust)
 import Control.Exception (evaluate)
 
+idx :: Char -> Int
+idx c = case elemIndex c ['a'..'z'] of
+          Just x -> x
+          Nothing -> case elemIndex c ['A'..'Z'] of
+                       Just x -> x
+                       Nothing -> 0
+
 ce :: Int -> Char -> Char
 ce n c
   | not $ c `elem` (['a'..'z'] ++ ['A'..'Z']) = c
@@ -31,11 +38,10 @@ vige p k =
     couple :: [Char] -> [Char] -> [(Char,Char)]
     couple [] _ = []
     couple _ [] = []
-    couple (x:xs) (y:ys) = 
-      if isAlpha x 
-      then (x,y) : couple xs ys 
+    couple (x:xs) (y:ys) =
+      if isAlpha x
+      then (x,y) : couple xs ys
       else (x,x) : couple xs (y:ys)
-
 
 main = hspec $ do
 
