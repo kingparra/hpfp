@@ -18,16 +18,16 @@ ce :: Int -> Char -> Char
 ce n c
   | not $ c `elem` (['a'..'z'] ++ ['A'..'Z']) = c
   | c `elem` ['a'..'z'] =
-      (cycle ['a'..'z']) !! ((fromJust $ elemIndex c ['a'..'z']) + n `mod` length ['a'..'z'])
+      (cycle ['a'..'z']) !! (idx c + n `mod` length ['a'..'z'])
   | c `elem` ['A'..'Z'] =
-      (cycle ['A'..'Z']) !! ((fromJust $ elemIndex c ['A'..'Z']) + n `mod` length ['A'..'Z'])
+      (cycle ['A'..'Z']) !! (idx c + n `mod` length ['A'..'Z'])
 
 calc :: Char -> Char -> Int
 calc c k
   | c `elem` ['a'..'z'] =
-      ((fromJust $ elemIndex k ['a'..'z']) - (fromJust $ elemIndex c ['a'..'z'])) `mod` length ['a'..'z']
+      (idx k - idx c) `mod` length ['a'..'z']
   | c `elem` ['A'..'Z'] =
-      ((fromJust $ elemIndex k ['A'..'Z']) - (fromJust $ elemIndex c ['A'..'Z'])) `mod` length ['A'..'Z']
+      (idx k - idx c) `mod` length ['A'..'Z']
   | otherwise = 0 -- set shift to 0 for non-alpha chars
 
 vige :: String -> String -> String
