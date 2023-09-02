@@ -14,20 +14,23 @@ idx c = case elemIndex c ['a'..'z'] of
                        Just x -> x
                        Nothing -> 0
 
+alpha = ['a'..'z']
+ualpha = ['A'..'Z']
+
 ce :: Int -> Char -> Char
 ce n c
-  | not $ c `elem` (['a'..'z'] ++ ['A'..'Z']) = c
-  | c `elem` ['a'..'z'] =
-      (cycle ['a'..'z']) !! (idx c + n `mod` length ['a'..'z'])
-  | c `elem` ['A'..'Z'] =
-      (cycle ['A'..'Z']) !! (idx c + n `mod` length ['A'..'Z'])
+  | not $ c `elem` (alpha ++ ualpha) = c
+  | c `elem` alpha =
+      (cycle alpha) !! (idx c + n `mod` length alpha)
+  | c `elem` ualpha =
+      (cycle ualpha) !! (idx c + n `mod` length ualpha)
 
 calc :: Char -> Char -> Int
 calc c k
-  | c `elem` ['a'..'z'] =
-      (idx k - idx c) `mod` length ['a'..'z']
-  | c `elem` ['A'..'Z'] =
-      (idx k - idx c) `mod` length ['A'..'Z']
+  | c `elem` alpha =
+      (idx k - idx c) `mod` length alpha
+  | c `elem` ualpha =
+      (idx k - idx c) `mod` length ualpha
   | otherwise = 0 -- set shift to 0 for non-alpha chars
 
 vige :: String -> String -> String
