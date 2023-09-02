@@ -2,13 +2,13 @@
 -- stack --resolver lts-20.18 script --package hspec --package QuickCheck
 import Test.Hspec
 import Test.QuickCheck
-import Data.Char (toLower, toUpper, isUpper, isLower, isAlphaNum, isAlpha, isSpace)
+import Data.Char (toLower, toUpper, isUpper, isLower, isAlpha, isSpace)
 import Data.List (elemIndex, lookup)
 import Data.Maybe (fromJust)
 import Control.Exception (evaluate)
 
-idx :: Char -> Int
-idx c = case elemIndex (toLower c) ['a'..'z'] of
+indexOf :: Char -> Int
+indexOf c = case elemIndex (toLower c) ['a'..'z'] of
           Just x -> x
           Nothing -> 0
 
@@ -18,13 +18,13 @@ ualpha = ['A'..'Z']
 ce :: Int -> Char -> Char
 ce n c
   | not $ c `elem` (alpha ++ ualpha) = c
-  | c `elem` alpha   =   (cycle alpha) !! (idx c + n `mod` length alpha)
-  | c `elem` ualpha  =  (cycle ualpha) !! (idx c + n `mod` length ualpha)
+  | c `elem` alpha   =   (cycle alpha) !! (indexOf c + n `mod` length alpha)
+  | c `elem` ualpha  =  (cycle ualpha) !! (indexOf c + n `mod` length ualpha)
 
 calc :: Char -> Char -> Int
 calc c k
-  | c `elem` alpha  = (idx k - idx c) `mod` length alpha
-  | c `elem` ualpha = (idx k - idx c) `mod` length ualpha
+  | c `elem` alpha  = (indexOf k - indexOf c) `mod` length alpha
+  | c `elem` ualpha = (indexOf k - indexOf c) `mod` length ualpha
   | otherwise       = 0 -- set shift to 0 for non-alpha chars
 
 vige :: String -> String -> String
@@ -60,7 +60,7 @@ main = hspec $ do
       ce 3 ',' `shouldBe` ','
       ce 3 '!' `shouldBe` '!'
     it "won't shift generated non-alpha chars" $ do
-      property $ \c -> not (isAlphaNum c) ==> ce 3 c `shouldBe` c
+      property $ \c -> not (isAlpha c) ==> ce 3 c `shouldBe` c
     it "preserves case when shifting" $ do
       ce 3 'T' `shouldBe` 'W'
       ce 3 't' `shouldBe` 'w'
