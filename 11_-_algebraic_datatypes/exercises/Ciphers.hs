@@ -7,10 +7,11 @@ import Data.List (elemIndex, lookup)
 import Data.Maybe (fromJust)
 import Control.Exception (evaluate)
 
+
 indexOf :: Char -> Int
 indexOf c = case elemIndex (toLower c) ['a'..'z'] of
-          Just x -> x
-          Nothing -> 0
+              Just x -> x
+              Nothing -> 0
 
 alpha = ['a'..'z']
 ualpha = ['A'..'Z']
@@ -18,8 +19,8 @@ ualpha = ['A'..'Z']
 ce :: Int -> Char -> Char
 ce n c
   | not $ c `elem` (alpha ++ ualpha) = c
-  | c `elem` alpha   =   (cycle alpha) !! (indexOf c + n `mod` length alpha)
-  | c `elem` ualpha  =  (cycle ualpha) !! (indexOf c + n `mod` length ualpha)
+  | c `elem` alpha   =   alpha !! ((indexOf c + n) `mod` length alpha)
+  | c `elem` ualpha  =  ualpha !! ((indexOf c + n) `mod` length ualpha)
 
 calc :: Char -> Char -> Int
 calc c k
@@ -40,6 +41,7 @@ vige p k =
       then (x,y) : couple xs ys
       else (x,x) : couple xs (y:ys)
 
+
 main = hspec $ do
 
   describe "calc" $ do
@@ -49,8 +51,10 @@ main = hspec $ do
 
   describe "ce" $ do
     it "won't shift example whitespace chars" $ do
-      let spaces = concat [ "\t\n\v\f\r \160\5760\8192\8193\8194\8195"
-                          , "\8196\8197\8198\8199\8200\8201\8202\8239\8287\12288"
+      let spaces = concat [ "\t\n\v\f\r "
+                          , "\160\5760\8192\8193\8194\8195"
+                          , "\8196\8197\8198\8199\8200\8201"
+                          , "\8202\8239\8287\12288"
                           ]
       ce 3 ' ' `shouldBe` ' '
       ce 3 '\t' `shouldBe` '\t'
