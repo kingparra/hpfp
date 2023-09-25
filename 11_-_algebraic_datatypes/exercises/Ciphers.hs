@@ -13,14 +13,19 @@ indexOf c = case elemIndex (toLower c) ['a'..'z'] of
               Just x -> x
               Nothing -> 0
 
-alpha = ['a'..'z']
-ualpha = ['A'..'Z']
+alpha = ['a'..'z']; ualpha = ['A'..'Z']
 
-ce :: Int -> Char -> Char
-ce n c
+ceasar :: Int -> Char -> Char
+ceasar n c
   | not $ c `elem` (alpha ++ ualpha) = c
   | c `elem` alpha   =   alpha !! ((indexOf c + n) `mod` length alpha)
   | c `elem` ualpha  =  ualpha !! ((indexOf c + n) `mod` length ualpha)
+
+unceasar :: Int -> Char -> Char
+unceasar n c
+  | not $ c `elem` (alpha ++ ualpha) = c
+  | c `elem` alpha   =   alpha !! ((indexOf c - n) `mod` length alpha)
+  | c `elem` ualpha  =  ualpha !! ((indexOf c - n) `mod` length ualpha)
 
 calc :: Char -> Char -> Int
 calc c k
@@ -31,7 +36,7 @@ calc c k
 vige :: String -> String -> String
 vige p "" = p
 vige p k =
-  map (\(x,y) -> ce (calc 'a' y) x) $ couple p (cycle (map toLower k))
+  map (\(x,y) -> ceasar (calc 'a' y) x) $ couple p (cycle (map toLower k))
   where
     couple :: [Char] -> [Char] -> [(Char,Char)]
     couple [] _ = []
@@ -49,25 +54,27 @@ main = hspec $ do
       calc 'a' 'b' `shouldBe` 1
       calc 'a' 'g' `shouldBe` 6
 
-  describe "ce" $ do
+  describe "ceasar" $ do
     it "won't shift example whitespace chars" $ do
-      let spaces = concat [ "\t\n\v\f\r "
-                          , "\160\5760\8192\8193\8194\8195"
-                          , "\8196\8197\8198\8199\8200\8201"
-                          , "\8202\8239\8287\12288"
+      let spaces = concat [ "\t\n\v\f\r \160\5760\8192\8193\8194\8195"
+                          , "\8196\8197\8198\8199\8200\8201\8202\8239\8287\12288"
                           ]
-      ce 3 ' ' `shouldBe` ' '
-      ce 3 '\t' `shouldBe` '\t'
-      map (\x -> ce 3 x) spaces `shouldBe` spaces
+      ceasar 3 ' ' `shouldBe` ' '
+      ceasar 3 '\t' `shouldBe` '\t'
+      map (\x -> ceasar 3 x) spaces `shouldBe` spaces
     it "won't shift example non-alpha chars" $ do
-      ce 3 '.' `shouldBe` '.'
-      ce 3 ',' `shouldBe` ','
-      ce 3 '!' `shouldBe` '!'
+      ceasar 3 '.' `shouldBe` '.'
+      ceasar 3 ',' `shouldBe` ','
+      ceasar 3 '!' `shouldBe` '!'
     it "won't shift generated non-alpha chars" $ do
-      property $ \c -> not (isAlpha c) ==> ce 3 c `shouldBe` c
+      property $ \c -> not (isAlpha c) ==> ceasar 3 c `shouldBe` c
     it "preserves case when shifting" $ do
-      ce 3 'T' `shouldBe` 'W'
-      ce 3 't' `shouldBe` 'w'
+      ceasar 3 'T' `shouldBe` 'W'
+      ceasar 3 't' `shouldBe` 'w'
+
+  describe "unceasar" $ do
+    it "will reverse a ceasared string" $ do
+      map (unceasar 3) "Wklv vwulqj" `shouldBe` "This string"
 
   describe "vige" $ do
 
