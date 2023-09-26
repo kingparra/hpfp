@@ -47,6 +47,22 @@ vige p k =
       else (x,x) : couple xs (y:ys)
 
 
+unvige :: String -> String -> String
+unvige p "" = p
+unvige p k =
+  map (\(x,y) -> 
+    unceasar (calc 'a' y) x) $ couple p (cycle (map toLower k))
+  where
+    couple :: [Char] -> [Char] -> [(Char,Char)]
+    couple [] _ = []
+    couple _ [] = []
+    couple (x:xs) (y:ys) =
+      if isAlpha x
+      then (x,y) : couple xs ys
+      else (x,x) : couple xs (y:ys)
+
+
+
 main = hspec $ do
 
   describe "calc" $ do
@@ -97,3 +113,9 @@ main = hspec $ do
         evaluate (vige "test for non-alpha in k" "f#@!") `shouldThrow` anyException
       it "doesn't respect case in k" $ do
         vige "ATTACKATDAWN" "LEMON" `shouldBe` vige "ATTACKATDAWN" "lemon"
+
+  describe "unvige" $ do
+
+    it "decodes simple input" $ do
+      unvige "dlgc xchx" "key" `shouldBe` "this text"
+      unvige (vige "this text, too" "key") "key"
