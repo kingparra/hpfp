@@ -3,600 +3,398 @@
 *******************
 
 
+Monads form one of the core components for constructing
+Haskell programs. In their most general form monads are
+an algebraic building block that can give rise to ways
+of structuring control flow, handling data structures,
+and orchestrating logic. Monads are a very general
+algebraic way of structuring code and have a certain
+reputation for being confusing. However their power and
+flexibility have become foundational to the way modern
+Haskell programs are structured.
+
+There is a singluar truth to keep in mind when learning
+monads. A monad is just its algebraic laws. Nothing
+more, nothing less. Anologies and metaphors will not
+lead to understanding.
+
+~ Stephen Dhiel
+
+A monad is the combination of three things:
+1. Some data in a wrapper. 
+2. Something to wrap the data up.
+3. Something to apply a function that works on the wrapped value.
+
+~ Some dude on YouTube comments
+
+
 18.1 Monad
 ----------
-.. p2 Monads are applicative functors, but they have something special about them that makes them different from and more powerful than either <*> or fmap alone.
-.. Ok, what is an applicative functor, wikipedia?
-.. Apparently applicative functors are just Applicative.
-In this chapter, we:
+Older implementations of Haskell didn't use monads for
+constructing and transforming IO actions.
 
-* define Monad, its operations and laws;
-* look at several examples of monads in practice;
-* write the Monad instances for various types;
-* address some misinformation about monads.
+In this chapter we will:
 
-.. For a quick overview, check out this video:
-.. "Haskell for imperative programmers",
-.. "#17 Monad"
-.. https://www.youtube.com/watch?v=IBB7JpbClo8
-.. &list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
-.. &index=17
+* Define ``Monad``, its operations, and its laws.
+* Look at several examples of monads in practice.
+* Write the ``Monad`` instances for various types.
+* Address some misinformation about monads.
 
 
-18.2 Sorry -- a monad is not a burrito
---------------------------------------
-A monad is a pattern of function application.
+18.2 Sorry - a monad is not a burrito
+-------------------------------------
+You can think of monads as another way of applying
+functions over structure, with a couple additional
+features.
 
-When learning monads, Stephen Dhiel says to
-keep in mind: "A monad is just its algebraic
-laws. Nothing more, nothing less. Analogies
-or metaphors will not lead to understanding.
-Only using monads in code will."
+::
 
-.. In paragraph 2 sentence b ...; an applicative maps a
-   function contained in some structure over some other
-   structure and then combines the two layers of
-   structure like mappend.
+  ·∾ :info Monad
+  type Monad :: (* -> *) -> Constraint
+  class Applicative m => Monad m where
+    (>>=)  :: m a -> (a -> m b) -> m b
+    (>>)   :: m a -> m b -> m b
+    return ::   a -> m a
+    {-# MINIMAL (>>=) #-}
 
-   I feel pretty lost after reading this sentence.
-   What does the "combines the two layers of structure
-   like mappend" bit mean?
+Applicative m
+^^^^^^^^^^^^^
+The chain of inheritance for monad is ``Functor`` -> ``Applicative`` -> ``Monad``. 
+You can implement ``Functor`` and ``Applicative`` in terms of ``Monad``.
 
-   I don't think applicative does that. It makes a new
-   structure, with functions distributed to terms.
-   There is no intermediary nested structure. I'm
-   really pretty confused after reading that.
+Here is and example of how to implement fmap in terms of bind.
 
-First let's take a look at the type class
-definition:
+::
 
-  .. include:: figures/18.2/monad_typeclass_definition.rst
+  ·∾ :type \f xs -> xs >>= return . f
+  \f xs -> xs >>= return . f :: Monad m => (a -> b) -> m a -> m b
 
-18.2.1 Applicative m
-^^^^^^^^^^^^^^^^^^^^
-You can derive applicative and functor in
-terms of monad, just as you can derive
-functor in terms of applicative.
+Or without the point-free:
 
-What does this mean? It means that, for
-example, that you can write ``fmap`` using
-monadic operations and it works:
+::
 
-  ``fmap f xs``  :math:`=`  ``xs >>= return . f``
+  ·∾ fmapm = \f xs -> (flip (>>=)) (\x -> return (f x)) xs
+  ·∾ :type fmapm
+  fmapm :: Monad m => (t -> b) -> m t -> m b
 
-.. fmap f xs    ≡    xs >>= (\x -> return (f x))
+**One interesting question to ask is: "What class methods are in Monad
+that can't be derived from methods in Functor or Applicative?"**
 
-For example::
+You may think that the bind operation is unique, but with some restructuring
+you'll find that bind can be derived from ``join`` and ``map``.
+Only the ``join`` operation isn't inherited.
 
-  ·∾ fmap (+1) [1,2,3]
-  [2,3,4]
+::
 
-  ·∾ [1,2,3] >>= return . (+1)
-  [2,3,4]
+  ·∾ (flip (>>=)) return [1,2,3] -- id
+  [1,2,3]
 
-Try it for yourself:
+  ·∾ (flip (>>=)) id [[1,2,3],[4,5,6]] -- concat (or join)
+  [1,2,3,4,5,6]
 
-.. raw:: html
+  ·∾ (flip (>>=)) (return . (+3)) [1..5] -- map
+  [4,5,6,7,8]
 
-   <script id="asciicast-tn9lH3aOJcsmX84oyM0Df30TS"
-   src="https://asciinema.org/a/tn9lH3aOJcsmX84oyM0Df30TS.js"
-   async></script>
+You may remember seeing something resembling ``concat`` in semigroup and monoid,
+but Monad doesn't inherit from those typeclasses.
 
-It's important to understand this chain of
-dependency:
+If you specialize the type signatures, you can write bind in terms of fmap and
+join.
 
-  ``Functor`` -> ``Applicative`` -> ``Monad``
+::
 
-So whenever you implement an instance of
-monad for a type, you necessarily have an
-applicative and a functor as well.
-
-18.2.2 Core operations
-^^^^^^^^^^^^^^^^^^^^^^
-The ``Monad`` type class defines three core
-operations, although you only need to
-define ``(>>=)`` for a minimally complete
-instance.
-
-Let's look at all three:
-
-  | (**>>=**)  ::  **m a** -> (**a** -> m b) -> m b
-  | (**>>**)   ::  m a -> m b -> m b
-  | **return** ::  **a** -> **m a**
-
-(Notice something?)
-
-.. topic:: Operator pronounciation guide
-
-   * ``(>>=)`` is pronounced as "bind"
-   * ``(>>)`` is sometimes called the
-     "sequencing operator", though there is
-     no offical name for it.
-   * ``return`` is read as ... return. What
-     did you expect?
-
-``return`` puts something inside a context, it
-has a default class method of ``pure = return``.
-
-``(>>)`` sequences two actions while
-discarding any resulting value of the first
-action.
-
-``(>>=)`` is what we'll talk about next.
-
-18.2.3 The novel part of Monad
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-What's unique to monad, at least from the
-point of view of types?
-
-We already saw that it's not ``return``.
-It also isn't ``(>>)``. And it also isn't
-``(>>=)``, at least not in its entirety.
-
-The type of ``(>>=)`` is visibly similar to
-that of ``fmap`` and ``(<*>)``, which makes
-sense since monads are applicative functors.
-
-.. No that doesn't make any fucking sense.
-
-For the sake of making this maximally
-similar, we're going to change the *m* of
-monad to *f*:
-
-.. include:: figures/18.2/fmap_ap_bind_similarities.hs
-   :code:
-
-So, the idea of mapping a function over a
-value while bypassing its surrounding
-structure is not unique to monad.
-
-We can demonstrate this by fmapping a
-function of type ``(a -> m b)`` to make it
-more like ``(>>=)``, and it will work:
-
-.. include:: figures/18.2/specialized_fmap_vs_bind.txt
-   :code:
-
-After mapping a function that generates
-additional monadic structure in its return
-type, we want a way to discard on layer of
-that structure. So, how do we accomplish
-that?
-
-Well, at least with lists, we already know
-how::
-
-  ·∾ :type concat
-  concat :: Foldable t => t (t a) -> t a
-
-.. (The actual type is ``concat :: Foldable t =>
-.. t [a] -> [a]``, but I've further generalized
-.. this to resemble join.)
-
-The module ``Control.Monad`` provides a
-similar function, ``join``::
-
-  ·∾ import Control.Monad (join)
-
+  ·∾ -- b ~ Monad m => m b
+  ·∾ mapm = fmap :: Monad m => (a -> m b) -> m a -> m (m b)
   ·∾ :type join
   join :: Monad m => m (m a) -> m a
+  ·∾ :type (\f xs -> join (mapm f xs))
+  (\f xs -> join (mapm f xs)) :: Monad m => (a1 -> m a2) -> m a1 -> m a2
 
-Monad, in a sense, is a generalization of
-``concat``! ::
+Why doesn't ``Monad`` inherit from ``Semigroup``? It could use ``(<>)`` and
+``fmap`` to derive a default class method implementation of ``(>>=)``.
 
-  ·∾ import Control.Monad (join)
+What Monad is not
+^^^^^^^^^^^^^^^^^
+Monad is not..
 
-  ·∾ :set -XTypeApplications
+* Impure
+* An embedded language for imperative programming.
+* A value.
+* About strictness.
 
-  ·∾ :type concat @[]
-  concat @[] :: [[a]] -> [a]
+The ``Monad`` typeclass is generilized structure manipulation with some laws to
+make it sensible. Just like ``Functor`` and ``Applicative``.
 
-  ·∾ :type join @[]
-  join @[] :: [[a]] -> [a]
+Monad also lifts!
+^^^^^^^^^^^^^^^^^
+::
 
-Allowing the function itself to alter the
-structure is something we've not seen in
-``Functor`` and ``Applicative``. The ability
-to flatten those two layers of structure
-into one is what makes ``Monad`` special.
+  ·∾ -- Monad also lifts!
 
-**By putting that** ``join`` **function together with**
-``fmap``, **we can create bind.**
+  ·∾ :type liftA
+  liftA :: Applicative f => (a -> b) -> f a -> f b
+  ·∾ :type liftM
+  liftM :: Monad m => (a1 -> r) -> m a1 -> m r
 
-**So how do we get bind?**
+  ·∾ :type liftA2
+  liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+  ·∾ :type liftM2
+  liftM2 :: Monad m => (a1 -> a2 -> r) -> m a1 -> m a2 -> m r
 
+  ·∾ :type zipWith
+  zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+  ·∾ :type liftA2
+  liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
+
+  ·∾ zipWith (+) [3,4] [5,6]
+  [8,10]
+  ·∾ liftA2 (+) [3,4] [5,6]
+  [8,9,9,10]
+
+The differing behavior between ``zipWith`` and ``liftA2`` has
+to do with wich lift monoid is being used.
+
+::
+
+  ·∾ liftM3 (,,) [1,2] [3] [5,6]
+  [(1,3,5),(1,3,6),(2,3,5),(2,3,6)]
+  ·∾ 
+  ·∾ zipWith3 (,,) [1,2] [3] [5,6]
+  [(1,3,5)]
+
+
+18.3 do syntax and monads
+-------------------------
+``do { putStrLn "a"; putStrLn "b" }`` ≡ 
+``putStrLn "a" >> putStrLn "b"`` ≡ 
+``putStrLn "a" *> putStrLn "b"``.
+
+::
+
+  do
+    name <- getLine
+    putStrLn name
+
+  ≡ 
+
+  getLine >>= putStrLn
+
+  ≡
+
+  getLine >>= (\name -> putStrLn name)
+
+  ·∾ :type \f ma -> do { name <- ma; f name }
+  \f ma -> do { name <- ma; f name } :: Monad m => (t -> m b) -> m t -> m b
+
+  ·∾ :type \f ma -> ma >>= f
+  \f ma -> ma >>= f :: Monad m => (a -> m b) -> m a -> m b
+
+When fmap alone isn't enough
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Why would I think that ``putStrLn <$> getLine`` could possibly work in the first place?
+What am I supposed to be learning here?
+
+
+One of the strengths of Haskell is that we can refer to, compose, and map over
+effectful computations without performing them.
+
+::
+
+  ·∾ printOne = putStrLn "1"
+  ·∾ printTwo = putStrLn "2"
+  ·∾ twoActions = (printOne, printTwo)
+  ·∾ :type twoActions 
+  twoActions :: (IO (), IO ())
+  ·∾ fst twoActions 
+  1
+  ·∾ snd twoActions 
+  2
+  ·∾ fst twoActions 
+  1
+
+Note that we are able to evaluate IO actions multiple times.
+This will be significant later.
+
+::
+
+  bindingAndSequencing :: IO ()
+  bindingAndSequencing = do
+    putStrLn "name pls:"
+    name <- getLine
+    putStrLn ("y hello thar: " ++ name)
+
+::
+
+  bindingAndSequencing :: IO ()
+  bindingAndSequencing =
+    putStrLn "name pls:" >>
+    getLine >>=
+    \name -> 
+      putStrLn ("y hello thar: " ++ name)
+
+::
+
+  twoBinds :: IO ()
+  twoBinds = do
+    putStrLn "name pls:"
+    name <- getLine
+    putStrLn "age pls:"
+    age <- getLine
+    putStrLn ("y helo thar: " ++ name ++ " who is: "
+              ++ age ++ " years old.")
+
+  twoBinds' :: IO ()
+  twoBinds' =
+    putStrLn "name pls:" >>
+    getLine >>=
+    \name ->
+      putStrLn "age pls:" >>
+      getLine >>=
+      \age ->
+        putStrLn ("y helo thar: "
+                  ++ name ++ " who is: "
+                  ++ age ++ " years old.")
+
+
+18.4 Examples of Mondad use
+---------------------------
+
+List
+^^^^
 ::
 
   ·∾ :{
-   ⋮ bind :: Monad m => (a -> m b) -> m a -> m b
-   ⋮ bind f ma = join (fmap f ma)
+   ⋮ twiceWhenEven :: [Integer] -> [Integer]
+   ⋮ twiceWhenEven xs = do
+   ⋮   x <- xs
+   ⋮   if even x
+   ⋮   then [x*x, x*x]
+   ⋮   else [x*x]
    ⋮ :}
+  ·∾ 
+  ·∾ twiceWhenEven [1..3]
+  [1,4,4,9]
 
-  ·∾ :type bind
-  bind :: Monad m => (a -> m b) -> m a -> m b
+  ·∾ twiceWhenEven xs = do { x <- xs; if even x then [x*x,x*x] else [] }
+  ·∾ twiceWhenEven [1..3]
+  [4,4]
 
-  ·∾ :type flip (>>=)
-  flip (>>=) :: Monad m => (a -> m b) -> m a -> m b
-
-  ·∾ :type join
-  join :: Monad m => m (m a) -> m a
-
-  ·∾ -- a ~ m a
-
-.. topic:: Deriving join from bind
-
-   What if we go the other way: from ``(>>=)``
-   to ``join``?
-
-   Let's start with the type signature for
-   ``(>>=)``, and then substitute in what we
-   need to get there::
-
-     -- Here is our starting point, bind.
-     --
-     (>>=) :: Monad m =>     m a -> (a -> m b) -> m b
-     --
-     -- ...and here is the destination, join.
-     --
-     join :: Monad m =>  m (m a) -> m a
-     --
-     -- First off, the input type isn't specific enough,
-     -- so let's specialize a into (m b).
-     --
-     (>>=) :: Monad m => m (m b) -> (m b -> m b) -> m b
-     --
-     -- At this point, we almost have the type signature
-     -- for join!
-     --
-     (>>=) :: Monad m => m (m b) -> (m b -> m b) ->  m b
-     join  :: Monad m => m (m b)         ->          m b
-     --                  ^^^^^^                      ^^^
-     --
-     -- The final input and output are already correct.
-     -- But we have to eliminate the function in the middle.
-     --
-     (>>=) :: Monad m => m (m a) -> (m a -> m b) ->  m b
-     join  :: Monad m => m (m a)         ->          m a
-     --                              ^^^^^^^^^^
-     -- What function fits this hole? ... id!
-
-     ·∾ :{
-      ⋮ join' :: Monad m => m (m a) -> m a
-      ⋮ join' x = x >>= id
-      ⋮ :}
-     ·∾
-
-     ·∾ join' ["one "," two"," and three!"]
-     "one two and three!"
-
-     ·∾ join ["one "," two"," and three!"]
-     "one two and three!"
-
-18.2.4 What Monad is not
-^^^^^^^^^^^^^^^^^^^^^^^^
-A monad is not:
-
-1. Impure. Monadic functions are pure
-   functions.
-2. An embedded language for imperative
-   programming. While monads are often used
-   for sequencing actions in a way that
-   looks like imperative programming, there
-   are commutative monads that do not order
-   operations.
-3. A value. Monads are type classes (or
-   algebras, as a general concept), not
-   values.
-4. About strictness. The monadic operations
-   of bind and return are nonstrict.
-
-The ``Monad`` type class is generalized
-structure manipulation with some laws to
-make it sensible. Just like ``Functor`` and
-``Applicative``. That's all there is to it.
-
-18.2.5 Monad also lifts!
-^^^^^^^^^^^^^^^^^^^^^^^^
-The monad type class also includes a set of
-``lift`` functions that are the same as the
-ones we already saw in ``Applicative``. They
-don't do anything different, but they are
-still around because some libraries used
-them before applicatives were discovered.
-
-.. raw:: html
-
-   <script id="asciicast-rrxHSW0M3cacRlq9Sut5Fm8et"
-   src="https://asciinema.org/a/rrxHSW0M3cacRlq9Sut5Fm8et.js"
-   async></script>
-
-
-18.3 Do syntax and monads
--------------------------
-Do syntax works with any monad, not just IO.
-
-This section is going to talk about why
-``do`` is sugar and demonstrate what the
-``join`` of ``Monad`` can do for us.
-
-To begin with, let's look at some
-correspondences::
-
-  (*>) :: Applicative f => f a -> f b -> f b
-  (>>) :: Monad m =>       m a -> m b -> m b
-
-For our purposes, ``(*>)`` and ``(>>)`` are
-the same thing, sequencing functions, but
-with two different constraints.
-
-We can see what do syntax looks like after
-the compiler desugars it for us by manually
-transforming it ourselves:
-
-.. include:: figures/18.3/SequencingAndBinding.hs
-   :code:
-
-18.3.1 When fmap alone isn't enough
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This won't work::
-
-  ·∾ import Control.Monad
-
-  ·∾ putStrLn <$> getLine
-  Will this print?
-
-Why? Look at the type signature::
-
-  ·∾ :type putStrLn <$> getLine
-  putStrLn <$> getLine :: IO (IO ())
-
-This will fix it::
-
-  ·∾ join (putStrLn <$> getLine)
-  Will *this* print?
-  Will *this* print?
-
-**What join did here is merge the effects
-of** ``getLine`` **and** ``putStrLn`` **into
-a single IO action.** As it happens, the
-cleanest way to express ordering in a lambda
-calculus is through nesting expressions.
-
-A more thorough exploration:
-
-.. raw:: html
-
-   <script id="asciicast-ZAeJbhDpDB4VPC6hNZFpvAyIl"
-   src="https://asciinema.org/a/ZAeJbhDpDB4VPC6hNZFpvAyIl.js"
-   async></script>
-
-Let's get back to desugaring ``do`` syntax
-with our now-enriched understanding of what
-monads do for us:
-
-.. include:: figures/18.3/BindingAndSequencing.hs
-   :code:
-
-**One key insight is how name binding with the
-assignment arrow like** ``do { name <- getLine;
-putStrLn name }`` **translates into bind, like**
-``getLine >>= (\name -> putStrLn name)`` **.**
-When the function to be sequenced doesn't return
-a value that is later used, the "semicolon"
-translates into ``(>>)``.
-
-
-18.4 Examples of Monad use
---------------------------
-What we need now is to see how monads work
-in code, with ``Monad``'s other than IO.
-
-18.4.1 List
+Maybe Monad
 ^^^^^^^^^^^
-
-18.4.1.1 Specializing the types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. include:: figures/18.4/specializing_monad_to_list.hs
-   :code:
-
-18.4.1.2 Example of the List Monad in use
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-::
-
-  twiceWhenEven :: [Integer] -> [Integer]
-  twiceWhenEven xs = do
-    x <- xs
-    if even x
-    then [x*x, x*x]
-    else [x*x]
-
-The ``x <- xs`` line binds individual
-values out of the list input, like a list
-comprehension, giving us an ``a`` for use
-with ``(>>=)``. The if-then-else is our
-``(a -> m b)``.
+.. TODO Pick up on page 746
 
 ::
 
-  ·∾ :load figures/18.4/TwiceWhenEven.hs
-  [1 of 1] Compiling TwiceWhenEven
-  ( figures/18.4/TwiceWhenEven.hs, interpreted )
-  Ok, one module loaded.
+  ·∾ -- Using the Maybe monad
+  ·∾ 
+  ·∾ :{
+   ⋮ data Cow = Cow {
+   ⋮     name :: String
+   ⋮   , age  :: Int
+   ⋮   , weight :: Int
+   ⋮   } deriving (Eq, Show)
+   ⋮ :}
+  ·∾ 
+  ·∾ :{
+   ⋮ noEmpty :: String -> Maybe String
+   ⋮ noEmpty "" = Nothing
+   ⋮ noEmpty str = Just str
+   ⋮ :}
+  ·∾ 
+  ·∾ :{
+   ⋮ noNegative :: Int -> Maybe Int
+   ⋮ noNegative n | n >= 0 = Just n
+   ⋮              | otherwise = Nothing
+   ⋮ :}
+  ·∾ 
+  ·∾ :{
+   ⋮ weightCheck :: Cow -> Maybe Cow
+   ⋮ weightCheck c =
+   ⋮   let { w = weight c; n = name c } in
+   ⋮   if n == "Bess" && w > 499
+   ⋮   then Nothing
+   ⋮   else Just c
+   ⋮ :}
+  ·∾ 
+  ·∾ :{
+   ⋮ mkSphericalCow :: String -> Int -> Int -> Maybe Cow
+   ⋮ mkSphericalCow name' age' weight' =
+   ⋮   case noEmpty name' of
+   ⋮     Nothing -> Nothing
+   ⋮     Just nammy ->
+   ⋮       case noNegative age' of
+   ⋮         Nothing -> Nothing
+   ⋮         Just agey ->
+   ⋮           case noNegative weight' of
+   ⋮             Nothing -> Nothing
+   ⋮             Just weighty ->
+   ⋮               weight
+   ⋮               weightCheck (Cow nammy agey weighty)
+   ⋮ :}
+  ·∾ 
+  ·∾ 
+  ·∾ mkSphericalCow "Bess" 5 499
+  Just (Cow {name = "Bess", age = 5, weight = 499})
+  ·∾ 
+  ·∾ mkSphericalCow "Bess" 5 500
+  Nothing
+  ·∾ 
+  ·∾ :{
+   ⋮ mkSphericalCow' name' age' weight' = do
+   ⋮   nammy   <- noEmpty name'
+   ⋮   agey    <- noNegative age'
+   ⋮   weighty <- noNegative weight'
+   ⋮   weightCheck (Cow nammy agey weighty)
+   ⋮ :}
+  ·∾ 
+  ·∾ mkSphericalCow' "Bess" 5 500
+  Nothing
+  ·∾ 
+  ·∾ mkSphericalCow' "Bess" 5 499
+  Just (Cow {name = "Bess", age = 5, weight = 499})
 
-  ·∾ twiceWhenEven [1,2,8,5]
-  [1,4,4,64,64,25]
+If your do syntax looks like this:
 
-18.4.2 Maybe Monad
-^^^^^^^^^^^^^^^^^^
-
-18.4.2.1 Specializing the types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. include:: figures/18.4/specializing_monad_to_maybe.hs
-   :code:
-
-18.4.2.2 Using the Maybe Monad
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Whenever you interact with something within
-the ``Maybe`` monad, there is a potential for
-the value to be ``Nothing``. **Using the Maybe
-Monads do notation, each subsequent line (or
-action) in the do block depends on the
-previous action not being** ``Nothing`` **to
-continue evaluating the** ``Just`` **value on
-the next line.**
-
-The files ``figures/18.4/MaybeMonadV{1,2,3}.hs``
-demonstrate a few ways of writing this. But
-here are snippets of the changed function
-between all three versions of the module, for
-convenience::
-
-  module MaybeMonadV1 where
-    . . .
-  mkSphericalCow :: String -> Int -> Int -> Maybe Cow
-  mkSphericalCow name' age' weight' =
-    case noEmpty name' of
-      Nothing -> Nothing
-      Just nammy ->
-        case noNegative age' of
-          Nothing -> Nothing
-          Just agey ->
-            case noNegative weight' of
-              Nothing -> Nothing
-              Just weighty -> weightCheck
-                (Cow nammy agey weighty)
-    . . .
-
-
-  module MaybeMonadV2 where
-    . . .
-  -- With do syntax things are much more concise.
-  mkSphericalCow' :: String -> Int -> Int -> Maybe Cow
-  mkSphericalCow' name' age' weight' = do
-    nammy   <- noEmpty name'
-    agey    <- noNegative age'
-    weighty <- noNegative weight'
-    weightCheck (Cow nammy agey weighty)
-    . . .
-
-
-  module MaybeMonadV3 where
-    . . .
-  -- Here it is, rewritten to use (>>=), just because.
-  mkSphericalCow'' :: String -> Int -> Int -> Maybe Cow
-  mkSphericalCow'' name' age' weight' =
-    noEmpty name' >>=
-    \nammy ->
-      noNegative age' >>=
-      \agey ->
-        noNegative weight' >>=
-        \weighty ->
-          weightCheck (Cow nammy agey weighty)
-
-Here's a terminal recording of me interacting
-with those functions. Spoiler alert: they do
-the same thing.
-
-.. raw:: html
-
-   <script id="asciicast-LPfj7n9kelcJqpfo35eTBQDOV"
-   src="https://asciinema.org/a/LPfj7n9kelcJqpfo35eTBQDOV.js"
-   async></script>
-
-At this point, you may have noticed a
-similarity between how the Maybe monad behaves
-and how Maybe works with applicative. Can we
-use ``Applicative``, instead of ``Monad``?
-
-Well, if your do syntax looks like this::
+::
 
   doSomething = do
     a <- f
     b <- g
     c <- h
-    pure (a, b, c)
+    pure (a,b,c)
 
-Then you can rewrite it using ``Applicative``.
+You can rewrite it using ``Applicative``. On the other hand, if you have
+something like this:
 
-On the other hand, if you have something like
-this::
+::
 
-  doSomething' = do
+  doSomething' n = do
     a <- f n
     b <- g a
     c <- h b
-    pure (a, b, c)
+    pure (a,b,c)
 
-You're going to need a ``Monad`` because ``g``
-and ``h`` are producing monadic structure
-based on values that can only be obtained by
-depending on values generated from monadic
-structure.
-
+Then it won't work... for reasons. 
+Reasons that I don't understand.
 The long and short of it:
 
-* With the ``Maybe`` ``Applicative`` each
-  ``Maybe`` computation fails or succeeds
-  independently of each other. You're lifting
-  functions that are also ``Just`` or
-  ``Nothing`` over ``Maybe`` values.
-* **With the** ``Maybe`` ``Monad``,
-  **computations contributing to the final
-  result can choose to return** ``Nothing``
-  **based on previous computations.**
+1. With the maybe applicative, each maybe computation fails or succeds
+   independely of one another. You're lifting function that are also ``Just``
+   or ``Nothing`` over ``Maybe`` values.
 
-18.4.3 Either
-^^^^^^^^^^^^^
+2. With the maybe monad, computation contributing to the final result can
+   choose to return nothing based on previous computations.
 
-18.4.3.1 Specializing the types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. include:: exercises/18.4/specializing_monad_to_either.hs
-   :code:
+What does that mean? I don't know.
 
-Why do we keep on doing this? To remind you
-that the types always show you the way, once
-you've figured them out.
+Exploding a shperical cow
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Here's how simple an instance of Monad can be.
 
-18.4.3.2 Using the Either Monad
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-As you can see, ``Either`` always short-circuits
-on the first thing to have failed. It must, because
-in the monad later values can depend on previous ones.
+::
 
-.. raw:: html
+  instance Monad Maybe where
+    return x = Just x
+    (Just x) >>= k = k x
+    Nothing  >>= _ = Nothing
 
-   <script id="asciicast-yBFOhd4PYby56ljpIkynEGqKt"
-   src="https://asciinema.org/a/yBFOhd4PYby56ljpIkynEGqKt.js"
-   async></script>
-
-.. include:: exercises/18.4.3.3_-_either_monad.rst
-
-
-18.5 Monad laws
----------------
-
-18.5.1 Identity laws
-^^^^^^^^^^^^^^^^^^^^
-Basically both of these laws are saying that
-``return`` should be neutral and not perform
-any computation.
-
-* **Right identity**: ``m >>= return`` :math:`=` ``m``
-* **Left identity**: ``return x >>= f`` :math:`=` ``f x``
-
-18.5.2 Associativity
-^^^^^^^^^^^^^^^^^^^^
-* **Associativity**:
-
-  ``(m >>= f) >>= g`` :math:`=` ``m >>= (\x -> f x >>= g)``
-
-  Rewritten for more visual similarity::
-
-    (m >>= (\x -> g x)) >>= (\y -> h y)
-                    ≡
-     m >>= (\x -> g x >>= (\y -> h y))
-
-  ...this time, using ``Control.Monad.((>=>))``,
-  instead of the ``(>>=)`` operator:
-
-  ``(f >=> g) >=> h`` :math:`=` ``f >=> (g >=> h)``
