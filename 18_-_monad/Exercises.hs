@@ -150,3 +150,20 @@ meh = flip traverse
 -- hint: reuse meh
 flipType :: Monad m => [m a] -> m [a]
 flipType = (`meh` id)
+
+
+-- Monad laws
+-- right identity
+-- m >>= reutrn ≡ m
+-- left identity
+-- return x >>= f ≡ f x
+-- associativity
+-- (m >>= f) >>= g ≡ m >>= (\x -> f x >>= g)
+--
+
+main = do
+  let trigger = [(1,2,3)] :: [(Int,Int,Int)]
+  quickBatch $ functor trigger
+  quickBatch $ applicative trigger
+  quickBatch $ monad trigger
+
