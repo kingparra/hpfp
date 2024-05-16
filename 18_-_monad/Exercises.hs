@@ -149,4 +149,4 @@ meh = flip traverse
 -- G.
 -- hint: reuse meh
 flipType :: Monad m => [m a] -> m [a]
-flipType = undefined
+flipType = (`meh` id)
