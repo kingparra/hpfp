@@ -165,29 +165,125 @@ to do with wich lift monoid is being used.
 
 18.3 do syntax and monads
 -------------------------
-``do { putStrLn "a"; putStrLn "b" }`` ≡ 
-``putStrLn "a" >> putStrLn "b"`` ≡ 
-``putStrLn "a" *> putStrLn "b"``.
+These are all equivalent:
 
 ::
+
+  do
+    putStrLn "a"
+    putStrLn "b" 
+
+  (
+    putStrLn "a" >>
+    putStrLn "b"
+  )
+
+  (
+    putStrLn "a" *>
+    putStrLn "b"
+  )
 
   do
     name <- getLine
     putStrLn name
 
-  ≡ 
+  getLine >>= (\name -> putStrLn name)
 
   getLine >>= putStrLn
 
+Here are the rewrite rules that GHC uses
+to desugar ``do`` blocks.
+
+::
+
+  do { a <- f; m }  ≡  f >>= (\a -> do { m })
+  do { f; m }       ≡  f >> do { m }
+  do { m }          ≡  m
+
+
+
+Law 1::
+
+  do 
+    y <- return x
+    f y
+
   ≡
 
-  getLine >>= (\name -> putStrLn name)
+  do f x
 
-  ·∾ :type \f ma -> do { name <- ma; f name }
-  \f ma -> do { name <- ma; f name } :: Monad m => (t -> m b) -> m t -> m b
+Law 2::
 
-  ·∾ :type \f ma -> ma >>= f
-  \f ma -> ma >>= f :: Monad m => (a -> m b) -> m a -> m b
+  do
+    x <- m
+    return x
+
+  ≡
+
+  do m
+
+Law 3::
+
+  do
+    b <- do { a <- m; f a }
+    g b
+
+  ≡
+
+  do
+    a <- m
+    b <- f a
+    g b
+
+  ≡
+
+  do
+    a <- m
+    do { b <- f a; g b }
+
+Two-line do notation
+A two-line do block desugars to the infix (>>=) operator::
+
+  do x <- m
+     e
+
+  -- ... desugars to:
+  m >>= (\x ->
+  e )
+
+One-line do notation
+For a one-line do block, you can just remove the do::
+
+  main = do putStrLn "Hello, world!"
+
+  -- ... desugars to:
+  main = putStrLn "Hello, world!"
+
+Multi-line do notation
+do notation of more than two lines is equivalent to multiple nested dos::
+
+  do x <- mx
+     y <- my
+     z
+
+  -- ... is equivalent to:
+  do x <- mx
+     do y <- my
+        z
+
+  -- ... desugars to:
+  mx >>= (\x ->
+  my >>= (\y ->
+  z ))
+
+let in do notation
+Non-recursive let in a do block desugars to a lambda::
+
+  do let x = y
+     z
+
+  -- ... desugars to:
+  (\x -> z) y
 
 When fmap alone isn't enough
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -195,8 +291,9 @@ Why would I think that ``putStrLn <$> getLine`` could possibly work in the first
 What am I supposed to be learning here?
 
 
-One of the strengths of Haskell is that we can refer to, compose, and map over
-effectful computations without performing them.
+One of the strengths of Haskell is that we can
+refer to, compose, and map over effectful
+computations without performing them.
 
 ::
 
@@ -212,8 +309,8 @@ effectful computations without performing them.
   ·∾ fst twoActions 
   1
 
-Note that we are able to evaluate IO actions multiple times.
-This will be significant later.
+Note that we are able to evaluate IO actions
+multiple times. This will be significant later.
 
 ::
 
@@ -281,8 +378,6 @@ List
 
 Maybe Monad
 ^^^^^^^^^^^
-.. TODO Pick up on page 746
-
 ::
 
   ·∾ -- Using the Maybe monad
@@ -307,6 +402,7 @@ Maybe Monad
    ⋮              | otherwise = Nothing
    ⋮ :}
   ·∾ 
+  ·∾ noNegative n = case n of { n | n >= 0 -> Just n | otherwise -> Nothing }
   ·∾ :{
    ⋮ weightCheck :: Cow -> Maybe Cow
    ⋮ weightCheck c =
@@ -398,3 +494,139 @@ Here's how simple an instance of Monad can be.
     (Just x) >>= k = k x
     Nothing  >>= _ = Nothing
 
+
+.. topic:: Flow-style case and guards
+
+   Did you know that you can write guards in flow-style? Check it out!
+
+   ::
+
+      ·∾ testNoNeg n | n >= 0 = Just n | otherwise = Nothing
+      ·∾ noNegative n = case n of { n | n >= 0 -> Just n | otherwise -> Nothing }
+
+One interesting thing is that because of laziness and how monads work is that
+the bind operator can be short-cuirting, like this:
+
+::
+
+  ·∾ Nothing >>= undefined
+  Nothing
+
+  ·∾ (Just 1) >>= undefined
+  *** Exception: Prelude.undefined
+  CallStack (from HasCallStack):
+    error, called at libraries/base/GHC/Err.hs:74:14 in base:GHC.Err
+    undefined, called at <interactive>:263:14 in interactive:Ghci46
+
+18.5 Monad laws
+---------------
+::
+ 
+  .
+          m >>= return   ≡  m
+   return x >>= f        ≡  f x
+  (m >>= f) >>= g        ≡  m >>= (\x -> f x >>= g)
+
+Monad and applicative operations should relate as follows:
+
+::
+  
+  pure ≡ return
+  m1 <*> m2      ≡      m1 >>= (\x1 -> m2 >>= (\x2 -> return (x1 x2)))
+
+The above laws imply:
+
+::
+
+  fmap f xs ≡ xs >>= return . f
+  (>>) ≡ (*>)
+
+
+18.7 Chapter exercises
+----------------------
+Write ``Monad`` instances for the following types.
+Use the ``QuickCheck`` properties we showed you to validate your instances.
+
+1. Welcome to the ``Nope Monad``, where nothing happens and nobody cares:
+
+   ::
+
+     data Nope a = NopeDotJpg
+
+   Ok, I'll give it a shot:
+
+   ::
+
+     data Nope a = NopeDotJpg
+     instance Functor Nope where { fmap _ NopeDotJpg = NopeDotJpg }
+     instance Applicative Nope where { fmap _ NopeDotJpg = NopeDotJpg }
+     instance Monad Nope where { _ >>= _ = NopeDotJpg }
+
+2. Problem
+
+   ::
+
+     data BahEither b a = PLeft | PRight b
+
+   Here's my attempt
+
+   ::
+
+     data BahEither b a = PLeft | PRight b
+     instance Functor (BahEither b) where { fmap f (PRight x) = PRight x; fmap _ PLeft = PLeft  }
+
+
+3. Write a ``Monad`` instance for ``Identity``:
+
+   ::
+
+     newtype Identity a = Identity a
+       deriving (Eq, Ord, Show)
+
+     instance Functor Identity where
+       fmap = undefined
+
+     instance Applicative Identity where
+       pure = undefined
+       (<*>) = undefined
+
+     instance Monad Identity where
+       return = pure
+       (>>=)  = undefined
+
+4. This one should be easier than the ``Applicative`` instance was.
+   Remember to use the ``Functor`` that ``Monad`` requires, then see
+   where the chips fall:
+
+   ::
+
+     data List a = Nil | Cons a (List a)
+   Write the following functions using the methods provided by ``Monad`` and
+   ``Functor``. Using stuff like identity and composition is fine, but it has
+   to type chack with the types provided.
+
+   1. ``j :: Monad m => m (m a) -> m a``
+      Expecting the following behaviour:
+
+      ::
+
+        >>> j [[1,2],[],[3]]
+        [1,2,3]
+        >>> j (Just (Just 1))
+        Just 1
+        >>> j (Just Nothing)
+        Nothing
+        >>> j Nothing
+        Nothing
+
+   2. ``l1 :: Monad m => (a -> b) -> m a -> m b``
+
+   3. ``l2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c``
+
+   4. ``a :: Monad m => m a -> m (a -> b) -> m b``
+
+   5. You'll need recursion for this one: ``meh :: Monad m => [a] -> (a -> m b) -> m [b]``
+
+   6. Hint: reuse ``meh``: ``flipType :: (Monad m) => [m a] -> m [a]``
+
+.. pick up on 19.6
