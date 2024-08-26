@@ -159,7 +159,7 @@ flipType = (`meh` id)
 -- return x >>= f ≡ f x
 -- associativity
 -- (m >>= f) >>= g ≡ m >>= (\x -> f x >>= g)
---
+-- 
 
 main = do
   let trigger = [(1,2,3)] :: [(Int,Int,Int)]

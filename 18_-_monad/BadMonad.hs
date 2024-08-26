@@ -1,5 +1,9 @@
 #!/usr/bin/env stack
--- stack --resolver lts-20.18 script --package QuickCheck --package hspec --package checkers
+{- stack --resolver lts-20.18 script
+   --package QuickCheck 
+   --package hspec 
+   --package checkers
+-}
 {-# LANGUAGE OverloadedStrings #-}
 module BadMonad where
 
@@ -17,6 +21,10 @@ instance Applicative CountMe where
   (CountMe n f) <*> (CountMe n' a) = CountMe (n + n') (f a)
 
 instance Monad CountMe where
+  -- laws:
+  -- m >>= return ≡ m
+  -- return x >>= f ≡ f x
+  -- (m >>= f) >>= g  ≡  m >>= (\x -> f x >>= g)
   return = pure
   (CountMe n a) >>= f = let (CountMe _ b) = f a in (CountMe (n + 1) b)
 
