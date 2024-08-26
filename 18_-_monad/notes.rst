@@ -2,7 +2,6 @@
  Chapter 18: Monad
 *******************
 
-
 Monads form one of the core components for constructing
 Haskell programs. In their most general form monads are
 an algebraic building block that can give rise to ways
@@ -21,11 +20,24 @@ lead to understanding.
 ~ Stephen Dhiel
 
 A monad is the combination of three things:
+
 1. Some data in a wrapper. 
 2. Something to wrap the data up.
 3. Something to apply a function that works on the wrapped value.
 
 ~ Some dude on YouTube comments
+
+Monads are just a wrapper around function application.
+The bind operator takes something in a structure on the left
+and a callback function to apply on the right. The callback
+function is operates on an element within the structure,
+but it doesn't do any destructuring itself.
+The wrapper component performs checks and then extracts the
+element from the structure.
+Whenever you take the term out of the structure with bind,
+the instance of Monad with the checks is implicitly executed.
+
+~ Me, committing the sin of explaining by analogy
 
 
 18.1 Monad
@@ -122,7 +134,9 @@ Monad is not..
 * A value.
 * About strictness.
 
-The ``Monad`` typeclass is generilized structure manipulation with some laws to
+There are commutative monads that do not order actions.
+
+The ``Monad`` typeclass is generalized structure manipulation with some laws to
 make it sensible. Just like ``Functor`` and ``Applicative``.
 
 Monad also lifts!
@@ -152,13 +166,13 @@ Monad also lifts!
   [8,9,9,10]
 
 The differing behavior between ``zipWith`` and ``liftA2`` has
-to do with wich lift monoid is being used.
+to do with which monoid is being used.
 
 ::
 
   ·∾ liftM3 (,,) [1,2] [3] [5,6]
   [(1,3,5),(1,3,6),(2,3,5),(2,3,6)]
-  ·∾ 
+
   ·∾ zipWith3 (,,) [1,2] [3] [5,6]
   [(1,3,5)]
 
@@ -183,6 +197,8 @@ These are all equivalent:
     putStrLn "b"
   )
 
+And these are equivalent to each other, too::
+
   do
     name <- getLine
     putStrLn name
@@ -199,7 +215,6 @@ to desugar ``do`` blocks.
   do { a <- f; m }  ≡  f >>= (\a -> do { m })
   do { f; m }       ≡  f >> do { m }
   do { m }          ≡  m
-
 
 
 Law 1::
@@ -287,9 +302,28 @@ Non-recursive let in a do block desugars to a lambda::
 
 When fmap alone isn't enough
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Why would I think that ``putStrLn <$> getLine`` could possibly work in the first place?
-What am I supposed to be learning here?
+Consider this example...
 
+::
+
+  ·∾ putStrLn <$> getLine
+  this
+    
+What is ``putStrLn <$> getLine`` intended to do?
+Why would mapping ``putStrLn`` over ``getLine`` print the line?
+Why would I think that ``putStrLn <$> getLine`` could 
+possibly work in the first place?
+I guess the intent is to print the line we got, like ``getLine >>= putStrLn``.
+I guess we're trying to get the ``String`` out of ``IO String`` so we can
+use it with ``putStrLn :: String -> IO ()``, but that doesn't match our typesig.
+In the line "what join does here is merge the effects of getLine and
+putStrLn into a single IO action", what does merge mean?
+What is the internal structure of an ``IO ()``?
+How does the ``putStrLn <$> getLine`` example relate to
+desugaring the do block?
+What am I supposed to be learning here?
+This is confusing and I don't feel like I learned 
+anything from it.
 
 One of the strengths of Haskell is that we can
 refer to, compose, and map over effectful
@@ -402,7 +436,7 @@ Maybe Monad
    ⋮              | otherwise = Nothing
    ⋮ :}
   ·∾ 
-  ·∾ noNegative n = case n of { n | n >= 0 -> Just n | otherwise -> Nothing }
+  ·∾ noNegative n | n >= 0 = Just n | otherwise = Nothing
   ·∾ :{
    ⋮ weightCheck :: Cow -> Maybe Cow
    ⋮ weightCheck c =
@@ -518,14 +552,25 @@ the bind operator can be short-cuirting, like this:
     error, called at libraries/base/GHC/Err.hs:74:14 in base:GHC.Err
     undefined, called at <interactive>:263:14 in interactive:Ghci46
 
+
 18.5 Monad laws
 ---------------
+Here are the Monad laws in their most commonly used representations.
+
 ::
  
   .
           m >>= return   ≡  m
    return x >>= f        ≡  f x
   (m >>= f) >>= g        ≡  m >>= (\x -> f x >>= g)
+
+You can also represent them using do notation, like this:
+
+::
+
+  do { x <- m; return x }       ≡  m
+  do { y <- return x; f y }     ≡  f x
+  do { a <- m; b <- f a; g b }  ≡  m >>= (\x -> f x >>= g)
 
 Monad and applicative operations should relate as follows:
 
@@ -540,6 +585,24 @@ The above laws imply:
 
   fmap f xs ≡ xs >>= return . f
   (>>) ≡ (*>)
+
+Here is a short exceprt from "Monad for Functional Programming" by Philip Wadler.
+Lists form a monad, and for this monad map applies a function to each element
+of a list, and join concatenates a list of lists.
+
+::
+
+  map id ≡ id
+  map (f . g) ≡ map f . map g
+
+  map f . return ≡ return . f
+  map f . join   ≡ join . map (map f)
+
+  join . return      ≡ id
+  join . map return  ≡ id
+  join . map join    ≡ join . join
+
+  m >>= k ≡ join (map k m)
 
 
 18.7 Chapter exercises
