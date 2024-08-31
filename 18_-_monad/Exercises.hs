@@ -1,5 +1,5 @@
 #!/usr/bin/env stack
--- stack --resolver lts-20.18 script --package QuickCheck --package hspec --package checkers
+-- stack --resolver lts-20.22 script --package QuickCheck --package hspec --package checkers
 {-# LANGUAGE OverloadedStrings #-}
 import Test.Hspec
 import Test.QuickCheck

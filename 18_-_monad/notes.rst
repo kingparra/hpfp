@@ -313,7 +313,6 @@ What is ``putStrLn <$> getLine`` intended to do?
 Why would mapping ``putStrLn`` over ``getLine`` print the line?
 Why would I think that ``putStrLn <$> getLine`` could 
 possibly work in the first place?
-I guess the intent is to print the line we got, like ``getLine >>= putStrLn``.
 I guess we're trying to get the ``String`` out of ``IO String`` so we can
 use it with ``putStrLn :: String -> IO ()``, but that doesn't match our typesig.
 In the line "what join does here is merge the effects of getLine and
