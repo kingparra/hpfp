@@ -2,6 +2,8 @@
  Chapter 20: Foldable
 **********************
 
+.. conjecture --> argument (proof) --> theorem
+
 
 20.1 Foldable
 -------------
@@ -68,8 +70,8 @@ The first two operations defined in
 
     foldMap :: Monoid m => (a -> m) -> t a -> m
 
-Where are the separate function arguments, you
-ask? Look, that's what I'm saying: You don't
+Where is the input function to fold, you ask?
+Look, that's what I'm saying: You don't
 need a function argument. Instead, the function
 for combining elements is inferred to be the
 ``(<>)`` operation of the monoid that those
@@ -122,41 +124,70 @@ which has a few more examples:
 
 20.3.1 And now for something different
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Ok, but what about situations where the elements have
-multiple possible monoids defined for them?
+::
 
-One way to deal with this is by mapping a particular
-monoid over our foldable, first, like this::
-
-  ·∾ fold $ map Sum [1..20]
-  Sum {getSum = 210}
-
-Or we can use ``foldMap``::
-
-  ·∾ foldMap Sum [1..20]
-  Sum {getSum = 210}
-
-``foldMap`` can also have a function to map
-that is different from the monoid it's using::
-
-  ·∾ :{
-   ⋮ xs :: [Product Int]
-   ⋮ xs =  [1,2,3]
-   ⋮ :}
-
+  ·∾ import Data.Monoid
+  ·∾ import Data.Foldable
+  ·∾
+  ·∾ -- The first arg to foldMap must map each element to a Monoid.
+  ·∾ 
+  ·∾ foldMap Sum [1,2,3,4]
+  Sum {getSum = 10}
+  ·∾ 
+  ·∾ foldMap Product [1,2,3,4]
+  Product {getProduct = 24}
+  ·∾ 
+  ·∾ foldMap All [True,False,True]
+  All {getAll = False}
+  ·∾ 
+  ·∾ foldMap Any [(3==4),(9>5)]
+  Any {getAny = True}
+  ·∾ 
+  ·∾ xs = [Just 1, Nothing, Just 5]
+  ·∾ foldMap First xs
+  First {getFirst = Just 1}
+  ·∾ foldMap Last xs
+  Last {getLast = Just 5}
+  ·∾ 
+  ·∾ -- foldMap can also have a function to map that's different from the Monoid it's using
+  ·∾ xs = map Product [1..3]
+  ·∾ 
   ·∾ foldMap (*5) xs
   Product {getProduct = 750}
-
-  ·∾ :{
-   ⋮ es :: [Sum Int]
-   ⋮ es =  [1,2,3]
-   ⋮ :}
-
-  ·∾ foldMap (*5) es
+  ·∾ 
+  ·∾ xs = map S
+  Semigroup  Show       ShowS      String     Sum
+  ·∾ xs = map Sum [1..3]
+  ·∾ foldMap (*5) xs
   Sum {getSum = 30}
-
-That's it. That's everything you need to know
-about ``foldMap`` :^).
+  ·∾ 
+  ·∾ -- It can map the function to each value first and then use the Monoid instance
+  ·∾ -- to reduce them to one value.
+  ·∾ -- Compare this to foldr, where the function has the Monoid instance baked in:
+  ·∾ foldr (*) 5 [1,2,3]
+  30
+  ·∾ sumXs = map Sum [2..4]
+  ·∾ sumXs
+  [Sum {getSum = 2},Sum {getSum = 3},Sum {getSum = 4}]
+  ·∾ 
+  ·∾ foldr (*) 3 sumXs -- this doesn't seem right, is it a typo?
+  Sum {getSum = 72}
+  ·∾ foldr (*) 1 sumXs -- this doesn't seem right, is it a typo?
+  Sum {getSum = 24}
+  ·∾ -- [2, 6, 24]
+  ·∾ 
+  ·∾ -- It's worth pointing out that if what you're trying to fold only contains
+  ·∾ -- one value, declaring a Monoid instance won't change the behavior of foldMap
+  ·∾ fm = foldMap (*5)
+  ·∾ fm (Just 100) :: Product Integer 
+  Product {getProduct = 500}
+  ·∾ fm (Just 5) :: Sum Integer 
+  Sum {getSum = 25}
+  ·∾ 
+  ·∾ fm Nothing :: Sum Integer 
+  Sum {getSum = 0}
+  ·∾ fm Nothing :: Product Integer 
+  Product {getProduct = 1}
 
 
 20.4 Demonstrating Foldable instances
@@ -330,11 +361,23 @@ in the class declaration
   ·∾ fmap length [(1,2),(3,4),(5,6)]
   [1,1,1]
 
+
   ·∾ fmap length Just [1,2,3]
   1
 
   ·∾ fmap length (Just [1,2,3])
   Just 3
+
+  ·∾ fmap length Just [1,2,3]
+  1
+  ·∾ fmap length (Just [1,2,3])
+  Just 3
+  ·∾ (\x -> Just (length x)) [1,2,3]
+  Just 3
+  ·∾ (length . Just) [1,2,3]
+  1
+  ·∾ (\x -> length (Just x)) [1,2,3]
+  1
 
   ·∾ fmap length [Just 1,Just 2,Nothing]
   [1,1,0]
