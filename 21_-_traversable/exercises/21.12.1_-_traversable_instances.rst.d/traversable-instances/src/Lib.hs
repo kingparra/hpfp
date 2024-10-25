@@ -6,6 +6,7 @@ import Test.QuickCheck.Checkers
 import Test.QuickCheck.Classes
 
 
+
 -- Question 1
 newtype Identity a = Identity a
   deriving (Eq, Ord, Show)
@@ -21,6 +22,7 @@ instance Foldable Identity where
 
 instance Traversable Identity where
   traverse f (Identity a) = Identity <$> (f a)
+
 
 
 -- Question 2
@@ -117,23 +119,25 @@ instance Traversable (Three a b) where
   sequenceA (Three a b c) = (Three a b) <$> c
 
 
--- -- Question 6
--- data Pair a b = Pair a b
---
---
--- instance Functor (Pair b) where
---   fmap = undefined
---
---
--- instance Foldable (Pair b) where
---   foldr = undefined
---
---
--- instance Traversable (Pair b) where
---   traverse = undefined
---
---
---
+
+-- Question 6
+data Pair a b = Pair a b
+  deriving (Eq, Show)
+
+
+instance Functor (Pair b) where
+  fmap f (Pair x y) = Pair x $ f y
+
+
+instance Foldable (Pair b) where
+  foldr f z (Pair x y) = f y z
+
+
+instance Traversable (Pair b) where
+  traverse f (Pair x y) = Pair x <$> (f y)
+
+
+
 -- -- Question 7
 -- data Big a b = Big a b b
 --
