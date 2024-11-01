@@ -138,24 +138,24 @@ instance Traversable (Pair b) where
 
 
 
--- -- Question 7
--- data Big a b = Big a b b
---
---
---
--- instance Functor (Big b) where
---   fmap = undefined
---
---
--- instance Foldable (Big b) where
---   foldr = undefined
---
---
--- instance Traversable (Big b) where
---   traverse = undefined
---
---
---
+-- Question 7
+data Big a b = Big a b b
+  deriving (Eq, Show)
+
+
+instance Functor (Big a) where
+  fmap f (Big a b c) = Big a (f b) (f c)
+
+
+instance Foldable (Big a) where
+  foldr f z (Big a b c) = f b (f c z)
+
+
+instance Traversable (Big b) where
+  traverse f (Big a b c) = (Big a) <$> f b <*> f c
+
+
+
 -- -- Question 8
 -- data Bigger a b = Bigger a b b b
 --
