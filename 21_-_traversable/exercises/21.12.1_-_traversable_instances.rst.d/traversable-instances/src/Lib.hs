@@ -152,28 +152,38 @@ instance Foldable (Big a) where
 
 
 instance Traversable (Big b) where
+  -- (f b) and (f c) are combined, then (Big a) is mapped over the result
   traverse f (Big a b c) = (Big a) <$> f b <*> f c
 
 
 
--- -- Question 8
--- data Bigger a b = Bigger a b b b
---
---
--- instance Functor (Bigger b) where
---   fmap = undefined
---
---
--- instance Foldable (Bigger b) where
---   foldr = undefined
---
---
--- instance Traversable (Bigger b) where
---   traverse = undefined
---
---
---
--- -- -- Question 9
+-- Question 8
+data Bigger a b = Bigger a b b b
+
+
+instance Functor (Bigger b) where
+  fmap f (Bigger a x y z) = Bigger a (f x) (f y) (f z)
+
+
+instance Foldable (Bigger b) where
+  foldr f z (Bigger _ a b c) = f a (f b (f c z))
+
+
+instance Traversable (Bigger b) where
+  traverse f (Bigger a x y z) = (Bigger a) <$> f x <*> f y <*> f z
+
+
+
+-- Question 9
+data S n a = S (n a) a deriving (Eq, Show)
+
+instance Functor (S n) where
+  fmap f (S n a) = S (fmap f n) (f a)
+
+
+instance Foldable (S n) where
+  foldr f z (S n a) = f a (foldr f z n)
+
 -- -- {-# LANGUAGE FlexibleContexts #-}
 -- -- data S n a = S (n a) a deriving (Eq, Show)
 --

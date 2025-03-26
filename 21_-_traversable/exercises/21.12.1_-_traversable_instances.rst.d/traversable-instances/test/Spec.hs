@@ -6,8 +6,11 @@ import Lib
 -- Functor Identity
 prop_FuncIdComp :: Identity Int -> Bool
 prop_FuncIdComp xs =
-  let { f = (+1); g = (*2) } in
-  (fmap (f . g) xs) == (fmap f . fmap g $ xs)
+  let 
+    f = (+1)
+    g = (*2)
+  in 
+    (fmap (f . g) xs) == (fmap f . fmap g $ xs)
 
 
 main =
